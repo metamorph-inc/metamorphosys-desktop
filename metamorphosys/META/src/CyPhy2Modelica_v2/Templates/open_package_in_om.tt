@@ -1,0 +1,88 @@
+﻿/*
+Copyright (C) 2013-2015 MetaMorph Software, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+
+=======================
+This version of the META tools is a fork of an original version produced
+by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
+Their license statement:
+
+Copyright (C) 2011-2014 Vanderbilt University
+
+Developed with the sponsorship of the Defense Advanced Research Projects
+Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
+as defined in DFARS 252.227-7013.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+*/
+
+<#@ template language="C#" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ assembly name="$(SolutionDir)\..\..\..\trunk\externals\common-scripts\ISIS.GME.Common.dll" #>
+<#@ assembly name="$(SolutionDir)\..\..\..\trunk\generated\CyPhyML\models\ISIS.GME.Dsml.CyPhyML.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="ISIS.GME.Dsml.CyPhyML.Classes" #>
+<#@ output extension=".cmd" #>
+echo off
+REM ---------------------------------------------------
+REM Auto generated from open_package_in_om.tt
+REM ---------------------------------------------------
+
+if "%OPENMODELICAHOME%" == "" (
+    echo OPENMODELICAHOME evironment not found, OpenModelica is probably not installed.
+    pause
+) else if exist %OPENMODELICAHOME% (
+    REM OpenModelica found
+    set OPENMODELICALIBRARY=%OPENMODELICALIBRARY%;"%~dp0\Libraries";
+    echo %OPENMODELICALIBRARY%
+    %OPENMODELICAHOME%\bin\OMEdit.exe "%~dp0\CyPhy\package.mo"
+) else (
+    echo %OPENMODELICAHOME% not found, OpenModelica probably not installed.
+    pause
+)

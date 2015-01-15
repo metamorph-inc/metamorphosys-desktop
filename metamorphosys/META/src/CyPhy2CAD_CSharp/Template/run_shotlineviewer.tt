@@ -1,0 +1,102 @@
+﻿/*
+Copyright (C) 2013-2015 MetaMorph Software, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+
+=======================
+This version of the META tools is a fork of an original version produced
+by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
+Their license statement:
+
+Copyright (C) 2011-2014 Vanderbilt University
+
+Developed with the sponsorship of the Defense Advanced Research Projects
+Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
+as defined in DFARS 252.227-7013.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+*/
+
+<#@ template language="C#" #>
+<#@ output extension=".cmd" #>
+
+
+REM ****************************
+REM Ballistic Shotline Viewer
+REM ****************************
+@echo off
+
+set BALLISTIC_RESULT_FILE="BallisticConfig_sl_geo_res.json"
+set BALLISTIC_EXE_FILE_NAME=shotline-viewer.exe
+set BALLISTIC_VIEWER_EXE="%SWRI_BALLISTIC_EXTENSIONS%\ShotlineViewer\%BALLISTIC_EXE_FILE_NAME%"
+
+if not exist %BALLISTIC_RESULT_FILE% (
+set ERROR_CODE=2
+set ERROR_MSG="Error: Could not find BallisticConfig_sl_geo_res.json"
+goto :ERROR_SECTION
+)
+
+if exist %BALLISTIC_VIEWER_EXE% (
+goto  :BALLISTIC_EXE_FOUND
+) else (
+echo Your system is not properly configured to run %BALLISTIC_EXE_FILE_NAME%.
+set ERROR_CODE=2
+set ERROR_MSG="Error: Could not find shotline-viewer."
+)
+
+goto :ERROR_SECTION
+:BALLISTIC_EXE_FOUND
+echo Startings ShotlineViewer ...
+%BALLISTIC_VIEWER_EXE% -i %BALLISTIC_RESULT_FILE%
+
+if not ERRORLEVEL 0 (
+set ERROR_CODE=%ERRORLEVEL%
+goto :ERROR_SECTION
+)
+
+
+goto :EOF
+
+@echo on
+:ERROR_SECTION
+echo ""
+echo %ERROR_MSG%
+echo ""
+timeout /T 8 >nul
+exit /b %ERROR_CODE%

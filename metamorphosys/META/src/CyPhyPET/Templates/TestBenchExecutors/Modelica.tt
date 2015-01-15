@@ -1,0 +1,193 @@
+﻿/*
+Copyright (C) 2013-2015 MetaMorph Software, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+
+=======================
+This version of the META tools is a fork of an original version produced
+by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
+Their license statement:
+
+Copyright (C) 2011-2014 Vanderbilt University
+
+Developed with the sponsorship of the Defense Advanced Research Projects
+Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
+as defined in DFARS 252.227-7013.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+*/
+
+<#@ template language="C#" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ assembly name="$(SolutionDir)\..\..\..\trunk\externals\common-scripts\ISIS.GME.Common.dll" #>
+<#@ assembly name="$(SolutionDir)\..\..\..\trunk\generated\CyPhyML\models\ISIS.GME.Dsml.CyPhyML.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="ISIS.GME.Dsml.CyPhyML.Classes" #> 
+<#@ output extension=".py" #>
+ 
+ 
+# ===========================================================================
+# Auto generated from Modelica.tt
+# ===========================================================================
+"""
+Functions in this file are always called from the TestBench directory.
+"""
+import os
+import json
+import logging
+import subprocess
+import py_modelica as pym
+# Throw this exception for "expected" errors.
+from driver_runner import TestBenchExecutionError
+
+# Reference to instantiated Modelica tool from py_modelica
+MODELICA_TOOL = None
+
+
+def initial_run():
+    """
+    Instantiates a new tool for simulation,
+    compiles and makes one default simulation.
+    """
+
+    log = logging.getLogger()
+    tb_dir = os.getcwd()
+    # Read the configuration file to get which Modelica tool to use.
+    config_file = os.path.abspath(os.path.join('..', 'test_bench_model_config.json'))
+    with open(config_file, 'r') as f_in:
+        tool_name = json.load(f_in)['tool_name']
+    log.info('Loaded {0}, defined tool : {1}'.format(config_file, tool_name))
+
+    os.chdir('CyPhy')
+    # Read in the model_config to be passed to the tool.
+    with open('model_config.json', 'r') as f_in:
+        model_config = json.load(f_in)
+    result_mat_file = model_config['result_file']
+    del model_config['result_file']
+
+    # Instantiate Modelica tool.
+    global MODELICA_TOOL
+    try:
+        if tool_name == 'OpenModelica':
+            MODELICA_TOOL = pym.OpenModelica(model_config)
+            MODELICA_TOOL.short_name = result_mat_file
+        elif tool_name == 'Dymola':
+            MODELICA_TOOL = pym.Dymola(model_config)
+            MODELICA_TOOL.result_mat = '{0}.mat'.format(result_mat_file)
+        elif tool_name == 'JModelica':
+            MODELICA_TOOL = pym.JModelica(model_config)
+    except pym.ModelicaError as err:
+        raise TestBenchExecutionError(err.message)
+
+    # Compile the model.
+    try:
+        MODELICA_TOOL.compile_model()
+    except pym.ModelicaError as err:
+        raise TestBenchExecutionError(err.message)
+
+
+    # Read in parameters.
+    tb_parameters = pym.get_parameters_from_report_json(os.path.join('..', 'testbench_manifest.json'))
+    log.info('TestBench Parameters : {0}'.format(tb_parameters))
+    if tb_parameters:
+        MODELICA_TOOL.change_parameter(tb_parameters)
+
+    os.chdir(tb_dir)
+    # Execute the model once.
+    execute()
+
+
+def update_parameters(parameters):
+    """
+    Uses the passed parameters rather than reading from the testbench_manifest.json. 
+    The reason is that a PCC-driver might have special PCC-Properties.
+    """
+    tb_dir = os.getcwd()
+    if parameters:
+        MODELICA_TOOL.change_parameter(parameters)
+    os.chdir(tb_dir)
+
+
+def execute():
+    """
+    Reads in parameters from testbench_manifest.json and simulates the
+    test bench. When done, writes metrics to testbench_manifest.json.
+    """
+    tb_dir = os.getcwd()
+    log = logging.getLogger()
+    os.chdir('CyPhy')
+    log.debug('Changed dir to {0}'.format(os.getcwd()))
+
+    # Simulate model
+    try:
+        MODELICA_TOOL.simulate_model()
+    except pym.ModelicaError as err:
+        raise TestBenchExecutionError(err.message)
+
+    # Run PostProcessing scripts
+    pp_failed = os.path.abspath(os.path.join(tb_dir, '..', '_POST_PROCESSING_FAILED.txt'))
+    if os.path.isfile(pp_failed):
+        log.info('Found {0} from previous run, deleting it...'.format(pp_failed))
+        os.remove(pp_failed)
+    exception = None
+    try:
+        t_post = pym.run_post_scripts(MODELICA_TOOL.result_mat, log)
+    except subprocess.CalledProcessError as err:
+        exception = err
+    finally:
+        pp_output = ''
+        if exception:
+            pp_output = 'Post-script execution returned with error. : {0}'.format(exception.returncode)
+        if os.path.isfile(pp_failed):
+            with open(pp_failed, 'r') as f_in:
+                pp_output = '{0}\n POST_PROCESSING_FAILED :\n {1}'.format(pp_output, f_in.read())
+        if pp_output:
+            raise TestBenchExecutionError(pp_output)
+    ## TODO: What are the rules of limit checks?
+    os.chdir(tb_dir)
+    return None

@@ -1,0 +1,152 @@
+﻿/*
+Copyright (C) 2013-2015 MetaMorph Software, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+
+=======================
+This version of the META tools is a fork of an original version produced
+by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
+Their license statement:
+
+Copyright (C) 2011-2014 Vanderbilt University
+
+Developed with the sponsorship of the Defense Advanced Research Projects
+Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
+as defined in DFARS 252.227-7013.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+*/
+
+<#@ template language="C#" #>
+<#@ output extension=".cmd" #>
+
+REM	The following system environment variable must be set:
+REM	    PROE_ISIS_EXTENSIONS	// typically set to C:\Program Files\META\Proe ISIS Extensions
+REM
+REM	See "C:\Program Files\META\Proe ISIS Extensions\0Readme - CreateAssembly.txt" for the complete setup instructions.
+
+set WORKING_DIR="."
+set ERROR_CODE=0
+
+set ERROR_MSG=""
+
+FOR /F "skip=2 tokens=2,*" %%A IN ('%SystemRoot%\SysWoW64\REG.exe query "HKLM\software\META" /v "META_PATH"') DO set MetaPath=%%B
+
+if exist TestBench_PreProcess.cmd (
+cmd /c TestBench_PreProcess.cmd
+)
+
+set ERROR_CODE=%ERRORLEVEL%
+if %ERRORLEVEL% NEQ 0 (
+set ERROR_MSG="Error from runCADJob.bat: Encountered error during execution of TestBench_PreProcess.cmd, error level is %ERROR_CODE%"
+goto :ERROR_SECTION
+)
+
+"%MetaPath%\bin\Python27\Scripts\Python.exe" "%MetaPath%\bin\CAD\CADJobDriver.py" -assembler <#=Assembler#> -mesher <#=Mesher#> -analyzer <#=Analyzer#> <# if (Mode!=null) { #>-mode <#=Mode#> <#}#>
+
+<# if (CallDomainTool!=null) { #>
+
+<#=CallDomainTool#>
+
+<# } #>
+
+
+<# if (Automation) { #>
+@echo off
+
+
+Rem ****************************
+REM Python Metric Update Script
+Rem ****************************
+
+set RESULT_XML_FILE=<#=ComputedMetricsPath#>
+set PY_SCRIPT_NAME=UpdateReportJson_CAD.py
+set PY_SCRIPT="%MetaPath%bin\CAD\%PY_SCRIPT_NAME%"
+set PYTHONPATH=%PYTHONPATH%;%MetaPath%
+
+if exist %PY_SCRIPT% goto  :PY_FOUND
+@echo off
+echo		Error: Could not find %PY_SCRIPT_NAME%.
+echo		Your system is not properly configured to run %PY_SCRIPT_NAME%.
+echo		Please see For instructions on how to configure your system, please see "0Readme - CreateAssembly.txt"
+echo		which is typically located at "C:\Program Files\META\Proe ISIS Extensions"
+set ERROR_CODE=2
+set ERROR_MSG="Error from runCADJob.bat: Could not find UpdateReportJson_CAD.py."
+goto :ERROR_SECTION
+
+:PY_FOUND
+"%MetaPath%\bin\Python27\Scripts\Python.exe" %PY_SCRIPT% -m %RESULT_XML_FILE%
+
+set ERROR_CODE=%ERRORLEVEL%
+if %ERRORLEVEL% NEQ 0 (
+set ERROR_MSG="Error from runCADJob.bat: %PY_SCRIPT_NAME% encountered error during execution, error level is %ERROR_CODE%"
+goto :ERROR_SECTION
+)
+
+if exist TestBench_PostProcess.cmd (
+cmd /c TestBench_PostProcess.cmd
+)
+
+set ERROR_CODE=%ERRORLEVEL%
+if %ERRORLEVEL% NEQ 0 (
+set ERROR_MSG="Error from runCADJob.bat: Encountered error during execution of TestBench_PostProcess.cmd, error level is %ERROR_CODE%"
+goto :ERROR_SECTION
+)
+<# } #>
+
+exit 0
+
+:ERROR_SECTION
+echo %ERROR_MSG% >>_FAILED.txt
+echo ""
+echo "See Error Log: _FAILED.txt"
+ping -n 8 127.0.0.1 > nul
+exit /b %ERROR_CODE%
+
+<#+  
+public string XMLFileName {get;set;}
+public bool Automation {get;set;}
+public string ComputedMetricsPath = "ComputedValues.xml";
+public string AdditionalOptions = "";
+public string Mesher { get; set; }
+public string Analyzer { get; set; }
+public string Assembler { get; set; }
+public string Mode { get; set; }
+public string CallDomainTool { get; set; }
+#>

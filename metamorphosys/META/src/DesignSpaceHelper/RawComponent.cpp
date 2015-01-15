@@ -1,0 +1,381 @@
+/*
+Copyright (C) 2013-2015 MetaMorph Software, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+
+=======================
+This version of the META tools is a fork of an original version produced
+by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
+Their license statement:
+
+Copyright (C) 2011-2014 Vanderbilt University
+
+Developed with the sponsorship of the Defense Advanced Research Projects
+Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
+as defined in DFARS 252.227-7013.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this data, including any software or models in source or binary
+form, as well as any drawings, specifications, and documentation
+(collectively "the Data"), to deal in the Data without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Data, and to
+permit persons to whom the Data is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Data.
+
+THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
+*/
+
+///////////////////////////////////////////////////////////////////////////
+// RawComponent.cpp, the main RAW COM component implementation file
+// This is the file (along with its header RawComponent.h)
+// that the component implementor is expected to modify in the first place
+//
+///////////////////////////////////////////////////////////////////////////
+#include "stdafx.h"
+
+#include "ComHelp.h"
+#include "GMECOM.h"
+#include "ComponentConfig.h"
+#include "UdmConfig.h"
+#include "RawComponent.h"
+
+// Console
+#include "UdmConsole.h"
+
+// Udm includes
+#include "UdmBase.h"
+#include "Uml.h"
+#include "UmlExt.h"
+
+#ifdef _USE_DOM
+	#include "UdmDOM.h"
+#endif
+
+#include "UdmGme.h"
+#include "UdmStatic.h"
+#include "UdmUtil.h"
+
+#include "UdmApp.h"
+#include <time.h>
+
+__declspec(noreturn) void ThrowComError(HRESULT hr, LPOLESTR err);
+
+// Global config object
+_config config;
+
+//ATL::CComPtr<IGMEOLEApp>GMEConsole::Console::gmeoleapp = NULL;
+
+// this method is called after all the generic initialization is done
+// this should be empty, unless application-specific initialization is needed
+STDMETHODIMP RawComponent::Initialize(struct IMgaProject *) {
+	return S_OK;
+}
+
+// this is the obsolete component interface
+// this present implementation either tries to call InvokeEx, or returns an error;
+STDMETHODIMP RawComponent::Invoke(IMgaProject* gme, IMgaFCOs *models, long param) {
+#ifdef SUPPORT_OLD_INVOKE
+	CComPtr<IMgaFCO> focus;
+	CComVariant parval = param;
+	return InvokeEx(gme, focus, selected, parvar);
+#else
+	if(interactive) {
+		AfxMessageBox("This component does not support the obsolete invoke mechanism");
+	}
+	return E_MGA_NOT_SUPPORTED;
+#endif
+}
+
+#ifdef _DYNAMIC_META
+			void dummy(void) {; } // Dummy function for UDM meta initialization
+#endif
+
+STDMETHODIMP RawComponent::InvokeEx(IMgaProject *project,  IMgaFCO *currentobj,
+							IMgaFCOs *selectedobjs,  long param)
+{
+	if (param == GME_SILENT_MODE) {
+		interactive = false;
+	}
+	return Main(project, currentobj, true);
+}
+
+HRESULT RawComponent::Main(IMgaProject *project,  IMgaFCO *currentobj, bool applyConstraintsInNoninteractive)
+{
+
+	CComPtr<IMgaProject>ccpProject(project);
+	long prefmask;
+	ccpProject->get_Preferences(&prefmask);
+	// KMS magic number MGAPREF_NO_NESTED_TX
+#define MGAPREF_NO_NESTED_TX 0x80
+	prefmask |= MGAPREF_NO_NESTED_TX; 
+	ccpProject->put_Preferences(prefmask);
+	std::shared_ptr<CComPtr<IMgaProject>> mgaPrefRestore(std::addressof(ccpProject), [prefmask](ATL::CComPtr<IMgaProject>* p){ (*p)->put_Preferences(prefmask & (~MGAPREF_NO_NESTED_TX));  } );
+	long status = 0;
+	ccpProject->get_ProjectStatus(&status);
+
+//	if ( (project != NULL))
+//	{		
+//		CComBSTR bstrName("GME.Application");
+//		CComPtr<IMgaClient> pClient;
+//		HRESULT hr = project->GetClientByName(bstrName, &pClient);
+//		if (SUCCEEDED(hr) && pClient) 
+//		{
+//			CComPtr<IDispatch> pDispatch;
+//			hr = pClient->get_OLEServer(&pDispatch);
+//			if (SUCCEEDED(hr) && pDispatch) 
+//			{
+//				hr = pDispatch.QueryInterface(&CUdmApp::gme);
+//				if (FAILED(hr)) 
+//				{
+//					CUdmApp::gme = NULL;
+//				}
+//			}
+//		}
+////		CUdmApp::gme->put_ConsoleContents(BSTR(""));
+//	}
+
+	CComPtr<IMgaComponentEx> cyPhyAddOn;
+	try
+	{
+		// Setting up the console
+		  GMEConsole::Console::setupConsole(ccpProject);
+		  GMEConsole::Console::clear();
+		  char currdate[128];
+		  char currtime[128];
+		  _strdate( currdate);
+		  _strtime( currtime );
+		  std::string cd(currdate);
+		  std::string ct(currtime);
+		  GMEConsole::Console::Info::writeLine("== "+cd+" "+ct+"> Call Cyphy DesignSpace Helper Tool: ==");
+
+		// Finding CyPhyAddOn among the addons
+		CComPtr<IMgaComponents> comps;
+		COMTHROW(project->get_AddOnComponents(&comps));
+		MGACOLL_ITERATE(IMgaComponent, comps) 
+		{
+			CComBSTR name;
+			COMTHROW(MGACOLL_ITER->get_ComponentName(&name));
+			if (name == L"CyPhyAddOn") 
+			{
+				cyPhyAddOn = CComQIPtr<IMgaComponentEx>(MGACOLL_ITER); 
+			}
+		} MGACOLL_ITERATE_END;
+		if (cyPhyAddOn)
+			COMTHROW(cyPhyAddOn->put_ComponentParameter(_bstr_t(L"turnedon"), CComVariant(false)));
+
+
+	//	  if(interactive)
+	  {
+
+		CComBSTR projname;
+		CComBSTR focusname = "<nothing>";
+		CComPtr<IMgaTerritory> terr;
+		COMTHROW(ccpProject->CreateTerritory(NULL, &terr));
+
+		CComPtr<IMgaProject> mgaProject = project;
+		CComBSTR    connString;
+		COMTHROW(mgaProject->get_ProjectConnStr(&connString));
+
+		CString mgaFilePath = connString;
+		int e = mgaFilePath.ReverseFind('\\');
+	//	if(e != -1)
+		{	
+			CUdmApp::mgaPath = mgaFilePath.Mid(4, mgaFilePath.GetLength());
+		}
+
+		// Setting up Udm
+		using namespace META_NAMESPACE;
+
+		// Loading the project
+		UdmGme::GmeDataNetwork dngBackend(META_NAMESPACE::diagram);
+
+		try
+		{
+			CComPtr<IMgaTerritory> terr;
+			if (!(status & 8))
+				COMTHROW(ccpProject->BeginTransactionInNewTerr(TRANSACTION_NON_NESTED, &terr));
+			// Opening backend
+			dngBackend.OpenExisting(ccpProject, Udm::CHANGES_LOST_DEFAULT, true);
+
+			CComPtr<IMgaFCO> ccpFocus(currentobj);
+			Udm::Object currentObject;
+			if(ccpFocus)
+			{
+				currentObject=dngBackend.Gme2Udm(ccpFocus);
+			}
+
+			// Calling the main entry point
+			CUdmApp::UdmMain(&dngBackend,currentObject, interactive ? 0 : 128, applyConstraintsInNoninteractive);
+			// Closing backend
+			dngBackend.CloseWithUpdate();
+			//if(!CUdmApp::isvalid)
+			//{
+			//	if(MessageBox(0,"The SCAMLA model is not validated. Please see details in the console window below. \n\n Do you want to run constraint manager to check other constraints?\n","SCAMLA Model Error",MB_OKCANCEL)==IDOK)
+			//		CUdmApp::gme->CheckAllConstraints();
+			//}
+			//else
+			//	CUdmApp::gme->CheckAllConstraints();
+
+	//	}
+
+		//try 
+		//{				
+		//	CComPtr<IMgaProject> spProject = project;
+		//	//CComPtr<IMgaFCO> spContextFCO = currentobj;
+		//	//CComPtr<IMgaFCOs> spSelectedFCOs = selectedobjs;
+		//	//long lParam = param;
+
+		//
+		//	CComBSTR bstrCompName( L"MGA.AddOn.ConstraintManager" );
+
+		//	CComPtr<IMgaComponentEx> grComponent;
+		//	COMTHROW( grComponent.CoCreateInstance( bstrCompName ) ) ;
+		//	COMTHROW( grComponent->put_InteractiveMode( VARIANT_TRUE ) );
+		//	COMTHROW( grComponent->Enable( VARIANT_TRUE ) );
+		//	COMTHROW( grComponent->Initialize( spProject ) );
+		//	STDMETHODIMP ret = grComponent->ObjectsInvokeEx( spProject,  NULL, NULL, NULL);
+
+		//	if(ret != S_OK)
+		//	{				
+		//		return ret;
+		//	}				
+		//}
+		//catch(...) 
+		//{ 
+		//	
+		//		AfxMessageBox("Exception");
+		//	
+		//}
+			//CUdmApp::gme = NULL;
+
+			//if(CUdmApp::gme!=0)
+			//{
+			//	CUdmApp::gme.Release();
+			//	CUdmApp::gme=0;
+			//}
+			if (!(status & 8))
+				COMTHROW(ccpProject->CommitTransaction());
+			terr = 0;
+			if (GMEConsole::Console::gmeoleapp)
+			{
+				CComPtr<IGMEOLEIt> model;
+				if (SUCCEEDED(GMEConsole::Console::gmeoleapp->get_OleIt(&model)))
+				{
+					model->SetCurrentAspect(_bstr_t(L"DesignSpaceAspect"));
+				}
+			}
+		}
+		catch(udm_exception &exc)
+		{
+#ifdef _META_ACCESS_MEMORY
+			dnCacheBackend.CloseNoUpdate();
+#endif
+			dngBackend.CloseNoUpdate();
+			if (!(status & 8))
+				COMTHROW(ccpProject->AbortTransaction());
+			throw;
+		}
+	  }
+	}
+	catch(udm_exception &exc)
+	{
+		GMEConsole::Console::Error::writeLine(exc.what());
+		GMEConsole::Console::freeConsole();
+		if (cyPhyAddOn)
+			cyPhyAddOn->put_ComponentParameter(_bstr_t(L"turnedon"), CComVariant(true));
+		ThrowComError(E_FAIL, _bstr_t(exc.what()));
+	}
+	catch (_com_error&)
+	{
+		if (!(status & 8))
+			ccpProject->AbortTransaction();
+		GMEConsole::Console::freeConsole();
+		if (cyPhyAddOn)
+			cyPhyAddOn->put_ComponentParameter(_bstr_t(L"turnedon"), CComVariant(true));
+		throw;
+	}
+	// TODO: catch HRESULT
+	catch(...)
+	{
+		if (!(status & 8))
+			ccpProject->AbortTransaction();
+		GMEConsole::Console::freeConsole();
+		if (cyPhyAddOn)
+			cyPhyAddOn->put_ComponentParameter(_bstr_t(L"turnedon"), CComVariant(true));
+		ThrowComError(E_FAIL, _bstr_t("An unexpected error has occured during the interpretation process."));
+	}
+	GMEConsole::Console::Info::writeLine("==== End ====");
+	GMEConsole::Console::freeConsole();
+	if (cyPhyAddOn)
+		cyPhyAddOn->put_ComponentParameter(_bstr_t(L"turnedon"), CComVariant(true));
+	return S_OK;
+}
+
+// GME currently does not use this function
+// you only need to implement it if other invokation mechanisms are used
+STDMETHODIMP RawComponent::ObjectsInvokeEx( IMgaProject *project,  IMgaObject *currentobj,  IMgaObjects *selectedobjs,  long param) {
+	if(interactive) {
+		AfxMessageBox("Tho ObjectsInvoke method is not implemented");
+	}
+	return E_MGA_NOT_SUPPORTED;
+}
+
+
+// implement application specific parameter-mechanism in these functions:
+STDMETHODIMP RawComponent::get_ComponentParameter(BSTR name, VARIANT *pVal) {
+	return S_OK;
+}
+
+STDMETHODIMP RawComponent::put_ComponentParameter(BSTR name, VARIANT newVal) {
+	return S_OK;
+}
+
+
+#ifdef GME_ADDON
+
+// these two functions are the main
+STDMETHODIMP RawComponent::GlobalEvent(globalevent_enum event) {
+	if(event == GLOBALEVENT_UNDO) {
+		AfxMessageBox("UNDO!!");
+	}
+	return S_OK;
+}
+
+STDMETHODIMP RawComponent::ObjectEvent(IMgaObject * obj, unsigned long eventmask, VARIANT v) {
+	if(eventmask & OBJEVENT_CREATED) {
+		CComBSTR objID;
+		COMTHROW(obj->get_ID(&objID));
+		AfxMessageBox( "Object created! ObjID: " + CString(objID));
+	}
+	return S_OK;
+}
+
+#endif
