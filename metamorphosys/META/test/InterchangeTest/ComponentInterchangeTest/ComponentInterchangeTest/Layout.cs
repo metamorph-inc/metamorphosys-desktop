@@ -169,7 +169,7 @@ namespace ComponentInterchangeTest
                     }
                 }
 
-                foreach (var fco in fcos.Where(x => x.Meta.Name != "ReferenceCoordinateSystem"))
+                foreach (var fco in fcos)
                 {
                     String path = String.Format("{0}/{1}", fco.ParentModel.Name, fco.Name);
                     if (d_Layouts.ContainsKey(path))

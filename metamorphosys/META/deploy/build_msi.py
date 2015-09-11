@@ -90,17 +90,14 @@ def build_msi():
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\meta_nrmm\meta_nrmm",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica\py_modelica",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica_exporter\py_modelica_exporter",)
-    gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\cad_library\cad_library",)
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\DesignDataPackage\lib\python", "DesignDataPackage_python.wxi", "DesignDataPackage_python")
     gen_dir_wxi.main(r"CAD_Installs\Proe ISIS Extensions", "Proe_ISIS_Extensions_x64.wxi", "Proe_ISIS_Extensions_x64", diskId='4') # do not call gen_dir_from_vc, it would exclude CADCreoCreateAssembly.exe
     gen_dir_wxi.gen_dir_from_vc(r"..\WebGME",)
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\CyPhyML\icons",)
     gen_dir_wxi.gen_dir_from_vc(r"..\models\MassSpringDamper",)
-    gen_dir_wxi.gen_dir_from_vc(r"..\models\Validation",)
     gen_dir_wxi.gen_dir_from_vc(r"..\bin", diskId='3')
     gen_dir_wxi.gen_dir_from_vc(r"..\ModelicaWrapperTemplates",)
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\chipfit_display",)
-    gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\layout_json",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\TestBenchExecutor",)
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\SpiceVisualizer")
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\spice_viewer")
@@ -116,7 +113,7 @@ def build_msi():
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\meta_nrmm\meta_nrmm",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica\py_modelica",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica_exporter\py_modelica_exporter",)
-    gen_dir_wxi.gen_dir_from_vc(r"..\src\CADAssembler\Python", id="CADPython")
+    gen_dir_wxi.gen_dir_from_vc(r"..\src\CADAssembler\Python", "CADPython")
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\DesignDataPackage\lib\python", "DesignDataPackage_python.wxi", "DesignDataPackage_python")
 
     def get_svnversion():
@@ -214,7 +211,7 @@ def build_msi():
     defines.append(('VERSIONSTRCYPHYML', cyphy_versions[1]))
     
     
-    version = '14.12.'
+    version = '14.10.'
     if 'M' in svnversion:
         ### METAMORPH HACK: SVN calls are bad. This is just checking for local modifications.
         #if 'JENKINS_URL' in os.environ:
@@ -255,7 +252,7 @@ def build_msi():
         import datetime
         starttime = datetime.datetime.now()
         system(['light', '-sw1055', '-sice:ICE82', '-sice:ICE57', '-sice:ICE60', '-sice:ICE69', '-ext', 'WixNetFxExtension', '-ext', 'WixUIExtension', '-ext', 'WixUtilExtension',
-            # '-cc', os.path.join(this_dir, 'cab_cache'), '-reusecab', # we were getting errors during installation relating to corrupted cab files => disable cab cache
+            '-cc', os.path.join(this_dir, 'cab_cache'), '-reusecab',
             '-o', os.path.splitext(source_wxs)[0] + ".msi"] + [ get_wixobj(file) for file in sources ])
         print "elapsed time: %d seconds" % (datetime.datetime.now() - starttime).seconds
     else:

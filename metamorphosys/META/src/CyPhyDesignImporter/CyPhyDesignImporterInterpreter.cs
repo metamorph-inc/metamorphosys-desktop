@@ -76,11 +76,6 @@ namespace CyPhyDesignImporter
                 ofd.CheckFileExists = true;
                 ofd.Multiselect = true;
                 ofd.Filter = "AVM design files and packages (*.adm;*.adp)|*.adm;*.adp|All files (*.*)|*.*";
-                ofd.RestoreDirectory = true;
-                if (project.ProjectConnStr.StartsWith("MGA=", true, System.Globalization.CultureInfo.InvariantCulture))
-                {
-                    ofd.InitialDirectory = Path.GetDirectoryName(project.ProjectConnStr.Substring("MGA=".Length));
-                }
 
                 dr = ofd.ShowDialog();
                 if (dr == DialogResult.OK)

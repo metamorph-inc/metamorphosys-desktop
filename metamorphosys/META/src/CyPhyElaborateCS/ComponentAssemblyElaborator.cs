@@ -100,20 +100,7 @@
                     this.Traceability.Add(obj.ID, obj.ID);
                 }
 
-                if (obj is MgaModel)
-                {
-                    var model = obj as MgaModel;
-                    if (model.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
-                    {
-                        var managedGuid = model.StrAttrByName["ManagedGUID"];
-                        if (string.IsNullOrEmpty(managedGuid) == false)
-                        {
-                            // copiedObj.StrAttrByName["ManagedGUID"] = managedGuid;
-                            // model.RegistryValue[RegistryNameInstanceGuidChain] = model.RegistryValue[RegistryNameInstanceGuidChain] + managedGuid;
-                        }
-                    }
-                }
-                else if (obj is MgaReference)
+                if (obj is MgaReference)
                 {
                     var reference = obj as MgaReference;
                     if (reference.Referred == null)
@@ -151,7 +138,7 @@
                             }
                         }
 
-                        var copied = this.SwitchReferenceToModel(parent as MgaModel, reference, createInstance: true);
+                        var copied = this.SwitchReferenceToModel(parent as MgaModel, reference, true);
 
                         // delete reference
                         reference.DestroyObject();
@@ -209,33 +196,20 @@
                 }
             }
 
-            // FIXME: it is possible for a parentWithDupComponentGuid to contain child CAs that need to be deduped also
-            string lastPath = null;
             foreach (var ent in parentsWithDupComponentGuids)
             {
-                if (lastPath != null)
-                {
-                    if (ent.Key.StartsWith(lastPath))
-                    {
-                        continue;
-                    }
-                }
-                lastPath = ent.Key;
                 var model = ent.Value;
                 allObjects = model.GetDescendantFCOs(filter);
-
                 var parentGuid = model.ParentModel != null ? model.ParentModel.RegistryValue[RegistryNameInstanceGuidChain] : null;
                 // parent model should contain the concatenated InstanceGUID
                 string guidConcat = (parentGuid ?? "") + new Guid(model.GetGuidDisp()).ToString("D");
+
+                model.RegistryValue[RegistryNameInstanceGuidChain] = guidConcat;
                 foreach (MgaFCO obj in allObjects)
                 {
                     if (obj.MetaBase.MetaRef == this.Factory.ComponentMeta)
                     {
                         obj.SetStrAttrByNameDisp("InstanceGUID", guidConcat + obj.GetStrAttrByNameDisp("InstanceGUID"));
-                    }
-                    if (obj.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
-                    {
-                        obj.RegistryValue[RegistryNameInstanceGuidChain] = guidConcat;
                     }
                 }
             }

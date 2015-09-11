@@ -461,8 +461,7 @@ namespace ModelicaImporter
             BackgroundWorker worker = sender as BackgroundWorker;
 
             var metaPythonExePath = META.VersionInfo.PythonVEnvExe;
-            var arguments = "-m py_modelica_exporter --standard --json";
-
+            var arguments = string.Format("-m py_modelica_exporter --tree {0} --json", "Modelica"); // get the MSL by default
             var jsonToImport = "ModelicaPackages.tree.json";
 
             if (externalPackagePaths.Count != 0)

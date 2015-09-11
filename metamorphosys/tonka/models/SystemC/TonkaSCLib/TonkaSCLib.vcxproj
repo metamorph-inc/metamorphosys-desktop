@@ -37,10 +37,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.0\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.1\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.0\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.1\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -48,7 +48,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>SC_INCLUDE_FX;USB_SIMULATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;SC_INCLUDE_FX;SC_INCLUDE_DYNAMIC_PROCESSES;USB_SIMULATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -64,7 +64,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <AdditionalOptions>/vmg %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>SC_INCLUDE_FX;USB_SIMULATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;SC_INCLUDE_FX;SC_INCLUDE_DYNAMIC_PROCESSES;USB_SIMULATION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4244;4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
@@ -75,8 +75,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\systemc-2.3.0\msvc100\systemc-2.3.0.vcxproj">
-      <Project>{86df4b8c-cf94-4ea8-b529-78997f0f30a7}</Project>
+    <ProjectReference Include="..\systemc-2.3.1\msvc100\systemc-2.3.1.vcxproj">
+      <Project>{4cfa11a4-1195-404d-bac4-d7fd6f03c0a9}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +86,7 @@
     <ClCompile Include="..\ArduinoUART\ArduinoUART.cpp" />
     <ClCompile Include="..\Arduino\Arduino.cpp" />
     <ClCompile Include="..\CCLED\ccled.cpp" />
+    <ClCompile Include="..\COMPASS\compass.cpp" />
     <ClCompile Include="..\FT232R\usb_core.cpp" />
     <ClCompile Include="..\FT232R\usb_crc16.cpp" />
     <ClCompile Include="..\FT232R\usb_crc5.cpp" />
@@ -105,6 +106,11 @@
     <ClCompile Include="..\FT232R\usb_rx_phy.cpp" />
     <ClCompile Include="..\FT232R\usb_sie.cpp" />
     <ClCompile Include="..\FT232R\usb_tx_phy.cpp" />
+    <ClCompile Include="..\GPBridge\control.cpp" />
+    <ClCompile Include="..\GPBridge\module_gpio.cpp" />
+    <ClCompile Include="..\GPBridge\module_i2c.cpp" />
+    <ClCompile Include="..\GPBridge\module_uart.cpp" />
+    <ClCompile Include="..\GPBridge\compat.cpp" />
     <ClCompile Include="..\GPIO\gpio.cpp" />
     <ClCompile Include="..\NJL5501R\njl5501r.cpp" />
     <ClCompile Include="..\POR\por.cpp" />
@@ -128,6 +134,7 @@
     <ClInclude Include="..\ArduinoUART\ArduinoUART.h" />
     <ClInclude Include="..\Arduino\Arduino.h" />
     <ClInclude Include="..\CCLED\ccled.h" />
+    <ClInclude Include="..\COMPASS\compass.h" />
     <ClInclude Include="..\FT232R\ft232r.h" />
     <ClInclude Include="..\FT232R\usb.h" />
     <ClInclude Include="..\FT232R\usb_core.h" />
@@ -152,6 +159,24 @@
     <ClInclude Include="..\FT232R\usb_rx_phy.h" />
     <ClInclude Include="..\FT232R\usb_sie.h" />
     <ClInclude Include="..\FT232R\usb_tx_phy.h" />
+    <ClInclude Include="..\GPBridge\control.h" />
+    <ClInclude Include="..\GPBridge\gpio_functions.h" />
+    <ClInclude Include="..\GPBridge\gpio_handler.h" />
+    <ClInclude Include="..\GPBridge\greybus_manifest.h" />
+    <ClInclude Include="..\GPBridge\greybus_protocols.h" />
+    <ClInclude Include="..\GPBridge\i2c-linux.h" />
+    <ClInclude Include="..\GPBridge\i2c_controller.h" />
+    <ClInclude Include="..\GPBridge\i2c_functions.h" />
+    <ClInclude Include="..\GPBridge\interconnect.h" />
+    <ClInclude Include="..\GPBridge\GPBridge.h" />
+    <ClInclude Include="..\GPBridge\manifest.h" />
+    <ClInclude Include="..\GPBridge\module.h" />
+    <ClInclude Include="..\GPBridge\module_gpio.h" />
+    <ClInclude Include="..\GPBridge\module_i2c.h" />
+    <ClInclude Include="..\GPBridge\module_uart.h" />
+    <ClInclude Include="..\GPBridge\uart_functions.h" />
+    <ClInclude Include="..\GPBridge\uart_handler.h" />
+    <ClInclude Include="..\GPBridge\compat.h" />
     <ClInclude Include="..\GPIO\gpio.h" />
     <ClInclude Include="..\NJL5501R\njl5501r.h" />
     <ClInclude Include="..\POR\por.h" />

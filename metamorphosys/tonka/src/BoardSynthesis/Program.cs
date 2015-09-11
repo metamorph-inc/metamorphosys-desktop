@@ -46,29 +46,18 @@ namespace BoardSynthesis
             // need schematic input file / layout json input file name / output board file name as command line args
             if (args.Length < 2)
             {
-                Console.WriteLine("usage: BoardSynthesis <schema.sch> <layout.json> [-r] [-v]");
+                Console.WriteLine("usage: BoardSynthesis <schema.sch> <layout.json> [-r]");
                 Console.WriteLine("     Input: <schema.sch>, <layout.json>;  Output: <schema.brd>");
                 Console.WriteLine("[-r] Input: <schema.sch> (implicit schema.brd), <layout.json>; Output: <layout.json>");
-                Console.WriteLine("[-v] Show verbose debug messages.");
                 return;
             }
             var schematicFile = args[0];
             var layoutFile = args[1];
             var boardFile = schematicFile.Replace(".sch", ".brd");
-            bool reverseBoardSynthesis = false;   // default to forward board synthesis
-            bool showVerboseMessages = false;   // default to hiding verbose messages
-
-            // Check for command-line argument switches
-            for (int argIndex = 1; argIndex < args.Length; argIndex++)
+            var programMode = 0;   // forward
+            if (args.Length == 3 && args[2].CompareTo("-r") == 0)
             {
-                if (args[argIndex].CompareTo("-r") == 0)
-                {
-                    reverseBoardSynthesis = true;
-                }
-                if (args[argIndex].CompareTo("-v") == 0)
-                {
-                    showVerboseMessages = true;
-                }
+                programMode = 1;
             }
             #endregion
 
@@ -83,7 +72,6 @@ namespace BoardSynthesis
             catch (Exception e)
             {
                 Console.WriteLine("ERROR Reading Schematic XML: " + e.Message);
-                // Console.WriteLine("ERROR Reading Schematic XML: " + e.Message +" " + e.StackTrace + " " + (e.InnerException != null ? e.InnerException.ToString() : ""));
                 System.Environment.Exit(-1);
             }
             #endregion
@@ -98,8 +86,13 @@ namespace BoardSynthesis
 
             try
             {
-                string sjson = File.ReadAllText(layoutFile, Encoding.UTF8);
-                boardLayout = JsonConvert.DeserializeObject<Layout>(sjson);
+                string sjson = "{}";
+                using (StreamReader reader = new StreamReader(layoutFile))
+                {
+                    sjson = reader.ReadToEnd();
+                    boardLayout = JsonConvert.DeserializeObject<Layout>(sjson);
+                    reader.Close();
+                }
                 foreach (var pkg in boardLayout.packages)
                 {
                     if ((pkg.name != null) && (pkg.ComponentID != null))    // Avoid using a null keys.  See MOT-611.
@@ -111,14 +104,6 @@ namespace BoardSynthesis
                 if (boardLayout.signals == null) boardLayout.signals = new List<Signal>();
                 foreach (var sig in boardLayout.signals)
                 {
-                    if (showVerboseMessages)
-                    {
-                        Console.WriteLine("Found signal {0} in boardLayout:", sig.name);
-                        foreach (var pin in sig.pins)
-                        {
-                            Console.WriteLine("   + pin {0} gate {1} of {2}.", pin.name, pin.gate, pin.package);
-                        }
-                    }
                     signalMap[sig.name] = sig;
                 }
             }
@@ -165,10 +150,9 @@ namespace BoardSynthesis
             #endregion
 
             #region Layout2Board
-            if (!reverseBoardSynthesis)   // forward mode: layout --> board
+            if (programMode == 0)   // forward mode: layout --> board
             {
                 // Create Board File
-                Console.WriteLine("Board synthesis forward mode; layout --> board.");
                 /*
                  * Here's where we convert data from a layout.json file to the data of an Eagle board file.
                  */
@@ -222,9 +206,8 @@ namespace BoardSynthesis
             #endregion
 
             #region Board2Layout
-            else if (reverseBoardSynthesis)  // reverse mode: board --> layout
+            else if (programMode == 1)  // reverse mode: board --> layout
             {
-                Console.WriteLine("Board synthesis reverse mode; board --> layout.");
                 // Here's where we use a board file, plus a layout.json file, to create a new layout.json file.
                 // The board file has the user-placed component origins and rotations.
                 // The layout file has the unrotated bounding box's height and width, as well as 
@@ -238,43 +221,6 @@ namespace BoardSynthesis
                 {
                     Console.WriteLine("ERROR Reading Board XML: " + e.Message);
                     System.Environment.Exit(-1);
-                }
-
-                /*
-                 * Here's where we get the board's width and height into the new layout data, from the EAGLE-board outline. MOT-788
-                 */
-                {
-                    var plain = (eagle.drawing.Item as Eagle.board).plain;
-                    var xList = new List<double>();
-                    var yList = new List<double>();
-
-                    foreach (var item in plain.Items)
-                    {
-                        var wire = item as Eagle.wire;
-
-                        if (wire.layer == BOARD_LAYER)  // Check layer 20 ("Dimension") for board outline
-                        {
-
-                            double dx1 = Convert.ToDouble(wire.x1);
-                            xList.Add(dx1);
-                            double dx2 = Convert.ToDouble(wire.x2);
-                            xList.Add(dx2);
-                            double dy1 = Convert.ToDouble(wire.y1);
-                            yList.Add(dy1);
-                            double dy2 = Convert.ToDouble(wire.y2);
-                            yList.Add(dy2);
-                        }
-                    }
-
-                    double maxX = xList.Max();
-                    double maxY = yList.Max();
-
-                    if ((maxX > 0) && (maxY > 0))
-                    {
-                        boardLayout.boardWidth = maxX;
-                        boardLayout.boardHeight = maxY;
-                        Console.WriteLine("Setting boardWidth to " + maxX.ToString("0.##") + " mm, and boardHeight to " + maxY.ToString("0.##") + " mm.");
-                    }
                 }
 
                 Dictionary<string, Eagle.element> elementMap = new Dictionary<string, Eagle.element>();
@@ -319,8 +265,8 @@ namespace BoardSynthesis
                         double unrotatedOriginToCentroidOffsetY = pkg.originY.HasValue ? pkg.originY.Value : 0.0;
 
                         // Now rotate the vector.
-                        Tuple<double, double> rotatedOriginToCentroid = rotateVector(unrotatedOriginToCentroidOffsetX, unrotatedOriginToCentroidOffsetY, rot);
-
+                        Tuple<double, double> rotatedOriginToCentroid = rotateVector( unrotatedOriginToCentroidOffsetX, unrotatedOriginToCentroidOffsetY, rot);
+                        
                         // Add the rotated offsets to the origin to compute the centroid's location
                         double centroidX = originX + rotatedOriginToCentroid.Item1;
                         double centroidY = originY + rotatedOriginToCentroid.Item2;
@@ -354,11 +300,6 @@ namespace BoardSynthesis
                 var signals = (eagle.drawing.Item as Eagle.board).signals;
                 foreach (var signal in signals.signal)
                 {
-                    if (showVerboseMessages)
-                    {
-                        Console.WriteLine("Found signal {0} in Eagle.board:", signal.name);
-                    }
-
                     Signal jsig = null;
                     bool update = true;
                     if (signalMap.ContainsKey(signal.name))
@@ -376,54 +317,25 @@ namespace BoardSynthesis
                     jsig.vias = new List<Via>();
                     jsig.polygons = new List<Polygon>();
                     double traceLength = 0.0;
-                    Dictionary<string, Pin> pinMap = new Dictionary<string, Pin>();
+                    Dictionary<string, Pin> pinMap = new Dictionary<string,Pin>();
                     foreach (var item in signal.Items)
                     {
                         if (item is Eagle.contactref)
                         {
                             var cref = item as Eagle.contactref;
                             var pin = new Pin();
-                            var package = packageMap.Keys.Where(name => (name.Replace("&", "_").ToUpperInvariant() == cref.element.ToUpperInvariant())).FirstOrDefault();
-                            pin.package = package ?? cref.element;
                             var element = elementMap.ContainsKey(cref.element) ? elementMap[cref.element] : null;
                             if (element != null && schematic.drawing.Item is Eagle.schematic) // FIXME CT-151 need to review this "is" test. Sometimes schematic.drawing.Item is Eagle.board
                             {
                                 var lib = (schematic.drawing.Item as Eagle.schematic).libraries.library.Where(l => l.name.Equals(element.library)).FirstOrDefault();
-                                var namedDs = (lib != null) ? lib.devicesets.deviceset.Where(ds => ds.name.Equals(element.value)).FirstOrDefault() : null;
-                                var namedDev = (lib != null) ? lib.devicesets.deviceset.Where(ds => ds.name.Equals(element.value)).
-                                    SelectMany(ds => ds.devices.device).Where(d => d.package.Equals(element.package)).FirstOrDefault() : null;
-                                var namedConnect = (namedDev != null) ? namedDev.connects.connect.Where(c => c.pad.Equals(cref.pad)).FirstOrDefault() : null;
-
-                                if (namedConnect != null)
-                                {
-                                    pin.name = namedConnect.pin;
-                                    pin.pad = namedConnect.pad;
-                                    pin.gate = namedConnect.gate;
-                                    if (showVerboseMessages)
-                                    {
-                                        Console.WriteLine("    + connection {0} pin {1} pad {2} gate {3} of {4}.", element.value, pin.name, pin.pad, pin.gate, pin.package);
-                                    }
-                                }
-                                else
-                                {
-                                    var dev = (lib != null) ? lib.devicesets.deviceset.SelectMany(ds => ds.devices.device).Where(d => d.package.Equals(element.package)).FirstOrDefault() : null;
-                                    var connect = (dev != null) ? dev.connects.connect.Where(c => c.pad.Equals(cref.pad)).FirstOrDefault() : null;
-                                    pin.name = (connect != null) ? connect.pin : cref.pad;
-
-                                    pin.pad = (connect != null) ? connect.pad : cref.pad;
-                                    pin.gate = (connect != null) ? connect.gate : null;
-                                    if (showVerboseMessages)
-                                    {
-                                        Console.WriteLine("    + unnamed connection pin {0} pad {1} gate {2} of {3}.", pin.name, pin.pad, pin.gate, pin.package);
-                                    }
-                                }
-                                if (showVerboseMessages && (null == pin.gate))
-                                {
-                                    Console.WriteLine("Found a null pin.gate.");
-                                }
+                                var dev = (lib != null) ? lib.devicesets.deviceset.SelectMany(ds => ds.devices.device).Where(d => d.package.Equals(element.package)).FirstOrDefault() : null;
+                                var connect = (dev != null) ? dev.connects.connect.Where(c => c.pad.Equals(cref.pad)).FirstOrDefault() : null;
+                                pin.name = (connect != null) ? connect.pin : cref.pad;
+                                pin.pad = (connect != null) ? connect.pad : cref.pad;
+                                pin.gate = (connect != null) ? connect.gate : null;
                             }
-                            //var package = packageMap.Keys.Where(name => (name.Replace("&", "_").ToUpperInvariant() == cref.element.ToUpperInvariant())).FirstOrDefault();
-                            //pin.package = package ?? cref.element;
+                            var package = packageMap.Keys.Where(name => (name.Replace("&", "_").ToUpperInvariant() == cref.element.ToUpperInvariant())).FirstOrDefault();
+                            pin.package = package ?? cref.element;
                             var pinName = string.Format("{0}.{1}", pin.package, pin.name);
                             // prevent creation of duplicate pins from the same package
                             if (!pinMap.ContainsKey(pinName))
@@ -495,25 +407,18 @@ namespace BoardSynthesis
                         jsig.bends = jsig.wires.Count + jsig.vias.Count - 1;
                     }
                     if (!update)
-                    {
-                        if (showVerboseMessages)
-                        {
-                            foreach (var pin in jsig.pins)
-                            {
-                                Console.WriteLine("   + jsig {3} pin {0} gate {1} of {2}.", pin.name, pin.gate, pin.package, jsig.name);
-                            }
-                        }
                         boardLayout.signals.Add(jsig);
-                    }
                 }
                 Console.WriteLine("Writing Output to {0}", layoutFile);
                 var sjson = JsonConvert.SerializeObject(boardLayout, Formatting.Indented);
-                File.WriteAllText(layoutFile, sjson);
+                StreamWriter writer = new StreamWriter(layoutFile);
+                writer.Write(sjson);
+                writer.Close();
             }
             #endregion
         }
 
-        // This function converts parts from the layout.json data format to the Eagle board format.
+        // This function converts arts from the layout.json data format to the Eagle board format.
         static void AddElements(Eagle.parts parts, Dictionary<string, Package> packageMap, 
             Eagle.libraries libs, Eagle.elements elements, Eagle.plain plain)
         {
@@ -935,7 +840,7 @@ namespace BoardSynthesis
                         if (name.Contains("description"))
                         {
                             var desc = new Eagle.description();
-                            desc.Text = new string[]{ value };
+                            desc.Text.Add(value);
                             Console.WriteLine(name);
                             desc.language = regex.Replace(name, "$1");
                             Console.WriteLine(desc.language);
@@ -966,7 +871,6 @@ namespace BoardSynthesis
             double x = pkg.x.Value;
             double y = pkg.y.Value;
             int prot = (pkg.rotation != null) ? (int)pkg.rotation : 0;
-            int refProt = 0;
 
             if (pkg.RelComponentID != null &&
                 packageMap.ContainsKey(pkg.RelComponentID))
@@ -975,9 +879,8 @@ namespace BoardSynthesis
                 double rx = x;
                 double ry = y;
                 var refPkg = packageMap[pkg.RelComponentID];
-                refProt = (refPkg.rotation != null) ? (int)refPkg.rotation : 0;
-                 // rotate the contained parts according to refPkg rotation
-                prot += refProt;
+                // rotate the contained parts according to refPkg rotation
+                if (refPkg.rotation != null) prot += (int)refPkg.rotation;
                 if (prot > 3) prot = prot % 4;
 
                 RotateAndTranslate(refPkg, x, y, out rx, out ry);
@@ -987,33 +890,7 @@ namespace BoardSynthesis
 
             double width = (prot == 0 || prot == 2) ? pkg.width : pkg.height;
             double height = (prot == 0 || prot == 2) ? pkg.height : pkg.width;
-
-            // (x,y) is where the original lower-left corner of the package would have ended up, based on the reference package's rotation and translation.
-            // But, if the package was rotated due to the reference package's rotation, that lower-left corner is now some other corner.
-            // So, we need to add in a correction to find the new lower-left corner.
-            switch (refProt)
-            {
-                case 1:
-                    // The bounding box was rotated 90 degrees ccw, so the lower left corner is now the lower right corner.
-                    // Translate from the lower right corner back to the lower-left corner.
-                    x -= width;
-                    break;
-                case 2:
-                    // The bounding box was rotated 180 degrees ccw, so the lower left corner is now the upper right corner.
-                    // Translate from the upper right corner back to the lower-left corner.
-                    x -= width;
-                    y -= height;
-                    break;
-                case 3:
-                    // The bounding box was rotated 270 degrees ccw, so the lower left corner is now the upper left corner.
-                    // Translate from the upper left corner back to the lower-left corner.
-                    y -= height;
-                    break;
-            }
-
-            // Now, (x,y) should be the lower-left corner of the rotated and translated bounding box.
-            // Add all the wires of the bounding box.
-
+            // add it
             {
                 var w = new Eagle.wire()
                 {

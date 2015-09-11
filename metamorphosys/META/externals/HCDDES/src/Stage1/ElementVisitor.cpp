@@ -49,27 +49,6 @@ void ElementVisitor::AddToFileList( std::string &fileList, const std::string &el
 	}
 }
 
-void ElementVisitor::HandleOSEKExecInfo( ESMoL::ExecutionInfo & execinfo, Semantics::ExecInfo & sei )
-{
-	set< ESMoL::OSEKExecInfo > oeiChildren = execinfo.OSEKExecInfo_kind_children();
-
-	if ( oeiChildren.size() > 0 )
-	{
-		ESMoL::OSEKExecInfo osekinfo = *oeiChildren.begin();
-
-		Semantics::OsekExecParameters parameters = Semantics::OsekExecParameters::Create( sei );
-		Semantics::Preemption preemption = Semantics::Preemption::Create( sei );
-		Semantics::Priority priority = Semantics::Priority::Create( sei );
-
-		priority.priority() = osekinfo.Priority();
-		preemption.preemption() = (osekinfo.Preemption() == "NON") ? false : true;
-		parameters.taskType() = osekinfo.Type();
-		parameters.activation() = osekinfo.Activation();
-		parameters.autoStart() = osekinfo.AutoStart();
-	}
-
-}
-
 
 void ElementVisitor::Visit_HardwareUnit( const ESMoL::HardwareUnit & hwunit )
 {
@@ -222,30 +201,6 @@ void ElementVisitor::Visit_OS( const ESMoL::OS & os ) {
 
 	sNode.maxtasknum() = os.MaxTaskNumber();
 	sNode.schedalgorithm() = os.SchedulingAlgorithm();
-
-	// Adding functionality for OSEK OS
-	if (os.type() == ESMoL::OSEK::meta)
-	{
-		ESMoL::OSEK osek = ESMoL::OSEK::Cast(os);
-		Semantics::OSEKParameters parameters = Semantics::OSEKParameters::Create(sNode);
-
-		parameters.Compiler() = osek.Compiler();
-		parameters.Conformance() = osek.Conformance();
-		parameters.Schedule() = osek.Schedule();
-		parameters.Status() = osek.Status();
-
-		ESMoL::Node parent = ESMoL::Node::Cast(os.parent());
-		set<ESMoL::OSEKCOM> coms =  parent.OSEKCOM_kind_children();
-		if (coms.size() > 0) {
-			ESMoL::OSEKCOM com = *(coms.begin());
-			parameters.GenerateTask() = com.GenerateTask();
-			parameters.CycleTime() = com.CycleTime();
-			parameters.HandleNM() = com.HandleNM();
-			parameters.HandleCCL() = com.HandleCCL();
-			parameters.HandleRX() = com.HandleRX();
-			parameters.HandleTX() = com.HandleTX();
-		}
-	}
 }
 
 void ElementVisitor::Visit_BChan( const ESMoL::BChan & bc ) {
@@ -585,24 +540,12 @@ void ElementVisitor::Visit_Message( const ESMoL::Message & msg ) {
 			f.name() = (*msgIter).name();
 			f.msgindex() = (*msgIter).MsgPortNum();
 
-			f.dataType() = (*msgIter).DataType();
-			f.dataSign() = (*msgIter).DataSign();
-			f.dataScale() = (*msgIter).DataScale();
-			f.dataOffset() = (*msgIter).DataOffset();
-			f.min() = (*msgIter).Min();
-			f.max() = (*msgIter).Max();
-
 			set< ESMoL::FieldDataType > efdt = (*msgIter).FieldDataType_children();
 			if ( efdt.size() > 0 )
 			{
 				ESMoL::FieldDataType fdt = *(efdt.begin());
 				f.numbits() = fdt.NumBits();
-				f.initialvalue() = std::stod(fdt.InitialValue());
-			}
-			else
-			{
-				f.numbits() = (*msgIter).DataSize();
-				f.initialvalue() = (*msgIter).DataInit();
+				f.initialvalue() = fdt.InitialValue();
 			}
 
 			f.fieldMsg() = mt;
@@ -1026,8 +969,6 @@ void ElementVisitor::Visit_TTExecInfo( const ESMoL::TTExecInfo & ttei ) {
 		std::cout << " to deadline value." << std::endl;
 	}
 
-	HandleOSEKExecInfo( ESMoL::ExecutionInfo::Cast( ttei ), sei );
-
 	IndexKeeper::Inst()->Store( ttei.uniqueId(), sei.uniqueId(), sei );
 }
 
@@ -1091,8 +1032,6 @@ void ElementVisitor::Visit_AsyncPeriodicExecInfo(const ESMoL::AsyncPeriodicExecI
 		std::cout << " to deadline value." << std::endl;
 	}
 
-	HandleOSEKExecInfo( ESMoL::ExecutionInfo::Cast( apei ), sei );
-
 	IndexKeeper::Inst()->Store( apei.uniqueId(), sei.uniqueId(), sei );
 }
 
@@ -1144,8 +1083,6 @@ void ElementVisitor::Visit_SporadicExecInfo(const ESMoL::SporadicExecInfo & spei
 		std::cout << ": error converting string " << err._what;
 		std::cout << " to deadline value." << std::endl;
 	}
-
-	HandleOSEKExecInfo( ESMoL::ExecutionInfo::Cast( spei ), sei );
 
 	IndexKeeper::Inst()->Store( spei.uniqueId(), sei.uniqueId(), sei );
 }

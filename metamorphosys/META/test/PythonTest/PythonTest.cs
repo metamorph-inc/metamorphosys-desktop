@@ -64,7 +64,6 @@ namespace PythonTest
                     "SpiceVisualizer.process_spice",
                     "SpiceVisualizer.spicedatareader",
                     "chipfit_display",
-                    "layout_json",
             };
 
             foreach (var test in module_names.Select(moduleName =>

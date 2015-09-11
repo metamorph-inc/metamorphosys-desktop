@@ -19,7 +19,6 @@ void analogSrc::analog_update()
 	int current_time_index = 0;
 	int max_time_index;
 	int ret;
-	float sc_currentTime;
 	sc_out<analog_type>	*analogs[8];
 	analogs[0] = &analog0;
 	analogs[1] = &analog1;
@@ -30,7 +29,6 @@ void analogSrc::analog_update()
 	analogs[6] = &analog6;
 	analogs[7] = &analog7;
 	
-	float periodic_offset;
 	float minTime = 9999990.0;
 	float maxTime = -1.0;
 	float currTime;

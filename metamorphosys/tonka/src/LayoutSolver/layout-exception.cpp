@@ -49,6 +49,6 @@ int LayoutSolver::interChipGap( int pkg_idx1, int pkg_idx2)
 {
 	if( exceptionExists( pkg_idx1, INTER_CHIP ) || exceptionExists( pkg_idx2, INTER_CHIP ) )
 		return 0;
-	return interChipSpace;
+	return chipgap;
 }
 

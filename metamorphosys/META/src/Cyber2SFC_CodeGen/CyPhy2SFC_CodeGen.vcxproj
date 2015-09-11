@@ -103,7 +103,8 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>Component.def</ModuleDefinitionFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SFCPrintD.lib;mfile2SFCD.lib;BExprMapTreeD.lib;SFCUdmEngineD.lib;UdmBuilderD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <udm>
       <IntegrateXSD>true</IntegrateXSD>
@@ -145,7 +146,8 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ModuleDefinitionFile>Component.def</ModuleDefinitionFile>
       <RegisterOutput>true</RegisterOutput>
-      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SFCPrint.lib;mfile2SFC.lib;BExprMapTree.lib;SFCUdmEngine.lib;UdmBuilder.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <udm>
       <IntegrateXSD>true</IntegrateXSD>
@@ -253,23 +255,6 @@ cd SF_CodeGen
   </ItemGroup>
   <ItemGroup>
     <Midl Include="$(GME_ROOT)\SDK\BON\Common\ComponentLib.idl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\BExprMapTree\BExprMapTree.vcxproj">
-      <Project>{8f8c9016-c830-4bed-9676-f96246ff8308}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\mfile2SFC\mfile2SFC.vcxproj">
-      <Project>{2b72f4cc-c4f7-47d3-ac06-31b67cef6cbb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\SFCPrint\SFCPrint.vcxproj">
-      <Project>{1a92a2b3-8cd0-4dc9-9b61-b67474d07456}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\SFCUdmEngine\SFCUdmEngine.vcxproj">
-      <Project>{a6c033c3-ac95-4872-b8bd-9d0ec6761a69}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\UdmBuilder\UdmBuilder.vcxproj">
-      <Project>{47e6f95b-668f-4963-b1c5-535c8e09d609}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

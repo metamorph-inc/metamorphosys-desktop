@@ -10,8 +10,6 @@ using GME.MGA;
 using GME.MGA.Core;
 using System.Diagnostics;
 using CyPhyGUIs;
-using CyPhy = ISIS.GME.Dsml.CyPhyML.Interfaces;
-using CyPhyClasses = ISIS.GME.Dsml.CyPhyML.Classes;
 using System.Windows.Forms;
 
 namespace CyPhyReliabilityAnalysis
@@ -530,8 +528,7 @@ namespace CyPhyReliabilityAnalysis
                 .Referred
                 .ChildObjects
                 .OfType<MgaAtom>()
-                .FirstOrDefault(fco => fco.Meta.Name == typeof(CyPhy.Task).Name
-                    && String.Equals(CyPhyClasses.Task.Cast(fco).Attributes.COMName, this.ComponentProgID, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefault()
                 .StrAttrByName["Parameters"];
 
             Dictionary<string, string> workflowParameters = new Dictionary<string, string>();

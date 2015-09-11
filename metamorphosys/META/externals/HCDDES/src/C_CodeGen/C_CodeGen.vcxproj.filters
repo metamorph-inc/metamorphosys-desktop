@@ -42,6 +42,5 @@
     <None Include="..\..\templates\ccode_src.tpl">
       <Filter>Templates</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

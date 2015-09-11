@@ -39,15 +39,6 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\GME.MGA\1.0.1.0__f240a760fe751c2e\GME.MGA.dll</HintPath>
     </Reference>
-    <Reference Include="GME.MGA.Meta, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\GME.MGA.Meta\1.0.1.0__f240a760fe751c2e\GME.MGA.Meta.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdParty\Json.NET\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,11 +49,8 @@
     <Reference Include="xunit">
       <HintPath>..\..\3rdParty\xunit-1.9.1\xunit.dll</HintPath>
     </Reference>
-    <Reference Include="xunit.console.clr4">
-      <HintPath>..\..\3rdParty\xunit-1.9.1\xunit.console.clr4.exe</HintPath>
-    </Reference>
-    <Reference Include="xunit.gui.clr4.x86">
-      <HintPath>..\..\3rdParty\xunit-1.9.1\xunit.gui.clr4.x86.exe</HintPath>
+    <Reference Include="xunit.console.clr4.x86">
+      <HintPath>..\..\3rdParty\xunit-1.9.1\xunit.console.clr4.x86.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,10 +59,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AvmDdp\AvmDdp.csproj">
-      <Project>{8880FD8F-C7DA-4491-908D-778B67057DA0}</Project>
-      <Name>AvmDdp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\CyPhy2CAD_CSharp\CyPhy2CAD_CSharp.csproj">
       <Project>{EA9CC9FA-046F-47C6-80D9-A2B1CFE8BBAE}</Project>
       <Name>CyPhy2CAD_CSharp</Name>

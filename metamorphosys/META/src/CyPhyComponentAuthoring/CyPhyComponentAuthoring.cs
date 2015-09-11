@@ -9,7 +9,6 @@ using GME.MGA;
 using GME.MGA.Core;
 using CyPhy = ISIS.GME.Dsml.CyPhyML.Interfaces;
 using CyPhyClasses = ISIS.GME.Dsml.CyPhyML.Classes;
-using META;
 using System.Drawing;
 using System.IO;
 
@@ -78,38 +77,6 @@ namespace CyPhyComponentAuthoring
         {
             this.Logger.WriteInfo("Running Component Authoring interpreter.");
 
-
-            if (currentobj != null &&
-                currentobj.Meta.Name == typeof(CyPhy.ComponentAssembly).Name)
-            {
-                CyPhy.ComponentAssembly ca = CyPhyClasses.ComponentAssembly.Cast(currentobj);
-                string fileName = null;
-                DialogResult dr;
-                using (OpenFileDialog ofd = new OpenFileDialog())
-                {
-                    ofd.CheckFileExists = true;
-                    ofd.Multiselect = false;
-                    ofd.Filter = "SVG files (*.svg)|*.svg*|All files (*.*)|*.*";
-                    ofd.AutoUpgradeEnabled = true;
-                    dr = ofd.ShowDialog();
-                    if (dr == DialogResult.OK)
-                    {
-                        fileName = ofd.FileName;
-                    }
-                }
-                if (fileName == null)
-                {
-                    this.Logger.WriteError("No file was selected.  Add Custom Icon will not complete.");
-                    return;
-                }
-
-                string IconFileDestPath = META.ComponentLibraryManager.EnsureComponentAssemblyFolder(ca);
-                IconFileDestPath = ca.GetDirectoryPath(META.ComponentLibraryManager.PathConvention.ABSOLUTE);
-
-                System.IO.File.Copy(fileName, System.IO.Path.Combine(IconFileDestPath, "icon.svg"), true);
-                this.Logger.WriteInfo("Successfully added icon.svg to " + currentobj.Name);
-                return;
-            }
             // verify we are running in a component and that it is not an instance or library
             string return_msg;
             if (!CheckPreConditions(currentobj, out return_msg))

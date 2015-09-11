@@ -15,6 +15,6 @@ Set oMGAProj= CreateObject( "Mga.MgaProject")
 oMGAProj.Open "MGA=" & mga_file
 Set launcher= CreateObject( "Mga.MgaLauncher")
 Set selectedobjs= CreateObject( "Mga.MgaFCOs")
-launcher.RunComponent "MGA.Interpreter.GReAT Master Interpreter VC10", oMGAProj, Nothing, selectedobjs, CLng( 128)
+launcher.RunComponent "MGA.Interpreter.GReAT Master Interpreter", oMGAProj, Nothing, selectedobjs, CLng( 128)
 oMGAProj.Close(1)
 

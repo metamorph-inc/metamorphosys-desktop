@@ -1,5 +1,4 @@
 import os
-import os.path
 import sys
 import glob
 import shutil
@@ -7,13 +6,9 @@ import _winreg
 import argparse
 import posixpath
 import subprocess
-import urllib
-import zipfile
-import shutil
 from win32com.shell import shell, shellcon
 from utility_functions import setup_logger, exitwitherror
 
-setup_logger("CADVisualizer.log")
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -84,14 +79,9 @@ def convert(stepfile, xmldir):
     commondocs = shell.SHGetFolderPath(0, shellcon.CSIDL_COMMON_DOCUMENTS, 0, 0)
     converter = os.path.join(str(commondocs), 'StepTools', 'bin', 'export_product_asm.exe')
     if not os.path.exists(converter):
-        print "export_product_asm.exe not found. Attempting to download it..."
-        if not os.path.exists(os.path.dirname(converter)):
-            os.makedirs(os.path.dirname(converter))
-        steptoolsfile, headers = urllib.urlretrieve('http://www.steptools.com/demos/stpidx_author_win32_a7.zip')
-        with zipfile.ZipFile(steptoolsfile, 'r') as steptoolszip:
-            with steptoolszip.open('stpidx_author_win32/bin/export_product_asm.exe') as srcexe:
-                with open(converter, 'wb') as dstexe:
-                    shutil.copyfileobj(srcexe, dstexe)
+        exitwitherror('Unable to locate StepTools Step2XML converter! Is the StepTools ' + \
+                      'directory in the correct location? StepTools folder needs to be ' + \
+                      'in Public Documents folder. Path searched: ' + converter)
 
     # Make directory that will contain dumped index and shell XMLs
     dumpdir = os.path.join(os.getcwd(), xmldir)

@@ -67,7 +67,6 @@ namespace CyPhySoT
             this.SelectedObjs = (MgaFCOs)Activator.CreateInstance(Type.GetTypeFromProgID("Mga.MgaFCOs"));
             this.UpstreamTestBenches = new List<TestBench>();
             this.DownstreamTestBenches = new List<TestBench>();
-            this.Dependencies = new List<AVM.DDP.MetaTBManifest.Dependency>();
         }
 
         public new TestBench MemberwiseClone()
@@ -148,6 +147,7 @@ namespace CyPhySoT
 
         public List<AVM.DDP.MetaTBManifest.Dependency> CollectDeps()
         {
+            Dependencies = new List<AVM.DDP.MetaTBManifest.Dependency>();
             foreach (TestBench tb in this.UpstreamTestBenches)
             {
                 Dependencies.Add(new AVM.DDP.MetaTBManifest.Dependency() { Directory = tb.OutputDirectory, Type = tb.CurrentObj.MetaBase.Name });

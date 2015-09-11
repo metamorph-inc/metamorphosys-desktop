@@ -461,19 +461,6 @@ void stream_AnalysisInputData( const CADAnalyses &in_CADAnalyses, ostream &out_S
 			{
 				out_Stream << std::endl << "         Ball (First Point: Center, Second Point: Defines Radius) ";
 			}
-
-			// ConvectionBoundary
-			if ( j->convectionBoundaryDefined )
-			{
-				out_Stream << std::endl << "         ConvectionBoundary:";
-				out_Stream << std::endl << "            ConvectionCoefficient:      " << j->convectionBoundary.convectionCoefficient;
-				out_Stream << std::endl << "            ConvectionCoefficient unit: " << j->convectionBoundary.unit;
-				//if ( j->convectionBoundary.ambientTemperatureDefined )
-				//	out_Stream << std::endl << "            AmbientTemperature: " << j->convectionBoundary.ambientTemperature;
-				//else
-				//	out_Stream << std::endl << "            AmbientTemperature: " << "Not defined";
-			}
-
 		}	
 
 		////////////////////////////////////////////
@@ -512,47 +499,6 @@ void stream_AnalysisInputData( const CADAnalyses &in_CADAnalyses, ostream &out_S
 				out_Stream << std::endl << "            Acceleration: Units:  "  << CADUnitsAcceleration_string(j->acceleration.units) << 
 					", Directions x y z " << j->acceleration.direction.x << "  " << j->acceleration.direction.y << "  " << j->acceleration.direction.z;
 			}
-
-			// GridPointInitialTemperature
-			if ( j->gridPointInitialTemperatureDefined)
-			{
-				out_Stream << std::endl << "         GridPointInitialTemperature: ";
-				out_Stream << std::endl << "            Value:  "  << j->gridPointInitialTemperature.value;
-				out_Stream << std::endl << "            Unit:   "  << j->gridPointInitialTemperature.unit;
-			}
-
-			// GridPointInitialTemperature
-			if ( j->gridPointTemperatureDefined)
-			{
-				out_Stream << std::endl << "         GridPointTemperature: ";
-				out_Stream << std::endl << "            Value:  "  << j->gridPointTemperature.value;
-				out_Stream << std::endl << "            Unit:  "  <<  j->gridPointTemperature.unit;
-			}
-
-			// HeatFlux
-			if ( j->heatFluxDefined)
-			{
-				out_Stream << std::endl << "         HeatFlux: ";
-				out_Stream << std::endl << "            Value:  "  << j->heatFlux.value;
-				out_Stream << std::endl << "            Unit:   "  << j->heatFlux.unit;
-			}
-
-			// HeatGeneration
-			if ( j->heatGenerationDefined)
-			{
-				out_Stream << std::endl << "         HeatGeneration: ";
-				out_Stream << std::endl << "            Value:  "  << j->heatGeneration.value;
-				out_Stream << std::endl << "            Unit:   "  << j->heatGeneration.unit;
-			}
-
-			// AmbientTemperature
-			if (j->ambientTemperatureDefined)
-			{
-				out_Stream << std::endl << "         AmbientTemperature: ";
-				out_Stream << std::endl << "            Value:  "  << j->ambientTemperature.value;
-				out_Stream << std::endl << "            Unit:   "  << j->ambientTemperature.unit;
-			}
-
 		} // End for ( std::list<AnalysisLoad>::const_iterator
 
 		////////////////////////////////////////////

@@ -112,8 +112,6 @@ namespace LayoutJson
     {
         public double boardWidth { get; set; }
         public double boardHeight { get; set; }
-        public double boardEdgeSpace { get; set; }
-        public double interChipSpace { get; set; }
         public int numLayers { get; set; }
         public string boardTemplate { get; set; }       // name of the board template file to be used
         public string designRules { get; set; }         // name of the design rules file to be used

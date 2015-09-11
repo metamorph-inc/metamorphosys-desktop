@@ -33,6 +33,7 @@ namespace CyPhyMetaLink
 {
     /// <summary>
     /// This file contains business logic independent functionality related to the general operation of Meta-Link.
+    /// 
     /// </summary>
     partial class CyPhyMetaLinkAddon
     {
@@ -42,7 +43,6 @@ namespace CyPhyMetaLink
             OPEN_EMPTY,                 // Open an empty Creo session
         }
 
-        // Function needed to change the icon of the console window
         [DllImport("user32.dll")]
         static extern IntPtr PostMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
@@ -58,22 +58,25 @@ namespace CyPhyMetaLink
                 startupFailedCallback = value;
             }
         }
+
         private FailureCallback startupFailedCallback;
 
         private MgaAddOn addon;
         private bool componentEnabled = true;
         private bool handleEvents = true;
-        private GMEConsole GMEConsole { get; set; }
+        GMEConsole GMEConsole { get; set; }
         public CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient bridgeClient = new CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient();
 
         // Data maintained for synced components
         public readonly Dictionary<string, SyncedComponentData> syncedComponents = new Dictionary<string, SyncedComponentData>();
 
-        // right now, support syncing only one ComponentAssembly
+        // right now, support sycing only one ComponentAssembly
         public string AssemblyID { get; set; }
         protected Dictionary<string, string> designIdToCadAssemblyXml = new Dictionary<string, string>();
 
         private Dictionary<string, Action<MetaLinkProtobuf.Edit>> noticeActions = new Dictionary<string, Action<Edit>>();
+
+        //Dictionary<String, Edit> componentEditMessages = new Dictionary<String, Edit>();
 
         // The last guid the executable started with
         private string LastStartedGuid;
@@ -101,10 +104,7 @@ namespace CyPhyMetaLink
             }
         }
 
-        // A proxy control to maintain a separate message queue for TCP/IO communication
         System.Windows.Forms.Control SyncControl;
-
-        // The main message queue
         ConcurrentQueue<MetaLinkProtobuf.Edit> queuedMessages = new ConcurrentQueue<Edit>();
 
         public CyPhyMetaLinkAddon()
@@ -112,7 +112,7 @@ namespace CyPhyMetaLink
             StartupFailureCallback = ExeStartupFailed;
         }
 
-        private void ConnectionClosed(Exception e)
+        public void ConnectionClosed(Exception e)
         {
             SyncControl.BeginInvoke((System.Action)delegate
             {
@@ -163,7 +163,6 @@ namespace CyPhyMetaLink
                 }
             });
         }
-
         public void EditMessageReceived(MetaLinkProtobuf.Edit message)
         {
             queuedMessages.Enqueue(message);
@@ -171,7 +170,15 @@ namespace CyPhyMetaLink
             {
                 if (addon != null)
                 {
-                    ProcessQueuedEditMessages();
+                    /*if ((addon.Project.ProjectStatus & 8) != 0) // in tx
+                    {
+                        GMEConsole.Warning.WriteLine("Message received during transaction, ignoring.");
+                        // In GlobalEvent, we will post a message to process the queue
+                    }
+                    else
+                    {*/
+                        ProcessQueuedEditMessages();
+                    //}
                 }
             });
         }
@@ -335,7 +342,7 @@ namespace CyPhyMetaLink
         }
 
         // Callback invoked if the executable startup has failed
-        private void ExeStartupFailed()
+        public void ExeStartupFailed()
         {
             // Unhighlight tree and remove item from synced components
             if (LastStartedGuid != null)
@@ -376,7 +383,7 @@ namespace CyPhyMetaLink
                 StartupDialog.Hide();
         }
 
-        private bool CloseConnection()
+        public bool CloseConnection()
         {
             bool ret = bridgeClient.CloseConnection();
             bridgeClient = new CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient();
@@ -392,6 +399,7 @@ namespace CyPhyMetaLink
             }
             return ret;
         }
+
 
         public void CallCyPhy2CADWithTransaction(MgaProject project, MgaFCO toplevelAssembly, int param)
         {
@@ -598,7 +606,7 @@ namespace CyPhyMetaLink
                 string CADAssembly = File.ReadAllText(Path.Combine(cadSettings.OutputDirectory, CyPhy2CAD_CSharp.TestBenchModel.TestBenchBase.CADAssemblyFile));
                 string designId = new Guid(currentobj.GetGuidDisp()).ToString("D");
                 SendInterest(null, CadAssemblyTopic, designId);
-                SendInterest(null, ComponentManifestTopic);
+                SendManifestInterest();
                 //SendComponentManifest();
                 SendInterest(null, ConnectTopic);
                 SendInterest(null, ResyncTopic, designId);
@@ -612,13 +620,13 @@ namespace CyPhyMetaLink
             }
         }
 
-        private void HighlightInTree(ISIS.GME.Common.Interfaces.Base item, int highlight)
+        public void HighlightInTree(ISIS.GME.Common.Interfaces.Base item, int highlight)
         {
             if (TestMode) return;
             HighlightInTree(item.Impl, highlight);
         }
 
-        private void HighlightInTree(IMgaObject item, int highlight)
+        public void HighlightInTree(IMgaObject item, int highlight)
         {
             if (TestMode) return;
             if (GMEConsole.gme == null) // e.g. unit tests

@@ -15,28 +15,11 @@ namespace CyPhy2Schematic.Schematic
         {
             SrcConnections = new List<Connection>();
             DstConnections = new List<Connection>();
-            _connectedPorts = new Dictionary<string, ISIS.GME.Common.Interfaces.FCO>();
         }
 
         public Component Parent { get; set; }
         public List<Connection> SrcConnections { get; set; }
         public List<Connection> DstConnections { get; set; }
-        private Dictionary<string, ISIS.GME.Common.Interfaces.FCO> _connectedPorts;
-        public Dictionary<string, ISIS.GME.Common.Interfaces.FCO> connectedPorts
-        {
-            get
-            {
-                return _connectedPorts;
-            }
-            set
-            {
-                if (_connectedPorts != null && _connectedPorts.Count > 0)
-                {
-                    throw new ApplicationException();
-                }
-                _connectedPorts = value;
-            }
-        }
 
         public void accept(Visitor visitor)
         {

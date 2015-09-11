@@ -175,7 +175,6 @@ private:
 	unsigned long long						_devNum;
 	std::map< std::string, Semantics::SignalType > _typesVisited;
 	void AddToFileList( std::string &fileList, const std::string &element );
-	void HandleOSEKExecInfo( ESMoL::ExecutionInfo & execinfo, Semantics::ExecInfo & sei );
 
 public:
 	ElementVisitor( Semantics::RootFolder &target );

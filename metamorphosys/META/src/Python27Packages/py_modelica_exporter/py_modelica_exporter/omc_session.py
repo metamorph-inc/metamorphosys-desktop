@@ -146,6 +146,7 @@ class OMCSession(object):
         self.logger = logging.getLogger('py_modelica_exporter.OMCSession')
         self.logger.setLevel(logging.NOTSET)
 
+        # FIXME: this code is not well written... need to be refactored
         self._temp_dir = tempfile.gettempdir()
         # this file must be closed in the destructor
         self._omc_log_file = open(os.path.join(self._temp_dir, "openmodelica.omc.output.OMPython"), 'w')
@@ -277,19 +278,16 @@ class OMCSession(object):
     def getIconAnnotation(self, className):
         return self.ask('getIconAnnotation', className, parsed=False)
 
-    # def getPackages(self):
-    #     return self.ask('getPackages')
+    def getPackages(self):
+        return self.ask('getPackages')
 
-    def getPackages(self, className=None):
-        if className is None:
-            return self.ask('getPackages')
-        else:
-            try:
-                result = self.ask('getPackages', className)
-                return result
-            except:
-                result = self.ask('getPackages', className, parsed=False)
-                return result
+    def getPackages(self, className):
+        try:
+            result = self.ask('getPackages', className)
+            return result
+        except:
+            result = self.ask('getPackages', className, parsed=False)
+            return result
 
     def getReplaceables(self, className, namedPackage=None):
 
@@ -401,10 +399,8 @@ class OMCSession(object):
     def getClassComment(self, className):
         try:
             return self.ask('getClassComment', className)
-        except pyparsing.ParseException as ex_parse:
+        except pyparsing.ParseException as ex:
             return 'No description available'
-        except Exception as ex_gen:
-            return 'No description available (ex)'
 
     def getComponentComment(self, className):
         try:
@@ -539,8 +535,7 @@ class OMCSession(object):
         #return self.re_Code.findall(value)
 
     def getClassInformation(self, className):
-        answer = self.ask('getClassInformation', className)
-        return answer
+        return self.ask('getClassInformation', className)
 
     # function getClassNames
     #   input TypeName class_ = $Code(AllLoadedClasses);
@@ -555,22 +550,15 @@ class OMCSession(object):
                       showProtected=False):
         try:
             if className:
-                opt = '{0}, recursive={1}, qualified={2}, sort={3}, builtin={4}, showProtected={5}'.format(
-                    className,
-                    str(recursive).lower(),
-                    str(qualified).lower(),
-                    str(sort).lower(),
-                    str(builtin).lower(),
-                    str(showProtected).lower())
-                value = self.ask('getClassNames', opt)
+                value = self.ask('getClassNames',
+                                 '{0}, recursive={1}, qualified={2}, sort={3}, builtin={4}, showProtected={5}'.format(
+                                     className, str(recursive).lower(), str(qualified).lower(), str(sort).lower(),
+                                     str(builtin).lower(), str(showProtected).lower()))
             else:
-                opt = 'recursive={0}, qualified={1}, sort={2}, builtin={3}, showProtected={4}'.format(
-                    str(recursive).lower(),
-                    str(qualified).lower(),
-                    str(sort).lower(),
-                    str(builtin).lower(),
-                    str(showProtected).lower())
-                value = self.ask('getClassNames', opt)
+                value = self.ask('getClassNames',
+                                 'recursive={1}, qualified={2}, sort={3}, builtin={4}, showProtected={5}'.format(
+                                     str(recursive).lower(), str(qualified).lower(), str(sort).lower(),
+                                     str(builtin).lower(), str(showProtected).lower()))
             return value
         except:
             return list()

@@ -211,9 +211,6 @@ void BuildCyberCompositionInterface( Udm::Object obj )
 	CyberComposition::SimulinkWrapper sw = CyberComposition::SimulinkWrapper::Cast( obj );
 	cout << "Processing SimulinkWrapper: " << sw.name() << std::endl;
 
-	// Store the Simulink model filename in the SimulinkWrapper
-	sw.ModelFilename() = ConfigKeeper::getSingleton().getStringValue( "inputFile" );
-
 	// Get the subsystem from the wrapper
 	unsigned long counter = 1;
 	set< CyberComposition::Simulink::Subsystem > subs = sw.Simulink_Subsystem_kind_children();
@@ -227,13 +224,6 @@ void BuildCyberCompositionInterface( Udm::Object obj )
 
 		// Get the inner subsystem
 		set< CyberComposition::Simulink::Subsystem > inner_subs = (*subIter).Subsystem_kind_children();
-
-		if ( inner_subs.empty() )
-		{
-			cout << "Failed to find inner subsystem within subsystem " << (*subIter).name() << std::endl;
-			continue;
-		}
-
 		CyberComposition::Simulink::Subsystem inner_sub = *(inner_subs.begin());
 
 		// Build maps of existing connections

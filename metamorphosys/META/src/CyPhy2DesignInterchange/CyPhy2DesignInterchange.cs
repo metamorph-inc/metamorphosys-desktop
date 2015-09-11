@@ -67,18 +67,6 @@ namespace CyPhy2DesignInterchange
         private ISet<string> designEntityIds = new HashSet<string>();
         private String GetOrSetID(CyPhy.DesignEntity de)
         {
-            if (de is CyPhy.ComponentAssembly)
-            {
-                string managedGUID = ((CyPhy.ComponentAssembly)de).Attributes.ManagedGUID;
-                if (managedGUID != "")
-                {
-                    if (designEntityIds.Add(managedGUID.ToString()) == false)
-                    {
-                        throw new ApplicationException(string.Format("ComponentAssembly {0} has duplicate ManagedGUID {1}", de.Path, managedGUID));
-                    }
-                    return managedGUID;
-                }
-            }
             int id = de.Attributes.ID;
             if (id == 0)
             {
@@ -299,13 +287,18 @@ namespace CyPhy2DesignInterchange
                     s_ID = de.Guid.ToString("B");
                     ca.Attributes.ConfigurationUniqueID = s_ID;
                 }
+                if (s_ID.IndexOf("{") != 0)
+                {
+                    // Add curly braces
+                    s_ID = string.Concat("{", s_ID, "}");
+                }
                 dm.DesignID = s_ID;
 
                 rootContainerType = new Compound();
             }
             else if (de is CyPhy.DesignContainer)
             {
-                dm.DesignID = "id-" + (de as CyPhy.DesignContainer).Guid.ToString();
+                dm.DesignID = (de as CyPhy.DesignContainer).Impl.GetGuidDisp();
                 switch (((CyPhy.DesignContainer)de).Attributes.ContainerType)
                 {
                     case CyPhyClasses.DesignContainer.AttributesClass.ContainerType_enum.Compound:
@@ -335,84 +328,13 @@ namespace CyPhy2DesignInterchange
             var connectorMapping = new Dictionary<ConnectorRefport, avm.ConnectorCompositionTarget>();
             var componentValueflowTargetMapping = new Dictionary<CyPhy.ValueFlowTarget, ComponentPrimitivePropertyInstance>();
             var vftIdCache = new Dictionary<CyPhy.ValueFlowTarget, String>();
-            var wrapper = new DesignPrimitivesWrapper(de);
-            UpdateSubContainers(wrapper, dm.RootContainer, componentPortMapping, connectorMapping, containerMapping, componentValueflowTargetMapping, vftIdCache);
+            UpdateSubContainers(new DesignPrimitivesWrapper(de), dm.RootContainer, componentPortMapping, connectorMapping, containerMapping, componentValueflowTargetMapping, vftIdCache);
 
-            AddAssemblyRoot(dm, wrapper);
 
             ConvertJoinStructures(dm, connectorMapping, containerMapping);
 
 
             return dm;
-        }
-
-        private void AddAssemblyRoot(Design dm, DesignPrimitivesWrapper wrapper)
-        {
-            HashSet<CyPhy.ReferenceCoordinateSystem> visitedRCS = new HashSet<CyPhy.ReferenceCoordinateSystem>();
-            Queue<CyPhy.ReferenceCoordinateSystem> todoRCS = new Queue<CyPhy.ReferenceCoordinateSystem>();
-            List<string> rcsComponentIds = new List<string>();
-            foreach (var rcs in wrapper.ReferenceCoordinateSystems)
-            {
-                todoRCS.Enqueue(rcs);
-            }
-            while (todoRCS.Count > 0)
-            {
-                var rcs = todoRCS.Dequeue();
-                visitedRCS.Add(rcs);
-                foreach (var rcsConnection in rcs.DstConnections.RefCoordSystem2RefCoordSystemCollection)
-                {
-                    if (visitedRCS.Contains(rcsConnection.DstEnd))
-                    {
-                        continue;
-                    }
-                    var ref_ = rcsConnection.DstRef();
-                    if (ref_ != null && ref_.Meta.Name == "ComponentRef" && ref_.Referred != null && ref_.Referred.Meta.Name == "Component")
-                    {
-                        rcsComponentIds.Add(GetOrSetID(CyPhyClasses.ComponentRef.Cast(ref_)));
-                    }
-                    if (ref_ == null)
-                    {
-                        if (rcsConnection.DstEnd.ParentContainer.Impl.MetaBase.Name == "Component")
-                        {
-                            rcsComponentIds.Add(CyPhyClasses.Component.Cast(rcsConnection.DstEnd.ParentContainer.Impl).Attributes.InstanceGUID);
-                        }
-                        else
-                        {
-                            todoRCS.Enqueue(rcsConnection.DstEnds.ReferenceCoordinateSystem);
-                        }
-                    }
-                }
-                foreach (var rcsConnection in rcs.SrcConnections.RefCoordSystem2RefCoordSystemCollection)
-                {
-                    if (visitedRCS.Contains(rcsConnection.SrcEnd))
-                    {
-                        continue;
-                    }
-                    var ref_ = rcsConnection.SrcRef();
-                    if (ref_ != null && ref_.Meta.Name == "ComponentRef" && ref_.Referred != null && ref_.Referred.Meta.Name == "Component")
-                    {
-                        rcsComponentIds.Add(GetOrSetID(CyPhyClasses.ComponentRef.Cast(ref_)));
-                    }
-                    if (ref_ == null)
-                    {
-                        if (rcsConnection.SrcEnd.ParentContainer.Impl.MetaBase.Name == "Component")
-                        {
-                            rcsComponentIds.Add(CyPhyClasses.Component.Cast(rcsConnection.SrcEnd.ParentContainer.Impl).Attributes.InstanceGUID);
-                        }
-                        else
-                        {
-                            todoRCS.Enqueue(rcsConnection.SrcEnds.ReferenceCoordinateSystem);
-                        }
-                    }
-                }
-            }
-            if (rcsComponentIds.Count == 1)
-            {
-                dm.DomainFeature.Add(new avm.cad.AssemblyRoot()
-                {
-                    AssemblyRootComponentInstance = rcsComponentIds[0]
-                });
-            }
         }
 
         public class RefportPair<T> where T : ISIS.GME.Common.Interfaces.FCO
@@ -543,10 +465,6 @@ namespace CyPhy2DesignInterchange
             foreach (var compRef in de.ComponentRefs)
             {
                 CyPhy.Component comp = null;
-                if (compRef.GenericReferred != null && compRef.GenericReferred.Kind != "Component")
-                {
-                    continue;
-                }
                 try
                 {
                     comp = compRef.Referred.Component;
@@ -892,18 +810,9 @@ namespace CyPhy2DesignInterchange
                                 };
                 xProp.OnDataSheetSpecified = true;
 
-                var incomingValueFlows = prop.SrcConnections.ValueFlowCollection.Where(c => c.IsRefportConnection() == false);
-                if (incomingValueFlows.Count() > 1)
+                if (prop.SrcConnections.ValueFlowCollection.Any(c => c.IsRefportConnection() == false))
                 {
-                    var mux = CreateDSMux(componentValueflowTargetMapping, "mux" + idProp, incomingValueFlows);
-
-                    ((avm.Alternative)rootContainer).ValueFlowMux.Add(mux);
-                    vftIdCache[prop] = mux.ID;
-                    xProp.Value.ValueExpression = new DerivedValue { ValueSource = mux.ID };
-                }
-                else if (incomingValueFlows.Count() == 1)
-                {
-                    var vft = incomingValueFlows.First().SrcEnds.ValueFlowTarget;
+                    var vft = prop.SrcConnections.ValueFlowCollection.First(c => c.IsRefportConnection() == false).SrcEnds.ValueFlowTarget;
 
                     String idVft = null;
                     ComponentPrimitivePropertyInstance cppi = null;
@@ -962,16 +871,7 @@ namespace CyPhy2DesignInterchange
                 var xProp = convertParameter(param);
                 var valueExpression = xProp.Value.ValueExpression as avm.ParametricValue;
 
-                var incomingValueFlows = param.SrcConnections.ValueFlowCollection.Where(c => c.IsRefportConnection() == false);
-                if (incomingValueFlows.Count() > 1)
-                {
-                    var mux = CreateDSMux(componentValueflowTargetMapping, "mux-" + GetOrSetID(param),incomingValueFlows);
-
-                    ((avm.Alternative)rootContainer).ValueFlowMux.Add(mux);
-                    vftIdCache[param] = mux.ID;
-                    valueExpression.AssignedValue = new avm.DerivedValue() { ValueSource = mux.ID };
-                }
-                else if (incomingValueFlows.Count() == 1)
+                if (param.SrcConnections.ValueFlowCollection.Any(c => c.IsRefportConnection() == false))
                 {
                     var vft = param.SrcConnections.ValueFlowCollection.First(c => c.IsRefportConnection() == false).SrcEnds.ValueFlowTarget;
 
@@ -1097,10 +997,6 @@ namespace CyPhy2DesignInterchange
                     xConstraint = constraint;
                     foreach (var origin in relative.SrcConnections.RelativeLayoutConstraintOriginCollection)
                     {
-                        if (origin.SrcEnd.Impl.MetaBase.Name != typeof(CyPhy.Component).Name)
-                        {
-                            throw new ApplicationException(String.Format("RelativeLayoutConstraint '{0}' must have a Component origin, but its origin is '{1}'", relative.Name, origin.SrcEnd.Impl.Name));
-                        }
                         constraint.Origin = childComponents[origin.SrcEnd].ID;
                     }
                     foreach (var apply in relative.DstConnections.ApplyRelativeLayoutConstraintCollection)
@@ -1596,30 +1492,6 @@ namespace CyPhy2DesignInterchange
             }
 
             return constraint;
-        }
-        private ValueFlowMux CreateDSMux(Dictionary<CyPhy.ValueFlowTarget, ComponentPrimitivePropertyInstance> componentValueflowTargetMapping, String idProp, IEnumerable<CyPhy.ValueFlow> incomingValueFlows)
-        {
-            var mux = new avm.ValueFlowMux()
-            {
-                ID = idProp,
-                // Name = TODO
-            };
-
-            foreach (var vft in incomingValueFlows.Select(x => x.SrcEnds.ValueFlowTarget))
-            {
-                String idVft = null;
-                ComponentPrimitivePropertyInstance cppi = null;
-                if (componentValueflowTargetMapping.TryGetValue(vft, out cppi))
-                {
-                    idVft = cppi.Value.ID;
-                }
-                else
-                {
-                    idVft = GetOrSetID(vft);
-                }
-                mux.Source.Add(idVft);
-            }
-            return mux;
         }
 
         private avm.DomainModelPort CreateAvmCADDatum(CyPhy.CADDatum cyPhyMLDomainModelPort)

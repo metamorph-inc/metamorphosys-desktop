@@ -84,17 +84,16 @@ namespace DesignImporterTests
             proj2.BeginTransactionInNewTerr();
             try
             {
-                MgaFCO componentAssembly = (MgaFCO)proj2.RootFolder.GetObjectByPathDisp("/@" + FolderName + "/@" + asmName);
+                MgaFCO componentAssembly = (MgaFCO)proj2.RootFolder.GetObjectByPathDisp("/@ComponentAssemblies/@" + asmName);
                 Assert.NotNull(componentAssembly);
                 componentAssembly.DestroyObject();
                 var importer = new CyPhyDesignImporter.AVMDesignImporter(null, proj2);
                 avm.Design design;
-                var adpPath = Path.Combine(fixture.AdmPath, asmName + ("ComponentAssemblies" == FolderName ? ".adp" : ".adm"));
-                var ret = importer.ImportFile(adpPath,
-                    "ComponentAssemblies" == FolderName ? CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_CAS : CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_DS);
+                var adpPath = Path.Combine(fixture.AdmPath, asmName + ".adp");
+                var ret = (ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly)importer.ImportFile(adpPath, CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_CAS);
                 if (caTest != null)
                 {
-                    caTest((ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly)ret);
+                    caTest(ret);
                 }
             }
             finally
@@ -109,18 +108,13 @@ namespace DesignImporterTests
             return importMgaPath;
         }
 
-        public MgaFCO RunDesignExporter(string asmName)
+        protected MgaFCO RunDesignExporter(string asmName)
         {
             MgaFCO componentAssembly;
             proj.BeginTransactionInNewTerr();
-            string fileExtension = ".adp";
             try
             {
-                componentAssembly = (MgaFCO)proj.RootFolder.GetObjectByPathDisp("/@" + FolderName + "/@" + asmName);
-                if (componentAssembly.Meta.Name == "DesignContainer")
-                {
-                    fileExtension = ".adm";
-                }
+                componentAssembly = (MgaFCO)proj.RootFolder.GetObjectByPathDisp("/@ComponentAssemblies/@" + asmName);
                 Assert.NotNull(componentAssembly);
                 var designExporter = new CyPhyDesignExporter.CyPhyDesignExporterInterpreter();
                 designExporter.Initialize(proj);
@@ -129,7 +123,7 @@ namespace DesignImporterTests
                 {
                     CurrentFCO = componentAssembly,
                     Project = proj,
-                    OutputDirectory = AdmPath
+                    OutputDirectory = fixture.AdmPath
                 };
 
                 designExporter.MainInTransaction(parameters, true);
@@ -140,17 +134,15 @@ namespace DesignImporterTests
                 proj.AbortTransaction();
             }
 
-            Assert.True(File.Exists(Path.Combine(fixture.AdmPath, asmName + fileExtension)));
+            Assert.True(File.Exists(Path.Combine(fixture.AdmPath, asmName + ".adp")));
             return componentAssembly;
         }
 
         MgaProject proj { get { return fixture.proj; } }
-        protected T fixture;
+        T fixture;
         public void SetFixture(T data)
         {
             fixture = data;
         }
-        public virtual string FolderName { get { return "ComponentAssemblies"; } }
-        public virtual string AdmPath { get { return fixture.AdmPath; } }
     }
 }

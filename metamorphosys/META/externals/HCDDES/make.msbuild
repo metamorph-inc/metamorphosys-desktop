@@ -4,7 +4,10 @@
 
   <Target Name="CheckEnv" DependsOnTargets="CheckEnvGme;CheckEnvUdm;CheckEnvGreat">
     <Error Text="ANTLR3_PATH='$(ANTLR3_PATH)' doesn't exist" Condition="!Exists('$(ANTLR3_PATH)')"/>
+    <Error Text="BOOST_PATH='$(BOOST_PATH)' doesn't exist" Condition="!Exists('$(BOOST_PATH)')"/>
+    <!-- Error Text="BOOST_VER not set" Condition="'$(BOOST_VER)'==''"/ -->
     <Error Text="CTEMPLATE_PATH='$(CTEMPLATE_PATH)' doesn't exist" Condition="!Exists('$(CTEMPLATE_PATH)')"/>
+    <Error Text="GECODE_PATH='$(GECODE_PATH)' doesn't exist" Condition="!Exists('$(GECODE_PATH)')"/>
     <Error Text="MATLAB_PATH='$(MATLAB_PATH)' doesn't exist" Condition="!Exists('$(MATLAB_PATH)')"/>
     <Error Text="PYTHON_HOME='$(PYTHON_HOME)' doesn't exist" Condition="!Exists('$(PYTHON_HOME)')"/>
     <Error Text="VCP_PATH='$(VCP_PATH)' doesn't exist" Condition="!Exists('$(VCP_PATH)')"/>
@@ -27,7 +30,7 @@
   <PropertyGroup>
     <ISS>deploy\HCDDES.iss</ISS>
   </PropertyGroup>
-  <Target Name="Installer" DependsOnTargets="BuildRelease">
+  <Target Name="Installer" DependsOnTargets="BuildRelease;py2exe">
     <CallTarget Targets="ISCC"/>
   </Target>
 </Project>

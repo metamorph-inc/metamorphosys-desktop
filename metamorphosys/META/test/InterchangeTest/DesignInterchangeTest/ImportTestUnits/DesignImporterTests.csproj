@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -81,9 +81,7 @@
     <Compile Include="DesignWithFiles.cs" />
     <Compile Include="Description.cs" />
     <Compile Include="DesignPackage.cs" />
-    <Compile Include="CAD.cs" />
     <Compile Include="DesignImporterTests.cs" />
-    <Compile Include="DSAlternative.cs" />
     <Compile Include="Ports.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueFlow.cs" />

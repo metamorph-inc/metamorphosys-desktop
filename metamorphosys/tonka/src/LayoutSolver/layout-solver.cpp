@@ -8,21 +8,12 @@
 */
 #include "layout-solver.h"
 #include <strstream>
-#include <tuple>
 
 /*
 * @todo: 
 */
 
 using namespace Gecode;
-
-// Function to round doubles to strings with a given number of decimal places, for diagnostic messages.
-std::string RoundedCast(double toCast, unsigned precision = 1u) {
-	std::ostringstream result;
-	result << std::fixed << std::setprecision(precision) << toCast;
-	return result.str();
-}
-
 
 struct PackageSort : public std::binary_function<std::pair<double, int>, std::pair<double, int>, bool>
 {
@@ -113,7 +104,6 @@ template < typename T > std::string to_string( const T& n )
 /////////////////////////////////////////////////////////////////
 
 int *LayoutSolver::pkg_idx_map = 0;
-size_t pkg_idx_map_sz = 0;
 LayoutSolver::xBits_t * LayoutSolver::packages_exceptions_map = 0;
 bool * LayoutSolver::exactXyrConstraintsExist = 0;
 
@@ -128,8 +118,8 @@ LayoutSolver::LayoutSolver(Json::Value& root)
 	boardW(resolution*root["boardWidth"].asDouble()),
 	boardH(resolution*root["boardHeight"].asDouble()), 
 	boardL(2),		// PART PLACEMENT is on top and bottom layer only
-	interChipSpace(resolution*root["interChipSpace"].asDouble()), 
-	boardEdgeSpace(resolution*root["boardEdgeSpace"].asDouble()),
+	chipgap(resolution*root["chipGap"].asDouble()), 
+	boardEdgeGap(resolution*root["boardEdgeGap"].asDouble()),
 	rootJson(root),
 	packages(Json::arrayValue),
 	packageMap(),
@@ -137,10 +127,9 @@ LayoutSolver::LayoutSolver(Json::Value& root)
 {
 	packageMap.clear();
 	exRects.clear();
-	pkg_idx_map_sz = root["packages"].size();
-	pkg_idx_map = new int[pkg_idx_map_sz]; // create a mapping pkg idx mapping table
+	pkg_idx_map = new int[root["packages"].size()]; // create a mapping pkg idx mapping table
 
-	for (int i = 0; i < pkg_idx_map_sz; i++)
+	for (int i=0; i<rootJson["packages"].size(); i++)
 	{
 		if (rootJson["packages"][i]["doNotPlace"] == true)
 		{
@@ -277,7 +266,7 @@ void LayoutSolver::PostOverlapConstraints()
 		for(int j=0; j<i; j++)
 		{
 			// int computedChipGap = interChipGap(i, j);	// Take into account the inter-chip-gap constraint exceptions; MOT-728.
-			int computedChipGap = interChipSpace;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
+			int computedChipGap = chipgap;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
 
 			int nrx = MAX(MAX(kow[i],kow[j]),computedChipGap);
 			int nry = MAX(MAX(koh[i],koh[j]),computedChipGap);
@@ -327,8 +316,8 @@ void LayoutSolver::PostOverlapConstraints()
 
 void LayoutSolver::getEdgeGaps( int & ebx, int & eby, int pkg_idx )
 {
-	ebx = MAX(kow[ pkg_idx ], boardEdgeSpace);
-	eby = MAX(koh[ pkg_idx ], boardEdgeSpace);
+	ebx = MAX(kow[ pkg_idx ], boardEdgeGap);
+	eby = MAX(koh[ pkg_idx ], boardEdgeGap);
 
 	// Handle the board-edge-constraint exception, MOT-728.
 	if (exceptionExists( pkg_idx, BOARD_EDGE ) == true)
@@ -451,134 +440,18 @@ void LayoutSolver::PostBrancher()
 	// order 5 - rest
 	std::list<std::pair<double,int>> area_index_list;
 
-	// At this point packages[] contains the packages that will be placed.
-	// The number of packages is numchips.
-
-	// Define a typedef for a tuple with ranking info for a package using
-	// <int exactFactor, double area, int package index, std::string package name>
-	typedef std::tuple<int, double, int, std::string> rank_t;
-
-	std::vector<rank_t> rankVector;
-
-	// Get the number of layers in the board design
-	int numLayers = rootJson["numLayers"].asInt();
-
-	// Get the ranking info for all the packages
 	for(int i=0; i<numChips; i++)
 	{
-		// Check package for an "exact" constraint.
-		bool exactX = false;
-		bool exactY = false;
-		bool exactLayer = false;
-
-
-		Json::Value& consList = packages[i]["constraints"];
-		for( int consIndex = 0; consIndex < consList.size(); consIndex++ )
-		{
-			if( consList[ consIndex ].isMember("type") && (consList[ consIndex ]["type"].asString().compare("exact") == 0) )
-			{
-				// There's some type of exact constraint.
-				if( consList[ consIndex ].isMember("x") ) exactX = true;
-				if( consList[ consIndex ].isMember("y") ) exactY = true;
-				if( consList[ consIndex ].isMember("layer") ) exactLayer = true;
-			}
-		}
-
-		// Check if if package uses both top and bottom of the board, like a through-hole component.
-		bool isMultilayer = false;
-		if( (numLayers > 1) && packages[i].isMember("multiLayer") && packages[i]["multiLayer"].asBool() )
-		{
-			isMultilayer = true;
-		}
-
-		// Compute a numerical exactFactor, that trumps area in package-placement rankings.
-		int exactFactor = 0;
-		if( exactX && exactY )
-		{
-			exactFactor = 1;
-			if( (numLayers > 1) && (exactLayer || isMultilayer ) )
-			{
-				exactFactor = 2;
-			}
-		}
-
-		// Compute the area of the board
-		int computedChipGap = interChipSpace;
+		int computedChipGap = chipgap;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
 		double w = (ceil(packages[i]["width"].asDouble() * resolution) + computedChipGap)/resolution;
 		double h = (ceil(packages[i]["height"].asDouble() * resolution) + computedChipGap)/resolution;
-		double area = w * h;
+		double area = w*h;
 
-		if( (numLayers > 1) && isMultilayer )
-		{
-			area *= 2;	// Count the bounding box on both the top and bottom of the board
-		}
-		
-		std::string name = packages[i]["name"].asString();
-
-
-		// Create a rank tuple for this package.
-		rank_t rankInfo = make_tuple( exactFactor, area, i, name );
-
-		// TODO: save it in a vector
-		rankVector.push_back( rankInfo );
-
+		area_index_list.push_back(std::pair<double,int>(area, i));
 	}
 
-	// Structure used for sorting the vector
-	// See http://stackoverflow.com/questions/1380463/sorting-a-vector-of-custom-objects
-	struct greater_than_key
-	{
-		inline bool operator() (const rank_t& rank1, const rank_t& rank2)
-		{
-			// Check the exact factor
-			if( std::get<0>(rank1) != std::get<0>(rank2) )
-			{
-				return (std::get<0>(rank1) > std::get<0>(rank2));
-			}
-			// Check the area
-			else if (std::get<1>(rank1) != std::get<1>(rank2) )
-			{
-				return (std::get<1>(rank1) > std::get<1>(rank2));
-			}
-			// Check the name string
-			else 
-			{
-				return ( std::get<3>(rank1).compare( std::get<3>(rank2) ) < 0 );
-			}
-		}
-	};
-
-	// Sort the rank vector, with exactly-placed and large items first,
-	// to minimize the time needed to search possible layouts.
-	std::sort( rankVector.begin(), rankVector.end(), greater_than_key() );
-
-	// Display the sorted vector and create the area_index_list from it.
-	std::cout << "\nSorted Rank Vector (exactFactor, area, package index, package name ):" << std::endl;
-	for(std::vector<rank_t>::iterator itRank = rankVector.begin(); itRank != rankVector.end(); ++itRank) 
-	{
-		std::cout << "\t(" << 
-		std::get<0>(*itRank) << ",\t" <<
-		std::get<1>(*itRank) << ",\t" <<
-		std::get<2>(*itRank) << ",\t" <<
-		std::get<3>(*itRank) << ")" << std::endl;
-
-		int i = std::get<2>(*itRank);
-		double area = std::get<1>(*itRank);
-		area_index_list.push_back(std::pair<double,int>(area, i));
-	}		
-
-	//for(int i=0; i<numChips; i++)
-	//{
-	//	int computedChipGap = interChipSpace;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
-	//	double w = (ceil(packages[i]["width"].asDouble() * resolution) + computedChipGap)/resolution;
-	//	double h = (ceil(packages[i]["height"].asDouble() * resolution) + computedChipGap)/resolution;
-	//	double area = w*h;
-
-	//	area_index_list.push_back(std::pair<double,int>(area, i));
-	//}
-
-	//if (solverOptions.searchOrder == LayoutOptions::STATIC_BCF)	// if using a static search order - presort
-	//	area_index_list.sort(PackageSort(rootJson));
+	if (solverOptions.searchOrder == LayoutOptions::STATIC_BCF)	// if using a static search order - presort
+		area_index_list.sort(PackageSort(rootJson));
 
 	std::cout << "Placement Order" << std::endl;
 	for(std::list<std::pair<double,int>>::iterator i=area_index_list.begin(); i!=area_index_list.end(); ++i)
@@ -587,15 +460,15 @@ void LayoutSolver::PostBrancher()
 	}
 
 	// try custom brancher
-	lobranch(*this, px, py, pz, pr, pw, ph, kow, koh, ebmx, ebmy, rc, boardW, boardH, boardL, interChipSpace, area_index_list, exRects);
+	lobranch(*this, px, py, pz, pr, pw, ph, kow, koh, ebmx, ebmy, rc, boardW, boardH, boardL, chipgap, area_index_list, exRects);
 
 }
 
 
 void LayoutSolver::CalculateDensity()
 {
-	double eg = boardEdgeSpace / (double)resolution;
-	double cg = interChipSpace/(double)resolution;
+	double eg = boardEdgeGap / (double)resolution;
+	double cg = chipgap/(double)resolution;
 	double bw = boardW/(double)resolution;
 	double bh = boardH/(double)resolution;
 
@@ -650,22 +523,20 @@ void LayoutSolver::print(std::ostream& os) const
 	FILE *out = fopen("partial_result.txt", "w");
 	fprintf(out, "-skipped line\n");
 
-	for(int i=0, n = 0; (n < numChips) && (i < pkg_idx_map_sz); i++, n++)
+	for(int i=0; i<numChips; i++)
 	{
-		// Skip the do-not-place packages
-		while( (i < pkg_idx_map_sz) && (-1 == pkg_idx_map[i]) ) i++;
 		int j = pkg_idx_map[i];
-		os  << "package[" << std::setw(3) << j << "]{" << std::setw(3) << pw[n] << "," << std::setw(3) << ph[n] << "}:" 
-			<< px[n] << "," << py[n] << "," << pz[n] << "," <<  pr[n] << std::endl;
-		if (px[n].assigned() && py[n].assigned() && pz[n].assigned() && pr[n].assigned())
+		os  << "package[" << std::setw(3) << j << "]{" << std::setw(3) << pw[i] << "," << std::setw(3) << ph[i] << "}:" 
+			<< px[i] << "," << py[i] << "," << pz[i] << "," <<  pr[i] << std::endl;
+		if (px[i].assigned() && py[i].assigned() && pz[i].assigned() && pr[i].assigned())
 		{
-			fprintf(out, "%d  %f %f %f %f\n", j, px[n].val()/(float)resolution, py[n].val()/(float)resolution, 
-				pw[n]/(float)resolution, ph[n]/(float)resolution);
+			fprintf(out, "%d  %f %f %f %f\n", j, px[i].val()/(float)resolution, py[i].val()/(float)resolution, 
+				pw[i]/(float)resolution, ph[i]/(float)resolution);
 		}
 		else
 		{
 			fprintf(out, "%d  %f %f %f %f\n", j, -1.0, -1.0, 
-				pw[n]/(float)resolution, ph[n]/(float)resolution);
+				pw[i]/(float)resolution, ph[i]/(float)resolution);
 		}
 	}
 	fclose(out);
@@ -675,10 +546,8 @@ void LayoutSolver::printLayout(std::ostream& os, Json::Value& root)
 {
 	Json::Value& packages = root["packages"];
 	int numChips = packages.size();
-	for(int i=0, n = 0; (n < numChips) && (i < pkg_idx_map_sz); i++, n++)
+	for(int i=0; i<numChips; i++)
 	{
-		// Skip the do-not-place packages
-		while( (i < pkg_idx_map_sz) && (-1 == pkg_idx_map[i]) ) i++;
 		int j = pkg_idx_map[i];
 		if (j < 0 || j >= px.size()) 
 			continue;
@@ -1036,7 +905,7 @@ void LayoutSolver::processRelativeConstraint(const Json::Value& constraint, int 
 	}
 
 	// int computedChipGap = interChipGap(i, j);	// Take into account the inter-chip-gap constraint exceptions; MOT-728.
-	int computedChipGap = interChipSpace;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
+	int computedChipGap = chipgap;	// Ignore the inter-chip-gap constraint exceptions; MOT-728.
 
 	// choices: a) null --> don't care, b) same layer, c) opposite layer
 	const Json::Value l = constraint["layer"];
@@ -1135,11 +1004,11 @@ BoolVar LayoutSolver::relativeConstraint(const Json::Value& constraint, const Js
 		throw std::exception(str.str());
 	}
 
-	// check if both x&y are specified & same layer forced and not in conflict with interChipSpace
+	// check if both x&y are specified & same layer forced and not in conflict with chipgap
 	if (!x.isNull() && !y.isNull() && lD == 0)	
 	{
-		rbp::Rect r1; r1.x=r1.y=0; r1.width=pw[rel_pkg]+interChipSpace; r1.height=ph[rel_pkg]+computedChipGap;
-		rbp::Rect r2; r2.x=r2.y=0; r2.width=ph[rel_pkg]+interChipSpace; r2.height=pw[rel_pkg]+computedChipGap;
+		rbp::Rect r1; r1.x=r1.y=0; r1.width=pw[rel_pkg]+chipgap; r1.height=ph[rel_pkg]+computedChipGap;
+		rbp::Rect r2; r2.x=r2.y=0; r2.width=ph[rel_pkg]+chipgap; r2.height=pw[rel_pkg]+computedChipGap;
 		rbp::Rect r3; r3.x=(int)(dx*resolution); r3.y=(int)(dy*resolution); r3.width=pw[pkg_idx]; r3.height=ph[pkg_idx];
 		//std::cout << "[0, 0, " << r1.width << ", " << r1.height << "]" << std::endl;
 		//std::cout << "[0, 0, " << r2.width << ", " << r2.height << "]" << std::endl;
@@ -1210,11 +1079,7 @@ void LayoutSolver::processRangeConstraint(std::string val, int vi, IntVarArray& 
 	BoolVar upperp = expr( *this, varArr[vi] <= (int)(range.second * res));
 
 	rel( *this, upperp && lowerp );
-	std::cout << "Applying Range Constraint on " << name <<
-		":\nLower range limit (=" << RoundedCast(range.first) << 
-		" mm) <= " << varName << 
-		" <= upper range limit (=" << RoundedCast(range.second) << 
-		" mm)." << std::endl;
+	std::cout << "Applying Constraint: " << range.first << " <= " << name << "." << varName << " <= " << range.second << std::endl;
 
 	// check constraint for x & y a) upper > lower, b) upper > edgegap, c) lower < (boardW|H - edgegap)
 	if (range.second < range.first)
@@ -1226,7 +1091,6 @@ void LayoutSolver::processRangeConstraint(std::string val, int vi, IntVarArray& 
 
 	if (varName.compare("x") == 0 || varName.compare("y") == 0)
 	{
-
 		// Set the edge gap to the package's X-or-Y edge-of-board margin.  MOT-728.
 		int eg = ebmx[vi];
 		if( varName.compare("y") == 0 )
@@ -1234,39 +1098,22 @@ void LayoutSolver::processRangeConstraint(std::string val, int vi, IntVarArray& 
 			eg = ebmy[vi];
 		}
 
-		// Convert the edge gap to millimeters
-		double leftEdgeGapInMm = (double) eg / res;
-		double rightEdgeGapInMm = (double) (boardW - eg) / res;
-		double topEdgeGapInMm = (double) (boardH - eg) / res;
-
-		if (range.second < leftEdgeGapInMm)
+		if (range.second < eg)
 		{
 			std::strstream str;
-			str << "Unsolvable range constraint on package \"" << name << 
-				"\" index(" << vi << 
-				"):\nUpper limit of the range constraint (=" << RoundedCast( range.second ) << 
-				" mm) is less than the board's edge spacing (=" << RoundedCast( leftEdgeGapInMm ) 
-				<< " mm)." << std::endl;
+			str << "Unsolvable range constraint on package \"" << name << "\" index(" << vi << "), upper of range < edgegap" << std::endl;
 			throw std::exception(str.str());
 		}
-		if ((varName.compare("x") == 0) && (range.first > rightEdgeGapInMm))
+		if ((varName.compare("x") == 0) && (range.first > (boardW - eg)))
 		{
 			std::strstream str;
-			str << "Unsolvable range constraint on package \"" << name << 
-				"\" index(" << vi << 
-				"):\nLower limit of range constraint (=" << RoundedCast( range.first ) << 
-				" mm) > right edge of board minus board-edge space =(" << RoundedCast( rightEdgeGapInMm ) << 
-				" mm)." << std::endl;
+			str << "Unsolvable range constraint on package \"" << name << "\" index(" << vi << "), lower of range > right-edgegap" << std::endl;
 			throw std::exception(str.str());
 		}
-		if ((varName.compare("y") == 0) && (range.first > topEdgeGapInMm))
+		if ((varName.compare("y") == 0) && (range.first > (boardH - eg)))
 		{
 			std::strstream str;
-			str << "Unsolvable range constraint on package \"" << name <<
-				"\" index(" << vi << 
-				"):\nLower limit of range constraint (=" << RoundedCast( range.first ) <<
-				" mm) > top of board minus board-edge spacing (=" << RoundedCast( topEdgeGapInMm ) << 
-				" mm)." <<std::endl;
+			str << "Unsolvable range constraint on package \"" << name << "\" index(" << vi << "), lower of range > top-edgegap" << std::endl;
 			throw std::exception(str.str());
 		}
 	}

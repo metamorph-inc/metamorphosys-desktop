@@ -1,5 +1,3 @@
-#define BOOST_PYTHON_STATIC_LIB 1
-#define BOOST_PYTHON_NO_LIB
 #include <Python.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>

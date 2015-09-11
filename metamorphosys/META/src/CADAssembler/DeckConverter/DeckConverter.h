@@ -20,7 +20,6 @@ namespace isis
 	class CalculixConverter
 	{
 	public:
-		void DetermineElementFace(std::vector<int> faceNodes, int &face);
 		void ConvertNastranDeck(isis_CADCommon::NastranDeck&, const std::string& );
 
 	protected:

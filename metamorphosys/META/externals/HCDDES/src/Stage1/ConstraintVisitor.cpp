@@ -156,29 +156,12 @@ void ConstraintVisitor::Visit_Node( const ESMoL::Node & node ) {
 		postError( errmsg.str() );
 	}
 
-	set<ESMoL::OS> osobj = node.OS_kind_children();
-	if ( osobj.empty() )
+	ESMoL::OS osobj = node.OS_child();
+	if ( Udm::Object::Cast( osobj ) == Udm::null )
 	{
 		std::ostringstream warnmsg;
 		warnmsg << "Node " << node.name() << " has no OS parameter object.  Using defaults.";
 		postWarning( warnmsg.str() );
-	}
-	else
-	{
-		for (set<ESMoL::OS>::iterator it = osobj.begin(); it != osobj.end(); it++)
-		{
-			if ((*it).type() == ESMoL::OSEK::meta)
-			{
-				// if a node contains an OSEK OS, then it must contain an OSEKCOM object, too
-				set<ESMoL::OSEKCOM> coms = node.OSEKCOM_kind_children();
-				if (coms.empty())
-				{
-					std::string errmsg = "Node " + (std::string)node.name() + " contains an "
-										 "OSEK OS object but doesn't contain an OSEKCOM object.";
-					postError( errmsg );
-				}
-			}
-		}
 	}
 
 	_curENode = node;

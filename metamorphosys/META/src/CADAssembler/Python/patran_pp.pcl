@@ -1,13 +1,12 @@
 
 
-FUNCTION Patran_PP(i_installPath, i_dir, i_filename, i_bdfPath, i_xdbPath)	
-	STRING i_installPath[512]
-    STRING i_filename[64]
+FUNCTION Patran_PP(i_dir, i_filename, i_bdfPath, i_xdbPath)	
+	STRING i_filename[64]
 	STRING i_bdfPath[262] 
 	STRING i_xdbPath[262] 
 	STRING i_dir[262]
 	
-	createProject (i_installPath, i_filename, i_dir, i_bdfPath, i_xdbPath)
+	createProject (i_filename, i_dir, i_bdfPath, i_xdbPath)
 	getAllPartsFactorMax("VM", i_filename // "_out")
 	getAllPartsFactorMax("MP", i_filename // "_out")
 	getAllPartsFactorMax("D", i_filename // "_out")
@@ -22,8 +21,7 @@ END FUNCTION
 $dbdir is absolute path to new project's desired directory
 $bdf and xdb paths relative to dbdir
 $bdfPath and xdbPath need proper file extensions of ".bdf" and ".xdb"
-FUNCTION createProject (installPath, dbname, dbdir, bdfPath, xdbPath)
-    STRING installPath[512]
+FUNCTION createProject (dbname, dbdir, bdfPath, xdbPath)
     STRING dbname[64]
     STRING dbdir[262]
     STRING bdfPath[262]
@@ -34,7 +32,7 @@ FUNCTION createProject (installPath, dbname, dbdir, bdfPath, xdbPath)
     defHeight = 8.0
     
     uil_file_close.go(  )
-    uil_file_new.go( installPath // "\" // "template.db", dbdir // "\" // dbname // ".db" )
+    uil_file_new.go( "C:\MSC.Software\Patran_x64\20122/template.db", dbdir // "\" // dbname // ".db" )
     set_current_dir( dbdir )
     nastran_input_import( bdfPath, "default_group", 11, @
         [TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE], @

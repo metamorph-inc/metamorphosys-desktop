@@ -27,7 +27,7 @@ namespace CyPhyDesignExporter
     ProgId(ComponentConfig.progID),
     ClassInterface(ClassInterfaceType.AutoDual)]
     [ComVisible(true)]
-    public class CyPhyDesignExporterInterpreter : IGMEVersionInfo, IMgaComponentEx, ICyPhyInterpreter
+    public class CyPhyDesignExporterInterpreter : IMgaComponentEx, IGMEVersionInfo, ICyPhyInterpreter
     {
         /// <summary>
         /// Contains information about the GUI event that initiated the invocation.
@@ -86,49 +86,11 @@ namespace CyPhyDesignExporter
                 MgaGateway = new MgaGateway(mainParameters.Project);
                 parameters.Project.CreateTerritoryWithoutSink(out MgaGateway.territory);
 
-                var result = new InterpreterResult() { Success = true, RunCommand = "" };
-
                 MgaGateway.PerformInTransaction(delegate
                 {
                     MainInTransaction((InterpreterMainParameters)parameters);
-
-
-                    // TODO: this part needs to be refactored!
-                    var workflowRef = this.mainParameters
-                        .CurrentFCO
-                        .ChildObjects
-                        .OfType<MgaReference>()
-                        .FirstOrDefault(x => x.Meta.Name == "WorkflowRef");
-                    
-                    if (workflowRef != null)
-                    {
-                        string Parameters = workflowRef
-                            .Referred
-                            .ChildObjects
-                            .OfType<MgaAtom>()
-                            .FirstOrDefault(fco => fco.Meta.Name == typeof(CyPhy.Task).Name
-                                && String.Equals(CyPhyClasses.Task.Cast(fco).Attributes.COMName, this.ComponentProgID, StringComparison.InvariantCultureIgnoreCase))
-                            .StrAttrByName["Parameters"];
-
-                        Dictionary<string, string> workflowParameters = new Dictionary<string, string>();
-
-                        try
-                        {
-                            workflowParameters = (Dictionary<string, string>)Newtonsoft.Json.JsonConvert.DeserializeObject(Parameters, typeof(Dictionary<string, string>));
-                            if (workflowParameters == null)
-                            {
-                                workflowParameters = new Dictionary<string, string>();
-                            }
-                        }
-                        catch (Newtonsoft.Json.JsonReaderException)
-                        {
-                        }
-
-                        META.AnalysisTool.ApplyToolSelection(this.ComponentProgID, workflowParameters, result, this.mainParameters);
-                    }
                 });
-
-                return result;
+                return new InterpreterResult() { Success = true, RunCommand = "" };
             }
             finally
             {
@@ -316,13 +278,7 @@ namespace CyPhyDesignExporter
                     foreach (var file in Directory.EnumerateFiles(pathCA, "*.*", SearchOption.AllDirectories))
                     {
                         var relpath = Path.GetDirectoryName(ComponentLibraryManager.MakeRelativePath(pathCA, file));
-                        string dirName = componentAssembly.Attributes.ID.ToString();
-                        string managedGUID = componentAssembly.Attributes.ManagedGUID;
-                        if (string.IsNullOrEmpty(managedGUID) == false)
-                        {
-                            dirName = managedGUID;
-                        }
-                        zip.AddFile(file, dirName + "/" + relpath);
+                        zip.AddFile(file, componentAssembly.Attributes.ID + "/" + relpath);
                     }
 
                     foreach (var subCA in componentAssembly.Children.ComponentAssemblyCollection)

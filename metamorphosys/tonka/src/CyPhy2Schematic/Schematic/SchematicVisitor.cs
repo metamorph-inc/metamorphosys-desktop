@@ -51,15 +51,12 @@ namespace CyPhy2Schematic.Schematic
         public override void visit(ComponentAssembly obj)
         {
             var layoutFile = (obj.Impl.Impl as GME.MGA.MgaFCO).RegistryValue["layoutFile"];
-            int ancestorsWithLayoutJson = Layout.LayoutGenerator.getAncestorModels((GME.MGA.MgaFCO)obj.Impl.Impl).Where(parent => parent.RegistryValue["layoutFile"] != null).Count();
-	    // we only care about the top-most layout.json
-            if (layoutFile != null && ancestorsWithLayoutJson == 0)
+            if (layoutFile != null)
             {
                 var pathLayoutFile = Path.Combine(obj.Impl.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), layoutFile);
-                var managedGUID = CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyManagedGuid(obj.Impl.Impl as GME.MGA.MgaModel);
                 var layoutParser = new Layout.LayoutParser(pathLayoutFile, CodeGenerator.Logger)
                     {
-                        parentInstanceGUID = string.IsNullOrEmpty(managedGUID) == false ? managedGUID: CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyChainGuid(obj.Impl.Impl as GME.MGA.MgaModel),
+                        parentInstanceGUID = CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyChainGuid(obj.Impl.Impl as GME.MGA.MgaModel),
                         parentGUID = CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyID(obj.Impl.Impl as GME.MGA.MgaModel)
                     };
                 Logger.WriteDebug("Design \"{0}\" is using layoutFile \"{1}\". Parent GUID : {2}", obj.Name, layoutFile, layoutParser.parentInstanceGUID ?? "[null]");

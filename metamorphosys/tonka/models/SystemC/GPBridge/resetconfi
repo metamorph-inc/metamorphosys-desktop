@@ -1,0 +1,12 @@
+#!/bin/bash
+sudo rm /sys/kernel/config/usb_gadget/g1/configs/config.1/gbsim
+sudo rmdir /sys/kernel/config/usb_gadget/g1/configs/config.1/strings/0x409/
+sudo rmdir  /sys/kernel/config/usb_gadget/g1/configs/config.1/
+sudo rmdir /sys/kernel/config/usb_gadget/g1/strings/0x409/
+sudo rmdir /sys/kernel/config/usb_gadget/g1/functions/ffs.gbsim/
+sudo rmdir /sys/kernel/config/usb_gadget/g1/
+
+
+
+
+

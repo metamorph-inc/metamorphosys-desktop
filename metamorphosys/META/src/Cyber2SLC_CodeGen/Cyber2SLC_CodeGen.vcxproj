@@ -77,7 +77,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;.\SL_CodeGen;.\SL_CodeGen\FMI;..\Cyber2SFC_CodeGen;.\Cycles;..\..\3rdParty\ctemplate-1.0\src\windows;$(GME_ROOT)/SDK/BON/Common;$(UDM_PATH)/include;$(GME_ROOT)/Interfaces;$(GME_ROOT)/Gme/Interfaces;$(GME_ROOT)\GME\Gme;$(META_PATH)\externals\HCDDES\include;$(GREAT_PATH)/include;$(PYTHON_HOME)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\SL_CodeGen;.\SL_CodeGen\FMI;..\Cyber2SFC_CodeGen;.\Cycles;$(CTEMPLATE_PATH)\src\windows;$(GME_ROOT)/SDK/BON/Common;$(UDM_PATH)/include;$(GME_ROOT)/Interfaces;$(GME_ROOT)/Gme/Interfaces;$(GME_ROOT)\GME\Gme;$(META_PATH)\externals\HCDDES\include;$(GREAT_PATH)/include;$(PYTHON_HOME)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;USE_CyberComposition;_DEBUG;_WINDOWS;_USRDLL;UDM_DYNAMIC_LINKING;PRINT_INFO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -98,8 +98,8 @@
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>Component.def</ModuleDefinitionFile>
       <RegisterOutput>false</RegisterOutput>
-      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;..\..\3rdParty\ctemplate-1.0\vsprojects\libctemplate\bin;..\..\3rdParty\ctemplate-1.0\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Rpcrt4.lib;libctemplate-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;$(CTEMPLATE_PATH)\vsprojects\libctemplate\bin;$(CTEMPLATE_PATH)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SFCPrintD.lib;mfile2SFCD.lib;BExprMapTreeD.lib;SFCUdmEngineD.lib;UdmBuilderD.lib;BlockTemplate_CyberD.lib;Rpcrt4.lib;libctemplate-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>reg add HKCR\Wow6432Node\CLSID\{F4657AA7-5F12-4F02-B314-4375C7B503C2}\InprocServer32 /v ThreadingModel /d Apartment /f &gt; "$(IntDir)\Threadingmarker"</Command>
@@ -131,7 +131,7 @@
     </Midl>
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>.;.\SL_CodeGen;.\SL_CodeGen\FMI;..\Cyber2SFC_CodeGen;.\Cycles;..\..\3rdParty\ctemplate-1.0\src\windows;$(GME_ROOT)/SDK/BON/Common;$(UDM_PATH)/include;$(GME_ROOT)/Interfaces;$(GME_ROOT)/Gme/Interfaces;$(GME_ROOT)\GME\Gme;$(META_PATH)\externals\HCDDES\include;$(GREAT_PATH)/include;$(PYTHON_HOME)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\SL_CodeGen;.\SL_CodeGen\FMI;..\Cyber2SFC_CodeGen;.\Cycles;$(CTEMPLATE_PATH)\src\windows;$(GME_ROOT)/SDK/BON/Common;$(UDM_PATH)/include;$(GME_ROOT)/Interfaces;$(GME_ROOT)/Gme/Interfaces;$(GME_ROOT)\GME\Gme;$(META_PATH)\externals\HCDDES\include;$(GREAT_PATH)/include;$(PYTHON_HOME)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;USE_CyberComposition;NDEBUG;_WINDOWS;_USRDLL;UDM_DYNAMIC_LINKING;PRINT_INFO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -149,8 +149,8 @@
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>Component.def</ModuleDefinitionFile>
       <RegisterOutput>false</RegisterOutput>
-      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;..\..\3rdParty\ctemplate-1.0\bin\;..\..\3rdParty\ctemplate-1.0\vsprojects\libctemplate\bin\;..\..\3rdParty\ctemplate-1.0\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Rpcrt4.lib;libctemplate.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.;$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(META_PATH)\externals\HCDDES\lib;$(PYTHON_HOME)\libs;$(CTEMPLATE_PATH)\bin\;$(CTEMPLATE_PATH)\vsprojects\libctemplate\bin\;$(CTEMPLATE_PATH)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SFCPrint.lib;mfile2SFC.lib;BExprMapTree.lib;SFCUdmEngine.lib;UdmBuilder.lib;Rpcrt4.lib;BlockTemplate_Cyber.lib;libctemplate.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
       <Command>reg add HKCR\Wow6432Node\CLSID\{F4657AA7-5F12-4F02-B314-4375C7B503C2}\InprocServer32 /v ThreadingModel /d Apartment /f &gt; "$(IntDir)\Threadingmarker"</Command>
@@ -160,7 +160,8 @@
       <Outputs>$(IntDir)Threadingmarker</Outputs>
     </CustomBuildStep>
     <PreBuildEvent>
-      <Command>xcopy /y/d/f "..\..\3rdParty\ctemplate-1.0\vsprojects\libctemplate\bin\libctemplate.dll" "$(OutDir)\"</Command>
+      <Command>
+      </Command>
       <Message>
       </Message>
     </PreBuildEvent>
@@ -278,24 +279,6 @@
     <Midl Include="$(GME_ROOT)\SDK\BON\Common\ComponentLib.idl" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\BExprMapTree\BExprMapTree.vcxproj">
-      <Project>{8f8c9016-c830-4bed-9676-f96246ff8308}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\BlockTemplate\BlockTemplate_Cyber.vcxproj">
-      <Project>{cce0fc0e-7843-4a85-b4d8-9752e92355d3}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\mfile2SFC\mfile2SFC.vcxproj">
-      <Project>{2b72f4cc-c4f7-47d3-ac06-31b67cef6cbb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\SFCPrint\SFCPrint.vcxproj">
-      <Project>{1a92a2b3-8cd0-4dc9-9b61-b67474d07456}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\SFCUdmEngine\SFCUdmEngine.vcxproj">
-      <Project>{a6c033c3-ac95-4872-b8bd-9d0ec6761a69}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\externals\HCDDES\src\lib\UdmBuilder\UdmBuilder.vcxproj">
-      <Project>{47e6f95b-668f-4963-b1c5-535c8e09d609}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Cyber2SFC_CodeGen\CyPhy2SFC_CodeGen.vcxproj">
       <Project>{94143676-7004-4cad-a74e-d2de0b713e26}</Project>
     </ProjectReference>

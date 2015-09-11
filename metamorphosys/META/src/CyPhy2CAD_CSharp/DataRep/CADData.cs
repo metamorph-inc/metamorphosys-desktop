@@ -159,22 +159,19 @@ namespace CyPhy2CAD_CSharp.DataRep
                     pairlist.Add(MakeRootConstraint("FRONT",
                                                     component.DisplayID,
                                                     ConfigID,
-                                                    rootIsAsmType,
-                                                    component.SpecialDatums.Where(d => d.DatumName=="FRONT").FirstOrDefault()));
+                                                    rootIsAsmType));
 
                     // top pair
                     pairlist.Add(MakeRootConstraint("TOP",
                                                     component.DisplayID,
                                                     ConfigID,
-                                                    rootIsAsmType,
-                                                    component.SpecialDatums.Where(d => d.DatumName == "TOP").FirstOrDefault()));
+                                                    rootIsAsmType));
 
                     // right pair
                     pairlist.Add(MakeRootConstraint("RIGHT",
                                                     component.DisplayID,
                                                     ConfigID,
-                                                    rootIsAsmType,
-                                                    component.SpecialDatums.Where(d => d.DatumName == "RIGHT").FirstOrDefault()));
+                                                    rootIsAsmType));
 
                     rootconstraintout.Pair = pairlist.ToArray();
 
@@ -263,8 +260,7 @@ namespace CyPhy2CAD_CSharp.DataRep
         private CAD.PairType MakeRootConstraint(string location,
                                                 string componentDispID,
                                                 string assemblyID,
-                                                bool rootIsAsmType,
-                                                Datum datum)
+                                                bool rootIsAsmType)
         {
             CAD.PairType pair = new CAD.PairType();
             pair._id = UtilityHelpers.MakeUdmID();
@@ -285,13 +281,6 @@ namespace CyPhy2CAD_CSharp.DataRep
             {
                 constraintFeature.FeatureName = location;
             }
-            
-            // META-3555 hack
-            if (datum != null && datum.Marker != null)
-            {
-                constraintFeature.GeometryMarker = datum.Marker.ToCADXml();
-            }
-
             featurelist.Add(constraintFeature);
 
             CAD.ConstraintFeatureType asmConstraint = new CAD.ConstraintFeatureType();

@@ -1229,49 +1229,6 @@ namespace ConnectorUnrollTest
             return true;
         }
 
-        private Dictionary<string, string> GetIDs(MgaModel rootModel)
-        {
-            Dictionary<string, string> ret = new Dictionary<string, string>();
-            Queue<IMgaFCO> fcos = new Queue<IMgaFCO>();
-            var filter = rootModel.Project.CreateFilter();
-
-            Action<IMgaModel> enqueueModelAndDescendants = (model) =>
-            {
-                fcos.Enqueue(model);
-                foreach (MgaFCO fco in ((MgaModel)model).GetDescendantFCOs(filter))
-                {
-                    fcos.Enqueue(fco);
-                }
-            };
-            enqueueModelAndDescendants(rootModel);
-
-            while (fcos.Count > 0)
-            {
-                IMgaFCO fco = fcos.Dequeue();
-                if (ret.ContainsKey(fco.ID) == false)
-                {
-                    ret.Add(fco.ID, fco.AbsPath);
-                    if (fco is IMgaReference)
-                    {
-                        var referred = ((IMgaReference)fco).Referred;
-                        if (referred != null)
-                        {
-                            if (referred is MgaModel)
-                            {
-                                enqueueModelAndDescendants((MgaModel)referred);
-                            }
-                            else
-                            {
-                                fcos.Enqueue(referred);
-                            }
-                        }
-                    }
-                }
-            }
-            return ret;
-        }
-
-
         private bool CallElaborator(
             MgaProject project,
             MgaFCO currentobj,
@@ -1279,58 +1236,21 @@ namespace ConnectorUnrollTest
             int param,
             bool expand = true)
         {
-            Dictionary<string, string> originalIDs;
-            CyPhyElaborateCS.CyPhyElaborateCSInterpreter elaborator;
-            bool result;
+            bool result = false;
             try
             {
                 //this.Logger.WriteDebug("Elaborating model...");
-                elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
+                var elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
                 elaborator.Initialize(project);
                 int verbosity = 128;
-                originalIDs = GetIDs((MgaModel)currentobj);
-                result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);
-
+                result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);                
             }
             catch (Exception)
             {
-                return false;
-            }
-
-            var filter = project.CreateFilter();
-            foreach (MgaFCO fco in ((MgaModel)currentobj).GetDescendantFCOs(filter))
-            {
-                if (fco is IMgaConnection)
-                {
-                    continue;
-                }
-                if (fco.ParentModel != null && fco.ParentModel.Meta.Name == "ModelicaConnector")
-                {
-                    continue; // FIXME: maybe this is a bug
-                }
-                string original = null;
-                if (originalIDs.ContainsKey(fco.ID) == false)
-                {
-                    Assert.True(elaborator.Traceability.TryGetMappedObject(fco.ID, out original), "Unmapped fco " + fco.ID + " " + fco.AbsPath);
-                    Assert.True(originalIDs.ContainsKey(original), "Mapped FCO in traceability " + fco.AbsPath + " is mapped to unknown ID " + original);
-                }
+                result = false;
             }
 
             return result;
         }
     }
-    class Program
-    {
-        [STAThread]
-        static int Main(string[] args)
-        {
-            int ret = Xunit.ConsoleClient.Program.Main(new string[] {
-                System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Substring("file:///".Length),
-                //"/noshadow",
-            });
-            Console.In.ReadLine();
-            return ret;
-        }
-    }
-
 }

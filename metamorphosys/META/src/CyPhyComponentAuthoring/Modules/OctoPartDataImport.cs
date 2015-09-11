@@ -404,7 +404,7 @@ namespace CyPhyComponentAuthoring.Modules
             {
                 //Download icon to temp directory
                 WebClient webClient = new WebClient();
-                String iconPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName().Replace(".", "") + ".png");
+                String iconPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
                 webClient.DownloadFile(part.Icon, iconPath);
 
                 if (File.Exists(iconPath))

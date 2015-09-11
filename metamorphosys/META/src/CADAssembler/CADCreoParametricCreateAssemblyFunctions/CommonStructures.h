@@ -459,13 +459,7 @@ namespace isis
 
 	struct AnalysisGeometry
 	{	
-		std::list<AnalysisGeometryFeature>		features;	// actual datum names in the Creo model
-
-		// GeometryPerEntireComponent_componentInstanceIDs applies to thermal HeatGeneration 
-		// only. HeatGeneration QVOL type is applied to all elements (e.g. Tetra elements)
-		// within a componentInstanceID where the componentInstanceID is for a 
-		// part (not an assembly).  There can be more than one part per HeatGeneration value.  
-		std::vector<std::string> GeometryPerEntireComponent_ComponentInstanceIDs;
+		std::list<AnalysisGeometryFeature>		features;				// actual datum names in the Creo model
 
 		//e_CADPrimaryGeometryQualifier   primaryGeometryQualifier;
 		//e_CADSecondaryGeometryQualifier secondaryGeometryQualifier;
@@ -475,18 +469,6 @@ namespace isis
 
 		AnalysisGeometry(): setOperationDefined(false){};
 	};
-
-	 struct ConvectionBoundary
-	 {
-		double convectionCoefficient;
-		std::string unit;
-		//bool	ambientTemperatureDefined;
-		//double ambientTemperature;
-
-		//ConvectionBoundary() : convectionCoefficient(0.0), ambientTemperature(0.0), ambientTemperatureDefined(false) {};
-		ConvectionBoundary() : convectionCoefficient(0.0) {};
-	 };
-
 
 //	struct AnalysisGeometry
 //	{	
@@ -509,15 +491,7 @@ namespace isis
 
 		bool					analysisBallDefined;
 		// for a ball constraint, rotation is always free (never fixed)
-
-		bool					convectionBoundaryDefined;
-		ConvectionBoundary		convectionBoundary;           // CONV, Specifies a free convection boundary condition for heat transfer analysis.
-
-
-		AnalysisConstraint() :	analysisDisplacementDefined(false), 
-								analysisPinDefined(false), 
-								analysisBallDefined(false), 
-								convectionBoundaryDefined(false) {};
+		AnalysisConstraint() : analysisDisplacementDefined(false), analysisPinDefined(false), analysisBallDefined(false) {};
 	};
 
 
@@ -526,28 +500,6 @@ namespace isis
 		ScalarsForceXyx	force;
 		ScalarsMomentXyx	moment;
 	};
-
-	struct HeatFlux
-	{
-		double		value;
-		std::string unit;
-		HeatFlux() : value(0.0){};
-	};
-
-	struct HeatGeneration
-	{
-		double		value;
-		std::string unit;
-		HeatGeneration() : value(0.0){};
-	};
-
-	struct Temperature
-	{
-		double value;
-		std::string unit;
-		Temperature() : value(0.0) {};
-	};
-
 
 	struct AnalysisLoad
 	{	
@@ -563,35 +515,8 @@ namespace isis
 		bool								accelerationDefined;
 		ScalarAccelerationAndXyzDirection	acceleration;
 
-		bool								heatFluxDefined; // QBDY3, Defines a uniform heat flux load for a boundary surface.
-		HeatFlux							heatFlux;
+		AnalysisLoad() : forceDefined(false), pressureDefined(false), accelerationDefined(false) {};
 
-		bool								heatGenerationDefined; // QBDY3, Defines a uniform heat flux load for a boundary surface.
-		HeatGeneration						heatGeneration;
-	
-		bool								gridPointTemperatureDefined;
-		Temperature							gridPointTemperature;				// TEMP,  Defines temperature at grid points for determination of thermal loading.
-
-		bool								ambientTemperatureDefined;
-		Temperature							ambientTemperature;
-
-		// If geometry.features.size == 0 and gridPointInitialTemperatureDefined, 
-		//		then 
-		//			temperature applies as an initial temperature to all grid points that do not have an explicit gridPointTemperature settings.  
-		//		else
-		//			temperature applies to the grid points identified by the geometry.features
-		bool								gridPointInitialTemperatureDefined; //	Defines a temperature (starting temperature) value for all grid points 
-		Temperature							gridPointInitialTemperature;		//	of the structural model that have not been given
-																				//	a temperature on a TEMP entry.
-
-		AnalysisLoad() : forceDefined(false), 
-						 pressureDefined(false), 
-						 accelerationDefined(false), 
-						 heatFluxDefined(false), 
-						 heatGenerationDefined(false),
-						 gridPointTemperatureDefined(false),
-						 gridPointInitialTemperatureDefined(false),
-						 ambientTemperatureDefined(false){};
 	};
 
 
@@ -1020,9 +945,6 @@ namespace isis
 		bool		fatigueNumberOfCyclesDefined;
 		bool		denstiyDefined;
 
-		bool		heatCapacityDefined;
-		bool		thermalConductivityDefined;
-
 		double		modulusOfElasticity;		// MPa
 		double		poissonsRatio;				// Unitless
 
@@ -1037,9 +959,6 @@ namespace isis
 
 		double		density;			// kg/m3
 
-		double		heatCapacity;
-		double		thermalConductivity;
-
 
 		e_CADUnitsPressure		modulusOfElasticityUnit;			
 
@@ -1052,9 +971,6 @@ namespace isis
 		e_CADUnitsPressure		fatigueStrengthUnit;	
 		e_CADUnitsDensity		densityUnit;
 
-		e_CADUnitsHeatCapacity			heatCapacityUnit;
-		e_CADUnitsThermalConductivity	thermalConductivityUnit;
-
 		AnalysisMaterialProperties():	modulusOfElasticityDefined(false),
 										poissonsRatioDefined(false),
 										tensileYieldStrengthDefined(false),
@@ -1064,8 +980,6 @@ namespace isis
 										bearingUltimateStrengthDefined(false), 
 										fatigueStrengthDefined(false),
 										fatigueNumberOfCyclesDefined(false),
-										heatCapacityDefined(false),
-										thermalConductivityDefined(false),
 										denstiyDefined(false),			
 										modulusOfElasticity(0.0),		
 										poissonsRatio(0.0),				
@@ -1077,8 +991,6 @@ namespace isis
 										fatigueStrength(0.0),			
 		 								fatigueNumberOfCycles(0),		
 										density(0.0),	
-										heatCapacity(0.0),
-										thermalConductivity(0.0),
 										modulusOfElasticityUnit(CAD_UNITS_MPA),			
 										tensileYieldStrengthUnit(CAD_UNITS_MPA),
 										tensileUltimateStrengthUnit(CAD_UNITS_MPA),
@@ -1086,9 +998,7 @@ namespace isis
 										bearingYieldStrengthUnit(CAD_UNITS_MPA),	
 										bearingUltimateStrengthUnit(CAD_UNITS_MPA),	
 										fatigueStrengthUnit(CAD_UNITS_MPA),	
-										densityUnit(CAD_UNITS_KG_PER_MM_CUBED),
-										heatCapacityUnit(CAD_UNITS_J_PER_KG_K),
-										thermalConductivityUnit(CAD_UNITS_W_PER_MM_K) {}	
+										densityUnit(CAD_UNITS_KG_PER_MM_CUBED){}	
 	};
 
 	std::ostream& operator<<(std::ostream& output, const AnalysisMaterialProperties &in_AnalysisMaterialProperties ); 

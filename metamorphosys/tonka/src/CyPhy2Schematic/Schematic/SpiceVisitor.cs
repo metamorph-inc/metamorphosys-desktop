@@ -19,26 +19,14 @@ namespace CyPhy2Schematic.Schematic
 
         private string[] Grounds = new string[] { "gnd", "Gnd", "GND", "ground", "Ground" };
         private string[] SigIntegrityTraces;
-        private Dictionary<string, CyPhy2SchematicInterpreter.IDs> mgaIdToDominIDs;
-        private MgaTraceability traceability;
 
         public Spice.Circuit circuit_obj { get; set; }
         public Spice.SignalContainer siginfo_obj { get; set; }
 
         public CodeGenerator.Mode mode { get; set; }
 
-        Dictionary<CyPhy2SchematicInterpreter.IDs, string> objectToNetId
+        public SpiceVisitor()
         {
-            get
-            {
-                return siginfo_obj.objectToNetId;
-            }
-        }
-
-        public SpiceVisitor(MgaTraceability traceability, Dictionary<string, CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs)
-        {
-            this.traceability = traceability;
-            this.mgaIdToDominIDs = mgaIdToDomainIDs;
             PortNetMap = new Dictionary<Port, string>();
             ComponentNodeMap = new Dictionary<Component, Spice.Node>();
             ObjectSiginfoMap = new Dictionary<object, Spice.SignalBase>();
@@ -285,8 +273,6 @@ namespace CyPhy2Schematic.Schematic
                     net = net_obj
                 };
                 siginfo_parent.signals.Add(siginfo_obj);
-
-                AddNetToSiginfoTraceability(obj, net_obj);
             }
             else
             {
@@ -324,70 +310,6 @@ namespace CyPhy2Schematic.Schematic
 
             // assign to all connected ports - some nets may not have any connection
             visit(obj, net_obj);
-        }
-
-        private void AddNetToSiginfoTraceability(Port obj, string net_obj)
-        {
-            //string id = traceability.GetID(obj.Parent.Impl.Impl);
-            if (obj.Parent.Impl.Impl.MetaBase.Name != typeof(Tonka.TestComponent).Name)
-            {
-               // var ids = this.mgaIdToDominIDs[id];
-                // CodeGenerator.Logger.WriteWarning("{0} {1} {2} {3} {4}", obj.Name, obj.Parent.Impl, ids.ID, ids.instanceGUID, ids.managedGUID);
-
-                //id = traceability.GetID(obj.Impl.Impl);
-                CyPhy2SchematicInterpreter.IDs ids;
-                foreach (var connected in obj.connectedPorts.Values)
-                {
-                    if (this.mgaIdToDominIDs.TryGetValue(traceability.GetID(connected.Impl), out ids))
-                    {
-                        if (connected.ParentContainer is Tonka.Component)
-                        {
-                            CyPhy2SchematicInterpreter.IDs componentIDs;
-                            CyPhy2SchematicInterpreter.IDs componentAssemblyIDs;
-                            if (this.mgaIdToDominIDs.TryGetValue(traceability.GetID(connected.ParentContainer.Impl), out componentIDs) &&
-                                this.mgaIdToDominIDs.TryGetValue(traceability.GetID(connected.ParentContainer.ParentContainer.Impl), out componentAssemblyIDs))
-                            {
-                                CodeGenerator.Logger.WriteDebug("Mapped Component port {0} {1} port ID:{2} ; component instanceGUID:{3} ; ca managedGUID:{4}", connected.ParentContainer.Name, connected.Name,
-                                    ids.ID, componentIDs.instanceGUID, componentAssemblyIDs.managedGUID);
-
-                                objectToNetId.Add(new CyPhy2SchematicInterpreter.IDs()
-                                {
-                                    ID = ids.ID,
-                                    ConnectorID = ids.ConnectorID,
-                                    instanceGUID = componentIDs.instanceGUID,
-                                    managedGUID = componentAssemblyIDs.managedGUID
-                                }, net_obj);
-
-                            }
-                            else
-                            {
-                                CodeGenerator.Logger.WriteDebug("Unmapped component port {0} {1} ", connected.Name, connected.ParentContainer.Name);
-                            }
-                        }
-                        else if (connected.ParentContainer is Tonka.ComponentAssembly)
-                        {
-                            CyPhy2SchematicInterpreter.IDs componentAssemblyIDs;
-                            if (this.mgaIdToDominIDs.TryGetValue(traceability.GetID(connected.ParentContainer.Impl), out componentAssemblyIDs))
-                            {
-                                objectToNetId.Add(new CyPhy2SchematicInterpreter.IDs()
-                                {
-                                    ID = ids.ID,
-                                    ConnectorID = ids.ConnectorID,
-                                    managedGUID = componentAssemblyIDs.managedGUID
-                                }, net_obj);
-                            }
-                            else
-                            {
-                                CodeGenerator.Logger.WriteDebug("Unmapped ComponentAssembly port {0} {1} ", connected.Name, connected.ParentContainer.Name);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        CodeGenerator.Logger.WriteWarning("Unmapped port <a href=\"mga:{0}\">{1}</a>", traceability.GetID(connected.Impl), connected.Impl.AbsPath);
-                    }
-                }
-            }
         }
 
         private void visit(Port obj, string net_obj)

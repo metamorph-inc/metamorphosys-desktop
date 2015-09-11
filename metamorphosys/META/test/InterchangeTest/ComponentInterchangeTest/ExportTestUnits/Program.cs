@@ -120,10 +120,10 @@ namespace ComponentExporterUnitTests
                               }
                           };
 
-            process.StartInfo.Arguments += "\"components/Components/drawbar/drawbar.component.acm\"";
+            process.StartInfo.Arguments += "\"components/Imported_Components/drawbar/drawbar.component.acm\"";
             process.StartInfo.Arguments += " InputModel.mga";
 
-            return Common.processCommon(process, true);
+            return Common.processCommon(process);
         }
 
         private int runCyPhyComponentImporterCLHull(string testName)
@@ -152,7 +152,7 @@ namespace ComponentExporterUnitTests
                               }
                           };
 
-            process.StartInfo.Arguments += testName + "\"" + "/components/Components/hull/hull.component.acm" + "\"";
+            process.StartInfo.Arguments += testName + "\"/components/Imported_Components/hull/hull.component.acm\"";
             process.StartInfo.Arguments += " " + testName + "/InputModel.mga";
 
             return Common.processCommon(process);
@@ -180,12 +180,7 @@ namespace ComponentExporterUnitTests
             process.StartInfo.Arguments += " " + inputMga;
 
             string output;
-            int retCode = Common.runProcessAndGetOutput(process, out output, err_only: true);
-            if (retCode != 0)
-            {
-                Debug.WriteLine(output);
-            }
-            Assert.True(0 == retCode, process.StartInfo.FileName + " " + process.StartInfo.Arguments + " failed:" + output);
+            Assert.True(0 == Common.runProcessAndGetOutput(process, out output, err_only: true), process.StartInfo.FileName + " " + process.StartInfo.Arguments + " failed:" + output);
         }
 
         [Fact]
@@ -261,7 +256,8 @@ namespace ComponentExporterUnitTests
             Assert.Equal(0, runCyPhyComponentExporterCL(testName));
             Assert.Equal(0, runCyPhyComponentImporterCLDrawbar(testName));
             Assert.Equal(0, runCyPhyComponentImporterCLHull(testName));
-            runCyPhyMLComparator(testName);
+            // META-1184
+            // Assert.Equal(0, runCyPhyMLComparator(testName));
         }
 
         [Fact]
@@ -397,33 +393,6 @@ namespace ComponentExporterUnitTests
             "CompMechanical",
             "CompWelded"
         };
-
-
-        [Fact]
-        public void KinematicRoundTrip()
-        {
-            const string testName = "KinematicRoundTrip";
-            unpackXmes(testName);
-            Assert.Equal(0, runCyPhyComponentExporterCL(testName));
-
-            var acmFile = @"components\Components\RevoluteJoint\RevoluteJoint.component.acm";
-            RunComponentImporter(testName, acmFile);
-
-            acmFile = @"components\Components\TranslationalJoint\TranslationalJoint.component.acm";
-            RunComponentImporter(testName, acmFile);
-
-            runCyPhyMLComparator(testName);
-        }
-
-        private static void RunComponentImporter(string testName, string acmFile)
-        {
-            Assert.Equal(0, CyPhyComponentImporterCL.CyPhyComponentImporterCL.Main(
-                new string[] { 
-                    Path.Combine(_exportModelDirectory, testName, acmFile),
-                    Path.Combine(_exportModelDirectory, testName, "InputModel.mga")
-                }));
-        }
-
     }
 
     class Program

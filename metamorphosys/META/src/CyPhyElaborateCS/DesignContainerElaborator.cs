@@ -112,11 +112,6 @@
                     {
                         continue;
                     }
-                    if (parent.MetaBase.Name == "DecisionGroup")
-                    {
-                        // DecisionGroup can hold only ComponentRefs, so we can't do anything with its children (META-3595)
-                        continue;
-                    }
 
                     if (referred.MetaBase.MetaRef == this.Factory.ComponentMeta)
                     {

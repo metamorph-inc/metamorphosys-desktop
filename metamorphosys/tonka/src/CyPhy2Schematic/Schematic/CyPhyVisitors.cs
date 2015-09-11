@@ -26,18 +26,18 @@ namespace CyPhy2Schematic.Schematic
         public static Dictionary<string, Port> Ports { get; set; }
         public string ProjectDirectory { get; set; }
         public CodeGenerator.Mode mode { get; private set; }
-        private MgaTraceability Traceability;
-        private Dictionary<string, CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs;
 
-        public CyPhyBuildVisitor(string projectDirectory, CodeGenerator.Mode mode, MgaTraceability traceability, Dictionary<string, CyPhy2Schematic.CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs)  // this is a singleton object and the constructor will be called once
+        public CyPhyBuildVisitor(string projectDirectory, CodeGenerator.Mode mode)  // this is a singleton object and the constructor will be called once
         {
             Components = new Dictionary<string, Component>();
             ComponentInstanceGUIDs = new Dictionary<string, Component>();
             Ports = new Dictionary<string, Port>();
             this.ProjectDirectory = projectDirectory;
             this.mode = mode;
-            this.Traceability = traceability;
-            this.mgaIdToDomainIDs = mgaIdToDomainIDs;
+        }
+
+        ~CyPhyBuildVisitor()
+        {
         }
 
         public override void visit(TestBench obj)
@@ -76,26 +76,6 @@ namespace CyPhy2Schematic.Schematic
             var solver = testBench.Children.SolverSettingsCollection.FirstOrDefault();
             if (solver != null)
                 obj.SolverParameters.Add("SpiceAnalysis", solver.Attributes.ToolSpecificAnnotations);
-
-            Dictionary<string, string> properties = testBench.Children.PropertyCollection.ToDictionary(param => param.Name, param => param.Attributes.Value);
-            string spiceAnalysisType;
-            if (properties.TryGetValue("Spice Analysis Type", out spiceAnalysisType))
-            {
-                if (spiceAnalysisType == "Transient Analysis")
-                {
-                    string stepSize = "0.0001";
-                    properties.TryGetValue("Spice Step Size", out stepSize);
-                    string endTime = "1";
-                    properties.TryGetValue("Spice End Time", out endTime);
-                    string startTime = "0";
-                    properties.TryGetValue("Spice Start Time", out startTime);
-                    obj.SolverParameters["SpiceAnalysis"] = String.Format(".TRAN {0} {1} {2}", stepSize, endTime, startTime);
-                }
-                else
-                {
-                    throw new ApplicationException(string.Format("Unsupported Spice Analysis Type '{0}'", spiceAnalysisType));
-                }
-            }
         }
 
         public override void visit(ComponentAssembly obj)
@@ -123,17 +103,7 @@ namespace CyPhy2Schematic.Schematic
                 };
                 obj.ComponentInstances.Add(component_obj);
                 CyPhyBuildVisitor.Components.Add(component.ID, component_obj);   // Add to global component list, component type ID-s?
-                var componentInstanceGUID = Layout.LayoutGenerator.GetComponentID(component);
-                //GME.CSharp.GMEConsole console = GME.CSharp.GMEConsole.CreateFromProject(component.Impl.Project);
-                //console.Info.WriteLine(componentInstanceGUID);
-                try
-                {
-                    CyPhyBuildVisitor.ComponentInstanceGUIDs.Add(componentInstanceGUID, component_obj);   // component instance guid-s?
-                }
-                catch (ArgumentException e)
-                {
-                    throw new ArgumentException(e.Message + " " + componentInstanceGUID);
-                }
+                CyPhyBuildVisitor.ComponentInstanceGUIDs.Add(component.Attributes.InstanceGUID, component_obj);   // component instance guid-s?
             }
         }
 
@@ -171,7 +141,7 @@ namespace CyPhy2Schematic.Schematic
                 if (edaModel == null)
                 {
                     Logger.WriteInfo("Skipping Component <a href=\"mga:{0}\">{1}</a> (no EDA model)",
-                                     Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
+                                     obj.Impl.ID, obj.Impl.Name);
                     return;
                 }
                 schematicModel = edaModel;
@@ -192,8 +162,7 @@ namespace CyPhy2Schematic.Schematic
                 }
                 if (!hasResource && !isTestComponent)
                 {
-                    Logger.WriteError("Couldn't determine path of schematic file for component <a href=\"mga:{0}\">{1}</a>. It may not be linked to a Resource object.",
-                        Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
+                    Logger.WriteError("Couldn't determine path of schematic file for component <a href=\"mga:{0}\">{1}</a>. It may not be linked to a Resource object.", obj.Impl.ID, obj.Impl.Name);
                     return;
                 }
 
@@ -210,8 +179,16 @@ namespace CyPhy2Schematic.Schematic
                         // Try to get the ID of the pre-Elaborated object so that the error message
                         // will be more meaningful.
                         String compOriginalID = null;
-                        Logger.WriteError("Error Loading Schematic Library of <a href=\"mga:{0}\">{1}</a>: {2}",
-                                            Traceability.GetID(obj.Impl.Impl), obj.Impl.Name, e.Message);
+                        if (this.Logger.Traceability.TryGetMappedObject(obj.Impl.ID, out compOriginalID))
+                        {
+                            Logger.WriteError("Error Loading Schematic Library of <a href=\"mga:{0}\">{1}</a>: {2}",
+                                              compOriginalID, obj.Impl.Name, e.Message);
+                        }
+                        else
+                        {
+                            Logger.WriteError("Error Loading Schematic Library of <a href=\"mga:{0}\">{1}</a>: {2}",
+                                              obj.Impl.ID, obj.Impl.Name, e.Message);
+                        }
                         throw;
                     }
                 }
@@ -253,7 +230,7 @@ namespace CyPhy2Schematic.Schematic
                 if (spiceModel == null)
                 {
                     Logger.WriteInfo("Skipping Component <a href=\"mga:{0}\">{1}</a> (no SPICE model)",
-                                     Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
+                                     obj.Impl.ID, obj.Impl.Name);
                     return;
                 }
                 schematicModel = spiceModel;
@@ -262,7 +239,7 @@ namespace CyPhy2Schematic.Schematic
                 if (String.IsNullOrWhiteSpace(spiceClass))
                 {
                     Logger.WriteWarning("Component <a href=\"mga:{0}\">{1}</a> has a SPICE model, but its class is not specified",
-                                        Traceability.GetID(obj.Impl.Impl),
+                                        obj.Impl.ID,
                                         obj.Impl.Name);
                 }
 
@@ -272,14 +249,11 @@ namespace CyPhy2Schematic.Schematic
                     try
                     {
                         String spiceAbsPath;
-                        if (spiceModel.TryGetResourcePath(out spiceAbsPath, ComponentLibraryManager.PathConvention.REL_TO_PROJ_ROOT))
+                        spiceModel.TryGetResourcePath(out spiceAbsPath, ComponentLibraryManager.PathConvention.REL_TO_PROJ_ROOT);
+                        spiceAbsPath = Path.Combine(this.ProjectDirectory, spiceAbsPath);
+                        using (var spiceReader = new StreamReader(spiceAbsPath))
                         {
-                            spiceAbsPath = Path.Combine(this.ProjectDirectory, spiceAbsPath);
-                            obj.SpiceLib = File.ReadAllText(spiceAbsPath);
-                        }
-                        else
-                        {
-                            throw new ApplicationException("SPICE model has no associated Resource");
+                            obj.SpiceLib = spiceReader.ReadToEnd();
                         }
                     }
                     catch (Exception e)
@@ -287,7 +261,7 @@ namespace CyPhy2Schematic.Schematic
                         obj.SpiceLib = "";
                         if (!isTestComponent)
                             Logger.WriteError("Error Loading Spice Library of <a href=\"mga:{0}\">{1}</a>: {2}",
-                                Traceability.GetID(obj.Impl.Impl), obj.Impl.Name, e.Message);
+                                obj.Impl.ID, obj.Impl.Name, e.Message);
                     }
                 }
 
@@ -334,7 +308,7 @@ namespace CyPhy2Schematic.Schematic
                     };
                     obj.Ports.Add(port_obj);
                     CyPhyBuildVisitor.Ports.Add(port.ID, port_obj);
-                    Logger.WriteInfo("Mapping Port <a href=\"mga:{0}\">{1}</a> with ID {2}", Traceability.GetID(port.Impl), port.Name, port.ID );
+                    Logger.WriteDebug("Mapping Port <a href=\"mga:{0}\">{1}</a>", port.ID, port.Name);
                 }
             }
         }
@@ -604,6 +578,7 @@ namespace CyPhy2Schematic.Schematic
         public CyPhyConnectVisitor(CodeGenerator.Mode mode)
         {
             VisitedPorts = new Dictionary<string, Port>();
+            VisitedPorts.Clear();
 
             this.mode = mode;
             switch (mode)
@@ -645,20 +620,18 @@ namespace CyPhy2Schematic.Schematic
                 foreach (var compPort in compPorts)
                 {
                     Dictionary<string, object> visited = new Dictionary<string, object>();
+                    visited.Clear();
                     if (compPort.ParentContainer is Tonka.Connector)                     // traverse connector chain, carry port name in srcConnector
                     {
-                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         Traverse(compPort.Name, obj, obj.Parent.Impl, compPort.ParentContainer as Tonka.Connector, visited);
                     }
                     else if (compPort.ParentContainer is Tonka.DesignElement)
                     {
-                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         Traverse(obj, obj.Parent.Impl, compPort as Tonka.Port, visited); // traverse port chain
                     }
                     else if (portHasCorrectParentType(compPort)
                              && CyPhyBuildVisitor.Ports.ContainsKey(compPort.ID))
                     {
-                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         ConnectPorts(obj, CyPhyBuildVisitor.Ports[compPort.ID]);
                     }
                 }
@@ -667,7 +640,6 @@ namespace CyPhy2Schematic.Schematic
 
         private void Traverse(string srcConnectorName, Port srcPort_obj, Tonka.DesignElement parent, Tonka.Connector connector, Dictionary<string, object> visited)
         {
-            // XXX this is dead code; the elaborator removes Connectors
             Logger.WriteDebug("Traverse Connector: {0}, Mapped-Pin: {1}",
                               connector.Path,
                               srcConnectorName);
@@ -690,7 +662,6 @@ namespace CyPhy2Schematic.Schematic
             }
 
             // continue traversal through named port
-            // XXX FIXME p.Name.Equals(srcConnectorName) is a bug (why should it matter what the names are)
             var mappedPorts = connector.Children.SchematicModelPortCollection.Where(p => p.Name.Equals(srcConnectorName));
             foreach (var mappedPort in mappedPorts)
             {
@@ -746,7 +717,6 @@ namespace CyPhy2Schematic.Schematic
 
                 if (remote.ParentContainer is Tonka.DesignElement)  // remote is contained in a Component or ComponentAssembly
                 {
-                    srcPort_obj.connectedPorts[remote.Impl.AbsPath] = remote;
                     Traverse(srcPort_obj,
                              remote.ParentContainer as Tonka.DesignElement,
                              remote as Tonka.Port,
@@ -754,7 +724,6 @@ namespace CyPhy2Schematic.Schematic
                 }
                 else if (remote.ParentContainer is Tonka.Connector) // remote is contained in a Connector
                 {
-                    srcPort_obj.connectedPorts[remote.Impl.AbsPath] = remote;
                     Traverse(remote.Name,
                              srcPort_obj,
                              remote.ParentContainer.ParentContainer as Tonka.DesignElement,
@@ -782,10 +751,7 @@ namespace CyPhy2Schematic.Schematic
 
             // mark the dstPort visited
             if (!VisitedPorts.ContainsKey(dstPort_obj.Impl.ID))
-            {
                 VisitedPorts.Add(dstPort_obj.Impl.ID, dstPort_obj);
-                dstPort_obj.connectedPorts = srcPort_obj.connectedPorts;
-            }
             else
                 Logger.WriteDebug("Port {0} already in visited ports, don't add",
                                   dstPort_obj.Impl.Path);

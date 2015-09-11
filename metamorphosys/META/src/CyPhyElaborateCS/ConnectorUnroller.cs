@@ -663,16 +663,7 @@ namespace CyPhyElaborateCS
             }
 
             var newPortFCO = parent.CopyFCODisp(oldPort, role);
-
-            String lastGood = oldPort.ID;
-            String iter = null;
-            while (Traceability.TryGetMappedObject(lastGood, out iter)
-                   && lastGood != iter)
-            {
-                lastGood = iter;
-            }
-            Traceability.AddItem(newPortFCO.ID, lastGood);
-
+            //newPortFCO.SetAttributeByNameDisp("ID", null);
             return newPortFCO;
         }
     }

@@ -40,29 +40,17 @@ namespace CyPhy2Schematic.Schematic
             verbose = false;
         }
 
-        public class GenerateLayoutCodeResult
-        {
-            // Results of GenerateLayoutCode(), for merge of MOT-782 and WEB-260 changes.
-            public bool bonesFound;                 // MOT-782: Intended to prevent autorouting if true.
-            public LayoutJson.Layout boardLayout;   // WEB-260    
-        }
-
         public class Result
         {
             // results of generate code
             public string runCommandArgs;       // arguments for the runCommand to be sent to job manager
-            public bool bonesFound = false;     // MOT-782: Intended to prevent autorouting if true.
         }
 
         private CyPhyGUIs.IInterpreterMainParameters mainParameters { get; set; }
-        private MgaTraceability Traceability;
-        private Dictionary<string, CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs;
 
-        public CodeGenerator(CyPhyGUIs.IInterpreterMainParameters parameters, Mode mode, MgaTraceability traceability, Dictionary<string, CyPhy2Schematic.CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs)
+        public CodeGenerator(CyPhyGUIs.IInterpreterMainParameters parameters, Mode mode)
         {
             this.mainParameters = parameters;
-            this.Traceability = traceability;
-            this.mgaIdToDomainIDs = mgaIdToDomainIDs;
             CodeGenerator.verbose = ((CyPhy2Schematic.CyPhy2Schematic_Settings)parameters.config).Verbose;
             partNames = new Dictionary<string, int>();
             partComponentMap = new Dictionary<Eagle.part, Component>();
@@ -86,7 +74,7 @@ namespace CyPhy2Schematic.Schematic
             //      the object network is hierarchical, but the wiring is direct and skips hierarchy. The dependency on CyPhy is largely localized to the 
             //      traversal/visitor code (CyPhyVisitors.cs)
             
-            TestBench_obj.accept(new CyPhyBuildVisitor(this.mainParameters.ProjectDirectory, this.mode, Traceability, mgaIdToDomainIDs)
+            TestBench_obj.accept(new CyPhyBuildVisitor(this.mainParameters.ProjectDirectory, this.mode)
             {
                 Logger = Logger
             });
@@ -140,24 +128,19 @@ namespace CyPhy2Schematic.Schematic
             return eagle;
         }
 
-        private GenerateLayoutCodeResult GenerateLayoutCode(Eagle.eagle eagle, Schematic.TestBench TestBench_obj)
+        private void GenerateLayoutCode(Eagle.eagle eagle, Schematic.TestBench TestBench_obj)
         {
             // write layout file
             string layoutFile = Path.Combine(this.mainParameters.OutputDirectory, "layout-input.json");
-            var myLayout = new Layout.LayoutGenerator(eagle.drawing.Item as Eagle.schematic, TestBench_obj, Logger, this.mainParameters.OutputDirectory);
-            myLayout.Generate(layoutFile);
-            GenerateLayoutCodeResult result = new GenerateLayoutCodeResult();
-            result.bonesFound = myLayout.bonesFound;  // MOT-782
-            result.boardLayout = myLayout.boardLayout;
-            return result;
+            new Layout.LayoutGenerator(eagle.drawing.Item as Eagle.schematic, TestBench_obj, Logger, this.mainParameters.OutputDirectory).Generate(layoutFile);
         }
 
         private void GenerateSpiceCode(TestBench TestBench_obj)
         {
             var circuit = new Spice.Circuit() { name = TestBench_obj.Name };
-            var siginfo = new Spice.SignalContainer() { name = TestBench_obj.Name, objectToNetId = new Dictionary<CyPhy2SchematicInterpreter.IDs,string>() };
+            var siginfo = new Spice.SignalContainer() { name = TestBench_obj.Name };
             // now traverse the object network with Spice Visitor to build the spice and siginfo object network
-            TestBench_obj.accept(new SpiceVisitor(Traceability, mgaIdToDomainIDs) { circuit_obj = circuit, siginfo_obj = siginfo, mode = this.mode });
+            TestBench_obj.accept(new SpiceVisitor() { circuit_obj = circuit, siginfo_obj = siginfo, mode = this.mode });
             String spiceFile = Path.Combine(this.mainParameters.OutputDirectory, "schema.cir");
             circuit.Serialize(spiceFile);
             String siginfoFile = Path.Combine(this.mainParameters.OutputDirectory, "siginfo.json");
@@ -193,17 +176,6 @@ namespace CyPhy2Schematic.Schematic
             placeBat.Close();
         }
 
-        private void GenerateLayoutReimportFiles(LayoutJson.Layout layoutJson)
-        {
-            File.WriteAllText(Path.Combine(this.mainParameters.OutputDirectory, "layoutReimport.bat"), CyPhy2Schematic.Properties.Resources.layoutReimport);
-            var metadata = new Dictionary<string, object>();
-            metadata["currentFCO"] = this.mainParameters.CurrentFCO.AbsPath;
-            metadata["mgaFile"] = Path.Combine(this.mainParameters.ProjectDirectory, Path.GetFileName(this.mainParameters.Project.ProjectConnStr.Substring("MGA=".Length)));
-            metadata["layoutBox"] = String.Format("0,0,{0},{1},0;0,0,{0},{1},1", layoutJson.boardWidth, layoutJson.boardHeight);
-
-            File.WriteAllText(Path.Combine(this.mainParameters.OutputDirectory, "layoutReimportMetadata.json"), JsonConvert.SerializeObject(metadata, Formatting.Indented));
-        }
-
         private string GenerateCommandArgs(TestBench Testbench_obj)
         {
             string commandArgs = "";
@@ -212,21 +184,13 @@ namespace CyPhy2Schematic.Schematic
             var maxRetries = Testbench_obj.Parameters.FirstOrDefault(p => p.Name.Equals("maxRetries"));
             var maxThreads = Testbench_obj.Parameters.FirstOrDefault(p => p.Name.Equals("maxThreads")); // MOT-729 
 
-            if (Testbench_obj.Impl.Children.ComponentAssemblyCollection.Where(ca => string.IsNullOrEmpty(((GME.MGA.IMgaFCO)ca.Impl).RegistryValue["layoutFile"]) == false).Count() > 0)
+            if (icg != null)
             {
-                // there is a layoutFile for the SUT. The layout.json takes up the whole board
-                commandArgs += " -e 0 -i 0";
+                commandArgs += " -i " + icg.Value;
             }
-            else
+            if (eg != null)
             {
-                if (icg != null)
-                {
-                    commandArgs += " -i " + icg.Value;
-                }
-                if (eg != null)
-                {
-                    commandArgs += " -e " + eg.Value;
-                }
+                commandArgs += " -e " + eg.Value;
             }
             if (maxRetries != null)
             {
@@ -473,14 +437,11 @@ namespace CyPhy2Schematic.Schematic
                     var eagleSch = GenerateSchematicCode(TestBench_obj);
                     CopyBoardFilesSpecifiedInPcbComponent(TestBench_obj);
                     CopyBoardFilesSpecifiedInTestBench(TestBench_obj);     // copy DRU/board template file if the testbench has it specified
-                    GenerateLayoutCodeResult glcResult = GenerateLayoutCode(eagleSch, TestBench_obj);    // MOT-782
-                    result.bonesFound = glcResult.bonesFound;
-                    var layout = glcResult.boardLayout;
+                    GenerateLayoutCode(eagleSch, TestBench_obj);                    
                     GenerateChipFitCommandFile();
                     GenerateShowChipFitResultsCommandFile();
                     GeneratePlacementCommandFile();
                     GeneratePlaceOnlyCommandFile();
-                    GenerateLayoutReimportFiles(layout);
                     result.runCommandArgs = GenerateCommandArgs(TestBench_obj);
                     break;
                 case Mode.SPICE_SI:

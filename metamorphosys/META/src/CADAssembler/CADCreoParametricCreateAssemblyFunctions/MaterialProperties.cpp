@@ -30,7 +30,6 @@ namespace isis
 	const double CONVERSION_FACTOR_ONE = 1.0;
 	const double M_CUBED_TO_MM_CUBED = 1000.0 * 1000.0 * 1000.0;
 	const double M_CUBED_TO_MM_CUBED_RECIPROCAL = 1.0 / M_CUBED_TO_MM_CUBED;
-	const double M_TO_MM_RECIPROCAL = 1.0  / 1000.0;
 /*
 	std::string ConvertToUpperCase(const std::string &in_String)
 	{
@@ -566,7 +565,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 										"Material Unit:	    " <<  unit  << endl <<
 										"Required Unit:     " << in_MaterialLibRequiredUnit << std::endl <<
 										"The units in the material library are incompatible with the required units.";
-					throw isis::application_exception(errorString.str());
+					throw isis::application_exception(errorString.str().c_str());
 				}
 			}
 
@@ -588,7 +587,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 					"Material Unit:	    " <<  unit  << endl <<
 					"Value:             " << value_string << std::endl <<
 					"A zero value is not allowed.";
-				throw isis::application_exception(errorString.str());
+				throw isis::application_exception(errorString.str().c_str());
 			}
 			log4cpp::Category& logcat_fileonly = log4cpp::Category::getInstance(LOGCAT_LOGFILEONLY);
 
@@ -610,13 +609,8 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 	// a) All the meterials in in_MaterialNames are not found in n_MaterialLibrary_PathAndFileName
 	// b) Material properties are not in Pa or kg/m3. 
 	//
-	//  Note - this function converts :
-	//				Pa to MPa
-	//				kg/m3 to kg/mm3 
-	//				W/(m*K) to W/(mm*K)
-	//				and stores the converted values
+	//  Note - this function converts Pa to MPa and kg/m3 to kg/mm3 and stores the converted values
 	//         in out_Materials
-	//
 
 	void ReadMaterialsLibrary(  	const std::string &in_MaterialLibrary_PathAndFileName,
 									const std::set<std::string> &in_MaterialNames,
@@ -652,7 +646,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 						//				"Material Library: "  << in_MaterialLibrary_PathAndFileName << endl <<
 						//				"Number of \"Material library\" tags: " << pt.size() << endl <<
 						//				"The material library must contain one and only one \"Material library\" tag.";
-						//		throw isis::application_exception(errorString.str());
+						//		throw isis::application_exception(errorString.str().c_str());
 						//}
 
 						//std::clog << std::endl << materialLib_pt.first.data();
@@ -811,37 +805,6 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 										out_Materials[materialName].analysisMaterialProperties.density= materialPropertyValue;
 										out_Materials[materialName].analysisMaterialProperties.densityUnit = CADUnitsDensity_enum("kg/mm3");
 									}
-
-									currentMaterialProperty = "thermal__conductivity";
-
-									if ( MaterialPropertyFound_RetrieveValue( material_pt,
-																	materialName,
-																	currentMaterialProperty,						
-																	"W/(m*K)",
-																	M_TO_MM_RECIPROCAL,
-																	"w/mmk",
-																	materialPropertyValue ) )
-									{
-										out_Materials[materialName].analysisMaterialProperties.thermalConductivityDefined = true;
-										out_Materials[materialName].analysisMaterialProperties.thermalConductivity = materialPropertyValue;
-										out_Materials[materialName].analysisMaterialProperties.thermalConductivityUnit = CADUnitsThermalConductivity_enum("w/mmk");
-									}
-
-									currentMaterialProperty = "thermal__capacity_specific_heat";
-
-									if ( MaterialPropertyFound_RetrieveValue( material_pt,
-																	materialName,
-																	currentMaterialProperty,						
-																	"J/(kg-K)",
-																	1.0,
-																	"j/kgk",
-																	materialPropertyValue ) )
-									{
-										out_Materials[materialName].analysisMaterialProperties.heatCapacityDefined = true;
-										out_Materials[materialName].analysisMaterialProperties.heatCapacity = materialPropertyValue;
-										out_Materials[materialName].analysisMaterialProperties.heatCapacityUnit = CADUnitsHeatCapacity_enum("j/kgk");
-									}
-
 								}  // END BOOST_FOREACH(const ptree::value_type& material_pt, materialLib_pt.second)					
 							}  // END if ( isis::ConvertToUpperCase(std::string(materialLib_pt.first.data())) == isis::ConvertToUpperCase(materialName) )
 						}  // END for each ( const std::string i in in_MaterialNames )
@@ -852,7 +815,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 			{
 				std::stringstream errorString;
 				errorString << "Material library input file not found: " << in_MaterialLibrary_PathAndFileName;
-				throw isis::application_exception(errorString.str());
+				throw isis::application_exception(errorString.str().c_str());
 			}
 
 			if ( notFound_MaterialNames_set.size() != 0 )
@@ -861,7 +824,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 				errorString << "Material(s) not found in the material library: " << in_MaterialLibrary_PathAndFileName << std::endl <<
 								"Material(s):" << std::endl;
 				for each (std::string i in notFound_MaterialNames_set) errorString << i << std::endl;
-				throw isis::application_exception(errorString.str());
+				throw isis::application_exception(errorString.str().c_str());
 
 			}
 
@@ -873,7 +836,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 							"   Material Name:     " << currentMaterialName <<  std::endl <<
 							"   Material Property: " << currentMaterialProperty <<  std::endl <<
 							"   Error: " << exc.what();
-			throw isis::application_exception(errorString.str());
+			throw isis::application_exception(errorString.str().c_str());
 		}
 
 		catch(const isis::application_exception &exc)
@@ -883,7 +846,7 @@ void PopulateAnalysisMaterialStruct( const Material				 &in_Material,
 							"   Material Name:     " << currentMaterialName <<  std::endl <<
 							"   Material Property: " << currentMaterialProperty <<  std::endl <<
 							"   Error: " << exc.what();
-			throw isis::application_exception(errorString.str());
+			throw isis::application_exception(errorString.str().c_str());
 		}
 
 	} // END ReadMaterialsLibrary

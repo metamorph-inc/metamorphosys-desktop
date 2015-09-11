@@ -280,7 +280,6 @@
                     // push current instance GUID down to all component assembly elements
                     MgaFilter filter = copiedObj.Project.CreateFilter();
                     filter.ObjType = GME.MGA.Meta.objtype_enum.OBJTYPE_MODEL.ToString();
-                    // filter.Kind = "ComponentAssembly";
 
                     foreach (MgaFCO obj in (copiedObj as MgaModel).GetDescendantFCOs(filter))
                     {
@@ -295,16 +294,6 @@
             }
 
             copiedObj.Name = reference.Name;
-            if (reference.Meta.MetaRef == this.Factory.ComponentRefMeta && copiedObj.Meta.MetaRef == this.Factory.ComponentAssemblyMeta)
-            {
-                // TODO what should happen here
-                // var managedGuid = reference.StrAttrByName["ManagedGUID"]; ComponentRef does not have ManagedGUID
-                var managedGuid = reference.StrAttrByName["InstanceGUID"];
-                if (string.IsNullOrEmpty(managedGuid) == false)
-                {
-                //    copiedObj.StrAttrByName["ManagedGUID"] = managedGuid;
-                }
-            }
 
             foreach (MgaPart part in reference.Parts)
             {
@@ -377,7 +366,7 @@
                     this.Traceability.Add(copied.ID, original.ID);
                 }
 
-                if (!createInstance && copied.ObjType == GME.MGA.Meta.objtype_enum.OBJTYPE_MODEL)
+                if (copied.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
                 {
                     this.AddRecursivelyTraceability(copied, original);
                 }
@@ -502,15 +491,14 @@
         /// <param name="original">Original object from which the copy was made.</param>
         private void AddRecursivelyTraceability(MgaFCO copied, MgaFCO original)
         {
-            const int RELID_BASE_MAX = 0x7FFFFFF; // Mga.idl
             var componentAssembly = copied as MgaModel;
 
             foreach (MgaFCO child in componentAssembly.ChildFCOs)
             {
-                var originalChild = original.ChildObjectByRelID[child.RelID & (original.IsInstance ? Int32.MaxValue : RELID_BASE_MAX)] as MgaFCO;
+                var originalChild = original.ChildObjectByRelID[child.RelID] as MgaFCO;
                 this.Traceability.Add(child.ID, originalChild.ID);
 
-                if (child.ObjType == GME.MGA.Meta.objtype_enum.OBJTYPE_MODEL)
+                if (child.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
                 {
                     this.AddRecursivelyTraceability(child, originalChild);
                 }

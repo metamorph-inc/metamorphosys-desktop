@@ -53,19 +53,5 @@ namespace CyPhy2Schematic.Schematic
             }
             return name;
         }
-
-        public override int GetHashCode()
-        {
-            return this.Impl.ID.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is ModelBase<T>)
-            {
-                return ((ModelBase<T>)obj).CompareTo(this) == 0;
-            }
-            return false;
-        }
     }
 }

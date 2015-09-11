@@ -810,41 +810,13 @@ void MoCodeGen::genModelica()
 	modict.SetValue( "SAMPLE_PERIOD_NAME", sample_period_name );
 
 	std::string output;
-	std::string moFileName; // = _slName +".mo";
-	//ctemplate::StringToTemplateCache("motpl", Modelica_Template::get_mo_tpl(), ctemplate::DO_NOT_STRIP);
-	//ctemplate::ExpandTemplate("motpl", ctemplate::DO_NOT_STRIP, &modict, &output);
-	//ofstream moFile(moFileName.c_str() );
-	//moFile << output;
-	//moFile.close();
-	//printLog("\t\t"+moFileName);
-
-	output.clear();
-	moFileName = _slName + "_wrapper.mo";
-	ctemplate::StringToTemplateCache("mowtpl", Modelica_Template::get_mo_wrapper_tpl(), ctemplate::DO_NOT_STRIP);
-    ctemplate::ExpandTemplate("mowtpl", ctemplate::DO_NOT_STRIP, &modict, &output);
-	ofstream moWrapperFile(moFileName.c_str() );
-	moWrapperFile << output;
-	moWrapperFile.close();
+	std::string moFileName = _slName +".mo";
+	ctemplate::StringToTemplateCache("motpl", Modelica_Template::get_mo_tpl(), ctemplate::DO_NOT_STRIP);
+    ctemplate::ExpandTemplate("motpl", ctemplate::DO_NOT_STRIP, &modict, &output);
+	ofstream moFile(moFileName.c_str() );
+	moFile << output;
+	moFile.close();
 	printLog("\t\t"+moFileName);
-
-	output.clear();
-	moFileName = _slName + "_wrapper_main.mo";
-	ctemplate::StringToTemplateCache("mowmtpl", Modelica_Template::get_mo_wrapper_main_tpl(), ctemplate::DO_NOT_STRIP);
-    ctemplate::ExpandTemplate("mowmtpl", ctemplate::DO_NOT_STRIP, &modict, &output);
-	ofstream moWrapperMainFile(moFileName.c_str() );
-	moWrapperMainFile << output;
-	moWrapperMainFile.close();
-	printLog("\t\t"+moFileName);
-
-	output.clear();
-	moFileName = _slName + "_type.mo";
-	ctemplate::StringToTemplateCache("mottpl", Modelica_Template::get_mo_type_tpl(), ctemplate::DO_NOT_STRIP);
-    ctemplate::ExpandTemplate("mottpl", ctemplate::DO_NOT_STRIP, &modict, &output);
-	ofstream moTypeFile(moFileName.c_str() );
-	moTypeFile << output;
-	moTypeFile.close();
-	printLog("\t\t"+moFileName);
-
 }
 
 //CyPhyML::BusPort MoCodeGen::getBusPort(const CyPhyML::SignalFlowBusPortInterface &busportInterface)

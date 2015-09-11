@@ -24,7 +24,6 @@ namespace CyPhy2Schematic.Spice
     public class SignalContainer : SignalBase
     {
         public List<SignalBase> signals;
-        public Dictionary<CyPhy2SchematicInterpreter.IDs, string> objectToNetId;
 
         public SignalContainer()
         {

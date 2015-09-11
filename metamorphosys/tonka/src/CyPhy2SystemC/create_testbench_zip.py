@@ -7,8 +7,8 @@ import subprocess
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 with zipfile.ZipFile('SystemCTestBench.zip', 'w') as zf:
-    zf.write('../../models/SystemC/Release/systemc-2.3.0.lib', 'libR/systemc-2.3.0.lib', zipfile.ZIP_DEFLATED)
-    zf.write('../../models/SystemC/Debug/systemc-2.3.0.lib', 'libD/systemc-2.3.0.lib', zipfile.ZIP_DEFLATED)
+    zf.write('../../models/SystemC/Release/systemc-2.3.1.lib', 'libR/systemc-2.3.1.lib', zipfile.ZIP_DEFLATED)
+    zf.write('../../models/SystemC/Debug/systemc-2.3.1.lib', 'libD/systemc-2.3.1.lib', zipfile.ZIP_DEFLATED)
     zf.write('../../models/SystemC/Release/TonkaSCLib.lib', 'libR/TonkaSCLib.lib', zipfile.ZIP_DEFLATED)
     zf.write('../../models/SystemC/Debug/TonkaSCLib.lib', 'libD/TonkaSCLib.lib', zipfile.ZIP_DEFLATED)
 
@@ -31,12 +31,12 @@ with zipfile.ZipFile('SystemCTestBench.zip', 'w') as zf:
                 #print repr(fn)
                 zf.write(starting + '/' + fn, prepend + '/' + fn, zipfile.ZIP_DEFLATED)
 
-    zip_r('../../models/SystemC/systemc-2.3.0/src', 'include/systemc-2.3.0')
+    zip_r('../../models/SystemC/systemc-2.3.1/src', 'include/systemc-2.3.1')
 
     # Zip up everything under '../../models/SystemC/*/', except those directories
-    # listed in the excludeList. Excluding 'systemc-2.3.0' is okay here because
+    # listed in the excludeList. Excluding 'systemc-2.3.1' is okay here because
     # the elements needed from that directory were included earlier in this process.
-    excludeList = ["systemc-2.3.0", "Debug", "ipch", "Release", "usb11", "VCDSource"]
+    excludeList = ["systemc-2.3.1", "Debug", "ipch", "Release", "usb11", "VCDSource"]
     targetPathList = glob.glob( "../../models/SystemC/*/" )
     for path in targetPathList:
         targetDirectory = os.path.normpath( os.path.dirname( path ))

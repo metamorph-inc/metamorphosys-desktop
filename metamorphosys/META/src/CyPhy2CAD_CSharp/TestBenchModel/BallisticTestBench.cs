@@ -151,9 +151,9 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
             {
                 CyPhy.BallisticComputationType cadcomputation = item.SrcEnds.BallisticComputationType;
 
-                TBComputation tbcomputation = new TBComputation();
+                TBComputationType tbcomputation = new TBComputationType();
                 tbcomputation.MetricID = item.DstEnds.Metric.ID;
-                tbcomputation.ComputationType = TBComputation.Type.BLASTCOMPUTATION;
+                tbcomputation.ComputationType = cadcomputation.Kind;
                 tbcomputation.RequestedValueType = "";
 
                 Computations.Add(tbcomputation);

@@ -87,24 +87,7 @@ namespace CyPhy2Schematic.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to @echo off
-        ///pushd %~dp0
-        ///%SystemRoot%\SysWoW64\REG.exe query &quot;HKLM\software\META&quot; /v &quot;META_PATH&quot;
-        /// 
-        ///SET QUERY_ERRORLEVEL=%ERRORLEVEL%
-        /// 
-        ///IF %QUERY_ERRORLEVEL% == 0 (
-        ///    FOR /F &quot;skip=2 tokens=2,*&quot; %%A IN (&apos;%SystemRoot%\SysWoW64\REG.exe query &quot;HKLM\software\META&quot; /v &quot;META_PATH&quot;&apos;) DO SET META_PATH=%%B)
-        ///)
-        ///IF %QUERY_ERRORLEVEL% == 1 (
-        ///    echo on
-        ///    echo &quot;META tools not installed.&quot; &gt;&gt; _FAILED.txt
-        ///    echo &quot;META tools not installed.&quot;
-        ///	popd
-        ///    exit /b %QUERY_ERRORLEVEL%
-        ///)
-        ///
-        ///&quot;%META_PATH%\bin\Python27\Scripts\python.ex [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string LaunchSpiceViewer {
             get {
@@ -113,33 +96,7 @@ namespace CyPhy2Schematic.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to @echo off
-        ///pushd %~dp0
-        /// 
-        ///SET QUERY_ERRORLEVEL=%ERRORLEVEL%
-        /// 
-        ///IF %QUERY_ERRORLEVEL% == 0 (
-        ///    FOR /F &quot;skip=2 tokens=2,*&quot; %%A IN (&apos;%SystemRoot%\SysWoW64\REG.exe query &quot;HKLM\software\META&quot; /v &quot;META_PATH&quot;&apos;) DO SET META_PATH=%%B)
-        ///)
-        ///IF %QUERY_ERRORLEVEL% == 1 (
-        ///    echo on
-        ///    echo &quot;META tools not installed.&quot;
-        ///    exit /b %QUERY_ERRORLEVEL%
-        ///)
-        ///
-        ///&quot;%META_PATH%\bin\Python27\Scripts\python.exe&quot; -E -m layout_json.reimport &gt; log\layout_json.reimport.log
-        ///
-        ///popd
-        ///.
-        /// </summary>
-        internal static string layoutReimport {
-            get {
-                return ResourceManager.GetString("layoutReimport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to @echo off
+        ///   Looks up a localized string similar to echo off
         ///pushd %~dp0
         ///%SystemRoot%\SysWoW64\REG.exe query &quot;HKLM\software\META&quot; /v &quot;META_PATH&quot;
         /// 
@@ -155,8 +112,7 @@ namespace CyPhy2Schematic.Properties {
         ///    exit /b %QUERY_ERRORLEVEL%
         ///)
         ///
-        ///
-        ///&quot;%META_PATH%\bin\LayoutSolver.exe&quot; layout-input. [rest of string was truncated]&quot;;.
+        ///&quot;%META_PATH%\bin\LayoutSolver.exe&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string placement {
             get {
@@ -181,7 +137,7 @@ namespace CyPhy2Schematic.Properties {
         ///    exit /b %QUERY_ERRORLEVEL%
         ///)
         ///
-        ///&quot;%META_PATH%\bin\LayoutSolver.exe&quot; layout-input.js [rest of string was truncated]&quot;;.
+        ///&quot;%META_PATH%\bin\LayoutSolver.exe&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string placeonly {
             get {
@@ -207,8 +163,7 @@ namespace CyPhy2Schematic.Properties {
         ///    exit /b %QUERY_ERRORLEVEL%
         ///)
         ///
-        ///REM ------------------------
-        ///REM Check if S [rest of string was truncated]&quot;;.
+        ///REM ---------------------- [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string runspice {
             get {
@@ -226,7 +181,7 @@ namespace CyPhy2Schematic.Properties {
         ///    &lt;/settings&gt;
         ///    &lt;grid distance=&quot;0.01&quot; unitdist=&quot;inch&quot; unit=&quot;inch&quot; style=&quot;lines&quot; multiple=&quot;1&quot; display=&quot;yes&quot; altdistance=&quot;0.01&quot; altunitdist=&quot;inch&quot; altunit=&quot;inch&quot;/&gt;
         ///    &lt;layers&gt;
-        ///      &lt;layer number=&quot;1&quot; name=&quot;Top&quot; color=&quot;4&quot; fill=&quot;1&quot; visible=&quot;no&quot; active [rest of string was truncated]&quot;;.
+        ///      &lt;layer number=&quot;1&quot; name=&quot;Top&quot; color=&quot;4&quot; fill=&quot;1&quot; visible=&quot;n [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string schematicTemplate {
             get {

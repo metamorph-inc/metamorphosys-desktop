@@ -1,6 +1,6 @@
 """
 
-AbaqusParse.py
+AbaqusParse.py, version 1.4.0
 
 For use with Abaqus 6.13-1 (Python 2.6.2).
 
@@ -13,45 +13,98 @@ Created by Ozgur Yapar <oyapar@isis.vanderbilt.edu>
 
 """
 
-import os
-import xml.etree.ElementTree as ET
-import logging
-import cad_library
 from abaqus import *
 from abaqusConstants import *
+import os, re
+from numpy import array, cross, transpose, vstack, dot
+import numpy.linalg as LA
+import string as STR
+import xml.etree.ElementTree as ET
+import _winreg, sys, ctypes, uuid, traceback
+import logging
+
+def parseMaterialLibrary():
+    with _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, r'Software\META', 0, _winreg.KEY_READ | _winreg.KEY_WOW64_32KEY) as key:
+        META_PATH = _winreg.QueryValueEx(key, 'META_PATH')[0]
+
+    MATERIALLIBINTERFACEPATH = os.path.join(META_PATH, "bin", "Python27", "Lib", "site-packages")
+
+    sys.path.insert(0, MATERIALLIBINTERFACEPATH)
+
+    from MaterialLibraryInterface import LibraryManager
+
+    PATH = ctypes.c_wchar_p(chr(0x00) * 256)
+    FOLDERID_DOCUMENTS = ctypes.c_char_p(uuid.UUID("ED4824AF-DCE4-45A8-81E2-FC7965083634").bytes_le)
+    ctypes.windll.shell32.SHGetKnownFolderPath(FOLDERID_DOCUMENTS, 0, None, ctypes.byref(PATH))
+    MATERIALLIBPATH = os.path.join(PATH.value, "META Documents", "MaterialLibrary", "material_library.json")
+
+    return LibraryManager(MATERIALLIBPATH)
 
 
-def parseCADAssemblyXML(xmlName, resultsDir, args):
-    """ Parse assembly definition file. """
+def parseCADAssemblyXML(args):
     logger = logging.getLogger()
-    logger.info("XML parser is obtaining necessary data from CyPhy assembly XML \n")
-    xmlPath = os.path.join(resultsDir, xmlName)
+    logger.info("XML parser is obtaining necessary data from CyPhy assembly XML \n")  #XML parser obtains necessary data from CyPhy
+    xmlName = 'CADAssembly.XML'
+    xmlPath = os.path.join(os.getcwd(), xmlName)
  
     try:
         tree = ET.parse(xmlPath)
         xmlRoot = tree.getroot()
-    except IOError:
-        # Input/Output Error occurs if file does not exist or the XML is malformed.
-        cad_library.exitwitherror('Cannot parse ' + xmlName + '.', -1, 'AbaqusParse.py')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot parse CADAssembly.xml.\n')
+        raise
     
-    assemblyXML = xmlRoot.find('Assembly')
-    if assemblyXML is None:
-        cad_library.exitwitherror('Cannot find the block /"Assembly/" in ' + xmlName + '.', -1, 'AbaqusParse.py')
+    try:
+        assemblyXML = xmlRoot.find('Assembly')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"Assembly/" in CADAssembly.xml.\n')
+        raise
         
-    analysesXML = assemblyXML.find('Analyses')
-    if analysesXML is None:
-        cad_library.exitwitherror('Cannot find the block /"Analyses/" in ' + xmlName + '.', -1, 'AbaqusParse.py')
+    try:
+        analysesXML = assemblyXML.find('Analyses')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"Analyses/" in CADAssembly.xml.\n')
+        raise
 
-    cadAssemblyXML = assemblyXML.find('CADComponent')
-    if cadAssemblyXML is None:
-        cad_library.exitwitherror('Cannot find the block /"CADComponent/" in ' + xmlName + '.', -1, 'AbaqusParse.py')
+    try:
+        cadAssemblyXML = assemblyXML.find('CADComponent')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"CADComponent/" in CADAssembly.xml.\n')
+        raise
         
-    feaXML = analysesXML.find('FEA')
-    if feaXML is None:
-        cad_library.exitwitherror('Cannot find the block /"FEA/" in ' + xmlName + '.', -1, 'AbaqusParse.py')
+    try:
+        feaXML = analysesXML.find('FEA')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"FEA/" in CADAssembly.xml.\n')
+        raise
+
+    try:
+        metricSetXML = feaXML.getiterator('Metric')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find \"Metric\" inside the block FEA in CADAssembly.xml.\n')
+        raise
     
     # Determine if a thermal analysis is to be included.
     thermalSetXML = feaXML.find('ThermalElements')
+    
+    try:
+        metricsSetXML = feaXML.find('Metrics')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find \"Metrics\" inside the block \"FEA\" in CADAssembly.xml.\n')
+        raise
+    
+    try:
+        metricsComponentSetXML = metricsSetXML.findall('Metric')
+    except:
+        metricsComponentSetXML = 'null'
+        pass
 
     try:
         maxNumberIter = int(feaXML.get("MaxAdaptiveIterations"))
@@ -61,61 +114,137 @@ def parseCADAssemblyXML(xmlName, resultsDir, args):
         elif maxNumberIter <= 0:
             maxNumberIter = 1
             logger.info('MaxIterations less than minimum of 0. Setting MaxIterations to 1. \n')
-    except AttributeError:
-        cad_library.exitwitherror('Error in reading maximum number of iterations from '
-                                  + xmlName + '.', -1, 'AbaqusParse.py')
+    except Exception as e:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Error in reading maximum number of iterations from CADAssembly.xml file.\n')
+        raise
     
     analysisConstraintSetXML = None
     if not args.meshOnly:
-        analysisConstraintsXML = feaXML.find('AnalysisConstraints')
-        # If None, could be a thermal only analysis
-        if analysisConstraintsXML is not None:
-            analysisConstraintSetXML = analysisConstraintsXML.getiterator('AnalysisConstraint')
-    logger.info('Successfully parsed all required data from ' + xmlName + '. \n')
+        try:
+            analysisConstraintsXML = feaXML.find('AnalysisConstraints')
+            # If None, could be a thermal only analysis
+            if analysisConstraintsXML is not None:
+                analysisConstraintSetXML = analysisConstraintsXML.getiterator('AnalysisConstraint')
+        except:
+            logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+            logger.error('The model has not been constrained properly. This may cause rigid body motion during regular FEA analysis.\n')
+            raise
+    logger.info('Successfully parsed all required data from CADAssembly.XML \n')
     logger.info("**********************************************************************************" + '\n')
     
-    return feaXML, cadAssemblyXML, maxNumberIter, analysisConstraintSetXML, thermalSetXML
+    return (xmlName, feaXML, cadAssemblyXML, metricSetXML, metricsSetXML,
+            metricsComponentSetXML, maxNumberIter, analysisConstraintSetXML,
+            thermalSetXML)
             
 
-def parseStep(cadAssemblyXMLTree, stepDir):
-    """ Parse STEP file. """
+def parseStep(cadAssemblyXML):
     logger = logging.getLogger()
     logger.info("Defining the path for the STEP file" + '\n')
     try:
-        testBenchName = cadAssemblyXMLTree.get("Name")
+        if cadAssemblyXML.get("Type") == "ASSEMBLY":
+            testBenchName = cadAssemblyXML.get("Name")
         stepName = testBenchName + '_asm.stp'
-        stepPath = os.path.join(stepDir, stepName)
+        stepPath = os.path.join(os.getcwd(), 'AP203_E2_SINGLE_FILE', stepName)
         step = mdb.openStep(fileName=stepPath)
-    except TypeError:
-        cad_library.exitwitherror('Error finding top level assembly STEP file.', -1, 'AbaqusParse.py')
-    except Texterror:
-        cad_library.exitwitherror('Error opening the step file.', -1, 'AbaqusParse.py')
+    except Exception as e:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Error during finding and opening the step file\n')
+        raise
 
     logger.info("Opening the STEP file " + str(stepName) + ' and converting it into raw data' + '\n')
     logger.info("**********************************************************************************" + '\n')
 
-    return stepPath, testBenchName, step
-            
-            
-def parseKinComputedValuesXML(kinComputedValuesXML):
-    """ Parse kinematic result XML (for Adams-to-Abaqus SOT runs only). """
+    return (stepPath, testBenchName, step)
+
+
+def parseCADAssemblyMetricsXML(runAdams):
     logger = logging.getLogger()
-    logger.info("XML parser is obtaining necessary data from Adams" + '\n')
-    xmlCompPath = os.path.join(os.getcwd(), kinComputedValuesXML)
+    logger.info("XML parser is obtaining necessary data from Create Assemby program" + '\n')
+    
+    xmlMetricsName = 'CADAssembly_metrics.xml'
+    xmlMetricsPath = os.path.join(os.getcwd(), xmlMetricsName)
+    
+    try:
+        treeMetrics = ET.parse(xmlMetricsPath)
+        xmlMetricsRoot = treeMetrics.getroot()
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot parse CADAssembly_metrics.xml.\n')
+        raise
+
+    try:    
+        metricComponentsXML = xmlMetricsRoot.find('MetricComponents')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"MetricComponents/" in CADAssembly_metrics.xml.\n')
+        raise
+
+    try:    
+        metricComponentXML = metricComponentsXML.findall('MetricComponent')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"MetricComponent/" in CADAssembly_metrics.xml.\n')
+        raise
+
+    try:
+        metricAssembliesXML = xmlMetricsRoot.find('Assemblies')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"Assemblies/" in CADAssembly_metrics.xml.\n')
+        raise
+
+    try:
+        metricAssemblyXML = metricAssembliesXML.find('Assembly')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"Assembly/" in CADAssembly_metrics.xml.\n')
+        raise
+        
+    try:    
+        metricCADComponentsXML = metricAssemblyXML.find('CADComponent')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find the block /"CADComponent/" in CADAssembly_metrics.xml.\n')
+        raise    
+       
+    try:    
+        jointsXML = xmlMetricsRoot.find('Joints')
+    except:
+        if runAdams:    # required for ADAMS runs, not necessarily for standalone
+            logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+            logger.error('Cannot find the block /"Joints/" in CADAssembly_metrics.xml.\n')
+            raise
+        else:
+            jointsXML = None
+            
+    logger.info('Successfully parsed all required data from CADAssemblyMetrics.XML \n')
+    logger.info("**********************************************************************************" + '\n')    
+
+    return (xmlMetricsName, metricComponentsXML, metricComponentXML, 
+            metricAssembliesXML, metricAssemblyXML, metricCADComponentsXML, jointsXML)
+            
+            
+def parseKinComputedValuesXML():
+    logger = logging.getLogger()
+    logger.info("XML parser is obtaining necessary data from Adams" + '\n') 
+    xmlCompName = 'kinComputedValues.xml'
+    xmlCompPath = os.path.join(os.getcwd(), xmlCompName)
 
     try:
         treeComp = ET.parse(xmlCompPath)
         xmlCompRoot = treeComp.getroot()
-    except IOError:
-        cad_library.exitwitherror('Unable to find ' + kinComputedValuesXML + '.', -1, 'AbaqusParse.py')
-    except AttributeError:
-        cad_library.exitwitherror('Cannot parse ' + kinComputedValuesXML + '.', -1, 'AbaqusParse.py')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot parse ComputedValues.xml.\n')
+        raise
 
     try:
         ComputedComponentXML = xmlCompRoot.findall('Component')
-    except AttributeError:
-        cad_library.exitwitherror('Cannot find \"Components\" block inside the '
-                                  + kinComputedValuesXML + ' file.', -1, 'AbaqusParse.py')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find \"Components\" block inside the ComputedValues.xml file.\n')
+        raise
 
     try:
         for element in ComputedComponentXML:
@@ -128,60 +257,44 @@ def parseKinComputedValuesXML(kinComputedValuesXML):
             if compMetricID == 'Anchor':
                 anchorID = element.get('ComponentInstanceID')
                 anchorPoint = compMetric.get('ArrayValue')
-    except AttributeError:
-        cad_library.exitwitherror('Cannot find anchored part name inside the '
-                                  + kinComputedValuesXML + ' file.', -1, 'AbaqusParse.py')
-
-    logger.info('Successfully parsed all required data from ' + kinComputedValuesXML + '. \n')
+    except:
+        logger.error(STR.join(traceback.format_exception(*sys.exc_info())))
+        logger.error('Cannot find anchored part name inside the ComputedValues.xml file.\n')
+        raise
+    logger.info('Successfully parsed all required data from kinComputedValues.XML \n')
     logger.info("**********************************************************************************" + '\n')
 
-    return anchorID, anchorPoint
+    return (anchorID, anchorPoint) 
 
 
-def parseInpTemp(inpTempFile):
-    """ Determine upto which point the temporary INP file needs to be merged with the final INP file. """
-    m = 1
-    for eachLine in inpTempFile:               # Loop through each line of the temporary INP file
-        loadData = eachLine.split()            # Split each line to thier words
+def parseInpTemp(inpTempFile):                                                                              # Determine upto which point the temporary INP file needs to be merged...
+                                                                                                            # ...with the final INP file
+
+    m=1
+    for eachLine in inpTempFile:                                                                            # Loop through each line of the temporary INP file
+        loadData = eachLine.split()                                                                         # Split each line to thier words
         try:
-            if loadData[1] == 'STEP:':         # If the second word in that line is STEP:
-                stopLine = m-1                 # Store the number of the previous line as the stopLine
-        except IndexError:
+            if loadData[1] == 'STEP:':                                                                      # If the second word in that line is STEP:
+                stopLine = m-1                                                                              # Store the number of the previous line as the stopLine
+        except:
             pass
-        m += 1
+        m+=1
 
     return stopLine   
 
 
-def parseLOD(lodFile):
-    """ Determine from which point the LOD file generated by Adams needs to be merged with the final INP file. """
-    j = 1
-    for eachLine in lodFile:                  # Loop through each line of the LOD file
-        loadData = eachLine.split()           # Split each line to thier words
+def parseLOD(lodFile):                                                                                  # Determine from which point the LOD file generated by Adams needs...
+                                                                                                            # ...to be merged with the final INP file
+
+    j=1
+    for eachLine in lodFile:                                                                                # Loop through each line of the LOD file
+        loadData = eachLine.split()                                                                         # Split each line to thier words
         try:
-            if loadData[2] == 'CASE':         # If the third word in that line is CASE
-                startLine = j                 # Store the number of that line as the startLine
+            if loadData[2] == 'CASE':                                                                       # If the third word in that line is CASE
+                startLine = j                                                                               # Store the number of that line as the startLine
                 break
-        except IndexError:
+        except:
             pass
-        j += 1
+        j+=1
 
     return startLine    
-    
-    
-def parseRequestedMetrics(path):
-    """ Parse XML file which maps desired metric outputs to component instance. """
-    try:
-        tree = ET.parse(path)
-        xmlRoot = tree.getroot()
-    except IOError:
-        cad_library.exitwitherror('Cannot find RequestedMetrics.xml.', -1, 'AbaqusParse.py')
-    except AttributeError:
-        cad_library.exitwitherror('Cannot parse RequestedMetrics.xml.', -1, 'AbaqusParse.py')
-    
-    try:
-        metrics = xmlRoot.findall('Metric')
-    except AttributeError:
-        cad_library.exitwitherror('Cannot find the blocks /"Metric/" in '
-                                  'RequestedMetrics.xml.', -1, 'AbaqusParse.py')
-    return metrics

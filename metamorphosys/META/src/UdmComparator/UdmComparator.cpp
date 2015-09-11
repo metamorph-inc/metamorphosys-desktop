@@ -606,13 +606,13 @@ void UdmComparator::tallyChildrenClasses( const UdmObjectSet &udmObjectSet1, con
 		++(ctmItr->second.second);
 	}
 
-	std::cerr << "Disparity in number of child objects for the following classes:" << std::endl;
+	std::cout << "Disparity in number of child objects for the following classes:" << std::endl;
 	for( ChildrenClassesTallyMap::iterator ctmItr = childrenClassesTallyMap.begin() ; ctmItr != childrenClassesTallyMap.end() ; ++ctmItr ) {
 		IntPair intPair = ctmItr->second;
 		if ( intPair.first != intPair.second ) {
-			std::cerr << "\t" << ctmItr->first << " => " << intPair.first << "," << intPair.second << std::endl << std::endl;
+			std::cout << "\t" << ctmItr->first << " => " << intPair.first << "," << intPair.second << std::endl << std::endl;
 		}
 	}
-	std::cerr << std::endl;
+	std::cout << std::endl;
 
 }

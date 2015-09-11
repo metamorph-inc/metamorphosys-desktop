@@ -334,11 +334,6 @@ src/nuget/boost_system-vc100.1.55.0.15/boost_system-vc100.1.55.0.15.nupkg
 src/nuget/boost_system-vc100.1.55.0.15/lib/
 src/nuget/boost_thread-vc100.1.55.0.15/boost_thread-vc100.1.55.0.15.nupkg
 src/nuget/boost_thread-vc100.1.55.0.15/lib/
-src/nuget/gecode-vc100.4.2.1/
-src/nuget/gecode-vc100.redist.4.2.1/
-src/nuget/gecode.4.2.1/
-src/nuget/jsoncpp-vc100.0.5.0-r20140114/
-src/nuget/jsoncpp.0.5.0-r20140114/
 test/InterchangeTest/ComponentInterchangeTest/SharedModels/GuideDatum/components/*
 test/InterchangeTest/DesignInterchangeTest/ImportTestUnits/Package/designs/
 test/InterchangeTest/ComponentInterchangeTest/ExportTestModels/ExportTest/components/

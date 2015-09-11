@@ -82,7 +82,7 @@ def generate_wxi(src, output_filename=None, id=None, diskId=None):
 
 
 def main(analysis_tools_dir, diskId=None):
-    directories = [os.path.join(analysis_tools_dir, name) for name in os.listdir(analysis_tools_dir) if os.path.isdir(os.path.join(analysis_tools_dir, name)) and not name and name not in ('.svn', 'images')]
+    directories = [os.path.join(analysis_tools_dir, name) for name in os.listdir(analysis_tools_dir) if os.path.isdir(os.path.join(analysis_tools_dir, name)) and not name == '.svn']
     tools = []
     for tool_dir in directories:
         (name, tool_id) = generate_wxi(tool_dir, diskId=diskId)
@@ -100,12 +100,6 @@ def main(analysis_tools_dir, diskId=None):
         tool_component_node = ElementTree.SubElement(componentGroup, 'ComponentGroupRef', {'Id': tool['id']})
         tool_dir_node = ElementTree.SubElement(directoryRef, 'Directory', {'Id': tool['id'], 'Name': tool['name']})
 
-    for file_ in ('Readme.md', 'add_registry_entries.py'):
-        file_component = ElementTree.SubElement(componentGroup, 'Component', {'Directory': 'analysis_tools', 'Id': 'analysis_tools_' + file_})
-        file_file = ElementTree.SubElement(file_component, 'File', {'Source': '..\\analysis_tools\\' + file_})
-        if file_ ==  'add_registry_entries.py':
-            file_registrykey = ElementTree.SubElement(file_component, 'RegistryKey', {'Key': r'Software\META\AnalysisTools', 'Root': 'HKLM', 'ForceDeleteOnUninstall': 'yes'})
-    
     ElementTree.ElementTree(tree).write("analysis_tools.wxi", xml_declaration=True)
 
     pretty_print_xml("analysis_tools.wxi")

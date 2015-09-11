@@ -43,24 +43,25 @@ namespace CyPhy2Modelica_v2
             if (string.IsNullOrEmpty(DymolaExe))
             {
                 chbCheckWithDymola.Enabled = false;
-                chbCheckWithDymola.Checked = false;
             }
             else
             {
                 chbCheckWithDymola.Enabled = true;
-                chbCheckWithDymola.Checked = this.ModelicaSettings.CheckWithDymola;
             }
+
+            chbCheckWithDymola.Checked = this.ModelicaSettings.CheckWithDymola;
 
             if (string.IsNullOrEmpty(OMCExe))
             {
                 chbCheckWithOM.Enabled = false;
-                chbCheckWithOM.Checked = false;
             }
             else
             {
                 chbCheckWithOM.Enabled = true;
-                chbCheckWithOM.Checked = this.ModelicaSettings.CheckWithOpenModelica;
             }
+
+            chbCheckWithOM.Checked = this.ModelicaSettings.CheckWithOpenModelica;
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

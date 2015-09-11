@@ -215,13 +215,13 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
                 foreach (var param in (thermalElement as CyPhy.ThermalLoad).Children.ParameterCollection)
                 {
                     var elem = new FEAThermalElement(param) { ComponentID = compid, Geometry = geom };
-                    if (elem.Type == "Convection")
+                    if (elem.Type == "ConvectionHeat")
                     {
-                        elem.Unit = "J/(s-mm^2-K)";
+                        elem.Unit = "J/(s-m^2-K)";
                     }
                     else if (elem.Type == "HeatFlux")
                     {
-                        elem.Unit = "J/(s-mm^2)";
+                        elem.Unit = "J/(s-m^2)";
                     }
                     else if (elem.Type == "HeatGeneration")
                     {
@@ -229,11 +229,11 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
                     }
                     else if (elem.Type == "InitialTemperature")
                     {
-                        elem.Unit = "K";
+                        elem.Unit = "C";
                     }
                     else if (elem.Type == "SpecifiedTemperature")
                     {
-                        elem.Unit = "K";
+                        elem.Unit = "C";
                     }
                     result.Add(elem);
                 }

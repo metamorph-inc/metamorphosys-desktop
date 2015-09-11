@@ -46,8 +46,8 @@ protected:
 	int boardW;			// width (post multiplication with resolution)
 	int boardH;			// height (post multiplication with resolution)
 	int boardL;			// layers -- forced to 2
-	int interChipSpace;	// The default inflation around each package to add margins, unless there is an inter-chip gap exception.  See also interChipGap() and MOT-728. 
-	int boardEdgeSpace;	// board edge margin
+	int chipgap;		// The default inflation around each package to add margins, unless there is an inter-chip gap exception.  See also interChipGap() and MOT-728. 
+	int boardEdgeGap;	// board edge margin
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	// search variables duplicated across LayoutSolver Space copies

@@ -46,18 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Eagle.cs">
-      <DependentUpon>eagle.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Layout.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblySignature.snk" />
-    <None Include="eagle.xsd">
-      <CustomToolNamespace>Schematic.Eagle</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

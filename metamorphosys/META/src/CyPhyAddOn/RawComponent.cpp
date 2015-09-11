@@ -362,28 +362,16 @@ STDMETHODIMP RawComponent::ObjectEvent(IMgaObject * obj, unsigned long eventmask
 				{	
 					if(turnedon)
 					{
-						COMTHROW(fco->put_IntAttrByName(_bstr_t(L"ID"), ++maxId));
+						COMTHROW(fco->put_IntAttrByName(CBstrIn("ID"), ++maxId));
 
-                        if (dontAssignGUIDsOnNextTransaction == false)
-                        {
-                            if (wcscmp(fcoKind, L"Component") == 0 || wcscmp(fcoKind, L"ComponentRef") == 0)
-                            {
-                                // Populate InstanceGUID field with the object's GUID
-                                _bstr_t guid = fco->imp_GetGuidDisp();
-                                _bstr_t noBraces(SysAllocStringLen(static_cast<const OLECHAR*>(guid) + 1, guid.length() - 2), false);
-                                COMTHROW(fco->put_StrAttrByName(_bstr_t(L"InstanceGUID"), noBraces));
-                            }
-                            if (wcscmp(fcoKind, L"ComponentAssembly") == 0)
-                            {
-                                _bstr_t managedGuidName = L"ManagedGUID";
-                                BSTR newGUID;
-                                fco->GetGuidDisp(&newGUID);
-                                // Next line would exclude copies for assigning an ID
-                                // if (fco->StrAttrByName[managedGuidName].length() == 0)
-                                // TODO: do we want to set this?
-                                // fco->StrAttrByName[managedGuidName] = newGUID;
-                            }
-                        }
+						if ( dontAssignGUIDsOnNextTransaction == false &&
+							 (wcscmp(fcoKind, L"Component") == 0 || wcscmp(fcoKind, L"ComponentRef") == 0 ) )
+						{
+							// Populate InstanceGUID field with the object's GUID
+							BSTR newGUID;
+							fco->GetGuidDisp(&newGUID);
+							COMTHROW(fco->put_StrAttrByName(CBstrIn("InstanceGUID"), newGUID ));
+						}
 					}
 				}
 				else if(guidIdfcoKinds.find(fcoKind) != guidIdfcoKinds.end())

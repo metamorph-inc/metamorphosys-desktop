@@ -17,7 +17,6 @@ using LayoutJson;
 using System.Globalization;
 using System.Xml.Linq;
 using GME.MGA;
-using System.Diagnostics;
 
 namespace CyPhy2Schematic.Layout
 {
@@ -82,166 +81,17 @@ namespace CyPhy2Schematic.Layout
         public double MaxY { get; set; }
     }
 
-    // Class to handle placement of subcircuit components that were added to a pre-routed subcircuit
-    // after the subcircuit was pre-routed.  The extra components (bones) are arranged in a "boneyard"
-    // to the left of the board's origin. MOT-782
-    public class Boneyard
-    {
-        private List<Package> bones;    // The bones are extra component packages.
-
-        // The yard is a rectangular area on the left of the EAGLE board where bones will be placed.
-        public double yardHeight { set; get; }
-        public double yardWidth { set; get; }
-        public double maxYardHeight { set; get; }
-        private int boneCount;
-
-
-        // Distance between the yard and the origin of the board:
-        public double boardMargin { set; get; }
-
-        // Horizontal distance between parts in the yard:
-        public double horizontalSeparation { set; get; }
-
-        // Vertical distance between parts in the yard:
-        public double verticalSeparation { set; get; }
-        
-        public Boneyard()
-        {
-            bones = new List<Package>(); // Internal bones
-            boneCount = 0;
-            yardHeight = 0;
-            yardWidth = 0;
-            maxYardHeight = 20;
-            boardMargin = 2;
-            horizontalSeparation = 1;
-            verticalSeparation = 1;
-        }
-        public void Add(Package item)
-        {
-            bones.Add(item); // add to the internal bones
-            // Sort them by width, to help the eventual arrangement of bones to appear balanced.
-            List<Package> sortedBones = bones.OrderBy(x => x.koWidth).ThenBy(x => x.koHeight).ThenBy(x => x.name).ToList();
-            bones = sortedBones;
-            boneCount = bones.Count();
-        }
-        public List<Package> GetBones()
-        {
-            List<Package> bonesCopy = new List<Package>(bones);
-            return bonesCopy;
-        }
-
-        public void ShowBones()
-        {
-            foreach (Package extraPkg in bones)
-            {
-                Debug.WriteLine("Package '{0}': ({3}, {4}) width = {1}, height = {2}", extraPkg.name, extraPkg.koWidth, extraPkg.koHeight, extraPkg.x, extraPkg.y );
-            }
-        }
-
-        public void PlaceBones()
-        {
-            if( boneCount > 0 )
-            {
-                // Get the width of the widest bone
-                double widestBoneWidth = Math.Ceiling( bones[boneCount - 1].koWidth.GetValueOrDefault(0.0) );
-                bool placedOK = false;
-                for (double testYardWidth = widestBoneWidth; (testYardWidth < (5 * (widestBoneWidth + horizontalSeparation))) && (!placedOK); testYardWidth += (widestBoneWidth + horizontalSeparation))
-                {
-                    placedOK = (checkYardPlacement(testYardWidth) < maxYardHeight);
-                }
-            }
-         }
-
-        public double checkYardPlacement(double testYardWidth)
-        {
-            // Puts the bones in the yard, starting at the bottom.
-            // Returns the resulting height of the yard.
-            yardHeight = 0;
-            yardWidth = testYardWidth;
-            double rowWidthUsed = 0;
-            double rowHeight = 0;
-            double rowBaseHeight = 0;
-
-            List<Package> orderedBones = new List<Package>(bones);
-            orderedBones.Reverse();
-
-            foreach (Package bone in orderedBones)
-            {
-                double remainingWidthInRow = yardWidth - rowWidthUsed;
-                double width =  bone.koWidth.GetValueOrDefault( 0.0 );
-                double height = bone.koHeight.GetValueOrDefault( 0.0 );
-
-                // Check if the bone's width will fit in the current row.
-                if (remainingWidthInRow < width)
-                {
-                    // No, move up a row
-                    rowBaseHeight += rowHeight + verticalSeparation;
-                    rowHeight = 0;
-                    rowWidthUsed = 0;
-                    remainingWidthInRow = yardWidth;
-                }
-
-                // Place the bone in the row.
-                bone.x = -(remainingWidthInRow + boardMargin);
-                bone.y = rowBaseHeight;
-                rowWidthUsed += width + horizontalSeparation;
-                rowHeight = Math.Max(rowHeight, height);
-            }
-
-            yardHeight = rowBaseHeight + rowHeight;
-            return yardHeight;
-        }
-    }
-
     public class LayoutGenerator
     {
-        public static IEnumerable<IMgaModel> getAncestorModels(IMgaFCO fco, IMgaModel stopAt = null)
-        {
-            IMgaModel parent = fco.ParentModel;
-            while (parent != null && (stopAt == null || parent.ID != stopAt.ID))
-            {
-                yield return parent;
-                parent = parent.ParentModel;
-            }
-        }
-        public static IEnumerable<IMgaModel> getSelfAndAncestorModels(IMgaModel model, IMgaModel stopAt = null)
-        {
-            yield return model;
-            if (model.ParentModel != null)
-            {
-                foreach (IMgaModel ancestor in getAncestorModels(model.ParentModel))
-                {
-                    yield return ancestor;
-                }
-            }
-        }
-
         public static string GetComponentAssemblyID(IMgaModel componentAssembly)
         {
-            var managedGuid = GetComponentAssemblyManagedGuid(componentAssembly);
-            if (string.IsNullOrEmpty(managedGuid) == false)
-            {
-                return managedGuid;
-            }
-            var guidChain = GetComponentAssemblyChainGuid(componentAssembly);
-            if (guidChain != null)
-            {
-                return guidChain;
-            }
-            return new Guid(componentAssembly.GetGuidDisp()).ToString("D");
+            return GetComponentAssemblyChainGuid(componentAssembly) ?? new Guid(componentAssembly.GetGuidDisp()).ToString("D");
         }
-
         public static string GetComponentAssemblyChainGuid(IMgaModel componentAssembly)
         {
 	        return componentAssembly.RegistryValue["Elaborator/InstanceGUID_Chain"];
         }
-        
-        public static string GetComponentAssemblyManagedGuid(IMgaModel componentAssembly)
-        {
-            return componentAssembly.StrAttrByName["ManagedGUID"];
-        }
 
-        public bool bonesFound { get; set; }    // MOT-782
         public LayoutJson.Layout boardLayout { get; set; }
         public GMELogger Logger { get; set; }
         public Dictionary<Package, Eagle.part> pkgPartMap { get; set; }
@@ -281,13 +131,6 @@ namespace CyPhy2Schematic.Layout
             "44",  // Drills
             "45"   // Holes
         };
-
-        // Function to quantize a layout-box relative constraint coordinate, for MOT-779.
-        // See also: ConvertRelativeConstraintFromOrigin().
-        public static double quantize(double x)
-        {
-            return (0.1) * Math.Ceiling(10.0 * x);
-        }
         
         public LayoutGenerator(Eagle.schematic sch_obj, TestBench tb_obj, GMELogger inLogger, String pathOutput)
         {
@@ -296,15 +139,13 @@ namespace CyPhy2Schematic.Layout
             this.partPkgMap = new Dictionary<Eagle.part, Package>();
             this.preroutedPkgMap = new Dictionary<ComponentAssembly, Package>();
 
-            this.bonesFound = false;    // MOT-782.
-
             boardLayout = new LayoutJson.Layout();
             boardLayout.numLayers = 2;
 
             // we currently support the following testbench parameters related to layout
             // boardWidth
             // boardHeight
-            // boardCutouts - array of exclusion rectangles (x,y,w,h; ...) for non-rectangular boards
+            // boardCutouts - array of exlcusion rectngles (x,y,w,h; ...) for non-rectangular boards
             // boardTemplate
             // designRules
             // autoRouterConfig
@@ -312,16 +153,14 @@ namespace CyPhy2Schematic.Layout
             // all of these parameters can be supplied either as part of a pcb_component model
             // or as parameters in testbench
             // the file parameters in testbench are specified as resources in pcb_component model
-            string pcbBW, tbBW, pcbBH, tbBH, pcbBES, tbBES, pcbICS, tbICS, pcbBC, tbBC;
-            GetLayoutParametersFromPcbComponent(tb_obj, boardLayout,
-                out pcbBW, out pcbBH, out pcbBES, out pcbICS, out pcbBC);
+            string pcbBW, tbBW, pcbBH, tbBH, pcbBC, tbBC;
+            GetLayoutParametersFromPcbComponent(tb_obj, boardLayout, 
+                out pcbBW, out pcbBH, out pcbBC);
             GetLayoutParametersFromTestBench(tb_obj, boardLayout,
-                out tbBW, out tbBH, out tbBES, out tbICS, out tbBC);
+                out tbBW, out tbBH, out tbBC);
 
             string boardWidth = (tbBW != null) ? tbBW : pcbBW;
             string boardHeight = (tbBH != null) ? tbBH : pcbBH;
-            string boardEdgeSpace = (tbBES != null) ? tbBES : pcbBES;
-            string interChipSpace = (tbICS != null) ? tbICS : pcbICS;
             string boardCutouts = (tbBC != null) ? tbBC : pcbBC;
 
             Double dBoardWidth;
@@ -340,22 +179,6 @@ namespace CyPhy2Schematic.Layout
             }
             boardLayout.boardHeight = dBoardHeight;
 
-            Double dBoardEdgeSpace;
-            if (false == Double.TryParse(boardEdgeSpace, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out dBoardEdgeSpace))
-            {
-                Logger.WriteWarning("Exception while reading board edge space: {0}", dBoardEdgeSpace);
-                dBoardEdgeSpace = 0.5;
-            }
-            boardLayout.boardEdgeSpace = dBoardEdgeSpace;
-
-            Double dInterChipSpace;
-            if (false == Double.TryParse(interChipSpace, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out dInterChipSpace))
-            {
-                Logger.WriteWarning("Exception while reading board height: {0}", boardHeight);
-                dInterChipSpace = 0.2;
-            }
-            boardLayout.interChipSpace = dInterChipSpace;
-
             if (boardCutouts != null && boardLayout.boardTemplate != null)
                 GenerateBoardCutoutConstraints(boardCutouts);
             else if (boardCutouts != null)
@@ -371,8 +194,6 @@ namespace CyPhy2Schematic.Layout
             }
 
             #region Add Packages to Layout Json
-            Boneyard myBoneyard = new Boneyard();
-
             // compute part dimensions from 
             foreach (var part in sch_obj.parts.part)
             {
@@ -437,9 +258,10 @@ namespace CyPhy2Schematic.Layout
                         var comp = comp_obj.Impl as Tonka.Component;
 
                         // emit component ID for locating components in CAD assembly
-                        pkg.ComponentID = GetComponentID(comp);
+                        pkg.ComponentID = comp.Attributes.InstanceGUID;
 
-                        Boolean isMultiLayer = comp.Children.EDAModelCollection.Any(e => e.Attributes.HasMultiLayerFootprint);
+                        Boolean isMultiLayer = comp.Children.EDAModelCollection.
+                            Any(e => e.Attributes.HasMultiLayerFootprint);
                         if (isMultiLayer)
                             pkg.multiLayer = true;
 
@@ -505,21 +327,16 @@ namespace CyPhy2Schematic.Layout
                                 pkg.y = prePkg.y;
                                 pkg.rotation = prePkg.rotation;
                                 pkg.layer = prePkg.layer;
-                                pkg.RelComponentID = GetComponentAssemblyID(preRoutedAsm.Impl.Impl as GME.MGA.MgaModel);  // MOT-782
                             }
                             else
                             {
-                                // Found a bone, MOT-782.
-                                Logger.WriteWarning("Component {0} in Pre-Placed Assembly {1} not found in layout.json. It will be generated in output but not placed...", comp_obj.Name, comp_obj.Parent.Name);
+                                Logger.WriteError("Component {0} in Pre-Placed Assembly {1} not found in layout.json. It will be generated in output but not placed...", comp_obj.Name, comp_obj.Parent.Name);
                                 pkg.x = 0;
                                 pkg.y = 0;
                                 pkg.layer = 0;
                                 pkg.rotation = 0;
-                                myBoneyard.Add(pkg);    // MOT-782
-                                bonesFound = true;
                             }
-                            // MOT-782: Bones will be placed absolutely, *not* relative to a component assembly.
-                            // pkg.RelComponentID = GetComponentAssemblyID(preRoutedAsm.Impl.Impl as GME.MGA.MgaModel);
+                            pkg.RelComponentID = GetComponentAssemblyID(preRoutedAsm.Impl.Impl as GME.MGA.MgaModel);
                             pkg.doNotPlace = true;
                         }
                         #endregion
@@ -529,15 +346,6 @@ namespace CyPhy2Schematic.Layout
                 partPkgMap.Add(part, pkg);
                 boardLayout.packages.Add(pkg);
             }
-
-            // Set a maximum height for the boneyard.
-            if (boardLayout.boardHeight > myBoneyard.maxYardHeight)
-            {
-                myBoneyard.maxYardHeight = boardLayout.boardHeight;
-            }
-
-            myBoneyard.PlaceBones();    // MOT-782.
-
             #endregion Add Packages to Layout
 
             #region AddSignalsToBoardLayout
@@ -560,8 +368,6 @@ namespace CyPhy2Schematic.Layout
                 // RESTRICTION - all prerouted segments should belong to the same preRoute signal
                 // it is okay to have some segments that are not prerouted - the autorouter should fill those
 
-                Logger.WriteInfo("About to check the segments in Net {0}", net.name);
-
                 foreach (var seg in net.segment.SelectMany(s => s.Items).Where(s => s is Eagle.pinref))
                 {
                     bool isSegPrerouted = false;
@@ -571,8 +377,6 @@ namespace CyPhy2Schematic.Layout
                     pin.name = pr.pin;
                     pin.gate = pr.gate;
                     pin.package = pr.part.ToUpper();
-
-                    Logger.WriteInfo("Found a {0} segment for pin {1} of {2} gate {3}", net.name, pin.name, pin.package, pin.gate);
 
                     // find package and pad
                     var part = sch_obj.parts.part.Where(p => p.name.Equals(pr.part)).FirstOrDefault();
@@ -593,16 +397,12 @@ namespace CyPhy2Schematic.Layout
                     if (part != null && CodeGenerator.partComponentMap.ContainsKey(part))
                     {
                         var comp_obj = CodeGenerator.partComponentMap[part];
-                        var preRouteCA = Layout.LayoutGenerator.getAncestorModels((IMgaFCO)comp_obj.Impl.Impl).Where(m => m.Meta.Name == "ComponentAssembly")
-                            .Select(ca => new ComponentAssembly(TonkaClasses.ComponentAssembly.Cast(ca)))
-                            .Where(ca => CodeGenerator.preRouted.ContainsKey(ca))
-                            .FirstOrDefault();
-                        if (preRouteCA != null)
+                        if (CodeGenerator.preRouted.ContainsKey(comp_obj.Parent)) // is the parent assembly prerouted
                         {
                             isSegPrerouted = true;     // net segment is prerouted - 
-                            Logger.WriteInfo("Net {0} segment found in Prerouted Asm {1}", net.name, preRouteCA.Name);
+                            Logger.WriteDebug("Net {0} in Prerouted Asm {1}", net.name, comp_obj.Parent.Name);
 
-                            var layoutParser = CodeGenerator.preRouted[preRouteCA];
+                            var layoutParser = CodeGenerator.preRouted[comp_obj.Parent];
                             // find the name/gate matching port in schematic domain model
                             var sch = comp_obj.Impl.Children.SchematicModelCollection.FirstOrDefault();
 
@@ -612,16 +412,6 @@ namespace CyPhy2Schematic.Layout
                                 FirstOrDefault()
                                 : null;
 
-                            if (port != null)
-                            {
-                                Logger.WriteInfo("Port {0} has pin.package: {1} and grandparent name: {2}.", port.Name, pin.package,
-                                port.ParentContainer.ParentContainer.Name);
-                            }
-                            else
-                            {
-                                Logger.WriteWarning("Nor port matches package: {0} gate: {1} name: {2}.", pin.package, pin.gate, pin.name );
-                            }
-
                             // find the buildPort
                             var buildPort = port != null && CyPhyBuildVisitor.Ports.ContainsKey(port.ID) ?
                                 CyPhyBuildVisitor.Ports[port.ID] : null;
@@ -629,25 +419,21 @@ namespace CyPhy2Schematic.Layout
 
                             if (buildPort != null && layoutParser.portTraceMap.ContainsKey(buildPort))
                             {
-                                Logger.WriteInfo("Found build Port: {0} with hashCode {1} and it's Associated Trace, from port {2} with ID {3}.", buildPort.Name, buildPort.GetHashCode(), port.Name, port.ID);
+                                Logger.WriteDebug("Found build Port: {0} and Associated Trace", buildPort.Name);
 
                                 if (preRouted == null)
                                 {
                                     preRouted = layoutParser.portTraceMap[buildPort];
-                                    preRoutedAsmID = GetComponentAssemblyID(preRouteCA.Impl.Impl as GME.MGA.MgaModel); // FIXME is this right
-                                    preRoutedAsm = preRouteCA.Name;
-                                    Logger.WriteInfo("Prerouted Asm Name: {0}, ID {1}",
+                                    preRoutedAsmID = GetComponentAssemblyID(comp_obj.Parent.Impl.Impl as GME.MGA.MgaModel);
+                                    preRoutedAsm = comp_obj.Parent.Name;
+                                    Logger.WriteDebug("Prerouted Asm Name: {0}, ID {1}",
                                         preRoutedAsm, preRoutedAsmID);
                                 }
-                                else
+                                else if (preRouted != layoutParser.portTraceMap[buildPort])
                                 {
-                                    var trace = layoutParser.portTraceMap[buildPort];
-                                    if (preRouted != trace)
-                                    {
-                                        onlyOnePreroute = false;
-                                        Logger.WriteWarning("BuildPort: {0}, preRoute = {1} different from a prior port = {2}, port.ID = {3}, buildPort hash code = {4}",
-                                            buildPort.Name, preRouted.name, trace.name, port.ID, buildPort.GetHashCode() );
-                                    }
+                                    onlyOnePreroute = false;
+                                    Logger.WriteDebug("BuildPort: {0}, preRoute different from a prior port",
+                                        buildPort.Name);
                                 }
                             }
                         }
@@ -719,18 +505,14 @@ namespace CyPhy2Schematic.Layout
                     sig.polygons = new List<Polygon>();
                     sig.RelComponentID = preRoutedAsmID;
                     if (preRouted.wires != null)
-                        foreach (var w in preRouted.wires)
-                            sig.wires.Add(w);
+                    foreach (var w in preRouted.wires)
+                        sig.wires.Add(w);
                     if (preRouted.vias != null)
                         foreach (var v in preRouted.vias)
                             sig.vias.Add(v);
                     if (preRouted.polygons != null)
                         foreach (var p in preRouted.polygons)
                             sig.polygons.Add(p);
-                }
-                else
-                {
-                    Logger.WriteInfo("For net {0}, onlyOnePreroute = {1}, preRouted = {2}", net.name, onlyOnePreroute, preRouted != null);
                 }
 
                 boardLayout.signals.Add(sig);
@@ -1051,50 +833,11 @@ namespace CyPhy2Schematic.Layout
             #endregion
         }
 
-        public static string GetComponentID(Tonka.Component comp)
-        {
-            var parent = comp.ParentContainer;
-            string ComponentID = "";
-            string preLayoutId = "";
-            string parentId = "";
-            var ancestors = getAncestorModels((MgaFCO)comp.Impl).Where(parentModel => parentModel.MetaBase.Name == typeof(Tonka.ComponentAssembly).Name).ToList();
-            foreach (var parentModel in ancestors)
-            {
-                var caModel = new ComponentAssembly(TonkaClasses.ComponentAssembly.Cast(parentModel));
-                if (((MgaModel)caModel.Impl.Impl).RegistryValue["layoutFile"] != null) //(preroutedPkgMap.ContainsKey(caModel))
-                {
-                    parentId = GetComponentAssemblyChainGuid((IMgaModel)caModel.Impl.Impl) ?? "";
-                    if (parentModel == ancestors.Last())
-                    {
-                        // layout.json CA is the root; safe to assume InstanceGUID is unique
-                        // this makes layout.json backwards-compatible, and alleviates some ID challenges
-                        break;
-                    }
-
-                    preLayoutId = GetComponentAssemblyManagedGuid((IMgaModel)parentModel);
-                    if (preLayoutId == "")
-                    {
-                        preLayoutId = GetComponentAssemblyChainGuid((IMgaModel)parentModel);
-                    }
-                    break;
-                }
-            }
-
-            ComponentID = comp.Attributes.InstanceGUID;
-            if (ComponentID.StartsWith(parentId))
-            {
-                ComponentID = ComponentID.Substring(parentId.Length);
-                //pkg.ComponentID = preLayoutId + pkg.ComponentID;
-            }
-            ComponentID = preLayoutId + ComponentID;
-            return ComponentID;
-        }
-
         /// <summary>
         /// Given a component assembly checks if IT or any ancestor is prerouted (i.e. contains a parsed layout)
         /// </summary>
         /// <param name="comp_asm">The Assembly to be checked</param>
-        /// <param name="parser">Output parameter that returns the layout parser object</param>
+        /// <param name="parser">Output parameter that returs the layout parser object</param>
         /// <returns></returns>
         bool TryGetPrerouted(ComponentAssembly comp_asm, out LayoutParser parser, out ComponentAssembly preRoutedAsm)
         {
@@ -1248,12 +991,8 @@ namespace CyPhy2Schematic.Layout
             }
         }
 
-        private void GetLayoutParametersFromTestBench( TestBench tb_obj, LayoutJson.Layout boardLayout,
-            out string boardWidth,
-            out string boardHeight,
-            out string boardEdgeSpace,  // MOT-789
-            out string interChipSpace,
-            out string boardCutouts)
+        private void GetLayoutParametersFromTestBench(TestBench tb_obj, LayoutJson.Layout boardLayout,
+            out string boardWidth, out string boardHeight, out string boardCutouts)
         {
             var bt = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("boardTemplate"));
             if (bt != null)
@@ -1283,21 +1022,16 @@ namespace CyPhy2Schematic.Layout
 
             var bw = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("boardWidth"));
             var bh = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("boardHeight"));
-            var bes = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("boardEdgeSpace"));
-            var ics = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("interChipSpace"));
             var bc = tb_obj.Parameters.FirstOrDefault(p => p.Name.Equals("boardCutouts"));
             
             boardWidth = (bw != null) ? bw.Value : null;
             boardHeight = (bh != null) ? bh.Value : null;
-            boardEdgeSpace = (bes != null) ? bes.Value : null;
-            interChipSpace = (ics != null) ? ics.Value : null;
             boardCutouts = (bc != null) ? bc.Value : null;
-
         }
 
   
-        private void GetLayoutParametersFromPcbComponent(TestBench tb_obj, LayoutJson.Layout boardLayout,
-            out string boardWidth, out string boardHeight, out string boardEdgeSpace, out string interChipSpace, out string boardCutouts)
+        private void GetLayoutParametersFromPcbComponent(TestBench tb_obj, LayoutJson.Layout boardLayout, 
+            out string boardWidth, out string boardHeight, out string boardCutouts)
         {
             // Look to see if there is a PCB component in the top level assembly 
             var compImpl = tb_obj.ComponentAssemblies.SelectMany(c => c.ComponentInstances)
@@ -1313,8 +1047,6 @@ namespace CyPhy2Schematic.Layout
             {
                 boardWidth = null;
                 boardHeight = null;
-                boardEdgeSpace = null;
-                interChipSpace = null;
                 boardCutouts = null;
                 return;
             }
@@ -1325,9 +1057,7 @@ namespace CyPhy2Schematic.Layout
             boardLayout.designRules = GetResource(comp, "designRules");
             boardWidth = GetParameterValue(comp, "boardWidth");
             boardHeight = GetParameterValue(comp, "boardHeight");
-            boardEdgeSpace = GetParameterValue(comp, "boardEdgeSpace");
-            interChipSpace = GetParameterValue(comp, "interChipSpace");
-            boardCutouts = GetParameterValue(comp, "boardCutouts");
+            boardCutouts = GetParameterValue(comp, "boardCoutouts");
         }
 
         private string GetResource(Tonka.Component comp, string resName)
@@ -1832,6 +1562,7 @@ namespace CyPhy2Schematic.Layout
                 var bBoxs = layoutBox.Split(';');
                 int bbidx = 0;
                 int origPkgIdx = 0;
+                bool hasLayer = false;
                 foreach (var bbox in bBoxs)
                 {
                     Package pkg = new Package()
@@ -1869,6 +1600,7 @@ namespace CyPhy2Schematic.Layout
                             if (pkg.constraints == null)
                                 pkg.constraints = new List<Constraint>();
                             pkg.constraints.Add(econs);
+                            hasLayer = true;
                         }
                     }
                     else // MOT-777 Force pre-routed subassemblies to the top layer
@@ -1882,10 +1614,11 @@ namespace CyPhy2Schematic.Layout
                         if (pkg.constraints == null)
                             pkg.constraints = new List<Constraint>();
                         pkg.constraints.Add(econs);
+                        hasLayer = true;
                     }
 
                     if (bbidx == 0)
-                    {                        
+                    {
                         preroutedPkgMap.Add(obj, pkg);
                         origPkgIdx = (int)pkg.pkg_idx;
 
@@ -1913,36 +1646,21 @@ namespace CyPhy2Schematic.Layout
 
                             pkg.constraints.Add(pcons);
                         }
+
+
+
                         #endregion
                     }
                     else
                     {
                         pkg.ComponentID += "." + bbidx.ToString();
-
-                        // This isn't the first layout box in the layoutBox registry value.
-                        // So, we'll add a relative-pkg constraint to this layout box, relative to first one.
-
-                        // The rotation offset is the X offset between the starting lower-left corner and the
-                        // (different) ending lower-left corner, when the layout box is rotated 90 degrees 
-                        // counter-clockwise about its center. MOT-779
-                        double rotationOffset = (pkg.width - pkg.height) / 2;
-
-                        double relX = pkg.x.GetValueOrDefault(0.0);
-                        double relY = pkg.y.GetValueOrDefault(0.0);
-
+                        // add constraint relative to first bounding box
                         var pcons = new RelativeConstraint()
                         {
                             type = "relative-pkg",
-                            x = quantize(relX),
-                            y = quantize(relY),
-                            x1 = quantize(relX + rotationOffset),    // MOT-779
-                            y1 = quantize(relY - rotationOffset),
-                            x2 = quantize(relX),
-                            y2 = quantize(relY),
-                            x3 = quantize(relX + rotationOffset),
-                            y3 = quantize(relY - rotationOffset),
+                            x = pkg.x,
+                            y = pkg.y,
                             pkg_idx = origPkgIdx,
-                            relativeRotation = 0,
                         };
 
                         if (pkg.constraints == null)
@@ -1972,12 +1690,9 @@ namespace CyPhy2Schematic.Layout
                     bbidx++;
                 }
                 // TBD SKN figure out relative constraint between multiple bboxes
-
-                // if this assembly is prelaid out, then don't go into its children
             }
-            else
+            else  // if this assembly is prelaid out - then don't go into its children
             {
-                // this assembly is not prelaid out; check for descendants that are
                 foreach (var ca in obj.ComponentAssemblyInstances)
                 {
                     pkg_idx = HandlePreRoutedAsm(ca, pkg_idx);
@@ -2045,7 +1760,7 @@ namespace CyPhy2Schematic.Layout
                 }
 
                 Component comp;
-                if (CyPhyBuildVisitor.ComponentInstanceGUIDs.TryGetValue(pguid, out comp) || (p.ComponentID != null && CyPhyBuildVisitor.ComponentInstanceGUIDs.TryGetValue(p.ComponentID, out comp)))
+                if (CyPhyBuildVisitor.ComponentInstanceGUIDs.TryGetValue(pguid, out comp))
                 {
                     packageComponent.Add(p.name.ToUpper(), comp);
                     packageComponent[p.name] = comp;
@@ -2053,7 +1768,7 @@ namespace CyPhy2Schematic.Layout
                 }
                 else
                 {
-                    gmeLogger.WriteError("Parsing Layout Json: JSON component '{1}' has Instance GUID '{0}' but it was not found in model", pguid ?? "[null ComponentID]", p.name);
+                    gmeLogger.WriteError("Parsing Layout Json: '{1}' has Instance GUID '{0}' but it was not found in model", pguid, p.name);
                 }
             }
 
@@ -2096,7 +1811,8 @@ namespace CyPhy2Schematic.Layout
                         }
                     }
                     else
-                        gmeLogger.WriteError("Package {0} not found in layout.json file", pin.package);
+                        gmeLogger.WriteError("Package {0} not found in Map, problem with the layout.json file",
+                            pin.package);
                 }
             }
         }
@@ -2104,33 +1820,14 @@ namespace CyPhy2Schematic.Layout
         public void MapPortToNet(Tonka.SchematicModelPort port, Signal n)
         {
             // get the build port for this schematic domain port & store the net with the build port
-            var buildPort = (port != null) &&
+            var buildPort = port != null &&
                 CyPhyBuildVisitor.Ports.ContainsKey(port.ID) ?
                 CyPhyBuildVisitor.Ports[port.ID] : null;
-            if (null == buildPort) 
-            {
-                if (null == port)
-                {
-                    gmeLogger.WriteInfo("Skipping a null port.");
-                }
-                else
-                {
-                    gmeLogger.WriteError("port {0} with ID {1} wasn't found in CyPhyBuildVisitor.Ports", port.Name, port.ID);
-                }
-            }
-            else if (portTraceMap.ContainsKey(buildPort))
-            {
-                gmeLogger.WriteWarning("The buildPort {0} with hashCode {1} was already found in portTraceMap with net {2} instead of {3}.",
-                    buildPort.Name, buildPort.GetHashCode(), portTraceMap[buildPort].name,  n.name);
-            }
 
             // now remember this net with the spice-build port 
             // - we will use it when building the spice model
-            if ((buildPort != null) && (!portTraceMap.ContainsKey(buildPort)))
-            {
+            if (buildPort != null && !portTraceMap.ContainsKey(buildPort))
                 portTraceMap.Add(buildPort, n);
-                gmeLogger.WriteInfo("Mapping portTraceMap Build Port {0} with hashCode {1} to Net {2}", buildPort.Name, buildPort.GetHashCode(), n.name );
-            }
 
             if (CodeGenerator.verbose)
             {

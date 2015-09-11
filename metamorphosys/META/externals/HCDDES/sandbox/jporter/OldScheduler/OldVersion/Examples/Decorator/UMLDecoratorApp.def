@@ -1,9 +1,0 @@
-; UMLDecoratorLib.def : Declares the module parameters.
-
-LIBRARY      "UMLDecorator.DLL"
-
-EXPORTS
-	DllCanUnloadNow     PRIVATE
-	DllGetClassObject   PRIVATE
-	DllRegisterServer   PRIVATE
-	DllUnregisterServer	PRIVATE

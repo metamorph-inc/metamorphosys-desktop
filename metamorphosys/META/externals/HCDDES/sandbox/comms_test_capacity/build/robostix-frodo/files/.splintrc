@@ -1,9 +1,0 @@
-#
-# Splint configuration for robostix-frodo
-#
-
--I/usr/avr/include -I./kernel/ATmega128 -I./kernel/include -I.
-
--DGCC_MEGA_AVR
-
-

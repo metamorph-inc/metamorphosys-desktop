@@ -64,6 +64,12 @@
     <Filter Include="CCLED">
       <UniqueIdentifier>{67bfe540-dce6-4cde-b140-ca8a214946fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GPBridge">
+      <UniqueIdentifier>{45eae10c-aa8f-41fe-a2b0-d77924294898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compass">
+      <UniqueIdentifier>{3b2960f0-948b-4637-9ae2-029d3567185b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\UART\uart.cpp">
@@ -185,6 +191,24 @@
     </ClCompile>
     <ClCompile Include="..\CCLED\ccled.cpp">
       <Filter>CCLED</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBridge\control.cpp">
+      <Filter>GPBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBridge\module_gpio.cpp">
+      <Filter>GPBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBridge\module_i2c.cpp">
+      <Filter>GPBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBridge\module_uart.cpp">
+      <Filter>GPBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GPBridge\compat.cpp">
+      <Filter>GPBridge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\COMPASS\compass.cpp">
+      <Filter>Compass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +352,63 @@
     </ClInclude>
     <ClInclude Include="..\CCLED\ccled.h">
       <Filter>CCLED</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\control.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\gpio_functions.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\gpio_handler.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\greybus_manifest.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\greybus_protocols.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\i2c_controller.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\i2c_functions.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\i2c-linux.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\interconnect.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\manifest.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\module.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\module_gpio.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\module_i2c.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\module_uart.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\uart_functions.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\uart_handler.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\GPBridge.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GPBridge\compat.h">
+      <Filter>GPBridge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\COMPASS\compass.h">
+      <Filter>Compass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

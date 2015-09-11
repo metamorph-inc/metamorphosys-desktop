@@ -26,9 +26,6 @@
     <xme2mga Include="AssemblyData_Creo.xme">
       <Filter>CAD</Filter>
     </xme2mga>
-    <xme2mga Include="CADAnalysisMetaData_Uml.xme">
-      <Filter>CAD</Filter>
-    </xme2mga>
   </ItemGroup>
   <ItemGroup>
     <mga2udmxml Include="..\..\generated\CAD\models\CAD_uml.mga">
@@ -43,9 +40,6 @@
     <mga2udmxml Include="..\..\generated\CAD\models\AssemblyData_Creo.mga">
       <Filter>CAD</Filter>
     </mga2udmxml>
-    <mga2udmxml Include="..\..\generated\CAD\models\CADAnalysisMetaData_Uml.mga">
-      <Filter>CAD</Filter>
-    </mga2udmxml>
   </ItemGroup>
   <ItemGroup>
     <udm Include="..\..\generated\CAD\models\AssemblyInterface_udm.xml">
@@ -58,9 +52,6 @@
       <Filter>PostProcessing</Filter>
     </udm>
     <udm Include="..\..\generated\CAD\models\CreoMetaData_udm.xml">
-      <Filter>CAD</Filter>
-    </udm>
-    <udm Include="..\..\generated\CAD\models\CADAnalysisMetaData_udm.xml">
       <Filter>CAD</Filter>
     </udm>
   </ItemGroup>

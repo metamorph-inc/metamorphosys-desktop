@@ -36,18 +36,9 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
             {
                 CyPhy.BlastComputationType cadcomputation = item.SrcEnds.BlastComputationType;
 
-                TBComputation tbcomputation = new TBComputation();
+                TBComputationType tbcomputation = new TBComputationType();
                 tbcomputation.MetricID = item.DstEnds.Metric.ID;
-                if (cadcomputation is CyPhy.MaxHorizonalVelocity)
-                {
-                    tbcomputation.ComputationType = TBComputation.Type.MAXHORIZONALVELOCITY;
-                } else if (cadcomputation is CyPhy.MaxVerticalJump)
-                {
-                    tbcomputation.ComputationType = TBComputation.Type.MAXVERTICALJUMP;
-                } else if (cadcomputation is CyPhy.MaxVerticalVelocity)
-                {
-                    tbcomputation.ComputationType = TBComputation.Type.MAXVERTICALVELOCITY;
-                }
+                tbcomputation.ComputationType = cadcomputation.Kind;
                 tbcomputation.RequestedValueType = "";
 
                 Computations.Add(tbcomputation);

@@ -191,21 +191,8 @@ namespace ElaboratorTest
             Assert.True(success, "CyPhyElaborator should have succeeded, but did not.");
         }
 
-        [Fact]
-        [Trait("Model", "Elaborator")]
-        public void HasDecisionGroup()
-        {
-            string objectAbsPath = "/@03_DesignSpaces/@Valid/@HasDecisionGroup";
-
-            Assert.True(File.Exists(this.mgaFile), "Failed to generate the mga.");
-
-            var success = ElaboratorRunner.RunElaborator(mgaFile, objectAbsPath);
-
-            Assert.True(success, "CyPhyElaborator should have succeeded, but did not.");
-        }
-
         // META-2667 needs a GME >= 14.1.18
-        [Fact]
+        //[Fact]
         [Trait("Model", "Elaborator")]
         public void HasSubtypes()
         {
@@ -615,7 +602,7 @@ namespace ElaboratorTest
         [Trait("Model", "Elaborator")]
         public void DesignSpaceCircularReference()
         {
-            string objectAbsPath = "/@03_DesignSpaces/@Invalid/@CircularReferences";
+            string objectAbsPath = "/@03_DesignSpaces/@Invalid/@CircularReference";
 
             Assert.True(File.Exists(this.mgaFile), "Failed to generate the mga.");
 

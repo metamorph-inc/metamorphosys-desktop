@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project SYSTEM "mga.dtd">
 
-<project guid="{371576CA-2138-42A8-98FC-42275BB58BA8}" cdate="Thu Oct 16 14:29:29 2014" mdate="Thu Oct 16 14:29:29 2014" version="" metaguid="{1913C77F-2986-4DA3-BD61-02F6C19FD44E}" metaversion="" metaname="UML">
+<project guid="{53AE981F-FAAB-4E3A-8CA9-6602D293DBD6}" cdate="Fri Jun 28 14:24:55 2013" mdate="Fri Jun 28 14:24:55 2013" version="" metaguid="{1913C77F-2986-4DA3-BD61-02F6C19FD44E}" metaversion="" metaname="UML">
 	<name>ESMoL_Abstract</name>
 	<comment></comment>
 	<author></author>
@@ -15,14 +15,14 @@
 			<attribute kind="version" status="meta">
 				<value>1.00</value>
 			</attribute>
-			<model id="id-0065-00000002" kind="ClassDiagram" role="ClassDiagram" guid="{12efc83a-6e22-4b98-b7af-9dedc3c7aae0}" relid="0x1" childrelidcntr="0x6b">
+			<model id="id-0065-00000002" kind="ClassDiagram" role="ClassDiagram" guid="{12efc83a-6e22-4b98-b7af-9dedc3c7aae0}" relid="0x1" childrelidcntr="0x68">
 				<name>Structural</name>
 				<regnode name="PartRegs" status="undefined">
 					<value></value>
 					<regnode name="UML" status="undefined">
 						<value></value>
 						<regnode name="Position" isopaque="yes">
-							<value>224,91</value>
+							<value>140,14</value>
 						</regnode>
 					</regnode>
 				</regnode>
@@ -836,7 +836,7 @@ chanIndex : Integer
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>959,56</value>
+								<value>966,61</value>
 							</regnode>
 						</regnode>
 					</regnode>
@@ -1008,22 +1008,16 @@ name: String
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>973,588</value>
+								<value>922,595</value>
 							</regnode>
 						</regnode>
 					</regnode>
 					<attribute kind="Attributes">
-						<value>id:Integer
-name:String
-msgindex:Integer
-numbits:Integer
-initialvalue:Real
-dataType:String
-dataSign:Boolean
-dataScale:Real
-dataOffset:Real
-min:Real
-max: Real</value>
+						<value>id: Integer
+name: String
+msgindex: Integer
+numbits: Integer
+initialvalue: String</value>
 					</attribute>
 					<attribute kind="IsAbstract" status="meta">
 						<value>false</value>
@@ -1055,42 +1049,6 @@ parity: Boolean=false
 stopbits: Integer=1
 flowcontrol: String=&quot;None&quot;
 </value>
-					</attribute>
-					<attribute kind="IsAbstract" status="meta">
-						<value>false</value>
-					</attribute>
-					<attribute kind="Stereotype" status="meta">
-						<value></value>
-					</attribute>
-				</atom>
-				<atom id="id-0066-00000036" kind="Class" role="Class" guid="{ccd0162b-73bd-4132-a552-b07071a9bfd1}" relid="0x69">
-					<name>OSEKParameters</name>
-					<regnode name="PartRegs" status="undefined">
-						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>112,301</value>
-							</regnode>
-						</regnode>
-						<regnode name="UML" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>42,259</value>
-							</regnode>
-						</regnode>
-					</regnode>
-					<attribute kind="Attributes">
-						<value>Compiler:String
-Conformance:String
-Schedule:String
-Status:String
-GenerateTask: Boolean
-CycleTime: String
-HandleNM: Boolean
-HandleCCL: Boolean
-HandleRX: Boolean
-HandleTX: Boolean</value>
 					</attribute>
 					<attribute kind="IsAbstract" status="meta">
 						<value>false</value>
@@ -1461,23 +1419,6 @@ HandleTX: Boolean</value>
 					</regnode>
 					<connpoint role="src" target="id-0066-0000000a"/>
 					<connpoint role="dst" target="id-0066-00000025"/>
-				</connection>
-				<connection id="id-0068-00000062" kind="Composition" role="Composition" guid="{193e0227-50ed-4c7b-a6d6-d6ffe39086ea}" relid="0x6a">
-					<name>Composition</name>
-					<regnode name="autorouterPref" isopaque="yes">
-						<value>Ew</value>
-					</regnode>
-					<attribute kind="Cardinality" status="meta">
-						<value>0..*</value>
-					</attribute>
-					<attribute kind="ChildRole" status="meta">
-						<value></value>
-					</attribute>
-					<attribute kind="ParentRole" status="meta">
-						<value></value>
-					</attribute>
-					<connpoint role="dst" target="id-0066-00000008"/>
-					<connpoint role="src" target="id-0066-00000036"/>
 				</connection>
 			</model>
 			<model id="id-0065-00000003" kind="ClassDiagram" role="ClassDiagram" guid="{3eb8444b-e770-4cd7-ba97-5a40b105ede8}" relid="0x2" childrelidcntr="0x11">
@@ -3247,17 +3188,8 @@ timeboundsecs : Real</value>
 					<connpoint role="src" target="id-0067-00000030"/>
 				</connection>
 			</model>
-			<model id="id-0065-00000006" kind="ClassDiagram" role="ClassDiagram" guid="{a4a07320-a1c8-4512-9d9a-6907f73cffdb}" relid="0x6" childrelidcntr="0x4e">
+			<model id="id-0065-00000006" kind="ClassDiagram" role="ClassDiagram" guid="{a4a07320-a1c8-4512-9d9a-6907f73cffdb}" relid="0x6" childrelidcntr="0x45">
 				<name>BehavioralExecution</name>
-				<regnode name="PartRegs" status="undefined">
-					<value></value>
-					<regnode name="UML" status="undefined">
-						<value></value>
-						<regnode name="Position" isopaque="yes">
-							<value>140,7</value>
-						</regnode>
-					</regnode>
-				</regnode>
 				<atom id="id-0066-00000028" kind="Class" role="Class" guid="{6f5fc479-6163-436b-8ce6-c4a6aba2d758}" relid="0x1d">
 					<name>ExecInfo</name>
 					<regnode name="PartRegs" status="undefined">
@@ -3265,7 +3197,7 @@ timeboundsecs : Real</value>
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>287,210</value>
+								<value>331,240</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
@@ -3292,7 +3224,7 @@ timeboundsecs : Real</value>
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>329,154</value>
+								<value>373,198</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
@@ -3320,7 +3252,7 @@ timeboundsecs : Real</value>
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>385,210</value>
+								<value>429,254</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
@@ -3349,7 +3281,7 @@ desiredoffsetsecs: Real
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>434,301</value>
+								<value>457,324</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
@@ -3367,13 +3299,13 @@ desiredoffsetsecs: Real
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>364,329</value>
+								<value>401,366</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>462,378</value>
+								<value>469,378</value>
 							</regnode>
 						</regnode>
 					</regnode>
@@ -3394,13 +3326,13 @@ desiredoffsetsecs: Real
 						<regnode name="Constraints" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>413,413</value>
+								<value>464,366</value>
 							</regnode>
 						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>574,378</value>
+								<value>583,378</value>
 							</regnode>
 						</regnode>
 					</regnode>
@@ -3528,7 +3460,7 @@ desiredoffsetsecs: Real
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
-								<value>182,203</value>
+								<value>192,201</value>
 							</regnode>
 						</regnode>
 					</regnode>
@@ -3606,100 +3538,10 @@ desiredoffsetsecs: Real
 						<value></value>
 					</attribute>
 				</atom>
-				<atom id="id-0066-00000037" kind="Class" role="Class" guid="{e6ff8d57-cab8-4d2e-9928-547afd988cdc}" relid="0x47">
-					<name>Preemption</name>
-					<regnode name="PartRegs" status="undefined">
-						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1232,196</value>
-							</regnode>
-						</regnode>
-						<regnode name="UML" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1155,266</value>
-							</regnode>
-						</regnode>
-					</regnode>
-					<attribute kind="Attributes">
-						<value>preemption: Boolean</value>
-					</attribute>
-					<attribute kind="IsAbstract" status="meta">
-						<value>false</value>
-					</attribute>
-					<attribute kind="Stereotype" status="meta">
-						<value></value>
-					</attribute>
-				</atom>
-				<atom id="id-0066-00000038" kind="Class" role="Class" guid="{42045022-df4b-4373-a72d-427874dd98e6}" relid="0x49">
-					<name>Priority</name>
-					<regnode name="PartRegs" status="undefined">
-						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1120,196</value>
-							</regnode>
-						</regnode>
-						<regnode name="UML" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1323,266</value>
-							</regnode>
-						</regnode>
-					</regnode>
-					<attribute kind="Attributes">
-						<value>priority: Integer</value>
-					</attribute>
-					<attribute kind="IsAbstract" status="meta">
-						<value>false</value>
-					</attribute>
-					<attribute kind="Stereotype" status="meta">
-						<value></value>
-					</attribute>
-				</atom>
-				<atom id="id-0066-00000039" kind="Class" role="Class" guid="{ae0809a6-96d5-488f-bee8-66954c94478c}" relid="0x4b">
-					<name>OsekExecParameters</name>
-					<regnode name="PartRegs" status="undefined">
-						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1176,252</value>
-							</regnode>
-						</regnode>
-						<regnode name="UML" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>1456,266</value>
-							</regnode>
-						</regnode>
-					</regnode>
-					<attribute kind="Attributes">
-						<value>taskType : String
-activation : Integer
-autoStart : Boolean
-</value>
-					</attribute>
-					<attribute kind="IsAbstract" status="meta">
-						<value>false</value>
-					</attribute>
-					<attribute kind="Stereotype" status="meta">
-						<value></value>
-					</attribute>
-				</atom>
 				<reference id="id-0067-00000031" kind="ClassCopy" role="ClassCopy" guid="{dfb9cb78-0e73-4551-944a-869a9483e2ab}" relid="0x2a" referred="id-0066-00000002">
 					<name>Task</name>
 					<regnode name="PartRegs" status="undefined">
 						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>266,7</value>
-							</regnode>
-						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
@@ -3715,12 +3557,6 @@ autoStart : Boolean
 					<name>Msg</name>
 					<regnode name="PartRegs" status="undefined">
 						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>7,245</value>
-							</regnode>
-						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
@@ -3736,12 +3572,6 @@ autoStart : Boolean
 					<name>Deployment</name>
 					<regnode name="PartRegs" status="undefined">
 						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>140,7</value>
-							</regnode>
-						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
@@ -3757,12 +3587,6 @@ autoStart : Boolean
 					<name>Device</name>
 					<regnode name="PartRegs" status="undefined">
 						<value></value>
-						<regnode name="Constraints" status="undefined">
-							<value></value>
-							<regnode name="Position" isopaque="yes">
-								<value>7,119</value>
-							</regnode>
-						</regnode>
 						<regnode name="UML" status="undefined">
 							<value></value>
 							<regnode name="Position" isopaque="yes">
@@ -3815,6 +3639,11 @@ autoStart : Boolean
 					<name>Sub</name>
 					<connpoint role="src" target="id-0066-0000002b"/>
 					<connpoint role="dst" target="id-0066-0000002c"/>
+				</connection>
+				<connection id="id-0068-00000053" kind="Sub" role="Sub" guid="{c56284f3-098d-4fc7-8848-fd00d4063fa4}" relid="0x28">
+					<name>Sub</name>
+					<connpoint role="src" target="id-0066-0000002b"/>
+					<connpoint role="dst" target="id-0066-0000002d"/>
 				</connection>
 				<connection id="id-0068-00000054" kind="Composition" role="Composition" guid="{8b005922-172a-453c-aa53-b67db2e3e376}" relid="0x29">
 					<name>Composition</name>
@@ -3948,65 +3777,6 @@ autoStart : Boolean
 					</attribute>
 					<connpoint role="dst" target="id-0066-00000028"/>
 					<connpoint role="src" target="id-0066-00000035"/>
-				</connection>
-				<connection id="id-0068-00000064" kind="Sub" role="Sub" guid="{33ccea63-5ed6-44da-a517-e7a8e0203888}" relid="0x46">
-					<name>Sub</name>
-					<regnode name="autorouterPref" isopaque="yes">
-						<value>Sn</value>
-					</regnode>
-					<connpoint role="src" target="id-0066-0000002b"/>
-					<connpoint role="dst" target="id-0066-0000002d"/>
-				</connection>
-				<connection id="id-0068-00000065" kind="Composition" role="Composition" guid="{97513e4a-63b1-49ca-a842-f724a4b8a58a}" relid="0x48">
-					<name>Composition</name>
-					<regnode name="autorouterPref" isopaque="yes">
-						<value>Ne</value>
-					</regnode>
-					<attribute kind="Cardinality" status="meta">
-						<value>0..*</value>
-					</attribute>
-					<attribute kind="ChildRole" status="meta">
-						<value></value>
-					</attribute>
-					<attribute kind="ParentRole" status="meta">
-						<value></value>
-					</attribute>
-					<connpoint role="dst" target="id-0066-00000028"/>
-					<connpoint role="src" target="id-0066-00000037"/>
-				</connection>
-				<connection id="id-0068-00000066" kind="Composition" role="Composition" guid="{e832704e-dda4-4391-b5f7-448663d90095}" relid="0x4a">
-					<name>Composition</name>
-					<regnode name="autorouterPref" isopaque="yes">
-						<value>Ne</value>
-					</regnode>
-					<attribute kind="Cardinality" status="meta">
-						<value>0..*</value>
-					</attribute>
-					<attribute kind="ChildRole" status="meta">
-						<value></value>
-					</attribute>
-					<attribute kind="ParentRole" status="meta">
-						<value></value>
-					</attribute>
-					<connpoint role="dst" target="id-0066-00000028"/>
-					<connpoint role="src" target="id-0066-00000038"/>
-				</connection>
-				<connection id="id-0068-00000067" kind="Composition" role="Composition" guid="{1f27d2f9-a828-4a4f-9934-c1a822ab97f9}" relid="0x4c">
-					<name>Composition</name>
-					<regnode name="autorouterPref" isopaque="yes">
-						<value>Ne</value>
-					</regnode>
-					<attribute kind="Cardinality" status="meta">
-						<value>0..*</value>
-					</attribute>
-					<attribute kind="ChildRole" status="meta">
-						<value></value>
-					</attribute>
-					<attribute kind="ParentRole" status="meta">
-						<value></value>
-					</attribute>
-					<connpoint role="dst" target="id-0066-00000028"/>
-					<connpoint role="src" target="id-0066-00000039"/>
 				</connection>
 			</model>
 		</model>

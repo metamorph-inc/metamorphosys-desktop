@@ -12,6 +12,7 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
+#include <windows.h>
 #include <systemc.h>
 #include <POR/por.h>
 #include <ArduinoRandom/ArduinoRandom.h>

@@ -60,7 +60,4 @@
     </CustomBuild>
     <CustomBuild Include="ctest.xme" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

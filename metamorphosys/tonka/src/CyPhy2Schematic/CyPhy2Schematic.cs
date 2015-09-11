@@ -593,8 +593,6 @@ namespace CyPhy2Schematic
         private void WorkInMainTransaction()
         {
             var config = (this.mainParameters.config as CyPhy2Schematic_Settings);
-            string placementDotBat = "placement.bat";
-            string placeonlyDotBat = "placeonly.bat";
 
             this.result.Success = true;
             Schematic.CodeGenerator.Mode mode = Schematic.CodeGenerator.Mode.EDA;
@@ -627,19 +625,17 @@ namespace CyPhy2Schematic
                 }
                 else if (config.doPlaceRoute != null)
                 {
-                    this.result.RunCommand = placementDotBat;
+                    this.result.RunCommand = "placement.bat";
                 }
                 else if (config.doPlaceOnly != null)
                 {
-                    this.result.RunCommand = placeonlyDotBat;
+                    this.result.RunCommand = "placeonly.bat";
                 }
                 else
                 {
                     this.result.RunCommand = "cmd /c dir";
                 }
             }
-
-            GetIDsOfEverything(this.mainParameters.CurrentFCO);
 
             // Call Elaborator
             var elaboratorSuccess = this.CallElaborator(this.mainParameters.Project,
@@ -653,20 +649,9 @@ namespace CyPhy2Schematic
             try
             {
                 Schematic.CodeGenerator.Logger = Logger;
-                var schematicCodeGenerator = new Schematic.CodeGenerator(this.mainParameters, mode, (MgaTraceability)result.Traceability, mgaIdToDomainIDs);
+                var schematicCodeGenerator = new Schematic.CodeGenerator(this.mainParameters, mode);
                 
                 var gcResult = schematicCodeGenerator.GenerateCode();
-
-                // MOT-782: Prevent autorouting if we've placed components off the board.
-                if( (gcResult.bonesFound) && (this.result.RunCommand == placementDotBat) )
-                {
-                    // Found a bone, MOT-782.
-                    Logger.WriteWarning("Skipping EAGLE autorouting, since components not found in layout.json were placed off the board.");
-
-                    this.result.RunCommand = placeonlyDotBat;
-                    config.doPlaceOnly = config.doPlaceRoute;
-                    config.doPlaceRoute = null;
-                }
                 
                 if (mode == Schematic.CodeGenerator.Mode.EDA &&
                     (config.doPlaceRoute != null || config.doPlaceOnly != null))
@@ -685,149 +670,7 @@ namespace CyPhy2Schematic
             this.UpdateSuccess("Schematic translation", successTranslation);
         }
 
-        public class IDs
-        {
-            public string instanceGUID;
-            public string managedGUID;
-            public string ID;
-            public string ConnectorID;
-
-            public override string ToString()
-            {
-                return managedGUID + "/" + (String.IsNullOrEmpty(instanceGUID) ? "" : (instanceGUID + "/")) + ConnectorID + "/" + ID;
-            }
-        }
-        public Dictionary<string, IDs> mgaIdToDomainIDs = new Dictionary<string, IDs>();
-        private void GetIDsOfEverything(MgaFCO testbench)
-        {
-            Queue<MgaFCO> q = new Queue<MgaFCO>();
-            q.Enqueue(testbench);
-            var metaProject = testbench.Meta.MetaProject;
-            int componentRefId = metaProject.RootFolder.GetDefinedFCOByNameDisp("ComponentRef", true).MetaRef;
-            int componentId = metaProject.RootFolder.GetDefinedFCOByNameDisp("Component", true).MetaRef;
-            int testComponentId = -1; // TODO //metaProject.RootFolder.GetDefinedFCOByNameDisp("TestComponent", true).MetaRef;
-            int testBenchId = metaProject.RootFolder.GetDefinedFCOByNameDisp("TestBench", true).MetaRef;
-            int componentAssemblyId = metaProject.RootFolder.GetDefinedFCOByNameDisp("ComponentAssembly", true).MetaRef;
-            int connectorId = metaProject.RootFolder.GetDefinedFCOByNameDisp("Connector", true).MetaRef;
-
-            Action<IMgaFCO> addComponentID = (fco) =>
-            {
-                mgaIdToDomainIDs[fco.ID] = new IDs()
-                {
-                    instanceGUID = (fco.Meta.Name == typeof(Tonka.Component).Name) ? fco.GetStrAttrByNameDisp("InstanceGUID") : null, // TestComponents do not have InstanceGUIDs
-                    managedGUID = fco.GetStrAttrByNameDisp("ManagedGUID")
-                    // ID = fco.GetIntAttrByNameDisp("ID").ToString()
-                };
-            };
-            Action<IMgaFCO> addComponentRefID = (fco) =>
-            {
-                mgaIdToDomainIDs[fco.ID] = new IDs()
-                {
-                    instanceGUID = fco.GetStrAttrByNameDisp("InstanceGUID"),
-                    // managedGUID
-                    ID = fco.GetIntAttrByNameDisp("ID").ToString()
-                };
-            };
-            Action<IMgaFCO> addComponentAssemblyID = (fco) =>
-            {
-                mgaIdToDomainIDs[fco.ID] = new IDs()
-                {
-                    // instanceGUID =
-                    managedGUID = fco.GetStrAttrByNameDisp("ManagedGUID"),
-                    ID = fco.GetIntAttrByNameDisp("ID").ToString()
-                };
-            };
-
-            while (q.Count > 0)
-            {
-                MgaFCO fco = q.Dequeue();
-                if (fco.Meta.ObjType == GME.MGA.Meta.objtype_enum.OBJTYPE_REFERENCE)
-                {
-                    var reference = (MgaReference)fco;
-                    var referred = reference.Referred;
-                    if (referred != null)
-                    {
-                        if (referred.Meta.MetaRef == componentAssemblyId)
-                        {
-                            if (reference.Meta.MetaRef == componentRefId)
-                            {
-                                addComponentRefID(reference);
-                            }
-                            else
-                            {
-                                addComponentAssemblyID(referred);
-                            }
-                            foreach (MgaFCO child in ((MgaModel)referred).ChildFCOs)
-                            {
-                                q.Enqueue(child);
-                            }
-                        }
-                        else if (referred.Meta.MetaRef == componentId || referred.Meta.MetaRef == testComponentId)
-                        {
-                            addComponentRefID(reference);
-                            foreach (MgaFCO child in ((MgaModel)referred).ChildFCOs)
-                            {
-                                q.Enqueue(child);
-                            }
-                        }
-                    }
-                }
-                else if (fco.Meta.MetaRef == componentAssemblyId)
-                {
-                    addComponentAssemblyID(fco);
-                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
-                    {
-                        q.Enqueue(child);
-                    }
-                }
-                else if (fco.Meta.MetaRef == testBenchId)
-                {
-                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
-                    {
-                        q.Enqueue(child);
-                    }
-                }
-                else if (fco.Meta.MetaRef == connectorId)
-                {
-                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
-                    {
-                        if (child.Meta.Name == "SchematicModelPort")
-                        {
-                            mgaIdToDomainIDs[child.ID] = new IDs()
-                            {
-                                // instanceGUID =
-                                // managedGUID =
-                                ID = child.GetStrAttrByNameDisp("ID"),
-                                ConnectorID = fco.GetStrAttrByNameDisp("ID")
-                            };
-                        }
-                    }
-                }
-                else if (fco.Meta.MetaRef == componentId || fco.Meta.MetaRef == testComponentId)
-                {
-                    addComponentID(fco);
-                }
-            }
-        }
-
         #endregion
 
-    }
-
-    public static class TraceabilityExtension
-    {
-        public static string GetID(this MgaTraceability t, IMgaObject obj)
-        {
-            String compOriginalID = null;
-            if (t.TryGetMappedObject(obj.ID, out compOriginalID))
-            {
-            }
-            else
-            {
-                compOriginalID = obj.ID;
-            }
-            return compOriginalID;
-
-        }
     }
 }

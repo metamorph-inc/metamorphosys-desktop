@@ -90,42 +90,35 @@ def main():
                 json.dump(extracted_components, f_out)
 
     elif opts.tree:
-        tree_to_export = opts.tree
+        treeToExport = opts.tree
 
-        tree_exporter = TreeExporter(tree_to_export)
+        treeExporter = TreeExporter(treeToExport)
 
         if opts.json:
             #treeExporter.export_to_json(treeToExport + '.tree.json')
-            tree_exporter.export_to_json('ModelicaPackages.tree.json')
+            treeExporter.export_to_json('ModelicaPackages.tree.json')
         if opts.xml:
-            tree_exporter.export_to_xml(tree_to_export + '.tree.xml')
+            treeExporter.export_to_xml(treeToExport + '.tree.xml')
 
     elif opts.packages:
         external_packages = [p for p in opts.packages.split(';') if p]
 
-        package_exporter = PackageExporter(external_packages, load_msl=opts.standard)
+        package_exporter = PackageExporter(external_packages, load_MSL=opts.standard)
 
         if opts.json:
-            package_exporter.package_names.sort()
-            package_exporter.export_to_json('ModelicaPackages.tree.json')
+            package_exporter.packageNames.sort()
+            package_exporter.exportToJson('ModelicaPackages.tree.json')
             #package_exporter.exportToJson("_".join(package_exporter.externalPackageNames) + '.tree.json')
 
-    elif opts.standard:
-        package_exporter = PackageExporter([], load_msl=opts.standard)
-
-        if opts.json:
-            package_exporter.package_names.sort()
-            package_exporter.export_to_json('ModelicaPackages.tree.json')
-
     elif opts.config:
-        external_package_file = opts.config
-        logger.info('loading packages from "{0}" ... '.format(external_package_file))
+        externalPackageFile = opts.config
+        logger.info('loading packages from "{0}" ... '.format(externalPackageFile))
 
-        package_exporter = PackageExporter(external_package_file, load_msl=opts.standard)
+        package_exporter = PackageExporter(externalPackageFile, load_MSL=opts.standard)
 
         if opts.json:
-            package_exporter.package_names.sort()
-            package_exporter.export_to_json("_".join(package_exporter.package_names) + '.tree.json')
+            package_exporter.packageNames.sort()
+            package_exporter.exportToJson("_".join(package_exporter.packageNames) + '.tree.json')
 
     elif opts.assemblies:
 

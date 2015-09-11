@@ -13,10 +13,7 @@ set ERROR_CODE=0
 
 set ERROR_MSG=""
 
-FOR /F "skip=2 tokens=2,*" %%A IN ('%SystemRoot%\SysWoW64\REG.exe query "HKLM\software\META" /v "META_PATH"') DO set MetaPath=%%B
 
-set CADPython=%MetaPath%\bin\CAD
-if exist "%MetaPath%\src\CADAssembler\Python" set CADPython=%MetaPath%\src\CADAssembler\Python
 
 Rem ****************************
 REM Create Creo Assembly
@@ -81,8 +78,8 @@ Rem ****************************
 
 set RESULT_XML_FILE="ComputedValues.xml"
 set PY_SCRIPT_NAME=UpdateReportJson_CAD.py
-set PY_SCRIPT="%CADPython%\%PY_SCRIPT_NAME%"
-set PYTHONPATH=%PYTHONPATH%;%MetaPath%
+set PY_SCRIPT="%PROE_ISIS_EXTENSIONS%\bin\%PY_SCRIPT_NAME%"
+set PYTHONPATH=%PYTHONPATH%;%PROE_ISIS_EXTENSIONS%
 
 if exist %PY_SCRIPT% goto  :PY_FOUND
 @echo off
@@ -95,7 +92,7 @@ set ERROR_MSG="Error from runCADJob.bat: Could not find UpdateReportJson_CAD.py.
 goto :ERROR_SECTION
 
 :PY_FOUND
-"%MetaPath%\bin\Python27\Scripts\Python.exe" %PY_SCRIPT% -m %RESULT_XML_FILE%
+FOR /F "skip=2 tokens=2,*" %%A IN ('%SystemRoot%\SysWoW64\REG.exe query "HKLM\software\META" /v "META_PATH"') DO "%%B\bin\Python27\Scripts\Python.exe" %PY_SCRIPT% -m %RESULT_XML_FILE%
 
 set ERROR_CODE=%ERRORLEVEL%
 if %ERRORLEVEL% NEQ 0 (

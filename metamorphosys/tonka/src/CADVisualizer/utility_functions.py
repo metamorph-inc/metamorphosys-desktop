@@ -5,7 +5,7 @@ import logging
 
 def setup_logger(log_file, handler_name=None):
     logdir = os.path.join(os.getcwd(), 'log')
-    #print logdir
+    print logdir
     if not os.path.exists(logdir):
         os.makedirs(logdir)
 

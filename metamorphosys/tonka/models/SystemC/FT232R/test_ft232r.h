@@ -697,13 +697,13 @@ void host_to_ft232r(void) {
 			error_cnt++;
 		}
 
-		for (i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			wait(clk.posedge_event());
 		}
 		cout << ".";
 	}
 
-	for (i = 0; i < 50; i++) {
+	for (int i = 0; i < 50; i++) {
 		wait(clk.posedge_event());
 	}
 

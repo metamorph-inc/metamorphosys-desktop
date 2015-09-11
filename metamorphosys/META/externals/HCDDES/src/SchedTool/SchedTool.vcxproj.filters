@@ -91,7 +91,4 @@
       <Filter>Antlr</Filter>
     </CustomBuild>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
 </Project>

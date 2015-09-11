@@ -157,7 +157,8 @@ namespace AVM.DDP
 
             if (update && System.IO.File.Exists(fullPathFileName))
             {
-                MetaTBManifest oldManifest = Deserialize(fullPathFileName);
+                string oldFileContent = System.IO.File.ReadAllText(fullPathFileName);
+                MetaTBManifest oldManifest = JsonConvert.DeserializeObject<MetaTBManifest>(oldFileContent);
                 this.CopyManifest(oldManifest);
                 shouldUpdate = true;
             }
@@ -399,25 +400,14 @@ namespace AVM.DDP
             }
         }
 
-        public static MetaTBManifest Deserialize(string fileName)
-        {
-            MetaTBManifest manifest = JsonConvert.DeserializeObject<MetaTBManifest>(System.IO.File.ReadAllText(fileName));
-            manifest.Artifacts = manifest.Artifacts ?? new List<Artifact>();
-            manifest.Dependencies = manifest.Dependencies ?? new List<Dependency>();
-            manifest.Metrics = manifest.Metrics ?? new List<Metric>();
-            manifest.Parameters = manifest.Parameters ?? new List<Parameter>();
-            manifest.Steps = manifest.Steps ?? new List<Step>();
-            manifest.VisualizationArtifacts = manifest.VisualizationArtifacts ?? new List<Artifact>();
-            return manifest;
-        }
-
         public static MetaTBManifest OpenForUpdate(string outputDir = "")
         {
             string fullPathFileName = Path.Combine(outputDir, TESTBENCH_FILENAME);
 
             if (System.IO.File.Exists(fullPathFileName))
             {
-                MetaTBManifest oldManifest = Deserialize(fullPathFileName);
+                string oldFileContent = System.IO.File.ReadAllText(fullPathFileName);
+                MetaTBManifest oldManifest = JsonConvert.DeserializeObject<MetaTBManifest>(oldFileContent);
                 return oldManifest;
             }
 

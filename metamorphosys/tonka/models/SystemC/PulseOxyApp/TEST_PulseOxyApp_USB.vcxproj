@@ -37,11 +37,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.0\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.1\src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)_USB\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.0\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\systemc-2.3.1\src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)_USB\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -77,8 +77,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\systemc-2.3.0\msvc100\systemc-2.3.0.vcxproj">
-      <Project>{86df4b8c-cf94-4ea8-b529-78997f0f30a7}</Project>
+   <ProjectReference Include="..\systemc-2.3.1\msvc100\systemc-2.3.1.vcxproj">
+      <Project>{4cfa11a4-1195-404d-bac4-d7fd6f03c0a9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\TonkaSCLib\TonkaSCLib.vcxproj">
       <Project>{40042102-532d-4059-b86f-333e85475f33}</Project>

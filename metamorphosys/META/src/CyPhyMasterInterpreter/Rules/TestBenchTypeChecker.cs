@@ -134,6 +134,29 @@ namespace CyPhyMasterInterpreter.Rules
                         };
 
                         results.Add(feedback);
+
+                        if (tlsutRefered.Impl.ID == (tlsutRefered.Impl as GME.MGA.MgaModel).RootFCO.ID)
+                        {
+                            feedback = new ContextCheckerResult()
+                            {
+                                Success = true,
+                                Subject = tlsut.Impl,
+                                Message = string.Format("TopLevelSystemUnderTest refers to a object in a folder {0}.", tlsutRefered.Kind)
+                            };
+
+                            results.Add(feedback);
+                        }
+                        else
+                        {
+                            feedback = new ContextCheckerResult()
+                            {
+                                Success = true,
+                                Subject = tlsut.Impl,
+                                Message = string.Format("TopLevelSystemUnderTest refers to a object but it is not in a {0}.", tlsutRefered.Kind)
+                            };
+
+                            results.Add(feedback);
+                        }
                     }
                     else if (tlsutRefered is CyPhy.DesignContainer)
                     {
@@ -155,8 +178,8 @@ namespace CyPhyMasterInterpreter.Rules
                         var feedback = new ContextCheckerResult()
                         {
                             Success = true,
-                            Subject = tlsutRefered.Impl,
-                            Message = string.Format("'{0}' [TopLevelSystemUnderTest] refers to a valid object [{1}] and the {1} is in a folder.", tlsut.Name, tlsutRefered.Kind)
+                            Subject = tlsut.Impl,
+                            Message = string.Format("TopLevelSystemUnderTest refers to a object in a folder {0}.", tlsutRefered.Kind)
                         };
 
                         results.Add(feedback);
@@ -166,8 +189,8 @@ namespace CyPhyMasterInterpreter.Rules
                         var feedback = new ContextCheckerResult()
                         {
                             Success = false,
-                            Subject = tlsutRefered.Impl,
-                            Message = string.Format("'{0}' [TopLevelSystemUnderTest] refers to a valid object [{1}] but the {1} is not in a folder.", tlsut.Name, tlsutRefered.Kind)
+                            Subject = tlsut.Impl,
+                            Message = string.Format("TopLevelSystemUnderTest refers to a object but it is not in a {0}.", tlsutRefered.Kind)
                         };
 
                         results.Add(feedback);

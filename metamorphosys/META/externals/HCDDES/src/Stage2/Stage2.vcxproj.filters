@@ -50,15 +50,6 @@
     <ClCompile Include="TTSrcVisitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OILVisitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OIL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OILprint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractVisitor.h">
@@ -91,15 +82,6 @@
     <ClInclude Include="..\..\generated\ESMoL_Abstract\generated\Semantics_xsd.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="OILVisitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OIL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OILprint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\templates\FRODO.tpl">
@@ -120,7 +102,6 @@
     <None Include="..\..\templates\truetime_gen_network.tpl">
       <Filter>Templates</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuildStep Include="..\..\templates\FRODOv2.tpl">

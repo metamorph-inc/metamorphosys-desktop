@@ -64,6 +64,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CyPhy2Schematic\CyPhy2Schematic.csproj">
+      <Project>{8D5BA6AB-6D10-4BAE-B310-4DB8A3D9E87A}</Project>
+      <Name>CyPhy2Schematic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LayoutJson\LayoutJson.csproj">
       <Project>{3118B8E0-0EC3-480F-94B6-3ECAF9C68248}</Project>
       <Name>LayoutJson</Name>

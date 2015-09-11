@@ -85,7 +85,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated\ESMoL;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(XERCES_PATH)\include;$(BOOST_PATH);$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated\ESMoL;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(XERCES_PATH)\include;$(BOOST_PATH);$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -116,7 +116,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated\ESMoL;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(XERCES_PATH)\include;$(BOOST_PATH);$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated\ESMoL;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -132,7 +132,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(XERCES_PATH)\include;$(BOOST_PATH);$(UDM_PATH)\include;$(UDM_3RDPARTY_PATH)\xerces-c_2_8_0;$(PYTHON_HOME)\include;..\..\..\generated\ESM2SLC\generated;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -205,7 +205,6 @@
     <None Include="..\..\..\generated\BlockTemplate\Python\UnitDelayPre.py" />
     <None Include="..\..\..\generated\BlockTemplate\Python\ZeroOrderHold.py" />
     <None Include="..\..\..\generated\BlockTemplate\Python\RateTransition.py" />
-    <None Include="packages.config" />
     <None Include="Python\ArrayCoordinator.py" />
     <None Include="Python\ArrayDecomp.py" />
     <None Include="Python\ArrayManager.py" />
@@ -344,7 +343,5 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\..\autobuild\MMRules.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Import Project="..\..\..\nuget\boost.1.55.0.16\build\native\boost.targets" Condition="Exists('..\..\..\nuget\boost.1.55.0.16\build\native\boost.targets')" />
-    <Import Project="..\..\..\nuget\boost_python.1.55.0.10\build\native\boost_python.targets" Condition="Exists('..\..\..\nuget\boost_python.1.55.0.10\build\native\boost_python.targets')" />
   </ImportGroup>
 </Project>

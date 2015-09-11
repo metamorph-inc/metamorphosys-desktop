@@ -12,6 +12,7 @@
 #ifndef SCBUS_H
 #define SCBUS_H
 
+#include <windows.h>
 #include <queue>
 #include <systemc.h>
 

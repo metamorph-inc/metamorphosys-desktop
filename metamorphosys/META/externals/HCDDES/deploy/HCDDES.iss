@@ -90,8 +90,8 @@ Source: {#TRUNK_PATH}\bin\ESMoLUpdate.dll; DestDir: {app}\bin; Flags: ignorevers
 
 ; Include Udm for the above
 ; n.b do not use ignoreversion here
-Source: {#TRUNK_PATH}\bin\UdmDll_3_2_VS10.dll; DestDir: {syswow64}
-Source: {#TRUNK_PATH}\bin\xerces-c_2_8.dll; DestDir: {syswow64}
+Source: {#UDM_PATH}\bin\UdmDll_3_2.dll; DestDir: {syswow64}
+Source: {#UDM_PATH}\bin\xerces-c_2_8.dll; DestDir: {syswow64}
 
 ; TODO: need a path for this (but ESMoL needs to build against 32bit MATLAB, and 64bit is installed by default on x64 machines)
 ;Source: {#UDM}\bin\UdmDll_3_2_v100_x64.dll; DestDir: {sys}; Flags: ignoreversion; Check: IsWin64
@@ -101,14 +101,27 @@ Source: {#TRUNK_PATH}\bin\xerces-c_2_8.dll; DestDir: {syswow64}
 ;; =============================================================================
 ;; 3rd-Party, Runtime Dependencies
 ;; =============================================================================
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Boost
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+#define BOOST_PATH GetEnv('BOOST_PATH')
+#if     BOOST_PATH == ""
+#define BOOST_PATH =  TURDPARTY_PATH + "\boost-1_50_0"
+#endif
+Source: {#BOOST_PATH}\lib\boost_python-vc100-mt-1_50.dll; DestDir: {app}\lib
+;ource: {#BOOST_PATH}\lib\boost_python-vc90-mt-gd-1_42.dll; DestDir: {app}\lib
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Gecode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-Source: {#TRUNK_PATH}\nuget\gecode-vc100.redist.3.7.3\build\native\bin\Win32\v100\Release\Gecode*.dll; DestDir: {app}\lib; Flags: ignoreversion 
+#define GECODE_PATH GetEnv('GECODEDIR')
+#if     GECODE_PATH == ""
+#define GECODE_PATH =  "C:\Program Files\Gecode"
+#endif
+Source: {#GECODE_PATH}\bin\Gecode*.dll; DestDir: {app}\lib; Flags: ignoreversion 
 ; Gecode(cont): Note that the following 2 are deposited in {bin} rather than {lib} to avoid ${PATH} conflict with MATLAB
-Source: {#TRUNK_PATH}\bin\QtGui4.dll; DestDir: {app}\bin; Flags: ignoreversion 
-Source: {#TRUNK_PATH}\bin\QtCore4.dll; DestDir: {app}\bin; Flags: ignoreversion 
+Source: {#GECODE_PATH}\bin\QtGui4.dll; DestDir: {app}\bin; Flags: ignoreversion 
+Source: {#GECODE_PATH}\bin\QtCore4.dll; DestDir: {app}\bin; Flags: ignoreversion 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Google CTemplates
@@ -131,11 +144,11 @@ Source: {#TRUNK_PATH}\bin\init_ttenv.m; DestDir: {app}\bin
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #define PYTHON_PATH GetEnv('PYTHON_HOME')
 #if 	PYTHON_PATH == ""
-#define PYTHON_PATH =  "C:\Python27"
+#define PYTHON_PATH =  "C:\Python26"
 #endif
-Source: {#TRUNK_PATH}\bin\python27.dll; DestDir: {app}\lib; Flags: ignoreversion 
-Source: {#TRUNK_PATH}\generated\BlockTemplate\Python\*; DestDir: {app}\python\Cheetah; Flags: recursesubdirs ignoreversion
-; Source: {#TRUNK_PATH}\py2exe\dist\*; DestDir: {app}\python; Flags: recursesubdirs ignoreversion
+Source: {#TRUNK_PATH}\py2exe\dist\python26.dll; DestDir: {app}\lib; Flags: ignoreversion 
+Source: {#PYTHON_PATH}\Lib\site-packages\Cheetah\*; DestDir: {app}\python\Cheetah; Flags: recursesubdirs ignoreversion
+Source: {#TRUNK_PATH}\py2exe\dist\*; DestDir: {app}\python; Flags: recursesubdirs ignoreversion
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; TrueTime

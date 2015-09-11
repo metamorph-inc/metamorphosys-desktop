@@ -17,9 +17,8 @@ parser.add_argument('nas_filename', help='.nas File Name')
 #parser.add_argument('paramFile', help='.xml ComputedValues File Name')
 args = parser.parse_args()
 
-
 if (not os.path.exists(args.nas_filename)):
-    print("Error: %s file not found" % nas_filename)
+	print("Error: %s file not found" % nas_filename)
 
 try:
     aReg = ConnectRegistry(None,HKEY_LOCAL_MACHINE)
@@ -37,6 +36,4 @@ print "\nStarting Nastran \n"
 retcode = call(NasPath + "\\bin\\Nastran " + "estimate " + args.nas_filename, shell=True)
 
 if(retcode == 0):
-    print "Nastran Execution Successful!!"
-
-sys.exit(0)
+	print "Nastran Execution Successful!!"

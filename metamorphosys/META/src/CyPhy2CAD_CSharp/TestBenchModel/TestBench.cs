@@ -14,7 +14,21 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
         // list of assemblies
         // stuff from test bench: analysis point, cadcomputation, metrics
 
+
         public List<string> PostProcessScripts { get; set; }
+
+        /*
+        public TestBench(List<string> dataexchangeformats, 
+                         string outputdir, 
+                         string projectdir,
+                         string cadauxdir,
+                         bool auto): 
+                         base(dataexchangeformats, outputdir, projectdir, cadauxdir, auto)
+        {
+            Computations = new List<TBComputationType>();
+            PostProcessScripts = new List<string>();
+        }
+        */
 
         public TestBench(CyPhy2CADSettings cadSetting,
                          string outputdir,
@@ -38,22 +52,20 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
             {
                 CyPhy.CADComputationType cadcomputation = conn.SrcEnds.CADComputationType;
 
-                TBComputation tbcomputation = new TBComputation();
+                TBComputationType tbcomputation = new TBComputationType();
                 tbcomputation.MetricID = conn.DstEnds.Metric.ID;
-                if (cadcomputation is CyPhy.CenterOfGravity)
+                tbcomputation.ComputationType = cadcomputation.Kind;
+                if (cadcomputation.Kind == "CenterOfGravity")
                 {
                     tbcomputation.RequestedValueType = (cadcomputation as CyPhy.CenterOfGravity).Attributes.CADComputationRequestedValue.ToString();
-                    tbcomputation.ComputationType = TBComputation.Type.CENTEROFGRAVITY;
                 }
-                else if (cadcomputation is CyPhy.BoundingBox)
+                else if (cadcomputation.Kind == "BoundingBox")
                 {
                     tbcomputation.RequestedValueType = (cadcomputation as CyPhy.BoundingBox).Attributes.CADComputationRequestedValue.ToString();
-                    tbcomputation.ComputationType = TBComputation.Type.BOUNDINGBOX;
                 }
-                else // Mass
+                else
                 {
                     tbcomputation.RequestedValueType = "Scalar";
-                    tbcomputation.ComputationType = TBComputation.Type.MASS;
                 }
 
                 Computations.Add(tbcomputation);
@@ -83,8 +95,8 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
                     PointMetricTraversal traverser = new PointMetricTraversal(point);
                     if (traverser.portsFound.Count() == 1)
                     {
-                        TBComputation tbcomputation = new TBComputation();
-                        tbcomputation.ComputationType = TBComputation.Type.POINTCOORDINATES;
+                        TBComputationType tbcomputation = new TBComputationType();
+                        tbcomputation.ComputationType = "PointCoordinates";
                         tbcomputation.MetricID = metric.ID;
                         tbcomputation.RequestedValueType = "Vector";
                         tbcomputation.FeatureDatumName = (traverser.portsFound.First() as CyPhy.Point).Attributes.DatumName;
@@ -166,13 +178,13 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
                 List<CAD.MetricType> metriclist = new List<CAD.MetricType>();
                 foreach (var item in Computations)
                 {
-                    if (item.ComputationType == TBComputation.Type.POINTCOORDINATES)
+                    if (item.ComputationType == "PointCoordinates")
                     {
                         CAD.MetricType ptout = new CAD.MetricType();
                         ptout._id = UtilityHelpers.MakeUdmID();
                         ptout.ComponentID = item.ComponentID;      
                         ptout.MetricID = item.MetricID;
-                        ptout.MetricType1 = item.ComputationType.ToString();
+                        ptout.MetricType1 = item.ComputationType;
                         ptout.RequestedValueType = item.RequestedValueType;
                         ptout.Details = item.FeatureDatumName;
                         ptout.ComponentID = String.IsNullOrEmpty(item.ComponentID) ? "" : item.ComponentID;     // PointCoordinate metric is tied to a specific Component  
@@ -183,7 +195,7 @@ namespace CyPhy2CAD_CSharp.TestBenchModel
                         CAD.MetricType metric = new CAD.MetricType();
                         metric._id = UtilityHelpers.MakeUdmID();
                         metric.MetricID = item.MetricID;
-                        metric.MetricType1 = item.ComputationType.ToString();
+                        metric.MetricType1 = item.ComputationType;
                         metric.RequestedValueType = item.RequestedValueType;
                         metric.ComponentID = assemblyRoot.ConfigurationID;
                         metric.Details = "";
