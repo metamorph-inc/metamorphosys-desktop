@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -57,6 +57,9 @@
     <Reference Include="ISIS.GME.Common, Version=1.0.4.0, Culture=neutral, PublicKeyToken=1321e6b92842fe54, processorArchitecture=MSIL">
       <HintPath>..\..\..\META\src\CyPhyMLCS\ISIS.GME.Common.dll</HintPath>
     </Reference>
+    <Reference Include="MfgBom, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b29c8868c453943d, processorArchitecture=MSIL">
+      <HintPath>..\MfgBom\bin\Release\MfgBom.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\META\3rdParty\Json.NET\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -98,12 +101,6 @@
   <ItemGroup>
     <None Include="AssemblySignature.snk" />
     <None Include="Resources\runBomCostAnalysis.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MfgBom\MfgBom.csproj">
-      <Project>{03C1C834-8DC1-4629-8CD9-5C082978A816}</Project>
-      <Name>MfgBom</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

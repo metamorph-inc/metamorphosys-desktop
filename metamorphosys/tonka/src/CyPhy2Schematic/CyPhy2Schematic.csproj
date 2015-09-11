@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -65,22 +65,22 @@
       <HintPath>..\..\..\META\src\CyPhyMLCS\bin\Release\CyPhyML.dll</HintPath>
     </Reference>
     <Reference Include="GME, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Core, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Meta, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Parser, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.Util, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ISIS.GME.Common, Version=1.0.4.0, Culture=neutral, PublicKeyToken=1321e6b92842fe54, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,9 +104,6 @@
     <Reference Include="XSD2CSharp">
       <HintPath>..\..\..\META\src\CyPhy2DesignInterchange\bin\Release\XSD2CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="xunit">
-      <HintPath>..\..\..\META\3rdParty\xunit-1.9.1\xunit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\META\src\CyPhy2Modelica_v2\MgaGateway.cs">
@@ -115,9 +112,6 @@
     <Compile Include="CyPhy2Schematic_Settings.cs" />
     <Compile Include="ComponentConfig.cs" />
     <Compile Include="CyPhy2Schematic.cs" />
-    <Compile Include="Eagle.cs">
-      <DependentUpon>eagle.xsd</DependentUpon>
-    </Compile>
     <Compile Include="GUI\CyPhy2Schematic_GUI_ext.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +154,7 @@
     <None Include="bat\chipFit.bat" />
     <None Include="bat\LaunchSpiceViewer.bat" />
     <None Include="bat\placement.bat" />
+    <None Include="bat\layoutReimport.bat" />
     <None Include="bat\placeonly.bat" />
     <None Include="bat\runspice.bat" />
     <None Include="bat\showChipFitResults.bat" />
@@ -168,10 +163,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AssemblySignature.snk" />
-    <None Include="eagle.xsd">
-      <SubType>Designer</SubType>
-      <CustomToolNamespace>Schematic.Eagle</CustomToolNamespace>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

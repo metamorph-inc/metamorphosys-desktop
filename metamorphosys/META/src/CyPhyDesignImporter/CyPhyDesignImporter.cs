@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -145,9 +90,17 @@ namespace CyPhyDesignImporter
                     // Delete ADM file from tmp folder
                     File.Delete(inputFilePath);
 
-                    var caRtn = rtn as CyPhy.ComponentAssembly;
-                    var pathCA = caRtn.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE);
-                    DirectoryCopy(unzip.TempDirDestination, pathCA, true);
+                    foreach (var keyAndEntity in id2DesignEntity)
+                    {
+                        string id = keyAndEntity.Key;
+                        var ca = keyAndEntity.Value as CyPhy.ComponentAssembly;
+                        string tempPath = Path.Combine(unzip.TempDirDestination, id);
+                        if (Directory.Exists(tempPath))
+                        {
+                            var pathCA = ca.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE);
+                            DirectoryCopy(tempPath, pathCA, true);
+                        }
+                    }
                 }
             }
 
@@ -203,6 +156,8 @@ namespace CyPhyDesignImporter
 
         public Model ImportDesign(avm.Design ad_import, DesignImportMode mode = DesignImportMode.CREATE_DS)
         {
+            TellCyPhyAddonDontAssignIds();
+
             // TODO: check ad_import.SchemaVersion
             CyPhy.DesignEntity cyphy_container;
 
@@ -239,7 +194,7 @@ namespace CyPhyDesignImporter
             }
             else
             {
-                throw new Exception("Unrecognized mode " + mode.ToString());
+                throw new ArgumentOutOfRangeException("Unrecognized mode " + mode.ToString());
             }
 
             var ad_container = ad_import.RootContainer;
@@ -268,9 +223,77 @@ namespace CyPhyDesignImporter
                 }
             }
 
+            AddReferenceCoordinateSystemForAssemblyRoot(ad_import, cyphy_container);
+            // Get ResourceDependencies
+            if (cyphy_container.Kind == "ComponentAssembly")
+            {
+                var ca_cyphy_container = CyPhyClasses.ComponentAssembly.Cast(cyphy_container.Impl);
+                foreach (var avmRes in ad_import.ResourceDependency)
+                {
+                    var cyphy_resource = CyPhyClasses.Resource.Create(ca_cyphy_container);
+                    cyphy_resource.Name = avmRes.Name;
+                    
+                    if (!String.IsNullOrWhiteSpace(avmRes.Hash))
+                    {
+                        cyphy_resource.Attributes.Hash = avmRes.Hash;
+                    }
+                    if (!String.IsNullOrWhiteSpace(avmRes.ID))
+                    {
+                        cyphy_resource.Attributes.ID = avmRes.ID;
+                    }
+                    if (!String.IsNullOrWhiteSpace(avmRes.Notes))
+                    {
+                        cyphy_resource.Attributes.Notes = avmRes.Notes;
+                    }
+                    
+                    cyphy_resource.Attributes.Path = avmRes.Path;
+
+                    SetLayoutData(avmRes, cyphy_resource.Impl);
+                }
+            }
+
             DoLayout();
 
             return (Model)cyphy_container;
+        }
+
+        private void TellCyPhyAddonDontAssignIds()
+        {
+            var cyPhyAddon = project.AddOnComponents.Cast<IMgaComponentEx>().Where(x => x.ComponentName.ToLowerInvariant() == "CyPhyAddOn".ToLowerInvariant()).FirstOrDefault();
+            if (cyPhyAddon != null)
+            {
+                cyPhyAddon.ComponentParameter["DontAssignGuidsOnNextTransaction".ToLowerInvariant()] = true;
+            }
+        }
+
+        private void AddReferenceCoordinateSystemForAssemblyRoot(avm.Design ad_import, CyPhy.DesignEntity cyphy_container)
+        {
+            foreach (var root in ad_import.DomainFeature.OfType<avm.cad.AssemblyRoot>())
+            {
+                CyPhyML.ComponentRef componentRef;
+                if (idToComponentInstanceMap.TryGetValue(root.AssemblyRootComponentInstance, out componentRef))
+                {
+                    MgaFCO rcs = CreateChild((ISIS.GME.Common.Interfaces.Model)componentRef.ParentContainer, typeof(CyPhyML.ReferenceCoordinateSystem));
+                    rcs.Name = "AssemblyRoot";
+                    CyPhyML.ReferenceCoordinateSystem componentRcs = componentRef.Referred.Component.Children.ReferenceCoordinateSystemCollection.FirstOrDefault();
+                    if (componentRcs == null)
+                    {
+                        componentRcs = CyPhyClasses.ReferenceCoordinateSystem.Create(componentRef.Referred.Component);
+                    }
+
+                    ((MgaModel)componentRef.ParentContainer.Impl).CreateSimpleConnDisp(((MgaMetaModel)componentRef.ParentContainer.Impl.MetaBase).RoleByName[typeof(CyPhyML.RefCoordSystem2RefCoordSystem).Name],
+                        rcs, (MgaFCO)componentRcs.Impl, null, (MgaFCO)componentRef.Impl);
+
+                    while (rcs.ParentModel.ID != cyphy_container.ID)
+                    {
+                        var oldrcs = rcs;
+                        rcs = CreateChild(rcs.ParentModel.ParentModel, typeof(CyPhyML.ReferenceCoordinateSystem));
+                        rcs.Name = "AssemblyRoot";
+                        ((MgaModel)rcs.ParentModel).CreateSimplerConnDisp(((MgaMetaModel)rcs.ParentModel.Meta).RoleByName[typeof(CyPhyML.RefCoordSystem2RefCoordSystem).Name],
+                            rcs, oldrcs);
+                    }
+                }
+            }
         }
 
         private CyPhy.DesignContainer CreateDesignSpaceRoot(avm.Design ad_import)
@@ -313,11 +336,54 @@ namespace CyPhyDesignImporter
             {
                 cyphy_container.Attributes.ID = designID;
             }
+            if (string.IsNullOrEmpty(ad_import.RootContainer.Description) == false)
+            {
+                cyphy_container.Attributes.Description = ad_import.RootContainer.Description;
+            }
             return cyphy_container;
         }
 
+        Dictionary<avm.schematic.eda.RelativeLayerEnum, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeLayer_enum> d_RelativeLayer =
+            new Dictionary<avm.schematic.eda.RelativeLayerEnum, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeLayer_enum>() 
+        {
+            { avm.schematic.eda.RelativeLayerEnum.Opposite, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeLayer_enum.Opposite },
+            { avm.schematic.eda.RelativeLayerEnum.Same, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeLayer_enum.Same }
+        };
+        Dictionary<avm.schematic.eda.RelativeLayerEnum, CyPhyClasses.RelativeRangeConstraint.AttributesClass.RelativeLayer_enum> d_RelativeRangeLayer =
+            new Dictionary<avm.schematic.eda.RelativeLayerEnum, CyPhyClasses.RelativeRangeConstraint.AttributesClass.RelativeLayer_enum>() 
+        {
+            { avm.schematic.eda.RelativeLayerEnum.Opposite, CyPhyClasses.RelativeRangeConstraint.AttributesClass.RelativeLayer_enum.Opposite },
+            { avm.schematic.eda.RelativeLayerEnum.Same, CyPhyClasses.RelativeRangeConstraint.AttributesClass.RelativeLayer_enum.Same }
+        };
+        Dictionary<avm.schematic.eda.RangeConstraintTypeEnum, CyPhyClasses.RangeLayoutConstraint.AttributesClass.Type_enum> d_RangeType =
+            new Dictionary<avm.schematic.eda.RangeConstraintTypeEnum, CyPhyClasses.RangeLayoutConstraint.AttributesClass.Type_enum>()
+        {
+            { avm.schematic.eda.RangeConstraintTypeEnum.Inclusion, CyPhyClasses.RangeLayoutConstraint.AttributesClass.Type_enum.Inclusion},
+            { avm.schematic.eda.RangeConstraintTypeEnum.Exclusion, CyPhyClasses.RangeLayoutConstraint.AttributesClass.Type_enum.Exclusion}
+        };
+        Dictionary<avm.schematic.eda.RelativeRotationEnum, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum> d_RelativeRotation = 
+            new Dictionary<avm.schematic.eda.RelativeRotationEnum, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum>()
+        {
+            { avm.schematic.eda.RelativeRotationEnum.r0, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum._0 },
+            { avm.schematic.eda.RelativeRotationEnum.r90, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum._90 },
+            { avm.schematic.eda.RelativeRotationEnum.r180, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum._180 },
+            { avm.schematic.eda.RelativeRotationEnum.r270, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum._270 },
+            { avm.schematic.eda.RelativeRotationEnum.NoRestriction, CyPhyClasses.RelativeLayoutConstraint.AttributesClass.RelativeRotation_enum.No_Restriction }
+        };
+        
+        Dictionary<string, CyPhy.DesignEntity> id2DesignEntity = new Dictionary<string, CyPhyML.DesignEntity>();
         private void ImportContainer(CyPhy.DesignEntity cyphy_container, avm.Container ad_container)
         {
+            // If an ID is provided, add to map.
+            if (!String.IsNullOrWhiteSpace(ad_container.ID))
+            {
+                id2DesignEntity.Add(ad_container.ID, cyphy_container);
+                if (cyphy_container is CyPhyML.ComponentAssembly)
+                {
+                    ((CyPhyML.ComponentAssembly)cyphy_container).Attributes.ManagedGUID = ad_container.ID;
+                }
+            }
+
             cyphy_container.Name = ad_container.Name;
             AVM2CyPhyML.CyPhyMLComponentBuilder.SetLayoutData(ad_container, cyphy_container.Impl);
 
@@ -331,6 +397,21 @@ namespace CyPhyDesignImporter
             if (cyphy_container is CyPhy.DesignContainer)
             {
                 ((CyPhy.DesignContainer)cyphy_container).Attributes.ContainerType = typeToAttribute[ad_container.GetType()];
+                if (ad_container is avm.Alternative)
+                {
+                    ((IMgaFCO)cyphy_container.Impl).SetRegistryValueDisp("icon", "alternative_ds.png");
+                }
+                if (ad_container is avm.Optional)
+                {
+                    ((IMgaFCO)cyphy_container.Impl).SetRegistryValueDisp("icon", "optional_ds");
+                }
+            }
+            if (ad_container is avm.Alternative)
+            {
+                foreach (var ad_mux in ((avm.Alternative)ad_container).ValueFlowMux)
+                {
+                    processMux((CyPhy.DesignContainer)cyphy_container, ad_mux);
+                }
             }
 
             foreach (avm.Port avmPort in ad_container.Port)
@@ -382,10 +463,15 @@ namespace CyPhyDesignImporter
                 if (cyphy_container is CyPhy.DesignContainer)
                 {
                     cyphy_childcontainer = CyPhyClasses.DesignContainer.Create((CyPhy.DesignContainer)cyphy_container);
+                    // TODO: assign cyphy_childcontainer.Attributes.Description (need it in CyPhyML.xme first)
                 }
                 else
                 {
                     cyphy_childcontainer = CyPhyClasses.ComponentAssembly.Create((CyPhy.ComponentAssembly)cyphy_container);
+                    if (string.IsNullOrEmpty(ad_childcontainer.Description) == false)
+                    {
+                        ((CyPhyML.ComponentAssembly)cyphy_childcontainer).Attributes.Description = ad_childcontainer.Description;
+                    }
                 }
                 ImportContainer(cyphy_childcontainer, ad_childcontainer);
             }
@@ -396,22 +482,46 @@ namespace CyPhyDesignImporter
                 cyphy_constraint.Name = typeof(CyPhyML.ExactLayoutConstraint).Name;
                 SetLayoutData(constraint, cyphy_constraint.Impl);
 
-                cyphy_constraint.Attributes.X = constraint.X.ToString();
-                cyphy_constraint.Attributes.Y = constraint.Y.ToString();
-                cyphy_constraint.Attributes.Layer = d_LayerEnumMap[constraint.Layer];
+                if (constraint.XSpecified)
+                {
+                    cyphy_constraint.Attributes.X = constraint.X.ToString();
+                }
+                if (constraint.YSpecified)
+                {
+                    cyphy_constraint.Attributes.Y = constraint.Y.ToString();
+                }
+                if (constraint.LayerSpecified)
+                {
+                    cyphy_constraint.Attributes.Layer = d_LayerEnumMap[constraint.Layer];
+                }
                 if (constraint.RotationSpecified)
                 {
                     cyphy_constraint.Attributes.Rotation = d_RotationEnumMap[constraint.Rotation];
                 }
-                if (string.IsNullOrWhiteSpace(constraint.ConstraintTarget) == false)
+                if (false == String.IsNullOrWhiteSpace(constraint.Notes))
+                {
+                    cyphy_constraint.Attributes.Notes = constraint.Notes;
+                }
+
+                foreach (var idTarget in constraint.ConstraintTarget)
                 {
                     CyPhyML.ComponentRef compInstance;
-                    if (avmId2ComponentInstance.TryGetValue(constraint.ConstraintTarget, out compInstance))
+                    if (idToComponentInstanceMap.TryGetValue(idTarget, out compInstance))
                     {
                         CyPhyClasses.ApplyExactLayoutConstraint.Connect(cyphy_constraint, compInstance);
                     }
                 }
+
+                foreach (var idTarget in constraint.ContainerConstraintTarget)
+                {
+                    CyPhyML.DesignEntity deInstance;
+                    if (id2DesignEntity.TryGetValue(idTarget, out deInstance))
+                    {
+                        CyPhyClasses.ApplyExactLayoutConstraint.Connect(cyphy_constraint, deInstance);
+                    }
+                }
             }
+
             foreach (var constraint in ad_container.ContainerFeature.OfType<avm.schematic.eda.RangeLayoutConstraint>())
             {
                 CyPhyML.RangeLayoutConstraint cyphy_constraint = CyPhyClasses.RangeLayoutConstraint.Cast(CreateChild((ISIS.GME.Common.Interfaces.Model)cyphy_container, typeof(CyPhyClasses.RangeLayoutConstraint)));
@@ -421,21 +531,39 @@ namespace CyPhyDesignImporter
                 cyphy_constraint.Attributes.LayerRange = d_LayerRangeEnumMap[constraint.LayerRange];
                 if (constraint.XRangeMinSpecified && constraint.XRangeMaxSpecified)
                 {
-                    cyphy_constraint.Attributes.XRange = constraint.XRangeMin + "-" + constraint.XRangeMax;
-                }
+                    cyphy_constraint.Attributes.XRange = constraint.XRangeMin + ":" + constraint.XRangeMax;
+                }                
                 if (constraint.YRangeMinSpecified && constraint.YRangeMaxSpecified)
                 {
-                    cyphy_constraint.Attributes.YRange = constraint.YRangeMin + "-" + constraint.YRangeMax;
+                    cyphy_constraint.Attributes.YRange = constraint.YRangeMin + ":" + constraint.YRangeMax;
                 }
+                if (constraint.TypeSpecified)
+                {
+                    cyphy_constraint.Attributes.Type = d_RangeType[constraint.Type];
+                }                
+                if (false == String.IsNullOrWhiteSpace(constraint.Notes))
+                {
+                    cyphy_constraint.Attributes.Notes = constraint.Notes;
+                }
+
                 foreach (var compId in constraint.ConstraintTarget)
                 {
                     CyPhyML.ComponentRef compInstance;
-                    if (avmId2ComponentInstance.TryGetValue(compId, out compInstance))
+                    if (idToComponentInstanceMap.TryGetValue(compId, out compInstance))
                     {
                         CyPhyClasses.ApplyRangeLayoutConstraint.Connect(cyphy_constraint, compInstance);
                     }
+                }                
+                foreach (var idTarget in constraint.ContainerConstraintTarget)
+                {
+                    CyPhyML.DesignEntity deInstance;
+                    if (id2DesignEntity.TryGetValue(idTarget, out deInstance))
+                    {
+                        CyPhyClasses.ApplyRangeLayoutConstraint.Connect(cyphy_constraint, deInstance);
+                    }
                 }
             }
+
             foreach (var constraint in ad_container.ContainerFeature.OfType<avm.schematic.eda.RelativeLayoutConstraint>())
             {
                 CyPhyML.RelativeLayoutConstraint cyphy_constraint = CyPhyClasses.RelativeLayoutConstraint.Cast(CreateChild((ISIS.GME.Common.Interfaces.Model)cyphy_container, typeof(CyPhyClasses.RelativeLayoutConstraint)));
@@ -450,10 +578,24 @@ namespace CyPhyDesignImporter
                 {
                     cyphy_constraint.Attributes.YOffset = constraint.YOffset.ToString();
                 }
+                if (constraint.RelativeLayerSpecified)
+                {
+                    cyphy_constraint.Attributes.RelativeLayer = d_RelativeLayer[constraint.RelativeLayer];
+                }
+                if (constraint.RelativeRotationSpecified)
+                {
+                    cyphy_constraint.Attributes.RelativeRotation = d_RelativeRotation[constraint.RelativeRotation];
+                }
+
+                if (false == String.IsNullOrWhiteSpace(constraint.Notes))
+                {
+                    cyphy_constraint.Attributes.Notes = constraint.Notes;
+                }
+
                 foreach (var compId in constraint.ConstraintTarget)
                 {
                     CyPhyML.ComponentRef compInstance;
-                    if (avmId2ComponentInstance.TryGetValue(compId, out compInstance))
+                    if (idToComponentInstanceMap.TryGetValue(compId, out compInstance))
                     {
                         CyPhyClasses.ApplyRelativeLayoutConstraint.Connect(cyphy_constraint, compInstance);
                     }
@@ -461,10 +603,137 @@ namespace CyPhyDesignImporter
                 if (string.IsNullOrWhiteSpace(constraint.Origin) == false)
                 {
                     CyPhyML.ComponentRef compInstance;
-                    if (avmId2ComponentInstance.TryGetValue(constraint.Origin, out compInstance))
+                    if (idToComponentInstanceMap.TryGetValue(constraint.Origin, out compInstance))
                     {
                         CyPhyClasses.RelativeLayoutConstraintOrigin.Connect(compInstance, cyphy_constraint);
                     }
+                }
+            }
+
+            foreach (var constraint in ad_container.ContainerFeature.OfType<avm.schematic.eda.RelativeRangeLayoutConstraint>())
+            {
+                CyPhyML.RelativeRangeConstraint cyphy_constraint = 
+                    CyPhyClasses.RelativeRangeConstraint.Cast(CreateChild((ISIS.GME.Common.Interfaces.Model)cyphy_container, 
+                                                              typeof(CyPhyClasses.RelativeRangeConstraint)));
+                cyphy_constraint.Name = typeof(CyPhyML.RelativeRangeConstraint).Name;
+                SetLayoutData(constraint, cyphy_constraint.Impl);
+
+                if (constraint.RelativeLayerSpecified)
+                {
+                    cyphy_constraint.Attributes.RelativeLayer = d_RelativeRangeLayer[constraint.RelativeLayer];
+                }
+                if (constraint.XRelativeRangeMinSpecified && constraint.XRelativeRangeMaxSpecified)
+                {
+                    cyphy_constraint.Attributes.XOffsetRange = String.Format("{0}:{1}", constraint.XRelativeRangeMin, constraint.XRelativeRangeMax);
+                }
+                if (constraint.YRelativeRangeMinSpecified && constraint.YRelativeRangeMaxSpecified)
+                {
+                    cyphy_constraint.Attributes.YOffsetRange = String.Format("{0}:{1}", constraint.YRelativeRangeMin, constraint.YRelativeRangeMax);
+                }
+                if (false == String.IsNullOrWhiteSpace(constraint.Notes))
+                {
+                    cyphy_constraint.Attributes.Notes = constraint.Notes;
+                }
+
+                foreach (var compId in constraint.ConstraintTarget)
+                {
+                    CyPhyML.ComponentRef compInstance;
+                    if (idToComponentInstanceMap.TryGetValue(compId, out compInstance))
+                    {
+                        CyPhyClasses.ApplyRelativeRangeLayoutConstraint.Connect(cyphy_constraint, compInstance);
+                    }
+                }
+                foreach (var idTarget in constraint.ContainerConstraintTarget)
+                {
+                    CyPhyML.DesignEntity deInstance;
+                    if (id2DesignEntity.TryGetValue(idTarget, out deInstance))
+                    {
+                        CyPhyClasses.ApplyRelativeRangeLayoutConstraint.Connect(cyphy_constraint, deInstance);
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(constraint.Origin) == false)
+                {
+                    CyPhyML.ComponentRef compInstance;
+                    if (idToComponentInstanceMap.TryGetValue(constraint.Origin, out compInstance))
+                    {
+                        CyPhyClasses.RelativeRangeLayoutConstraintOrigin.Connect(compInstance, cyphy_constraint);
+                    }
+                }
+            }
+
+            foreach (var constraint in ad_container.ContainerFeature.OfType<avm.schematic.eda.GlobalLayoutConstraintException>())
+            {
+                CyPhyML.GlobalLayoutConstraintException cyphy_constraint =
+                    CyPhyClasses.GlobalLayoutConstraintException.Cast(CreateChild((ISIS.GME.Common.Interfaces.Model)cyphy_container,
+                                                                      typeof(CyPhyClasses.GlobalLayoutConstraintException)));
+                cyphy_constraint.Name = typeof(CyPhyML.GlobalLayoutConstraintException).Name;
+                SetLayoutData(constraint, cyphy_constraint.Impl);
+
+                switch (constraint.Constraint)
+                {
+                    case avm.schematic.eda.GlobalConstraintTypeEnum.BoardEdgeSpacing:
+                        cyphy_constraint.Attributes.Constraint = CyPhyClasses.GlobalLayoutConstraintException.AttributesClass.Constraint_enum.Board_Edge_Spacing;
+                        break;
+                    default:
+                        throw new NotSupportedException("GlobalConstraintException value of " + constraint.Constraint.ToString() + " isn't supported");
+                }
+
+                cyphy_constraint.Attributes.Notes = constraint.Notes;
+                foreach (var compId in constraint.ConstraintTarget)
+                {
+                    CyPhyML.ComponentRef compInstance;
+                    if (idToComponentInstanceMap.TryGetValue(compId, out compInstance))
+                    {
+                        CyPhyClasses.ApplyGlobalLayoutConstraintException.Connect(cyphy_constraint, compInstance);
+                    }
+                }
+                foreach (var idTarget in constraint.ContainerConstraintTarget)
+                {
+                    CyPhyML.DesignEntity deInstance;
+                    if (id2DesignEntity.TryGetValue(idTarget, out deInstance))
+                    {
+                        CyPhyClasses.ApplyGlobalLayoutConstraintException.Connect(cyphy_constraint, deInstance);
+                    }
+                }
+            }
+
+            // Get ResourceDependencies
+            if (cyphy_container.Kind == "ComponentAssembly")
+            {
+                var ca_cyphy_container = CyPhyClasses.ComponentAssembly.Cast(cyphy_container.Impl);
+                foreach (var avmRes in ad_container.ResourceDependency)
+                {
+                    // hack for layoutFile
+                    if (avmRes.Name == "layoutFile")
+                    {
+                        ((IMgaFCO)cyphy_container.Impl).set_RegistryValue("layoutFile", avmRes.Path);
+                        foreach (var circuitLayout in ad_container.DomainModel.OfType<avm.schematic.eda.CircuitLayout>().Where(x => x.UsesResource == avmRes.ID))
+                        {
+                            ((IMgaFCO)cyphy_container.Impl).set_RegistryValue("layoutBox", circuitLayout.BoundingBoxes ?? "");
+                        }
+                        continue;
+                    }
+
+                    var cyphy_resource = CyPhyClasses.Resource.Create(ca_cyphy_container);
+                    cyphy_resource.Name = avmRes.Name;
+
+                    if (!String.IsNullOrWhiteSpace(avmRes.Hash))
+                    {
+                        cyphy_resource.Attributes.Hash = avmRes.Hash;
+                    }
+                    if (!String.IsNullOrWhiteSpace(avmRes.ID))
+                    {
+                        cyphy_resource.Attributes.ID = avmRes.ID;
+                    }
+                    if (!String.IsNullOrWhiteSpace(avmRes.Notes))
+                    {
+                        cyphy_resource.Attributes.Notes = avmRes.Notes;
+                    }
+
+                    cyphy_resource.Attributes.Path = avmRes.Path;
+
+                    SetLayoutData(avmRes, cyphy_resource.Impl);
                 }
             }
 
@@ -479,11 +748,14 @@ namespace CyPhyDesignImporter
                 var cyphy_customFormula = CyPhyClasses.CustomFormula.Cast(CreateChild((ISIS.GME.Common.Interfaces.Model)cyphy_container, typeof(CyPhyClasses.CustomFormula)));
                 processComplexFormula(complexFormula, cyphy_customFormula);
             }
-
         }
 
-        Dictionary<string, CyPhy.ComponentRef> avmId2ComponentInstance = new Dictionary<string, CyPhyML.ComponentRef>();
+        private void processMux(CyPhyML.DesignContainer designContainer, avm.ValueFlowMux ad_mux)
+        {
+            _avmValueNodeIDMap.Add(ad_mux.ID, new KeyValuePair<avm.ValueNode, object>(null, ad_mux));
+        }
 
+        Dictionary<string, CyPhy.ComponentRef> idToComponentInstanceMap = new Dictionary<string, CyPhy.ComponentRef>();
         private void ImportComponentInstance(avm.ComponentInstance ad_componentinstance, CyPhy.ComponentRef cyphy_componentref)
         {
             AVM2CyPhyML.CyPhyMLComponentBuilder.SetLayoutData(ad_componentinstance, cyphy_componentref.Impl);
@@ -497,7 +769,7 @@ namespace CyPhyDesignImporter
             cyphy_componentref.Name = ad_componentinstance.Name;
             //cyphy_componentref.Attributes.ID = ad_componentinstance.ID;
             cyphy_componentref.Attributes.InstanceGUID = ad_componentinstance.ID;
-            avmId2ComponentInstance[ad_componentinstance.ID] = cyphy_componentref;
+            idToComponentInstanceMap[ad_componentinstance.ID] = cyphy_componentref;
 
             foreach (var ad_propinstance in ad_componentinstance.PrimitivePropertyInstance)
             {
@@ -541,10 +813,16 @@ namespace CyPhyDesignImporter
             }
         }
 
-        private IMgaObject CreateChild(ISIS.GME.Common.Interfaces.Model parent, Type type)
+        private MgaFCO CreateChild(ISIS.GME.Common.Interfaces.Model parent, Type type)
         {
             var role = ((MgaMetaModel)parent.Impl.MetaBase).RoleByName[type.Name];
-            return ((MgaModel)parent.Impl).CreateChildObject(role);
+            return (MgaFCO)((MgaModel)parent.Impl).CreateChildObject(role);
+        }
+
+        private MgaFCO CreateChild(MgaModel parent, Type type)
+        {
+            var role = ((MgaMetaModel)parent.MetaBase).RoleByName[type.Name];
+            return (MgaFCO)((MgaModel)parent).CreateChildObject(role);
         }
 
         Dictionary<avm.schematic.eda.RotationEnum, string> d_RotationEnumMap = new Dictionary<avm.schematic.eda.RotationEnum,string>()
@@ -565,7 +843,7 @@ namespace CyPhyDesignImporter
         {
             { avm.schematic.eda.LayerRangeEnum.Top, "0"},
             { avm.schematic.eda.LayerRangeEnum.Bottom, "1"},
-            { avm.schematic.eda.LayerRangeEnum.Either, "0-1"},
+            { avm.schematic.eda.LayerRangeEnum.Either, "0:1"},
         };
 
     }

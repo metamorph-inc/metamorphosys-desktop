@@ -1,56 +1,3 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 __author__ = 'Zsolt'
 
 try:
@@ -82,20 +29,37 @@ except ImportError:
 
 
 class Import(object):
+    """
+    A Python wrapper for the Modelica 'Import' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.full_name = None
         self.id = None
         self.kind = None
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['fullName'] = self.full_name
         json_result['id'] = self.id
         json_result['kind'] = self.kind
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+
+        """
         xml_result = etree.Element("Import")
         xml_result.set("FullName", self.full_name)
         xml_result.set("Id", self.id)
@@ -105,8 +69,17 @@ class Import(object):
 
 
 class Parameter(object):
+    """
+    A Python wrapper for the Modelica 'Parameter' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
+
         self.name = None
         self.full_name = None
         self.value = None
@@ -116,6 +89,10 @@ class Parameter(object):
         self.dimension = 1  # '0' indicates empty string, -1 indicates table
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['name'] = self.name
         json_result['fullName'] = self.full_name
@@ -124,9 +101,15 @@ class Parameter(object):
         json_result['modifiers'] = self.modifiers
         json_result['isPublic'] = self.is_public
         json_result['dimension'] = self.dimension
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+
+        """
+
         xml_result = etree.Element("Parameter")
         xml_result.set("Name", self.name)
         xml_result.set("FullName", self.full_name)
@@ -138,21 +121,39 @@ class Parameter(object):
 
 
 class RedeclareParameter(Parameter):
+    """
+    A Python wrapper for the Modelica 'RedeclareParameter' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
+
         super(RedeclareParameter, self).__init__()
         self.redeclare_type = None
         self.modifiers = {}
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['redeclare_type'] = self.redeclare_type
         json_result['modifiers'] = self.modifiers
         json_result['name'] = self.name
         json_result['value'] = self.value
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+
+        """
         xml_result = etree.Element("RedeclareParameter")
         xml_result.set("RedeclareType", self.redeclare_type)
 
@@ -162,22 +163,39 @@ class RedeclareParameter(Parameter):
 
 
 class Extend(object):
+    """
+    A Python wrapper for the Modelica 'Extend' type
+    
+    """
 
     def __init__(self):
+        """
+        Create an instance
+        
+        """
         self.full_name = None
         self.parameters = list()  # Parameter
         self.redeclare_parameters = list()  # RedeclareParameter
         self.modifiers = {}
 
     def json(self):
+        """
+        return an dictionary representation
+        
+        """
         json_result = dict()
         json_result['fullName'] = self.full_name
         json_result['parameters'] = [json_value.json() for json_value in self.parameters]
         json_result['redeclare_parameters'] = [json_value.json() for json_value in self.redeclare_parameters]
         json_result['modifiers'] = self.modifiers
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+        
+        """
         xml_result = etree.Element("Extend")
         xml_result.set("FullName", self.full_name)
 
@@ -189,8 +207,17 @@ class Extend(object):
 
 
 class Connector(object):
-
+    """
+    A Python wrapper for the Modelica 'Connector' type
+    
+    """
+    
     def __init__(self):
+        """
+        Create an instance
+
+        """
+
         self.name = None
         self.full_name = None
         self.description = ''
@@ -199,15 +226,24 @@ class Connector(object):
         self.modifiers = {}
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['name'] = self.name
         json_result['fullName'] = self.full_name
         json_result['parameters'] = [json_value.json() for json_value in self.parameters]
         json_result['redeclare_parameters'] = [json_value.json() for json_value in self.redeclare_parameters]
         json_result['modifiers'] = self.modifiers
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+
+        """
         xml_result = etree.Element("Connector")
         xml_result.set("Name", self.name)
         xml_result.set("FullName", self.full_name)
@@ -220,12 +256,24 @@ class Connector(object):
 
 
 class Package(object):
+    """
+    A Python wrapper for the Modelica 'Package' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.value = None
         self.name = None
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['name'] = self.name
         json_result['value'] = self.value
@@ -234,8 +282,16 @@ class Package(object):
 
 
 class Component(object):
+    """
+    A Python wrapper for the Modelica 'Component' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.full_name = None
         self.comment = None
         self.parameters = list()  # Parameter
@@ -248,6 +304,10 @@ class Component(object):
         self.packages = list()
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['fullName'] = self.full_name
         json_result['comment'] = self.comment
@@ -258,9 +318,14 @@ class Component(object):
         json_result['imports'] = [json_value.json() for json_value in self.imports]
         # JK - need some feedback from Z/P
         json_result['packages'] = [json_value.json() for json_value in self.packages]
+
         return json_result
 
     def xml(self):
+        """
+        return an xml representation
+
+        """
         xml_result = etree.Element("Component")
         xml_result.set("FullName", self.full_name)
 
@@ -274,8 +339,16 @@ class Component(object):
 
 
 class ComponentAssembly(object):
+    """
+    A Python wrapper for the Modelica 'ComponentAssembly' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.name = None
         self.full_name = None
         self.comment = None
@@ -284,6 +357,10 @@ class ComponentAssembly(object):
         self.component_shells = {}
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['name'] = self.name
         json_result['fullName'] = self.full_name
@@ -296,12 +373,24 @@ class ComponentAssembly(object):
 
 
 class ComponentShell(object):
+    """
+    A Python wrapper for the Modelica 'ComponentShell' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.name = None
         self.connectors = list()
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['name'] = self.name
         json_result['connectors'] = [json_value.json() for json_value in self.connectors]
@@ -310,14 +399,26 @@ class ComponentShell(object):
 
 
 class Connection(object):
+    """
+    A Python wrapper for the Modelica 'Connection' type
+
+    """
 
     def __init__(self):
+        """
+        Create an instance
+
+        """
         self.src_parent = ""
         self.src_name = ""
         self.dst_parent = ""
         self.dst_name = ""
 
     def json(self):
+        """
+        return an dictionary representation
+
+        """
         json_result = dict()
         json_result['src_parent'] = self.src_parent
         json_result['src_name'] = self.src_name

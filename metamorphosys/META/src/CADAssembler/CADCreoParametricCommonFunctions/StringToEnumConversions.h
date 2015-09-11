@@ -1,56 +1,3 @@
-// Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this data, including any software or models in source or binary
-// form, as well as any drawings, specifications, and documentation
-// (collectively "the Data"), to deal in the Data without restriction,
-// including without limitation the rights to use, copy, modify, merge,
-// publish, distribute, sublicense, and/or sell copies of the Data, and to
-// permit persons to whom the Data is furnished to do so, subject to the
-// following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Data.
-
-// THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-// =======================
-// This version of the META tools is a fork of an original version produced
-// by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-// Their license statement:
-
-// Copyright (C) 2011-2014 Vanderbilt University
-
-// Developed with the sponsorship of the Defense Advanced Research Projects
-// Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-// as defined in DFARS 252.227-7013.
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this data, including any software or models in source or binary
-// form, as well as any drawings, specifications, and documentation
-// (collectively "the Data"), to deal in the Data without restriction,
-// including without limitation the rights to use, copy, modify, merge,
-// publish, distribute, sublicense, and/or sell copies of the Data, and to
-// permit persons to whom the Data is furnished to do so, subject to the
-// following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Data.
-
-// THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 /*! \file StringToEnumConversions.h
     \brief  Functions to convert between strings and enums.
 
@@ -277,6 +224,37 @@ namespace isis
 											throw (isis::application_exception);
 
 	//////////////////////////////////////////////////////////////////////////////////////////
+	enum e_CADUnitsHeatCapacity
+    {
+		CAD_UNITS_J_PER_KG_K,
+    };
+
+	 e_CADUnitsHeatCapacity			CADUnitsHeatCapacity_enum( 
+		                         const string &in_CADUnitsHeatCapacity_string)
+								 throw (isis::application_exception);
+
+
+	std::string CADUnitsHeatCapacity_string(  e_CADUnitsHeatCapacity in_Units_enum)
+											throw (isis::application_exception);
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	enum e_CADUnitsThermalConductivity
+    {
+		CAD_UNITS_W_PER_MM_K,
+    };
+
+	 e_CADUnitsThermalConductivity			CADUnitsThermalConductivity_enum( 
+		                         const string &in_CADUnitsThermalConductivity_string)
+								 throw (isis::application_exception);
+
+
+	std::string CADUnitsThermalConductivity_string(  e_CADUnitsThermalConductivity in_Units_enum)
+											throw (isis::application_exception);
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+
 
 	enum e_CADUnitsAngle
     {
@@ -897,6 +875,34 @@ namespace isis
 		Metrics_JointsComponentInstanceData_Secondary_string(  e_Metrics_JointsComponentInstanceData_Secondary in_Metrics_JointsComponentInstanceData_Secondary_enum)
 											throw (isis::application_exception);
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	enum e_Thermal_LoadConstraint
+	{
+		THERMAL_CONVECTION_HEAT,		// CONSTRAINT, Convection Coefficient with Ambient Temp 
+		THERMAL_CONVECTION,				// Same as THERMAL_CONVECTION_HEAT, THERMAL_CONVECTION_HEAT is being deprecated
+		THERMAL_HEAT_FLUX,				// LOAD
+		THERMAL_HEAT_GENERATION,		// LOAD Not supported by deck-based
+		THERMAL_INITIAL_TEMPERATURE,    // LOAD
+		THERMAL_SPECIFIED_TEMPERATURE,
+		THERMAL_AMBIENT_TEMPERATURE// LOAD Specified temperature at grid points
+
+		/*
+		ConvectionHeat
+		HeatFlux
+		HeatGeneration
+		InitialTemperature
+		SpecifiedTemperature
+		*/
+	};
+	e_Thermal_LoadConstraint 
+		Thermal_LoadConstraint_enum(const std::string &in_Thermal_LoadConstraint_string)
+												throw (isis::application_exception);
+
+	std::string 
+		Thermal_LoadConstraint_string(  e_Thermal_LoadConstraint in_Thermal_LoadConstraint_enum)
+											throw (isis::application_exception);
 }  // end namespace isis
 
 #endif

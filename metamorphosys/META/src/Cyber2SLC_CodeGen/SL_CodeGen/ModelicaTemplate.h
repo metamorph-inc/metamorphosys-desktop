@@ -1,56 +1,3 @@
-// Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this data, including any software or models in source or binary
-// form, as well as any drawings, specifications, and documentation
-// (collectively "the Data"), to deal in the Data without restriction,
-// including without limitation the rights to use, copy, modify, merge,
-// publish, distribute, sublicense, and/or sell copies of the Data, and to
-// permit persons to whom the Data is furnished to do so, subject to the
-// following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Data.
-
-// THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-// =======================
-// This version of the META tools is a fork of an original version produced
-// by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-// Their license statement:
-
-// Copyright (C) 2011-2014 Vanderbilt University
-
-// Developed with the sponsorship of the Defense Advanced Research Projects
-// Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-// as defined in DFARS 252.227-7013.
-
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this data, including any software or models in source or binary
-// form, as well as any drawings, specifications, and documentation
-// (collectively "the Data"), to deal in the Data without restriction,
-// including without limitation the rights to use, copy, modify, merge,
-// publish, distribute, sublicense, and/or sell copies of the Data, and to
-// permit persons to whom the Data is furnished to do so, subject to the
-// following conditions:
-
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Data.
-
-// THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 #ifndef MODELICA_TEMPLATE_H
 #define MODELICA_TEMPLATE_H
 
@@ -348,7 +295,7 @@ namespace Modelica_Template
 			mo_tpl += "equation\n";
 			mo_tpl += "  sampleTrigger = sample( 0, {{SAMPLE_PERIOD_NAME}} );\n";
 			mo_tpl += "  when sampleTrigger then\n";
-			mo_tpl += "		{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}{{#OUTPUT_SIGNAL_A}},{{DATA_NAME}}{{/OUTPUT_SIGNAL_A}}{{#RIGHT}}){{/RIGHT}} := {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_ARG}},{{DATA_NAME}}{{/INPUT_ARG}});\n";
+			mo_tpl += "		{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}{{#OUTPUT_SIGNAL_A}},{{DATA_NAME}}{{/OUTPUT_SIGNAL_A}}{{#RIGHT}}){{/RIGHT}} = {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_ARG}},{{DATA_NAME}}{{/INPUT_ARG}});\n";
 			//mo_tpl += "	{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}.{{FIRST_PORT_NAME}}{{#OUTPUT_PORT}},{{PORT_NAME}}.{{OUT_PORT}}{{/OUTPUT_PORT}}{{#RIGHT}}){{/RIGHT}} := {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_PORT}},{{PORT_NAME}}.{{IN_PORT}}{{/INPUT_PORT}});\n";
 			mo_tpl += "end when;\n";
 			mo_tpl += "\n";
@@ -358,67 +305,103 @@ namespace Modelica_Template
 		return mo_tpl;
 	}
 
-	//const std::string& get_mo_tpl_busPort()
-	//{
-	//	static std::string mo_tpl_bp;
-	//	if(mo_tpl_bp.empty())
-	//	{
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "class {{COMPONENT_NAME}}_wrapper\n";
-	//		mo_tpl_bp += "  extends ExternalObject;\n";
-	//		mo_tpl_bp += "  function constructor\n";
-	//		mo_tpl_bp += "    output {{COMPONENT_NAME}}_wrapper context;\n";
-	//		mo_tpl_bp += "    external \"C\" context = {{COMPONENT_NAME}}_wrapper_init();\n";
-	//		mo_tpl_bp += "  end constructor;\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "  function destructor\n";
-	//		mo_tpl_bp += "    input {{COMPONENT_NAME}}_wrapper context;\n";
-	//		mo_tpl_bp += "    external \"C\" {{COMPONENT_NAME}}_wrapper_destroy( context );\n";
-	//		mo_tpl_bp += "  end destructor;\n";
-	//		mo_tpl_bp += "end {{COMPONENT_NAME}}_wrapper;\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "function {{COMPONENT_NAME}}_wrapper_main\n";
-	//		mo_tpl_bp += "    \"{{COMPONENT_NAME}} code external function wrapper.\"\n";
-	//		mo_tpl_bp += "  input {{COMPONENT_NAME}}_wrapper context;\n";
-	//		mo_tpl_bp += "  {{#INPUT_SIGNAL}}\n";
-	//		mo_tpl_bp += "  public\n";
-	//		//mo_tpl_bp += "  \tinput {{DATA_TYPE}} {{DATA_NAME}};\n\n";
-	//		mo_tpl_bp += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Input {{DATA_NAME}};\n\n";
-	//		mo_tpl_bp += "  {{/INPUT_SIGNAL}}\n";
-	//		mo_tpl_bp += "  {{#OUTPUT_SIGNAL}}";
-	//		mo_tpl_bp += "  public\n";
-	//		//mo_tpl_bp += "  \toutput {{DATA_TYPE}} {{DATA_NAME}};\n";
-	//		mo_tpl_bp += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Output {{DATA_NAME}};\n\n";
-	//		mo_tpl_bp += "  {{/OUTPUT_SIGNAL}}\n";
-	//		mo_tpl_bp += "  external \"C\" {{COMPONENT_NAME}}_wrapper_main(context{{#INPUT_SIGNAL}},{{DATA_NAME}}{{/INPUT_SIGNAL}}{{#OUTPUT_SIGNAL}},{{DATA_NAME}}{{/OUTPUT_SIGNAL}});\n";
-	//		mo_tpl_bp += "  annotation(Include=\"#include <{{COMPONENT_NAME}}_wrapper.h>\", Library=\"{{COMPONENT_NAME}}\\Release\\{{COMPONENT_NAME}}\");\n";
-	//		mo_tpl_bp += "end {{COMPONENT_NAME}}_wrapper_main;\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "// This part has the interface elements instantiated from the CyPhyML component model.\n";
-	//		mo_tpl_bp += "model {{COMPONENT_NAME}}_type\n";
-	//		mo_tpl_bp += "     extends ISIS.Icons.Simulink;\n";
-	//		mo_tpl_bp += "\n";  
-	//		mo_tpl_bp += " {{COMPONENT_NAME}}_wrapper tcontext = {{COMPONENT_NAME}}_wrapper();\n";
-	//		mo_tpl_bp += "\n"; 
-	//		mo_tpl_bp += " {{#PORT_DEF}}\n";
-	//		mo_tpl_bp += "  public\n";
-	//		mo_tpl_bp += " {{PORT_TYPE}} {{PORT_NAME}};\n";
-	//		mo_tpl_bp += " {{/PORT_DEF}}\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "  parameter Real samplePeriod = 0.5;\n";
-	//		mo_tpl_bp += "  output Boolean sampleTrigger;\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "equation\n";
-	//		mo_tpl_bp += "  sampleTrigger = sample( 0, samplePeriod );\n";
-	//		mo_tpl_bp += "  when sampleTrigger then\n";
-	//		mo_tpl_bp += "	{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}.{{FIRST_PORT_NAME}}{{#OUTPUT_PORT}},{{PORT_NAME}}.{{OUT_PORT}}{{/OUTPUT_PORT}}{{#RIGHT}}){{/RIGHT}} := {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_PORT}},{{PORT_NAME}}.{{IN_PORT}}{{/INPUT_PORT}});\n";
-	//		mo_tpl_bp += "end when;\n";
-	//		mo_tpl_bp += "\n";
-	//		mo_tpl_bp += "  annotation (uses(Modelica(version=\"3.2\")));\n";
-	//		mo_tpl_bp += "end {{COMPONENT_NAME}}_type;\n";
-	//	}
-	//	return mo_tpl_bp;
-	//}
+//-----------------------------------------------------------------------------------------------------------
+
+	const std::string& get_mo_wrapper_tpl()
+	{
+		static std::string mo_wrapper_tpl;
+		if(mo_wrapper_tpl.empty())
+		{
+			mo_wrapper_tpl += "within CyPhy.Simulink;\n";
+			mo_wrapper_tpl += "class {{COMPONENT_NAME}}_wrapper\n";
+			mo_wrapper_tpl += "  extends ExternalObject;\n";
+			mo_wrapper_tpl += "  function constructor\n";
+			mo_wrapper_tpl += "    output {{COMPONENT_NAME}}_wrapper context;\n";
+			mo_wrapper_tpl += "{{#PARAMETER}}\n";
+			mo_wrapper_tpl += "	   input {{PARAMETER_TYPE}} {{PARAMETER_NAME}};\n";
+			mo_wrapper_tpl += "{{/PARAMETER}}\n";
+			mo_wrapper_tpl += "    external \"C\" context = {{COMPONENT_NAME}}_wrapper_init({{SINGLE_VAR}}{{#VARS}}, {{VAR_NAME}}{{/VARS}});\n";
+			mo_wrapper_tpl += "  end constructor;\n";
+			mo_wrapper_tpl += "\n";
+			mo_wrapper_tpl += "  function destructor\n";
+			mo_wrapper_tpl += "    input {{COMPONENT_NAME}}_wrapper context;\n";
+			mo_wrapper_tpl += "    external \"C\" {{COMPONENT_NAME}}_wrapper_destroy( context );\n";
+			mo_wrapper_tpl += "  end destructor;\n";
+			mo_wrapper_tpl += "end {{COMPONENT_NAME}}_wrapper;\n";
+		}
+		return mo_wrapper_tpl;
+	}
+
+
+	const std::string& get_mo_wrapper_main_tpl()
+	{
+		static std::string mo_wrapper_main_tpl;
+		if(mo_wrapper_main_tpl.empty())
+		{
+			mo_wrapper_main_tpl += "within CyPhy.Simulink;\n";
+			mo_wrapper_main_tpl += "function {{COMPONENT_NAME}}_wrapper_main\n";
+			mo_wrapper_main_tpl += "    \"{{COMPONENT_NAME}} code external function wrapper.\"\n";
+			mo_wrapper_main_tpl += "  input {{COMPONENT_NAME}}_wrapper context;\n";
+			mo_wrapper_main_tpl += "  {{#INPUT_SIGNAL}}\n";
+			mo_wrapper_main_tpl += "  public\n";
+			//mo_wrapper_main_tpl += "  \tinput {{DATA_TYPE}} {{DATA_NAME}};\n\n";
+			mo_wrapper_main_tpl += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Input {{DATA_NAME}};\n\n";
+			mo_wrapper_main_tpl += "  {{/INPUT_SIGNAL}}\n";
+			mo_wrapper_main_tpl += "  {{#OUTPUT_SIGNAL}}";
+			mo_wrapper_main_tpl += "  public\n";
+			//mo_wrapper_main_tpl += "  \toutput {{DATA_TYPE}} {{DATA_NAME}};\n";
+			mo_wrapper_main_tpl += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Output {{DATA_NAME}};\n\n";
+			mo_wrapper_main_tpl += "  {{/OUTPUT_SIGNAL}}\n";
+			mo_wrapper_main_tpl += "  external \"C\" {{COMPONENT_NAME}}_wrapper_main(context{{#INPUT_SIGNAL}},{{DATA_NAME}}{{/INPUT_SIGNAL}}{{#OUTPUT_SIGNAL}},{{DATA_NAME}}{{/OUTPUT_SIGNAL}});\n";
+			mo_wrapper_main_tpl += "  annotation(Include=\"#include <Simulink/{{COMPONENT_NAME}}_wrapper.h>\", Library=\"Simulink\\{{COMPONENT_NAME}}\\Release\\{{COMPONENT_NAME}}\\{{COMPONENT_NAME}}\");\n";
+			mo_wrapper_main_tpl += "end {{COMPONENT_NAME}}_wrapper_main;\n";
+		}
+		return mo_wrapper_main_tpl;
+	}
+
+
+	const std::string& get_mo_type_tpl()
+	{
+		static std::string mo_type_tpl;
+		if(mo_type_tpl.empty())
+		{
+			mo_type_tpl += "within CyPhy.Simulink;\n";
+			mo_type_tpl += "model {{COMPONENT_NAME}}_type\n";
+			mo_type_tpl += "// This part has the interface elements instantiated from the CyPhyML component model.\n";
+			mo_type_tpl += "\n";  
+			mo_type_tpl += " {{COMPONENT_NAME}}_wrapper tcontext = {{COMPONENT_NAME}}_wrapper({{SINGLE_VAR}}{{#VARS}}, {{VAR_NAME}}{{/VARS}});\n";
+			mo_type_tpl += "\n"; 
+			mo_type_tpl += " {{#BUSPORT_DEF}}\n";
+			mo_type_tpl += "  public\n";
+			mo_type_tpl += " {{PORT_TYPE}} {{PORT_NAME}};\n";
+			mo_type_tpl += " {{/BUSPORT_DEF}}\n";
+			mo_type_tpl += "  {{#INPUT_SIGNAL_DEF}}\n";
+			mo_type_tpl += "  public\n";
+			mo_type_tpl += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Input {{DATA_NAME}};\n\n";
+			mo_type_tpl += "  {{/INPUT_SIGNAL_DEF}}\n";
+			mo_type_tpl += "  {{#OUTPUT_SIGNAL_DEF}}";
+			mo_type_tpl += "  public\n";
+			mo_type_tpl += "	\tModelica.Blocks.Interfaces.{{DATA_TYPE}}Output {{DATA_NAME}};\n\n";
+			mo_type_tpl += "  {{/OUTPUT_SIGNAL_DEF}}\n";
+			mo_type_tpl += "{{#PARAMETER}}\n";
+			mo_type_tpl += "	   parameter {{PARAMETER_TYPE}} {{PARAMETER_NAME}};\n";
+			mo_type_tpl += "{{/PARAMETER}}\n";
+			mo_type_tpl += "  output Boolean sampleTrigger;\n";
+			mo_type_tpl += "\n";
+			mo_type_tpl += "equation\n";
+			mo_type_tpl += "  sampleTrigger = sample( 0, {{SAMPLE_PERIOD_NAME}} );\n";
+			mo_type_tpl += "  when sampleTrigger then\n";
+			mo_type_tpl += "		{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}{{#OUTPUT_SIGNAL_A}},{{DATA_NAME}}{{/OUTPUT_SIGNAL_A}}{{#RIGHT}}){{/RIGHT}} = {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_ARG}},{{DATA_NAME}}{{/INPUT_ARG}});\n";
+			//mo_type_tpl += "	{{#LEFT}}({{/LEFT}}{{FIRST_DATA_NAME}}.{{FIRST_PORT_NAME}}{{#OUTPUT_PORT}},{{PORT_NAME}}.{{OUT_PORT}}{{/OUTPUT_PORT}}{{#RIGHT}}){{/RIGHT}} := {{COMPONENT_NAME}}_wrapper_main( tcontext{{#INPUT_PORT}},{{PORT_NAME}}.{{IN_PORT}}{{/INPUT_PORT}});\n";
+			mo_type_tpl += "end when;\n";
+			mo_type_tpl += "\n";
+			mo_type_tpl += "  annotation (uses(Modelica(version=\"3.2\")));\n";
+			mo_type_tpl += "end {{COMPONENT_NAME}}_type;\n";
+		}
+		return mo_type_tpl;
+	}
+
+//-----------------------------------------------------------------------------------------------------------	
 
 	const std::string& get_pkg_tpl()
 	{

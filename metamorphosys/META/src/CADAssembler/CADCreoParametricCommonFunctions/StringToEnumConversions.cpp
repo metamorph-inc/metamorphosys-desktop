@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include <StringToEnumConversions.h>
 #include <CommonUtilities.h>
 #include <CADCommonConstants.h>
@@ -915,6 +860,70 @@ namespace isis
 	  }
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 e_CADUnitsHeatCapacity CADUnitsHeatCapacity_enum( const string &in_UnitsHeatCapacity_string )
+																throw (isis::application_exception)
+	 {
+		  std::string UnitsHeatCapacity_string = ConvertToUpperCase(in_UnitsHeatCapacity_string);
+
+		  if ( UnitsHeatCapacity_string.compare("J/KGK") == 0 )
+			  return CAD_UNITS_J_PER_KG_K;
+	 
+		  string temp_string = "Function CADUnitsHeatCapacity_enum was passed " + in_UnitsHeatCapacity_string + " which is an erroneous type.";
+		  throw isis::application_exception(temp_string.c_str());
+	 }
+
+
+	std::string CADUnitsHeatCapacity_string(  e_CADUnitsHeatCapacity in_UnitsHeatCapacity_enum)
+											throw (isis::application_exception)
+	{
+		switch (in_UnitsHeatCapacity_enum )
+		{
+			case CAD_UNITS_J_PER_KG_K:
+				return "J/KgK";
+				break;
+
+			default:
+				char temp_char_array[ISIS_CHAR_BUFFER_LENGTH];
+				string temp_string = "Function UnitsHeatCapacity_string was passed " + 
+					std::string(itoa(in_UnitsHeatCapacity_enum, temp_char_array, 10)) + 
+					" which is an erroneous type.  Allowed enum values are CAD_UNITS_J_PER_KG_K.";
+				throw isis::application_exception(temp_string.c_str());
+	  }
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 e_CADUnitsThermalConductivity CADUnitsThermalConductivity_enum( const string &in_UnitsThermalConductivity_string )
+																throw (isis::application_exception)
+	 {
+		  std::string UnitsThermalConductivity_string = ConvertToUpperCase(in_UnitsThermalConductivity_string);
+
+		  if ( UnitsThermalConductivity_string.compare("W/MMK") == 0 )
+			  return CAD_UNITS_W_PER_MM_K;
+
+		  string temp_string = "Function CADUnitsThermalConductivity_enum was passed " + in_UnitsThermalConductivity_string + " which is an erroneous type.";
+		  throw isis::application_exception(temp_string.c_str());
+	 }
+
+
+	std::string CADUnitsThermalConductivity_string(  e_CADUnitsThermalConductivity in_UnitsThermalConductivity_enum)
+											throw (isis::application_exception)
+	{
+		switch (in_UnitsThermalConductivity_enum )
+		{
+			case CAD_UNITS_W_PER_MM_K:
+				return "W/mmK";
+				break;
+
+
+			default:
+				char temp_char_array[ISIS_CHAR_BUFFER_LENGTH];
+				string temp_string = "Function UnitsThermalConductivity_string was passed " + 
+					std::string(itoa(in_UnitsThermalConductivity_enum, temp_char_array, 10)) + 
+					" which is an erroneous type.  Allowed enum values are CAD_UNITS_W_PER_MM_K.";
+				throw isis::application_exception(temp_string.c_str());
+	  }
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	 e_CADUnitsAngle CADUnitsAngle_enum( const string &in_UnitsAngle_string )
 																throw (isis::application_exception)
@@ -1889,7 +1898,7 @@ namespace isis
 					   std::endl << "COMPUTATION_PLANE, COMPUTATION_COEFFICIENT_OF_DRAG, COMPUTATION_STRESS_MISES, COMPUTATION_STRESS_SHEAR, "  <<
 					   std::endl << "COMPUTATION_STRESS_BEARING, COMPUTATION_FACTOR_OF_SAFETY, COMPUTATION_TOTAL_INTERSECTIONS, COMPUTATION_TOTAL_KILLS, " <<
 					   std::endl <<  "MAX_VERTICAL_JUMP, MAX_VERTICAL_VELOCITY, MAX_HORIZONAL_VELOCITY, MINIMUM_TEMPERATURE, and MAXIMUM_TEMPERATURE.";
-				throw isis::application_exception(errorString.str().c_str());
+				throw isis::application_exception(errorString.str());
 
 	  }
 	}
@@ -2663,6 +2672,67 @@ namespace isis
 				string temp_string = "Function Metrics_JointsComponentInstanceData_Secondary_string was passed " + 
 					std::string(itoa(in_Metrics_JointsComponentInstanceData_Secondary_enum, temp_char_array, 10)) + 
 					" which is an erroneous type.  Allowed enum values are METRICS_JOINTS_NONE, and METRICS_JOINTS_TREAT_AS_ONE_BODY.";
+				throw isis::application_exception(temp_string.c_str());
+	  }
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ e_Thermal_LoadConstraint Thermal_LoadConstraint_enum(const std::string &in_Thermal_LoadConstraint_string)
+												throw (isis::application_exception)
+  {
+	  std::string Thermal_LoadConstraint_string = ConvertToUpperCase(in_Thermal_LoadConstraint_string);
+
+	  if      ( Thermal_LoadConstraint_string.compare("CONVECTIONHEAT") == 0 )	// CONVECTIONHEAT is deprecated, use CONVECTION		
+												return THERMAL_CONVECTION;
+	  else if ( Thermal_LoadConstraint_string.compare("CONVECTION") == 0 )  
+												return THERMAL_CONVECTION;
+	  else if ( Thermal_LoadConstraint_string.compare("HEATFLUX") == 0 )		
+												return THERMAL_HEAT_FLUX;
+	  else if ( Thermal_LoadConstraint_string.compare("HEATGENERATION") == 0 )		
+												return THERMAL_HEAT_GENERATION;
+	  else if ( Thermal_LoadConstraint_string.compare("INITIALTEMPERATURE") == 0 )		
+												return THERMAL_INITIAL_TEMPERATURE;
+	  else if ( Thermal_LoadConstraint_string.compare("SPECIFIEDTEMPERATURE") == 0 )		
+												return THERMAL_SPECIFIED_TEMPERATURE;
+	  else if ( Thermal_LoadConstraint_string.compare("AMBIENTTEMPERATURE") == 0 )		
+												return THERMAL_AMBIENT_TEMPERATURE;
+
+	  std::string temp_string = "Function Thermal_LoadConstraint_enum was passed '" + Thermal_LoadConstraint_string + "' which is an erroneous type. Allowed types are: ConvectionHeat, HeatFlux, HeatGeneration, InitialTemperature, and SpecifiedTemperature.";
+	  throw isis::application_exception(temp_string.c_str());
+  }
+
+	std::string Thermal_LoadConstraint_string(  e_Thermal_LoadConstraint in_Thermal_LoadConstraint_enum)
+											throw (isis::application_exception)
+	{
+		switch (in_Thermal_LoadConstraint_enum )
+		{
+			case THERMAL_CONVECTION_HEAT:  // THERMAL_CONVECTION_HEAT is deprecated, use THERMAL_CONVECTION
+				return "Convection";
+				break;
+			case THERMAL_CONVECTION:
+				return "Convection";
+				break;
+			case THERMAL_HEAT_FLUX:
+				return "HeatFlux";
+				break;
+			case THERMAL_HEAT_GENERATION:
+				return "HeatGeneration";
+				break;
+			case THERMAL_INITIAL_TEMPERATURE:
+				return "InitialTemperature";
+				break;
+			case THERMAL_SPECIFIED_TEMPERATURE:
+				return "SpecifiedTemperature";
+				break;
+			case THERMAL_AMBIENT_TEMPERATURE:
+				return "AmbientTemperature";
+				break;
+			default:
+				char temp_char_array[ISIS_CHAR_BUFFER_LENGTH];
+				string temp_string = "Function Thermal_LoadConstraint_string was passed " + 
+					std::string(itoa(in_Thermal_LoadConstraint_enum, temp_char_array, 10)) + 
+					" which is an erroneous type.  Allowed enum values are THERMAL_CONVECTION, THERMAL_HEAT_FLUX, THERMAL_HEAT_GENERATION, THERMAL_INITIAL_TEMPERATURE, HERMAL_SPECIFIED_TEMPERATURE, and THERMAL_AMBIENT_TEMPERATURE.";
 				throw isis::application_exception(temp_string.c_str());
 	  }
 	}

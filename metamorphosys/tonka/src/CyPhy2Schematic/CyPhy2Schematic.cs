@@ -1,27 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -381,7 +357,10 @@ namespace CyPhy2Schematic
             try
             {
                 this.Logger.WriteDebug("Elaborating model...");
-                var elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
+                var elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter()
+                {
+                    Logger = Logger
+                };
                 elaborator.Initialize(project);
                 int verbosity = 128;
                 result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);
@@ -394,6 +373,7 @@ namespace CyPhy2Schematic
                 if (elaborator.Traceability != null)
                 {
                     elaborator.Traceability.CopyTo(this.result.Traceability);
+                    elaborator.Traceability.CopyTo(Logger.Traceability);
                 }
                 this.Logger.WriteDebug("Elaboration is done.");
             }
@@ -613,6 +593,8 @@ namespace CyPhy2Schematic
         private void WorkInMainTransaction()
         {
             var config = (this.mainParameters.config as CyPhy2Schematic_Settings);
+            string placementDotBat = "placement.bat";
+            string placeonlyDotBat = "placeonly.bat";
 
             this.result.Success = true;
             Schematic.CodeGenerator.Mode mode = Schematic.CodeGenerator.Mode.EDA;
@@ -645,32 +627,46 @@ namespace CyPhy2Schematic
                 }
                 else if (config.doPlaceRoute != null)
                 {
-                    this.result.RunCommand = "placement.bat";
+                    this.result.RunCommand = placementDotBat;
                 }
                 else if (config.doPlaceOnly != null)
                 {
-                    this.result.RunCommand = "placeonly.bat";
+                    this.result.RunCommand = placeonlyDotBat;
                 }
                 else
                 {
-                    this.result.RunCommand = "dir";
+                    this.result.RunCommand = "cmd /c dir";
                 }
             }
+
+            GetIDsOfEverything(this.mainParameters.CurrentFCO);
 
             // Call Elaborator
             var elaboratorSuccess = this.CallElaborator(this.mainParameters.Project,
                                                         this.mainParameters.CurrentFCO, 
                                                         this.mainParameters.SelectedFCOs,
                                                         this.mainParameters.StartModeParam);
+
             this.UpdateSuccess("Elaborator", elaboratorSuccess);
 
             bool successTranslation = true;
             try
             {
                 Schematic.CodeGenerator.Logger = Logger;
-                var schematicCodeGenerator = new Schematic.CodeGenerator(this.mainParameters, mode);
+                var schematicCodeGenerator = new Schematic.CodeGenerator(this.mainParameters, mode, (MgaTraceability)result.Traceability, mgaIdToDomainIDs);
                 
                 var gcResult = schematicCodeGenerator.GenerateCode();
+
+                // MOT-782: Prevent autorouting if we've placed components off the board.
+                if( (gcResult.bonesFound) && (this.result.RunCommand == placementDotBat) )
+                {
+                    // Found a bone, MOT-782.
+                    Logger.WriteWarning("Skipping EAGLE autorouting, since components not found in layout.json were placed off the board.");
+
+                    this.result.RunCommand = placeonlyDotBat;
+                    config.doPlaceOnly = config.doPlaceRoute;
+                    config.doPlaceRoute = null;
+                }
                 
                 if (mode == Schematic.CodeGenerator.Mode.EDA &&
                     (config.doPlaceRoute != null || config.doPlaceOnly != null))
@@ -682,13 +678,156 @@ namespace CyPhy2Schematic
             }
             catch (Exception ex)
             {
-                Logger.WriteError(ex.ToString());
+                Logger.WriteError(ex.Message);
+                Logger.WriteDebug(ex.ToString());
                 successTranslation = false;
             }
             this.UpdateSuccess("Schematic translation", successTranslation);
         }
 
+        public class IDs
+        {
+            public string instanceGUID;
+            public string managedGUID;
+            public string ID;
+            public string ConnectorID;
+
+            public override string ToString()
+            {
+                return managedGUID + "/" + (String.IsNullOrEmpty(instanceGUID) ? "" : (instanceGUID + "/")) + ConnectorID + "/" + ID;
+            }
+        }
+        public Dictionary<string, IDs> mgaIdToDomainIDs = new Dictionary<string, IDs>();
+        private void GetIDsOfEverything(MgaFCO testbench)
+        {
+            Queue<MgaFCO> q = new Queue<MgaFCO>();
+            q.Enqueue(testbench);
+            var metaProject = testbench.Meta.MetaProject;
+            int componentRefId = metaProject.RootFolder.GetDefinedFCOByNameDisp("ComponentRef", true).MetaRef;
+            int componentId = metaProject.RootFolder.GetDefinedFCOByNameDisp("Component", true).MetaRef;
+            int testComponentId = -1; // TODO //metaProject.RootFolder.GetDefinedFCOByNameDisp("TestComponent", true).MetaRef;
+            int testBenchId = metaProject.RootFolder.GetDefinedFCOByNameDisp("TestBench", true).MetaRef;
+            int componentAssemblyId = metaProject.RootFolder.GetDefinedFCOByNameDisp("ComponentAssembly", true).MetaRef;
+            int connectorId = metaProject.RootFolder.GetDefinedFCOByNameDisp("Connector", true).MetaRef;
+
+            Action<IMgaFCO> addComponentID = (fco) =>
+            {
+                mgaIdToDomainIDs[fco.ID] = new IDs()
+                {
+                    instanceGUID = (fco.Meta.Name == typeof(Tonka.Component).Name) ? fco.GetStrAttrByNameDisp("InstanceGUID") : null, // TestComponents do not have InstanceGUIDs
+                    managedGUID = fco.GetStrAttrByNameDisp("ManagedGUID")
+                    // ID = fco.GetIntAttrByNameDisp("ID").ToString()
+                };
+            };
+            Action<IMgaFCO> addComponentRefID = (fco) =>
+            {
+                mgaIdToDomainIDs[fco.ID] = new IDs()
+                {
+                    instanceGUID = fco.GetStrAttrByNameDisp("InstanceGUID"),
+                    // managedGUID
+                    ID = fco.GetIntAttrByNameDisp("ID").ToString()
+                };
+            };
+            Action<IMgaFCO> addComponentAssemblyID = (fco) =>
+            {
+                mgaIdToDomainIDs[fco.ID] = new IDs()
+                {
+                    // instanceGUID =
+                    managedGUID = fco.GetStrAttrByNameDisp("ManagedGUID"),
+                    ID = fco.GetIntAttrByNameDisp("ID").ToString()
+                };
+            };
+
+            while (q.Count > 0)
+            {
+                MgaFCO fco = q.Dequeue();
+                if (fco.Meta.ObjType == GME.MGA.Meta.objtype_enum.OBJTYPE_REFERENCE)
+                {
+                    var reference = (MgaReference)fco;
+                    var referred = reference.Referred;
+                    if (referred != null)
+                    {
+                        if (referred.Meta.MetaRef == componentAssemblyId)
+                        {
+                            if (reference.Meta.MetaRef == componentRefId)
+                            {
+                                addComponentRefID(reference);
+                            }
+                            else
+                            {
+                                addComponentAssemblyID(referred);
+                            }
+                            foreach (MgaFCO child in ((MgaModel)referred).ChildFCOs)
+                            {
+                                q.Enqueue(child);
+                            }
+                        }
+                        else if (referred.Meta.MetaRef == componentId || referred.Meta.MetaRef == testComponentId)
+                        {
+                            addComponentRefID(reference);
+                            foreach (MgaFCO child in ((MgaModel)referred).ChildFCOs)
+                            {
+                                q.Enqueue(child);
+                            }
+                        }
+                    }
+                }
+                else if (fco.Meta.MetaRef == componentAssemblyId)
+                {
+                    addComponentAssemblyID(fco);
+                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
+                    {
+                        q.Enqueue(child);
+                    }
+                }
+                else if (fco.Meta.MetaRef == testBenchId)
+                {
+                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
+                    {
+                        q.Enqueue(child);
+                    }
+                }
+                else if (fco.Meta.MetaRef == connectorId)
+                {
+                    foreach (MgaFCO child in ((MgaModel)fco).ChildFCOs)
+                    {
+                        if (child.Meta.Name == "SchematicModelPort")
+                        {
+                            mgaIdToDomainIDs[child.ID] = new IDs()
+                            {
+                                // instanceGUID =
+                                // managedGUID =
+                                ID = child.GetStrAttrByNameDisp("ID"),
+                                ConnectorID = fco.GetStrAttrByNameDisp("ID")
+                            };
+                        }
+                    }
+                }
+                else if (fco.Meta.MetaRef == componentId || fco.Meta.MetaRef == testComponentId)
+                {
+                    addComponentID(fco);
+                }
+            }
+        }
+
         #endregion
 
+    }
+
+    public static class TraceabilityExtension
+    {
+        public static string GetID(this MgaTraceability t, IMgaObject obj)
+        {
+            String compOriginalID = null;
+            if (t.TryGetMappedObject(obj.ID, out compOriginalID))
+            {
+            }
+            else
+            {
+                compOriginalID = obj.ID;
+            }
+            return compOriginalID;
+
+        }
     }
 }

@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,10 +7,11 @@ using META;
 
 using Tonka = ISIS.GME.Dsml.CyPhyML.Interfaces;
 using TonkaClasses = ISIS.GME.Dsml.CyPhyML.Classes;
+using System.Globalization;
 
 namespace CyPhy2Schematic.Schematic
 {
-    class EdaVisitor : Visitor
+    public class EdaVisitor : Visitor
     {
         private int netCount = 0;
         const float netLength = 2.54f;  // 0.1 inch = 2.54 mm
@@ -74,16 +51,18 @@ namespace CyPhy2Schematic.Schematic
         public override void visit(ComponentAssembly obj)
         {
             var layoutFile = (obj.Impl.Impl as GME.MGA.MgaFCO).RegistryValue["layoutFile"];
-            if (layoutFile != null)
+            int ancestorsWithLayoutJson = Layout.LayoutGenerator.getAncestorModels((GME.MGA.MgaFCO)obj.Impl.Impl).Where(parent => parent.RegistryValue["layoutFile"] != null).Count();
+	    // we only care about the top-most layout.json
+            if (layoutFile != null && ancestorsWithLayoutJson == 0)
             {
                 var pathLayoutFile = Path.Combine(obj.Impl.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), layoutFile);
-                var layoutParser = new Layout.LayoutParser(pathLayoutFile,
-                    CodeGenerator.Logger)
+                var managedGUID = CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyManagedGuid(obj.Impl.Impl as GME.MGA.MgaModel);
+                var layoutParser = new Layout.LayoutParser(pathLayoutFile, CodeGenerator.Logger)
                     {
-                        parentInstanceGUID = (obj.Impl.Impl as GME.MGA.MgaFCO).
-                        RegistryValue["Elaborator/InstanceGUID_Chain"]
+                        parentInstanceGUID = string.IsNullOrEmpty(managedGUID) == false ? managedGUID: CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyChainGuid(obj.Impl.Impl as GME.MGA.MgaModel),
+                        parentGUID = CyPhy2Schematic.Layout.LayoutGenerator.GetComponentAssemblyID(obj.Impl.Impl as GME.MGA.MgaModel)
                     };
-                Logger.WriteDebug("Parent GUID : {0}", layoutParser.parentInstanceGUID);
+                Logger.WriteDebug("Design \"{0}\" is using layoutFile \"{1}\". Parent GUID : {2}", obj.Name, layoutFile, layoutParser.parentInstanceGUID ?? "[null]");
                 layoutParser.BuildMaps();
                 CodeGenerator.preRouted.Add(obj, layoutParser);
             }
@@ -93,6 +72,14 @@ namespace CyPhy2Schematic.Schematic
         {
             if (obj.Impl is Tonka.TestComponent)
                 return;
+
+            // TBD SKN - pcb components are not "real" schematic components
+            //         - do not generate eagle schematic parts for them 
+            if (CodeGenerator.polyComponentClasses
+                             .Contains((obj.Impl as Tonka.Component).Attributes.Classifications))
+            {
+                return;
+            }
 
             var parts = schematic_obj.parts;
             var instances = schematic_obj.sheets.sheet.FirstOrDefault().instances;
@@ -110,9 +97,21 @@ namespace CyPhy2Schematic.Schematic
             part.deviceset = (deviceset != null) ? deviceset : "deviceset-unknown";
             var libName = schObj.Attributes.Library;
             part.library = (String.IsNullOrWhiteSpace(libName) == false) ? libName : "library-noname";
-            var parVal = obj.Parameters.Where(p => p.Name.Equals("value")).FirstOrDefault();
-            if (parVal != null)
+            var parVal = obj.Parameters.FirstOrDefault(p => p.Name.Equals("value"));
+            var partMpn = obj.Impl.Children.PropertyCollection.FirstOrDefault(p => p.Name.Equals("octopart_mpn"));
+
+            if (partMpn != null)
+            {
+                part.value = partMpn.Attributes.Value;  // See also: MOT-743
+            }
+            else if (parVal != null)
+            {
                 part.value = parVal.Value;
+            }
+            else
+            {
+                part.value = "";
+            }
 
             MergeLibrary(obj, obj.SchematicLib, libraries, libName);
 
@@ -135,8 +134,8 @@ namespace CyPhy2Schematic.Schematic
                     var instance = new Eagle.instance();
                     instance.part = part.name;
                     instance.gate = gate.name;
-                    double x = float.Parse(gate.x) + obj.CenterX;
-                    double y = float.Parse(gate.y) + obj.CenterY;
+                    double x = float.Parse(gate.x, CultureInfo.InvariantCulture) + obj.CenterX;
+                    double y = float.Parse(gate.y, CultureInfo.InvariantCulture) + obj.CenterY;
 
                     instance.x = x.ToString("F2");
                     instance.y = y.ToString("F2");
@@ -151,8 +150,14 @@ namespace CyPhy2Schematic.Schematic
             if (obj.Parent.Impl is Tonka.TestComponent)
                 return;
 
-            Logger.WriteDebug("CyPhySchematicVisitor::visit({0}, dest connections: {1})", 
-                              obj.Name, 
+            if (CodeGenerator.polyComponentClasses
+                             .Contains((obj.Parent.Impl as Tonka.Component).Attributes.Classifications))
+            {
+                return;
+            }
+
+            Logger.WriteDebug("CyPhySchematicVisitor::visit({0}, dest connections: {1})",
+                              obj.Name,
                               obj.DstConnections.Count);
 
             if (PortNetMap.ContainsKey(obj))// port already mapped to a net object - no need to visit further
@@ -168,7 +173,20 @@ namespace CyPhy2Schematic.Schematic
 
         private void visit(Port obj, Eagle.net net_obj)
         {
-            if (!(obj.Parent.Impl is Tonka.TestComponent))
+            if (obj.Parent.Impl is Tonka.TestComponent)
+            {
+            
+            }
+            else if (CodeGenerator.polyComponentClasses
+                                  .Contains((obj.Parent.Impl as Tonka.Component).Attributes.Classifications))
+            {
+                // remember this 'pcb' net for later processing in generating layout
+                if (!CodeGenerator.polyNetMap.ContainsKey(obj))
+                {
+                    CodeGenerator.polyNetMap.Add(obj, net_obj);
+                }
+            }
+            else
             {
                 // create a segment for this object
                 var segment_obj = new Eagle.segment();
@@ -192,10 +210,12 @@ namespace CyPhy2Schematic.Schematic
         private void CreatePinRef(Port obj, Eagle.segment segment_obj)
         {
             var gate = obj.Impl.Attributes.EDAGate;
-            var pinref_obj = new Eagle.pinref();
-            pinref_obj.gate = (String.IsNullOrWhiteSpace(gate) == false) ? gate : "gate-unknown";
-            pinref_obj.part = obj.Parent.Name;
-            pinref_obj.pin = obj.Name;
+            var pinref_obj = new Eagle.pinref()
+            {
+                gate = (String.IsNullOrWhiteSpace(gate) == false) ? gate : "gate-unknown",
+                part = obj.Parent.Name,
+                pin = obj.Name,
+            };
             segment_obj.Items.Add(pinref_obj);
         }
 
@@ -203,7 +223,6 @@ namespace CyPhy2Schematic.Schematic
         {
             // create two short wire segments: 1. from src pin to, and 2. to dst pin
             // TODO: create vertical segments for vertical pins (or rotated symbols)
-            var wire_obj = new Eagle.wire();
             var rot = port.Impl.Attributes.EDASymbolRotation;
             double x1 = port.CanvasX;
             double y1 = port.CanvasY;
@@ -218,19 +237,26 @@ namespace CyPhy2Schematic.Schematic
             else
                 x2 -= netLength; // 0 going left
 
-            wire_obj.x1 = x1.ToString("F2");
-            wire_obj.y1 = y1.ToString("F2");
-            wire_obj.x2 = x2.ToString("F2");
-            wire_obj.y2 = y2.ToString("F2");
-            wire_obj.layer = netLayer;
-            wire_obj.width = wireWidth;
+            var wire_obj = new Eagle.wire()
+            {
+                x1 = x1.ToString("F2"),
+                y1 = y1.ToString("F2"),
+                x2 = x2.ToString("F2"),
+                y2 = y2.ToString("F2"),
+                layer = netLayer,
+                width = wireWidth
+            };
+            
             segment_obj.Items.Add(wire_obj);
 
-            var label_obj = new Eagle.label();
-            label_obj.x = wire_obj.x2;
-            label_obj.y = wire_obj.y2;
-            label_obj.size = labelSize;
-            label_obj.layer = nameLayer;
+            var label_obj = new Eagle.label()
+            {
+                x = wire_obj.x2,
+                y = wire_obj.y2,
+                size = labelSize,
+                layer = nameLayer
+            };
+            
             segment_obj.Items.Add(label_obj);
         }
 

@@ -11,7 +11,16 @@
     <Error Text="DESERT_PATH='$(DESERT_PATH)' doesn't exist" Condition="!Exists('$(DESERT_PATH)')"/>
     <Error Text="META_PATH='$(META_PATH)' doesn't exist" Condition="!Exists('$(META_PATH)')"/>
     <Error Text="VCP_PATH='$(VCP_PATH)' doesn't exist" Condition="!Exists('$(VCP_PATH)')"/>
-    <Error Text="THIRDPARTY_PATH='$(THIRDPARTY_PATH)' doesn't exist" Condition="!Exists('$(THIRDPARTY_PATH)')"/>
+  </Target>
+
+  <Target Name="Combined" DependsOnTargets="CheckEnv">
+    <Exec Command=".nuget\NuGet.exe restore MDL2MGACyPhyML.sln"
+        WorkingDirectory="$(MSBuildThisFileDirectory)\externals\HCDDES"/> 
+    <Exec Command=".nuget\NuGet.exe restore desertVS2010.sln"
+        WorkingDirectory="$(MSBuildThisFileDirectory)\externals\desert"/> 
+    <MSBuild Projects="src/CyPhyMLCombined.sln"
+        Properties="Configuration=$(Configuration);Platform=Mixed Platforms;META_PATH=$(META_PATH);PYTHON_HOME=$(MSBuildThisFileDirectory)bin\Python27;ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7"
+        Targets="Build"/>
   </Target>
 
   <Target Name="Desert" DependsOnTargets="CheckEnv">
@@ -21,7 +30,7 @@
     <PropertyGroup>
       <DesertPlatform Condition="'$(Platform)'!='x64'">Win32</DesertPlatform>
     </PropertyGroup>
-    <MSBuild Projects="externals/desert/desertVS2010.sln" Properties="Configuration=$(Configuration);Platform=$(DesertPlatform);THIRDPARTY_PATH=$(THIRDPARTY_PATH)" Targets="Build"/>
+    <MSBuild Projects="externals/desert/desertVS2010.sln" Properties="Configuration=$(Configuration);Platform=$(DesertPlatform)" Targets="Build"/>
   </Target>
 
   <Target Name="MDL2MGA" DependsOnTargets="CheckEnv">
@@ -30,7 +39,7 @@
         WorkingDirectory="$(MSBuildThisFileDirectory)\src"/> 
     <Exec Command=".nuget\NuGet.exe restore MDL2MGACyPhyML.sln"
         WorkingDirectory="$(MSBuildThisFileDirectory)\externals\HCDDES"/> 
-    <MSBuild Projects="externals/HCDDES/MDL2MGACyPhyML.sln" Properties="Platform=x64;Configuration=$(Configuration);META_PATH=$(META_PATH);MATLAB_PATH=$(MATLAB_PATH);HCDDES_PATH=$(MSBuildThisFileDirectory)externals\HCDDES\;ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;BOOST_PATH=$(MSBuildThisFileDirectory)externals\HCDDES\nuget\boost.1.55.0.10\lib\native\include;THIRDPARTY_PATH=$(THIRDPARTY_PATH)" Targets="Build"/>
+    <MSBuild Projects="externals/HCDDES/MDL2MGACyPhyML.sln" Properties="Platform=x64;Configuration=$(Configuration);META_PATH=$(META_PATH);MATLAB_PATH=$(MATLAB_PATH);HCDDES_PATH=$(MSBuildThisFileDirectory)externals\HCDDES\;ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7" Targets="Build"/>
   </Target>
 
   <Target Name="CyPhyML" DependsOnTargets="CheckEnv;Desert">
@@ -52,10 +61,13 @@
   </Target>
   <!--
   <Target Name="CyPhyML-Cyber2Code">
+    <Exec Command=".nuget\NuGet.exe restore MDL2MGACyPhyML.sln"
+        WorkingDirectory="$(MSBuildThisFileDirectory)\externals\HCDDES"/> 
+    <Exec Command=".nuget\NuGet.exe restore Cyber2Code.sln"
+        WorkingDirectory="$(MSBuildThisFileDirectory)\src"/> 
     <MSBuild Projects="3rdParty\ctemplate-1.0\vsprojects\libctemplate\libctemplate.vcxproj" Properties="Configuration=$(Configuration)"/>
-    <Copy SourceFiles="3rdParty\ctemplate-1.0\vsprojects\libctemplate\bin\libctemplate.dll" DestinationFolder="src\bin" SkipUnchangedFiles="true"/>
-    <MSBuild Projects="src\Cyber2Code.sln" Properties="Configuration=$(Configuration);CTEMPLATE_PATH=$(META_PATH)\3rdParty\ctemplate-1.0;META_PATH=$(META_PATH);ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7;PYTHON_HOME=$(MSBuildThisFileDirectory)bin\Python27;PYTHONHOME=$(MSBuildThisFileDirectory)bin\Python27;BOOST_PATH=$(MSBuildThisFileDirectory)src\nuget\boost.1.55.0.10\lib\native\include" Targets="UpdateCyber2SLC_udm"/>
-    <MSBuild Projects="src\Cyber2Code.sln" Properties="Configuration=$(Configuration);CTEMPLATE_PATH=$(META_PATH)\3rdParty\ctemplate-1.0;META_PATH=$(META_PATH);ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7;PYTHON_HOME=$(MSBuildThisFileDirectory)bin\Python27;PYTHONHOME=$(MSBuildThisFileDirectory)bin\Python27;BOOST_PATH=$(MSBuildThisFileDirectory)src\nuget\boost.1.55.0.10\lib\native\include" Targets="Build"/>
+    <MSBuild Projects="src\Cyber2Code.sln" Properties="Configuration=$(Configuration);META_PATH=$(META_PATH);PYTHON_HOME=$(MSBuildThisFileDirectory)bin\Python27;ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7" Targets="UpdateCyber2SLC_udm"/>
+    <MSBuild Projects="src\Cyber2Code.sln" Properties="Configuration=$(Configuration);META_PATH=$(META_PATH);PYTHON_HOME=$(MSBuildThisFileDirectory)bin\Python27;ANTLR3_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\3.1.3;ANTLR_PATH=$(MSBuildThisFileDirectory)\3rdparty\antlr\2.7.7" Targets="Build"/>
   </Target>
 
   <Target Name="Cyber-Tools">

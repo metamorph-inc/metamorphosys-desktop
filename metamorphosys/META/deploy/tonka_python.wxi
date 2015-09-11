@@ -7,6 +7,7 @@
     <Fragment>
         <DirectoryRef Id="dir_bin_Python27_Lib_site_packages">
             <Directory Id="chipfit_display" Name="chipfit_display" />
+            <Directory Id="layout_json" Name="layout_json" />
             <Directory Id="TestBenchExecutor" Name="TestBenchExecutor" />
             <Directory Id="SpiceVisualizer" Name="SpiceVisualizer" />
           <Directory Id="spice_viewer" Name="spice_viewer" />
@@ -15,11 +16,13 @@
           <Directory Id="runCentroidUlp" Name="runCentroidUlp" />
           <Directory Id="runEagleUlp" Name="runEagleUlp" />
           <Directory Id="runDrc" Name="runDrc" />
+		  <Directory Id="CADVisualizer" Name="CADVisualizer" />
         </DirectoryRef>
     </Fragment>
     <Fragment>
         <ComponentGroup Id="tonka_python">
             <ComponentGroupRef Id="chipfit_display" />
+            <ComponentGroupRef Id="layout_json" />
             <ComponentGroupRef Id="TestBenchExecutor" />
           <ComponentGroupRef Id="spice_viewer" />
           <ComponentGroupRef Id="cam2gerber" />
@@ -27,6 +30,7 @@
           <ComponentGroupRef Id="runCentroidUlp" />
           <ComponentGroupRef Id="runEagleUlp" />
           <ComponentGroupRef Id="runDrc" />
+		  <ComponentGroupRef Id="CADVisualizer" />
         </ComponentGroup>
     </Fragment>
 </Wix>

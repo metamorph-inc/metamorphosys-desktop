@@ -1,60 +1,6 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -145,6 +91,37 @@ namespace ComponentAndArchitectureTeamTest
             testPath,
             "ComponentAuthoringTool.xme"
             );
+
+        // This is the path to the input multigate-test Eagle library, MOT-549:
+        public static readonly string multigateLbrPath = Path.Combine(
+            META.VersionInfo.MetaPath,
+            "models",
+            "ComponentsAndArchitectureTeam",
+            "ComponentAuthoringTool",
+            "eagle-lbr",
+            "multigate.lbr"
+            );
+
+        // This is the path to a known-good multigate-test result, MOT-549:
+        public static readonly string multigateKnownGoodResultPath = Path.Combine(
+            META.VersionInfo.MetaPath,
+            "models",
+            "ComponentsAndArchitectureTeam",
+            "ComponentAuthoringTool",
+            "eagle-lbr",
+            "goldenMultigateOutput.lbr"
+            );
+
+        // This is the path to a known-bad multigate-test result, with duplicate symbol names. MOT-549:
+        public static readonly string multigateKnownBadResultPath = Path.Combine(
+            META.VersionInfo.MetaPath,
+            "models",
+            "ComponentsAndArchitectureTeam",
+            "ComponentAuthoringTool",
+            "eagle-lbr",
+            "duplicatedSymbols.lbr"
+            );
+
         #endregion
 
         #region Fixture
@@ -231,7 +208,6 @@ namespace ComponentAndArchitectureTeamTest
                 CyPhyComponentAuthoring.Modules.CADModelImport testcam = new CyPhyComponentAuthoring.Modules.CADModelImport();
                 // these class variables need to be set to avoid NULL references
                 testcam.SetCurrentComp(testcomp);
-                testcam.CurrentProj = proj;
                 testcam.CurrentObj = testcomp.Impl as MgaFCO;
 
                 // call the module with a part file to skip the CREO steps
@@ -276,6 +252,84 @@ namespace ComponentAndArchitectureTeamTest
             });
         }
 
+        /// <summary>
+        /// Checks that CAT's "Add Eagle Schematic" with a component having multiple gates won't
+        /// create a back-end "ecad.lbr" file containing duplicate symbols.
+        /// 
+        /// See also MOT-549: EAGLE CAT module doesn't correctly handle multi-gate devices
+        /// </summary>
+
+        [Fact]
+        public void TestAddMultiGateComponent()
+        {
+            string TestName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+            string path_Test = Path.Combine(testcreatepath, TestName);
+            string path_Mga = Path.Combine(path_Test, TestName + ".mga");
+
+            // delete any previous test results
+            if (Directory.Exists(path_Test))
+            {
+                Directory.Delete(path_Test, true);
+            }
+
+            // create a new blank project
+            MgaProject proj = new MgaProject();
+            proj.Create("MGA=" + path_Mga, "CyPhyML");
+
+            // these are the actual steps of the test
+            proj.PerformInTransaction(delegate
+            {
+                // create the environment for the Component authoring class
+                CyPhy.RootFolder rf = CyPhyClasses.RootFolder.GetRootFolder(proj);
+                CyPhy.Components components = CyPhyClasses.Components.Create(rf);
+                CyPhy.Component testcomp = CyPhyClasses.Component.Create(components);
+
+                // new instance of the class to test
+                CyPhyComponentAuthoring.Modules.EDAModelImport CATModule = new CyPhyComponentAuthoring.Modules.EDAModelImport();
+
+                //// these class variables need to be set to avoid NULL references
+                CATModule.SetCurrentComp(testcomp);
+                CATModule.CurrentObj = testcomp.Impl as MgaFCO;
+
+                // call the primary function directly
+                CATModule.ImportSelectedEagleDevice( "\\LM139_COMPARATOR\\", multigateLbrPath );
+
+                // verify results
+                // 1. Ensure the ecad.lbr file was generated in the back-end folder correctly.
+                string ecadAbsolutePath = Path.Combine(testcomp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "Schematic", "ecad.lbr");
+                Assert.True(File.Exists(ecadAbsolutePath),
+                    String.Format("Could not find the source file for the created resource, got {0}", ecadAbsolutePath));
+                Trace.TraceInformation("An ecad.lbr file was generated in the back-end folder, at:\n{0}", ecadAbsolutePath);
+                
+                // 2. Checking our test environment; verify that VerboseFileCompare() can detect unmatched test files.
+                var resultString = VerboseFileCompare(multigateKnownGoodResultPath, multigateKnownBadResultPath);
+                Assert.False(resultString == "",
+                    String.Format("VerboseFileCompare() didn't detect any differences between {0} and {1}.\n",
+                    multigateKnownGoodResultPath,
+                    multigateKnownBadResultPath)
+                    );
+
+                // 3. Checking our test environment; verify that VerboseFileCompare() reports the expected difference between test files.
+                Assert.True( resultString.Contains("14_PIN_COMPARATOR"),
+                    String.Format("VerboseFileCompare() reported a different difference between {0} and {1} than expected.\n",
+                    multigateKnownGoodResultPath,
+                    multigateKnownBadResultPath)
+                    );
+
+                // 4. Verify the generated ecad.lbr file correctly matches a good one.
+                resultString = VerboseFileCompare(multigateKnownGoodResultPath, ecadAbsolutePath);
+                Assert.True(resultString == "",
+                    String.Format("The generated ecad.lbr file at {0} didn't match the known-good result at {1}.\n{2}",
+                    ecadAbsolutePath,
+                    multigateKnownGoodResultPath,
+                    resultString)
+                    );
+                Trace.TraceInformation("The generated ecad.lbr file matched OK the expected result at:\n{0}", multigateKnownGoodResultPath);
+            });
+            proj.Save();
+            proj.Close();
+        }
+
         [Fact]
         public void TestAddCustomIconTool()
         {
@@ -306,7 +360,6 @@ namespace ComponentAndArchitectureTeamTest
 
                 //// these class variables need to be set to avoid NULL references
                 CATModule.SetCurrentComp(testcomp);
-                CATModule.CurrentProj = proj;
                 CATModule.CurrentObj = testcomp.Impl as MgaFCO;
 
                 // call the primary function directly
@@ -363,8 +416,7 @@ namespace ComponentAndArchitectureTeamTest
                 // new instance of the class to test
                 var CATModule = new CyPhyComponentAuthoring.Modules.AddDocumentation()
                 {
-                    CurrentObj = testcomp.Impl as MgaFCO,
-                    CurrentProj = proj
+                    CurrentObj = testcomp.Impl as MgaFCO
                 };
                 CATModule.SetCurrentComp(testcomp);
 
@@ -425,6 +477,7 @@ namespace ComponentAndArchitectureTeamTest
                 component.Name = nameTest;
 
                 var catModule = new CyPhyComponentAuthoring.Modules.SpiceModelImport();
+                catModule.SetCurrentComp(component);
 
                 catModule.ImportSpiceModel(component, fullSpiceFileName);
 
@@ -693,7 +746,6 @@ namespace ComponentAndArchitectureTeamTest
 
                 //// these class variables need to be set to avoid NULL references
                 CATModule.SetCurrentComp(testcomp);
-                CATModule.CurrentProj = proj;
                 CATModule.CurrentObj = testcomp.Impl as MgaFCO;
 
                 // call the primary function directly
@@ -748,7 +800,6 @@ namespace ComponentAndArchitectureTeamTest
                 CyPhyComponentAuthoring.Modules.CADModelImport importcam = new CyPhyComponentAuthoring.Modules.CADModelImport();
                 // these class variables need to be set to avoid NULL references
                 importcam.SetCurrentComp(testcomp);
-                importcam.CurrentProj = proj;
                 importcam.CurrentObj = testcomp.Impl as MgaFCO;
 
                 // import the CAD file
@@ -762,7 +813,6 @@ namespace ComponentAndArchitectureTeamTest
                 CyPhyComponentAuthoring.Modules.CADFileRename renamecam = new CyPhyComponentAuthoring.Modules.CADFileRename();
                 // these class variables need to be set to avoid NULL references
                 renamecam.SetCurrentComp(testcomp);
-                renamecam.CurrentProj = proj;
                 renamecam.CurrentObj = testcomp.Impl as MgaFCO;
 
                 // call the module with a part file and the new file name
@@ -878,7 +928,7 @@ namespace ComponentAndArchitectureTeamTest
                 // Check that the CyPhy SystemC model has 13 ports.
                 Assert.Equal(13, newSystemCModel.Children.SystemCPortCollection.Count());
 
-                portData_s[] expectedPortData = 
+                portData_s[] expectedPortData =     
                 {
                     new portData_s( "le", SystemCAttributesClass.Directionality_enum.@in, SystemCAttributesClass.DataType_enum.sc_logic, 1 ),
                     new portData_s( "oeBar", SystemCAttributesClass.Directionality_enum.@in, SystemCAttributesClass.DataType_enum.sc_logic, 1 ),
@@ -992,5 +1042,297 @@ namespace ComponentAndArchitectureTeamTest
                 Assert.True(FileCompare(sourceFilePath, destinationFilePath));
             });
         }
+                    
+        //--------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// VerboseFileCompare -- compares the contents of two text files for equality, ignoring newlines.
+        /// </summary>
+        /// <param name="file1"></param>
+        /// <param name="file2"></param>
+        /// <returns>A non-empty string if the files are different</returns>
+        private string VerboseFileCompare(string file1, string file2)
+        {
+            var rVal = "";
+            // Determine if the same file was referenced two times.
+            if (file1 == file2)
+            {
+                // Return a null string to indicate that the files are the same.
+                return rVal;
+            }
+
+            // Open the two files.
+            System.IO.StreamReader fs1 = new System.IO.StreamReader(file1);
+            System.IO.StreamReader fs2 = new System.IO.StreamReader(file2);
+
+            // Read and compare a line from each file until either a
+            // non-matching set of lines is found or until the end of
+            // file1 is reached.
+            int linecount = 0;
+            bool done = false;
+            while( !done )
+            {
+                linecount += 1;
+
+                // Read one line from each file.
+                var line1 = fs1.ReadLine();
+                var line2 = fs2.ReadLine();
+
+                if( (line1 == null) || (line2 == null) )
+                {
+                    if( line1 != line2 )
+                    {
+                        if( line1 == null )
+                        {
+                            rVal = string.Format( "File {0} ended at line {1}.", file1, linecount );
+                        }
+                        else
+                        {
+                            rVal = string.Format( "File {0} ended at line {1}.", file2, linecount );
+                        }
+                    }
+
+                    done = true;
+                }
+                else if( line1.CompareTo( line2 ) != 0 )
+                {
+                    rVal = string.Format( "At line {0}, file {1} =\n\"{2}\"\nBut, file {3} =\n\"{4}\".",
+                        linecount,
+                        file1,
+                        line1,
+                        file2,
+                        line2 );
+                    done = true;
+                }
+            }
+
+            // Close the files.
+            fs1.Close();
+            fs2.Close();
+
+            // Return the success of the comparison. "file1byte" is 
+            // equal to "file2byte" at this point only if the files are 
+            // the same.
+            return rVal;
+        }
+
+
+        #region OctoPart Importer Test
+
+        private void cleanComponent(string iconPath, string datasheetPath, CyPhy.Resource iconResource, CyPhy.Resource datasheetResource)
+        {
+            // Remove created artifacts
+            if (File.Exists(iconPath))
+            {
+                File.Delete(iconPath);
+            }
+            if (Directory.Exists(datasheetPath))
+            {
+                Directory.Delete(datasheetPath, true);
+            }
+            if (iconResource != null)
+            {
+                iconResource.Delete();
+            }
+            if (datasheetResource != null)
+            {
+                datasheetResource.Delete();
+            }
+        }
+        
+        [Fact]
+        public void OctopartImporter_TypicalCase()
+        {            
+            MgaProject proj = this.fixture.proj;
+
+            var component = "/@OctopartTest|kind=Components|relpos=0/LMV324IDR_-1100030P1|kind=Component|relpos=0";
+
+            // these are the actual steps of the test
+            proj.PerformInTransaction(delegate
+            {
+                var compfco = proj.ObjectByPath[component] as MgaFCO;
+                CyPhy.Component comp = proj.GetComponentsByName("LMV324IDR_-1100030P1").First();
+                string iconAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "Icon.png");
+                string datasheetAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "doc");
+                CyPhy.Resource iconResource = null;
+                CyPhy.Resource datasheetResource = null;
+
+                try
+                {
+                    // new instance of the class to test
+                    CyPhyComponentAuthoring.Modules.OctoPartDataImport CATModule = new CyPhyComponentAuthoring.Modules.OctoPartDataImport();
+
+                    //// these class variables need to be set to avoid NULL references
+                    CATModule.SetCurrentComp(comp);
+                    CATModule.CurrentObj = compfco;
+
+                    // call the primary function directly
+                    bool success = CATModule.GetOctoPartData(comp);
+
+                    // verify results
+                    Assert.True(success);
+
+                    // 1. ensure the icon file was copied to the back-end folder correctly
+                    iconResource = comp.Children.ResourceCollection.Where(p => p.Name == "Icon.png").First();
+                    Assert.True(File.Exists(iconAbsolutePath),
+                        String.Format("Could not find the source file for the created resource, got {0}", iconAbsolutePath));
+
+                    // 2. ensure the datasheet path was created correctly
+                    datasheetResource = comp.Children.ResourceCollection.Where(p => p.Name == "Datasheet.pdf").First();
+                    Assert.True(datasheetResource.Attributes.Path == "doc\\Datasheet.pdf",
+                                String.Format("{0} Resource should have had value {1}; instead found {2}", datasheetResource.Name, "doc\\Datasheet.pdf", datasheetResource.Attributes.Path)
+                                );
+
+                    // 3. Verify the registry entry exists
+                    Assert.True(comp.Children.PropertyCollection.Count() == 16, String.Format("OctoPart query did not create the expected number of CyPhy properties (16). Properties created: {0}",
+                                                                                              comp.Children.PropertyCollection.Count()));
+                }
+                finally
+                {
+                    cleanComponent(iconAbsolutePath, datasheetAbsolutePath, iconResource, datasheetResource);
+                }
+
+            });            
+        }
+
+
+        [Fact]
+        public void OctopartImporter_EmptyReturnCategory()
+        {
+            MgaProject proj = this.fixture.proj;
+
+            var component = "/@OctopartTest|kind=Components|relpos=0/IndexOutOfRange|kind=Component|relpos=0";
+
+            // these are the actual steps of the test
+            proj.PerformInTransaction(delegate
+            {
+                var compfco = proj.ObjectByPath[component] as MgaFCO;
+                CyPhy.Component comp = proj.GetComponentsByName("IndexOutOfRange").First();
+                string iconAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "Icon.png");
+                string datasheetAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "doc");
+                CyPhy.Resource iconResource = null;
+                CyPhy.Resource datasheetResource = null;
+
+                try
+                {
+                    // new instance of the class to test
+                    CyPhyComponentAuthoring.Modules.OctoPartDataImport CATModule = new CyPhyComponentAuthoring.Modules.OctoPartDataImport();
+
+                    //// these class variables need to be set to avoid NULL references
+                    CATModule.SetCurrentComp(comp);
+                    CATModule.CurrentObj = compfco;
+
+                    // call the primary function directly
+                    bool success = CATModule.GetOctoPartData(comp);
+
+                    // verify results
+                    Assert.True(success);
+
+                    // 1. insure the icon file was copied to the back-end folder correctly
+                    iconResource = comp.Children.ResourceCollection.Where(p => p.Name == "Icon.png").First();
+                    Assert.True(File.Exists(iconAbsolutePath),
+                        String.Format("Could not find the source file for the created resource, got {0}", iconAbsolutePath));
+
+                    // 2. insure the datasheet path was created correctly
+                    datasheetResource = comp.Children.ResourceCollection.Where(p => p.Name == "Datasheet.pdf").First();
+                    Assert.True(datasheetResource.Attributes.Path == "doc\\Datasheet.pdf",
+                                String.Format("{0} Resource should have had value {1}; instead found {2}", datasheetResource.Name, "doc\\Datasheet.pdf", datasheetResource.Attributes.Path)
+                                );
+
+                    // 3. Verify the registry entry exists
+                    Assert.True(comp.Children.PropertyCollection.Count() == 7, String.Format("OctoPart query did not create the expected number of CyPhy properties (7). Properties created: {0}",
+                                                                                              comp.Children.PropertyCollection.Count()));
+                }
+                finally
+                {
+                    cleanComponent(iconAbsolutePath, datasheetAbsolutePath, iconResource, datasheetResource);
+                }
+            });
+        }
+
+
+        [Fact]
+        public void OctopartImporter_InvalidMPN()
+        {
+            MgaProject proj = this.fixture.proj;
+
+            var component = "/@OctopartTest|kind=Components|relpos=0/ValueCannotBeNull|kind=Component|relpos=0";
+
+            // these are the actual steps of the test
+            proj.PerformInTransaction(delegate
+            {
+                var compfco = proj.ObjectByPath[component] as MgaFCO;
+                CyPhy.Component comp = proj.GetComponentsByName("ValueCannotBeNull").First();
+
+                // new instance of the class to test
+                CyPhyComponentAuthoring.Modules.OctoPartDataImport CATModule = new CyPhyComponentAuthoring.Modules.OctoPartDataImport();
+
+                //// these class variables need to be set to avoid NULL references
+                CATModule.SetCurrentComp(comp);
+                CATModule.CurrentObj = compfco;
+
+                // call the primary function directly
+                bool success = CATModule.GetOctoPartData(comp);
+
+                Assert.False(success);
+
+            });
+        }
+
+
+        [Fact]
+        public void Octopart_Importer_NoEDAModelButMPNProperty()
+        {
+            MgaProject proj = this.fixture.proj;
+
+            var component = "/@OctopartTest|kind=Components|relpos=0/MPN_only|kind=Component|relpos=0";
+
+            // these are the actual steps of the test
+            proj.PerformInTransaction(delegate
+            {
+                var compfco = proj.ObjectByPath[component] as MgaFCO;
+                CyPhy.Component comp = proj.GetComponentsByName("MPN_only").First();
+                string iconAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "Icon.png");
+                string datasheetAbsolutePath = Path.Combine(comp.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE), "doc");
+                CyPhy.Resource iconResource = null;
+                CyPhy.Resource datasheetResource = null;
+
+                try
+                {
+                    // new instance of the class to test
+                    CyPhyComponentAuthoring.Modules.OctoPartDataImport CATModule = new CyPhyComponentAuthoring.Modules.OctoPartDataImport();
+
+                    //// these class variables need to be set to avoid NULL references
+                    CATModule.SetCurrentComp(comp);
+                    CATModule.CurrentObj = compfco;
+
+                    // call the primary function directly
+                    bool success = CATModule.GetOctoPartData(comp);
+
+                    // verify results
+                    Assert.True(success);
+
+                    // 1. insure the icon file was copied to the back-end folder correctly
+                    iconResource = comp.Children.ResourceCollection.Where(p => p.Name == "Icon.png").First();
+                    Assert.True(File.Exists(iconAbsolutePath),
+                        String.Format("Could not find the source file for the created resource, got {0}", iconAbsolutePath));
+
+                    // 2. insure the datasheet path was created correctly
+                    datasheetResource = comp.Children.ResourceCollection.Where(p => p.Name == "Datasheet.pdf").First();
+                    Assert.True(datasheetResource.Attributes.Path == "doc\\Datasheet.pdf",
+                                String.Format("{0} Resource should have had value {1}; instead found {2}", datasheetResource.Name, "doc\\Datasheet.pdf", datasheetResource.Attributes.Path)
+                                );
+
+                    // 3. Verify the registry entry exists
+                    Assert.True(comp.Children.PropertyCollection.Count() == 16, String.Format("OctoPart query did not create the expected number of CyPhy properties (16). Properties created: {0}",
+                                                                                              comp.Children.PropertyCollection.Count()));
+                }
+                finally
+                {
+                    cleanComponent(iconAbsolutePath, datasheetAbsolutePath, iconResource, datasheetResource);
+                }
+            });
+        }
+        
+        #endregion
     }
 }

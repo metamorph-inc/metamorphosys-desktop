@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{16E20167-3434-485B-AB6C-D61C8BDAFE92}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ConnectorUnrollTest</RootNamespace>
     <AssemblyName>ConnectorUnrollTest</AssemblyName>
@@ -29,6 +29,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GME, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
@@ -61,6 +65,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="xunit">
       <HintPath>..\..\..\META\3rdParty\xunit-1.9.1\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.console.clr4.x86">
+      <HintPath>..\..\..\META\3rdParty\xunit-1.9.1\xunit.console.clr4.x86.exe</HintPath>
     </Reference>
     <Reference Include="xunit.runner.utility">
       <HintPath>..\..\..\META\3rdParty\xunit-1.9.1\xunit.runner.utility.dll</HintPath>

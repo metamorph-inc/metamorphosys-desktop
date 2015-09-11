@@ -14,6 +14,10 @@ using System.Xml.Serialization;
 using GME.MGA;
 using SpiceLib;
 using PinMatcher;
+using UnitsManager;
+
+// using domain specific interfaces
+using CyPhyML = ISIS.GME.Dsml.CyPhyML.Interfaces;
 
 namespace CyPhyComponentAuthoring.Modules
 {
@@ -689,7 +693,17 @@ namespace CyPhyComponentAuthoring.Modules
                 schematicProperty.Name = spiceParameterName;
                 string valueWithOptionalNgspiceScaleFactors = ci.parameters[spiceParameterName];
                 // See MOT-398 and section 2.1.3 of the Ngspice User's Manual Version 26plus.
-                schematicProperty.Attributes.Value = GetNumericStringFromNgspiceNumberField( valueWithOptionalNgspiceScaleFactors );
+                string unitString = "";
+                CyPhyML.unit cyPhyMLUnit = null;
+                schematicProperty.Attributes.Value = GetNumericStringFromNgspiceNumberField( valueWithOptionalNgspiceScaleFactors,
+                    out unitString);
+                CyPhyML.RootFolder rootFolder = CyPhyClasses.RootFolder.GetRootFolder((MgaProject)this.CurrentProj); 
+                    
+                // Get the units reference from the units string
+                //cyPhyMLUnit = getCyPhyMLUnitFromString(unitString);
+                cyPhyMLUnit = UnitsMap.getCyPhyMLUnitFromString(unitString, rootFolder);
+                // Set the units reference in the property.
+                schematicProperty.Referred.unit = cyPhyMLUnit;
 
                 try
                 {
@@ -726,6 +740,7 @@ namespace CyPhyComponentAuthoring.Modules
         /// Converts an Ngspice numeric field to a number string, handling Ngspice scale factors.
         /// </summary>
         /// <param name="valueWithOptionalNgspiceScaleFactors">The string to be converted, possibly including a scale factor suffix.</param>
+        /// <param name="units">Units symbol from the CIR file.</param>
         /// <returns>An equivalent numeric string without scale factors.</returns>
         /// <seealso>MOT-398 and section 2.1.3 of the Ngspice User's Manual.</seealso>
         /// suffix value
@@ -737,12 +752,13 @@ namespace CyPhyComponentAuthoring.Modules
         /// n       1e-9
         /// p       1e-12
         /// f       1e-15
-        private string GetNumericStringFromNgspiceNumberField(string valueWithOptionalNgspiceScaleFactors)
+        private string GetNumericStringFromNgspiceNumberField(string valueWithOptionalNgspiceScaleFactors, out string units)
         {
             string rVal = valueWithOptionalNgspiceScaleFactors;
             string trimmed = valueWithOptionalNgspiceScaleFactors.Trim().ToLower();
             string noAlphaSuffix = trimmed.TrimEnd( "abcdefghijklmnopqrstuvwxyz".ToCharArray() );
             string suffix = trimmed.Substring( noAlphaSuffix.Length );
+            int unitsIndex = 0;
 
             double unscaledValue;
 
@@ -759,36 +775,94 @@ namespace CyPhyComponentAuthoring.Modules
                     {
                         case 'g':
                             scaleFactor = 1e9;
+                            unitsIndex = 1;
                             break;
                         case 'k':
                             scaleFactor = 1e3;
+                            unitsIndex = 1;
                             break;
                         case 'u':
                             scaleFactor = 1e-6;
                             break;
                         case 'n':
                             scaleFactor = 1e-9;
+                            unitsIndex = 1;
                             break;
                         case 'p':
                             scaleFactor = 1e-12;
+                            unitsIndex = 1;
                             break;
                         case 'f':
                             scaleFactor = 1e-15;
+                            unitsIndex = 1;
                             break;
                         case 'm':
                             scaleFactor = 1e-3;
+                            unitsIndex = 1;
                             if( suffix.Length >= 3 )
                             {
                                 if( ('e' == suffix[ 1 ]) && ('g' == suffix[ 2 ]) ){
                                     scaleFactor = 1e6;
+                                    unitsIndex = 3;
                                 }
                             }
                             break;
                     }
                     rVal = (unscaledValue * scaleFactor).ToString("G8");
                 }
-
             }
+
+            units = "";
+
+            if (suffix.Length >= unitsIndex + 1)
+            {
+                string spiceUnits = suffix.Substring(unitsIndex).ToUpper();
+                switch (spiceUnits)
+                {
+                    case "A":
+                    case "AMP":
+                    case "AMPS":
+                    case "AMPERE":
+                        units = "Ampere";
+                        break;
+
+                    case "V":
+                    case "VOLT":
+                    case "VOLTS":
+                        units = "Volt";
+                        break;
+
+                    case "F":
+                    case "FARAD":
+                    case "FARADS":
+                        units = "Farad";
+                        break;
+
+                    case "H":
+                    case "HENRY":
+                    case "HENRIES":
+                        units = "Henry";
+                        break;
+
+                    case "Ω":
+                    case "OHM":
+                    case "OHMS":
+                        units = "Ohm";
+                        break;
+
+                    case "HZ":
+                    case "HERTZ":
+                        units = "Hertz";
+                        break;
+
+                    case "W":
+                    case "WATT":
+                    case "WATTS":
+                        units = "Watt";
+                        break;
+                }
+            }
+
             return rVal;
         }
 

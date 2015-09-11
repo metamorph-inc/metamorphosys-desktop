@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include "stdafx.h"
 #include <AssemblyCreationViaInputFile.h>
 
@@ -165,7 +110,7 @@ void CreateAssemblyViaInputFile( const isis::ProgramInputArguments              
 						 << std::endl << in_XMLInputFile_PathAndFileName 
 						 << ", did not define any assemblies nor did it define unassembled parts/sub-assemblies.  "
 						 << std::endl << "The input xml file must specify assemblies and/or unassembled parts/sub-assemblies."; 
-						throw isis::application_exception(errorString.str().c_str());
+						throw isis::application_exception(errorString.str());
 			}
 			logcat_fileonly.infoStream() << "************************** End Assembly Creation *****************************";
 		}
@@ -258,7 +203,7 @@ void CreateAssemblyViaInputFile( const isis::ProgramInputArguments              
 				std::stringstream errorString;
 				errorString << "One and only one assembly allowed per analysis run (FEA, Ballistic, Blast, or  CFD).  The XML file defines " <<
 				out_CADComponentAssemblies.topLevelAssemblies.size() << std::string(" assemblies.");
-					throw isis::application_exception(errorString.str().c_str());
+					throw isis::application_exception(errorString.str());
 			}
 
 			if ( out_CADComponentAssemblies.unassembledComponents.size() != 0 )
@@ -266,7 +211,7 @@ void CreateAssemblyViaInputFile( const isis::ProgramInputArguments              
 				std::stringstream errorString;
 				errorString << "Unassembled components were found.  Cannot perform analysis (FEA, Ballistic, Blast, or  CFD) on partial assemblies.  Number of unassembled components: " <<
 				out_CADComponentAssemblies.unassembledComponents.size();
-					throw isis::application_exception(errorString.str().c_str());
+					throw isis::application_exception(errorString.str());
 			}
 		}
 
@@ -1224,7 +1169,7 @@ void CreateAssemblyViaInputFile( const isis::ProgramInputArguments              
 				errorString <<
 						"At least one assembly would not regenerate.  See the log file to locate the assembly/part that would not regenerate."
 						<< std::endl << "Log File: " <<  in_LogFile_PathAndFileName;
-				throw isis::application_exception(errorString.str().c_str());
+				throw isis::application_exception(errorString.str());
 		}
 
 

@@ -15,6 +15,8 @@
 #include <SFCHelper.hpp>
 
 #include <boost/lexical_cast.hpp>
+#define BOOST_PYTHON_STATIC_LIB 1
+#define BOOST_PYTHON_NO_LIB
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>
 

@@ -83,7 +83,7 @@ namespace DesignExporterUnitTests
                 Assert.Equal(ExpectedFiles.Count(), zip.Count);
                 foreach (var entry in ExpectedFiles)
                 {
-                    Assert.Equal(1, zip.Count(ze => ze.FileName.Equals(entry)));
+                    Assert.True(1 == zip.Count(ze => ze.FileName.Equals(entry)), "Missing " + entry);
                 }
             }
         }
@@ -107,7 +107,7 @@ namespace DesignExporterUnitTests
             VerifyZipContents(pathADP, 
                               new List<String> { 
                                   "OneArtifact.adm", 
-                                  "testObject.txt" 
+                                  "2/testObject.txt" 
                               });
         }
 
@@ -119,10 +119,10 @@ namespace DesignExporterUnitTests
             VerifyZipContents(pathADP,
                               new List<String> { 
                                   "NestedFolders.adm", 
-                                  "testObject.txt",
-                                  "dir1/testObject.txt",
-                                  "dir1/dir1a/testObject.txt",
-                                  "dir2/testObject.txt"
+                                  "3/testObject.txt",
+                                  "3/dir1/testObject.txt",
+                                  "3/dir1/dir1a/testObject.txt",
+                                  "3/dir2/testObject.txt"
                               });
         }
 

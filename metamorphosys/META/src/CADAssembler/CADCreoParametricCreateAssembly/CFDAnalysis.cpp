@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include "stdafx.h"
 #include <CFDAnalysis.h>
 #include <isis_ptc_toolkit_functions.h>
@@ -136,7 +81,7 @@ namespace isis
 				if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 				std::stringstream errorString;
 				errorString <<	"Function CreateXMLFile_ComputedValues_CFD, was invoked but in_CADAssemblies does not contain any CFD computations.";
-				throw isis::application_exception(errorString.str().c_str());
+				throw isis::application_exception(errorString.str());
 				//logcat.infoStream() << "Point 11-4";
 			}
 
@@ -153,28 +98,28 @@ namespace isis
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_CFD threw a udm_exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( isis::application_exception& ex )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_CFD threw an application_exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( std::exception& ex )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_CFD threw an exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( ... )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_CFD, threw an unknown excpetion";
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 
 		}
 			
@@ -253,7 +198,7 @@ namespace isis
 			errorString <<  "Function CFD_Driver, could not find "
 				<< "file  " << m_hydrostaticsFile_PathAndFileName << ".  "
 				<< "For CFD analysis, this file must exist.";
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		
 		m_logcat_consoleandfile.infoStream() << "";
@@ -358,7 +303,7 @@ namespace isis
 					"   in_BoundingBox_Length_xAxis: "	<<   boundingBox_Length_xAxis << std::endl <<
 					"   in_Assembly_Mass: "				<<   m_Assembly_Mass << std::endl <<
 					"   in_Fluid_Density: "				<<   m_Fluid_Density; 
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 
 		double boundingBoxVolume = boundingBox_Height_zAxis * boundingBox_Width_yAxis * boundingBox_Length_xAxis;
@@ -494,7 +439,7 @@ namespace isis
 		if (! ::boost::filesystem::exists(m_ProeIsisExtensionsDir) ) {
 			errorString <<  "directory not found "
 				<< "[" << m_ProeIsisExtensionsDir << "]";
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 	}
 
@@ -524,7 +469,7 @@ namespace isis
 			errorString 
 				<< " could not copy hydrostatic templace, "
 				<< "cause = " << ec.message();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 
 		//////////////////////////////////////////////
@@ -535,7 +480,7 @@ namespace isis
 			errorString <<  "Function CFD_Driver, for a CFD analysis, "
 				<< "there must be one and only one CFD analysis defined.  "
 				<< "There are " << m_TopLevelAssemblyData.analysesCAD.analysesCFD.size() << " defined.";
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 
 		///////////////////////////////////////////////////////////////
@@ -581,7 +526,7 @@ namespace isis
 			errorString <<  "Function CFD_Driver retrieved zero mass for "
 				<< "ComponentInstanceID: " << m_TopLevelAssemblyData.assemblyComponentID << ". "
 				<< "Model name: " << m_CADComponentData_map[m_TopLevelAssemblyData.assemblyComponentID].name;
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		m_Assembly_Mass = mass_prop.mass;
 

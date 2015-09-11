@@ -1,7 +1,7 @@
 # .\_systemc.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:acabe3c8394de3f41da11a8fb34cb58c8e1b3a5a
-# Generated 2014-11-18 14:25:23.924000 by PyXB version 1.2.3
+# Generated 2015-08-13 10:01:46.173000 by PyXB version 1.2.3
 # Namespace systemc [xmlns:systemc]
 
 import pyxb
@@ -13,7 +13,7 @@ import pyxb.utils.domutils
 import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:0613818f-6f61-11e4-85c1-542696dd94ef')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:3717d230-41cc-11e5-ac39-7429af7917c0')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -22,8 +22,8 @@ if pyxb.__version__ != _PyXBVersion:
     raise pyxb.PyXBVersionError(_PyXBVersion)
 
 # Import bindings for namespaces imported into schema
-import avm as _ImportedBinding__avm
 import pyxb.binding.datatypes
+import avm as _ImportedBinding__avm
 
 # NOTE: All namespace declarations are reserved within the binding
 Namespace = pyxb.namespace.NamespaceForURI(u'systemc', create_if_missing=True)
@@ -158,6 +158,8 @@ class SystemCModel_ (_ImportedBinding__avm.DomainModel_):
     # Attribute YPosition inherited from {avm}DomainModel
     
     # Attribute Name inherited from {avm}DomainModel
+    
+    # Attribute ID inherited from {avm}DomainModel
     
     # Attribute ModuleName uses Python identifier ModuleName
     __ModuleName = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ModuleName'), 'ModuleName', '__systemc_SystemCModel__ModuleName', pyxb.binding.datatypes.string, required=True)

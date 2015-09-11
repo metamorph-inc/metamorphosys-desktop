@@ -8,6 +8,9 @@
   <xsd:element ecore:ignore="true" name="ExactLayoutConstraint" type="eda:ExactLayoutConstraint"/>
   <xsd:element ecore:ignore="true" name="RangeLayoutConstraint" type="eda:RangeLayoutConstraint"/>
   <xsd:element ecore:ignore="true" name="RelativeLayoutConstraint" type="eda:RelativeLayoutConstraint"/>
+  <xsd:element ecore:ignore="true" name="RelativeRangeLayoutConstraint" type="eda:RelativeRangeLayoutConstraint"/>
+  <xsd:element ecore:ignore="true" name="GlobalLayoutConstraintException" type="eda:GlobalLayoutConstraintException"/>
+  <xsd:element ecore:ignore="true" name="CircuitLayout" type="eda:CircuitLayout"/>
   <xsd:complexType name="EDAModel">
     <xsd:complexContent>
       <xsd:extension base="schematic:SchematicModel">
@@ -37,17 +40,27 @@
       <xsd:extension base="avm:ContainerFeature">
         <xsd:attribute ecore:name="XPosition" name="XPosition" type="xsd:unsignedInt"/>
         <xsd:attribute ecore:name="YPosition" name="YPosition" type="xsd:unsignedInt"/>
+        <xsd:attribute ecore:name="Notes" name="Notes" type="xsd:string"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
   <xsd:complexType name="ExactLayoutConstraint">
     <xsd:complexContent>
       <xsd:extension base="eda:PcbLayoutConstraint">
-        <xsd:attribute ecore:name="X" name="X" type="xsd:double" use="required"/>
-        <xsd:attribute ecore:name="Y" name="Y" type="xsd:double" use="required"/>
-        <xsd:attribute default="Top" ecore:name="Layer" ecore:unsettable="false" name="Layer" type="eda:LayerEnum"/>
+        <xsd:attribute ecore:name="X" name="X" type="xsd:double"/>
+        <xsd:attribute ecore:name="Y" name="Y" type="xsd:double"/>
+        <xsd:attribute ecore:name="Layer" ecore:unsettable="false" name="Layer" type="eda:LayerEnum"/>
         <xsd:attribute ecore:name="Rotation" ecore:unsettable="false" name="Rotation" type="eda:RotationEnum"/>
-        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget" type="xsd:anyURI" use="required"/>
+        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:keys="ID" ecore:name="ContainerConstraintTarget" ecore:reference="avm:Container" name="ContainerConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -59,11 +72,17 @@
         <xsd:attribute ecore:name="YRangeMin" name="YRangeMin" type="xsd:double"/>
         <xsd:attribute ecore:name="YRangeMax" name="YRangeMax" type="xsd:double"/>
         <xsd:attribute default="Either" ecore:name="LayerRange" ecore:unsettable="false" name="LayerRange" type="eda:LayerRangeEnum"/>
-        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget" use="required">
+        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget">
           <xsd:simpleType>
             <xsd:list itemType="xsd:anyURI"/>
           </xsd:simpleType>
         </xsd:attribute>
+        <xsd:attribute ecore:keys="ID" ecore:name="ContainerConstraintTarget" ecore:reference="avm:Container" name="ContainerConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:name="Type" ecore:unsettable="false" name="Type" type="eda:RangeConstraintTypeEnum"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -72,12 +91,19 @@
       <xsd:extension base="eda:PcbLayoutConstraint">
         <xsd:attribute ecore:name="XOffset" name="XOffset" type="xsd:double"/>
         <xsd:attribute ecore:name="YOffset" name="YOffset" type="xsd:double"/>
-        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget" use="required">
+        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget">
           <xsd:simpleType>
             <xsd:list itemType="xsd:anyURI"/>
           </xsd:simpleType>
         </xsd:attribute>
         <xsd:attribute ecore:keys="ID" ecore:name="Origin" ecore:reference="avm:ComponentInstance" name="Origin" type="xsd:anyURI" use="required"/>
+        <xsd:attribute ecore:keys="ID" ecore:name="ContainerConstraintTarget" ecore:reference="avm:Container" name="ContainerConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:name="RelativeLayer" ecore:unsettable="false" name="RelativeLayer" type="eda:RelativeLayerEnum"/>
+        <xsd:attribute ecore:name="RelativeRotation" ecore:unsettable="false" name="RelativeRotation" type="eda:RelativeRotationEnum"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -102,4 +128,76 @@
       <xsd:enumeration ecore:value="1" value="Bottom"/>
     </xsd:restriction>
   </xsd:simpleType>
+  <xsd:simpleType name="RelativeLayerEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Same"/>
+      <xsd:enumeration value="Opposite"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RangeConstraintTypeEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Inclusion"/>
+      <xsd:enumeration value="Exclusion"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="RelativeRangeLayoutConstraint">
+    <xsd:complexContent>
+      <xsd:extension base="eda:PcbLayoutConstraint">
+        <xsd:attribute ecore:name="XRelativeRangeMin" name="XRelativeRangeMin" type="xsd:double"/>
+        <xsd:attribute ecore:name="XRelativeRangeMax" name="XRelativeRangeMax" type="xsd:double"/>
+        <xsd:attribute ecore:name="YRelativeRangeMin" name="YRelativeRangeMin" type="xsd:double"/>
+        <xsd:attribute ecore:name="YRelativeRangeMax" name="YRelativeRangeMax" type="xsd:double"/>
+        <xsd:attribute ecore:name="RelativeLayer" ecore:unsettable="false" name="RelativeLayer" type="eda:RelativeLayerEnum"/>
+        <xsd:attribute ecore:keys="ID" ecore:name="ContainerConstraintTarget" ecore:reference="avm:Container" name="ContainerConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:keys="ID" ecore:name="Origin" ecore:reference="avm:ComponentInstance" name="Origin" type="xsd:anyURI" use="required"/>
+        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="GlobalLayoutConstraintException">
+    <xsd:complexContent>
+      <xsd:extension base="eda:PcbLayoutConstraint">
+        <xsd:attribute ecore:keys="ID" ecore:name="ConstraintTarget" ecore:reference="avm:ComponentInstance" name="ConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:keys="ID" ecore:name="ContainerConstraintTarget" ecore:reference="avm:Container" name="ContainerConstraintTarget">
+          <xsd:simpleType>
+            <xsd:list itemType="xsd:anyURI"/>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute ecore:name="Constraint" ecore:unsettable="false" name="Constraint" type="eda:GlobalConstraintTypeEnum" use="required"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:simpleType name="GlobalConstraintTypeEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration ecore:value="1" value="BoardEdgeSpacing"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="RelativeRotationEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="r0"/>
+      <xsd:enumeration value="r90"/>
+      <xsd:enumeration value="r180"/>
+      <xsd:enumeration value="r270"/>
+      <xsd:enumeration value="NoRestriction"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CircuitLayout">
+    <xsd:complexContent>
+      <xsd:extension base="avm:DomainModel">
+        <xsd:attribute ecore:name="BoundingBoxes" name="BoundingBoxes" type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
 </xsd:schema>

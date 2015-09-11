@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,17 +11,23 @@ using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Runtime.Serialization;
+using System.Globalization;
 
 namespace MfgBom.Bom
 {
     public partial class Part
     {
-        public bool QueryOctopartData(String apikey = "22becbab")
+        public bool QueryOctopartData(String apikey = "22becbab",
+                                      bool exact_only = false,
+                                      List<string> includes = null,
+                                      bool grab_first = true)
         {
             if (String.IsNullOrWhiteSpace(octopart_mpn))
             {
                 return false;
             }
+
+            includes = includes ?? new List<string>(){"specs", "descriptions"};
 
             var querier = new OctoPart.Querier(apikey);
             String octopart_result = null;
@@ -56,7 +38,7 @@ namespace MfgBom.Bom
             {
                 try
                 {
-                    octopart_result = querier.QueryMpn(octopart_mpn);
+                    octopart_result = querier.QueryMpn(octopart_mpn, exact_only, includes, grab_first);
                 }
                 catch (OctoPart.OctopartQueryRateException ex)
                 {
@@ -70,17 +52,229 @@ namespace MfgBom.Bom
                     }
                 }
             }
-            
-            this.manufacturer = GetManufacturer(octopart_result);
-            this.manufacturerPartNumber = GetManufacturerPartNumber(octopart_result);
-            this.description = GetDescription(octopart_result);
-            this.package = GetPackage(octopart_result);
-            this.notes = GetNotes(octopart_result);
-            this.SellerMapStructure = GetSellerMapStructure(octopart_result);
+
+            if (string.Compare(octopart_result, "toomany") != 0 && 
+                string.Compare(octopart_result, "none") != 0)
+            {
+                // Default properties returned by OctoPart query
+                this.valid_mpn = true;
+                this.too_broad_mpn = false;
+                this.manufacturer = GetManufacturer(octopart_result);
+                this.manufacturerPartNumber = GetManufacturerPartNumber(octopart_result);
+                this.description = GetDescription(octopart_result);
+                this.package = GetPackage(octopart_result);
+                this.notes = GetNotes(octopart_result);
+                this.SellerMapStructure = GetSellerMapStructure(octopart_result);
+                this.TechnicalSpecifications = GetTechnicalSpecifications(octopart_result);
+                
+                // Non-default returned properties (for custom "includes" passed to Query function
+                if (includes.Contains("category_uids"))
+                {
+                    this.categoryuid = GetCategoryUID(octopart_result);
+                }
+                if (includes.Contains("imagesets"))
+                {
+                    this.icon = GetIcon(octopart_result);
+                }
+                if (includes.Contains("datasheets"))
+                {
+                    this.datasheet = GetDatasheet(octopart_result);
+                }
+            }
+            else
+            {
+                if (string.Compare(octopart_result, "toomany") == 0)
+                {
+                    this.valid_mpn = true;
+                    this.too_broad_mpn = true;
+                }
+                else if (string.Compare(octopart_result, "none") == 0)
+                {
+                    this.valid_mpn = false;
+                    this.too_broad_mpn = false;
+                }
+
+                return false;
+            }
 
             return true;
         }
 
+        public bool QueryCategory(string uid, String apikey = "22becbab")
+        {
+            if (String.IsNullOrWhiteSpace(uid))
+            {
+                return false;
+            }
+
+            var querier = new OctoPart.Querier(apikey);
+            String octopart_result = null;
+            Random rnd = new Random();
+
+            var retries = 5;
+            while (octopart_result == null)
+            {
+                try
+                {
+                    octopart_result = querier.QueryCategory(uid);
+                }
+                catch (OctoPart.OctopartQueryRateException ex)
+                {
+                    if (retries-- > 0)
+                    {
+                        System.Threading.Thread.Sleep(rnd.Next(5000, 10000));
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+            }
+
+            if (octopart_result == null)
+            {
+                return false;
+            }
+            else
+            {
+                this.Classification = GetClassification(octopart_result);
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Gets the unique category identifier the JSON result string.
+        /// </summary>
+        /// <param name="OctopartResult"></param>
+        /// <returns></returns>
+        public static String GetCategoryUID(String OctopartResult)
+        {
+            String rVal = null;
+            dynamic dynJson = JsonConvert.DeserializeObject(OctopartResult);
+            if ((dynJson != null) && (dynJson.category_uids != null))
+            {
+                if (!(dynJson.category_uids.Count == 0))
+                {
+                    rVal = dynJson.category_uids[0];
+                }
+            }
+            return rVal;
+        }
+
+
+        /// <summary>
+        /// Gets and formats a component's classification. Excludes "ElectronicParts".
+        /// </summary>
+        /// <param name="semiconductors.powermanagement.dc_converters"></param>
+        /// <returns></returns>
+        public static String GetClassification(String OctopartResult)
+        {
+            String rVal = null;
+            List<String> subclasses = new List<String>();
+            int parenthesis_start_idx;
+            int parenthesis_end_idx;
+            string paren_substring;
+            dynamic dynJson = JsonConvert.DeserializeObject(OctopartResult);
+            if (dynJson != null)
+            {
+                // Get all parent ancestor categories, skipping top-level "Electronic Parts"
+                foreach (var ancestor in dynJson.ancestor_names)
+                {
+                    if (String.Compare(ancestor.Value, "Electronic Parts") == 0)
+                    {
+                        continue;
+                    }
+
+                    string subclass = ancestor.Value.ToLower();
+                    subclasses.Add(subclass);
+                }
+
+                // Parent category name
+                string name = dynJson.name.Value.ToLower();
+                subclasses.Add(name);
+
+                rVal = String.Join(".", subclasses);
+
+                parenthesis_start_idx = rVal.IndexOf("(");
+                parenthesis_end_idx = rVal.IndexOf(")");
+                if (parenthesis_start_idx != -1) {
+                    int string_chars = parenthesis_end_idx != -1 ? parenthesis_end_idx + 2 - parenthesis_start_idx : rVal.Length - parenthesis_start_idx;
+                    paren_substring = rVal.Substring(parenthesis_start_idx - 1, string_chars);
+                    rVal = rVal.Replace(paren_substring, "");
+                }
+
+                rVal = rVal.Replace(" - ", "_");
+                rVal = rVal.Replace("&gt", ">");
+                rVal = rVal.Replace(" > ", ".");
+                rVal = rVal.Replace("/", "-");
+                rVal = rVal.Replace(", and", "_");
+                rVal = rVal.Replace(", ", "_");
+                rVal = rVal.Replace(" ", "_");
+            }
+            return rVal;
+        }
+
+
+        /// <summary>
+        /// Gets the first URL to an image of a component from the JSON string.
+        /// </summary>
+        /// <param name="OctopartResult"></param>
+        /// <returns></returns>
+        public static String GetIcon(String OctopartResult)
+        {
+            string rVal = null;
+            string url;
+            dynamic dynJson = JsonConvert.DeserializeObject(OctopartResult);
+            if (dynJson != null) 
+            {
+                foreach (var imageset in dynJson.imagesets)
+                { 
+                    if (imageset.small_image.url != null)
+                    {
+                        url = imageset.small_image.url.Value;
+                        if (String.Compare(url.Substring(url.LastIndexOf(".") + 1), "jpg") == 0)
+                        {
+                            rVal = url;
+                            break;
+                        }
+                    }
+                }
+            }
+            return rVal;
+        }
+
+
+        /// <summary>
+        /// Gets the first URL to an image of a component from the JSON string.
+        /// </summary>
+        /// <param name="OctopartResult"></param>
+        /// <returns></returns>
+        public static String GetDatasheet(String OctopartResult)
+        {
+            string rVal = null;
+            string url;
+            dynamic dynJson = JsonConvert.DeserializeObject(OctopartResult);
+            if (dynJson != null)
+            {
+                foreach (var datasheet in dynJson.datasheets)
+                {
+                    if (datasheet.url != null)
+                    {
+                        url = datasheet.url.Value;
+                        if (String.Compare(url.Substring(url.LastIndexOf(".") + 1), "pdf") == 0)
+                        {
+                            rVal = url;
+                            break;
+                        }
+                    }
+                }
+            }
+            return rVal;
+        }
+
+        
         /// <summary>
         /// Gets the manufacturer's name from the JSON result string.
         /// </summary>
@@ -102,6 +296,7 @@ namespace MfgBom.Bom
             return rVal;
         }
 
+
         /// <summary>
         /// Gets the manufacturer's part number from the JSON result string.
         /// </summary>
@@ -122,6 +317,7 @@ namespace MfgBom.Bom
             }
             return rVal;
         }
+
 
         /// <summary>
         /// Returns the best part description from the JSON results string.
@@ -152,6 +348,14 @@ namespace MfgBom.Bom
                 // Create a mapping of sources to descriptions.
                 foreach (var item in dynJson.descriptions)
                 {
+                    // Verify that it has sources listed
+                    bool hasSources = item.attribution.sources.HasValues;
+                    if (!hasSources)
+                    {
+                        Console.Out.WriteLine("Thing");
+                        continue;
+                    }
+
                     string desc = item.value;
                     string supplier = item.attribution.sources[0].name;
                     mapSourceToDescription.Add(supplier, desc);
@@ -192,6 +396,7 @@ namespace MfgBom.Bom
             return rVal;
         }
 
+
         /// <summary>
         /// Gets the package name from the JSON result string.
         /// </summary>
@@ -225,7 +430,8 @@ namespace MfgBom.Bom
                 }
             }
             return rVal;
-        }        
+        }  
+      
 
         /// <summary>
         /// Generates miscellaneous notes from the JSON results string.
@@ -277,6 +483,7 @@ namespace MfgBom.Bom
 
             return rVal;
         }
+
 
         ///// <summary>
         ///// Gets the best supplier's name, part number, and price breaks, 
@@ -397,6 +604,7 @@ namespace MfgBom.Bom
         //    }
         //}
 
+
         /// <summary>
         /// Fill in the sellermapStructure from the Octopart results string.
         /// </summary>
@@ -457,8 +665,8 @@ namespace MfgBom.Bom
                             foreach (var pricePair in currency.Value)
                             {
                                 int qty = pricePair[0];
-                                float price = float.Parse((string)pricePair[1]);
-                                PricePoint pricePoint = new PricePoint(qty,price);
+                                float price = float.Parse((string)pricePair[1], CultureInfo.InvariantCulture);
+                                PricePoint pricePoint = new PricePoint(qty, price);
                                 priceBreaks.Add(pricePoint);
                             }
 
@@ -470,6 +678,24 @@ namespace MfgBom.Bom
             }
 
             return sellermapStructure;
+        }
+
+
+        /// <summary>
+        /// Gets the data for the "specs" field from the JSON result string.
+        /// The specs returned will vary depending on the component quieried.
+        /// </summary>
+        /// <param name="OctopartResult"></param>
+        /// <returns></returns>
+        public static String GetTechnicalSpecifications(String OctopartResult)
+        {
+            string rVal = "";
+            dynamic dynJson = JsonConvert.DeserializeObject(OctopartResult);
+            if ((dynJson != null) && (dynJson.specs != null))
+            {
+                rVal = dynJson.specs.ToString();
+            }
+            return rVal;
         }
     }
 }

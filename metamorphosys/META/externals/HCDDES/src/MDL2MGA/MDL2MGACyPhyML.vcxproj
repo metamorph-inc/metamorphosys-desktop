@@ -90,7 +90,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_SCL_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -104,7 +104,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libeng.lib;libmx.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(XERCES_PATH)\lib;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;$(BOOST_PATH)\$(PlatformName)\lib;$(BOOST_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -116,7 +116,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -130,7 +130,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libeng.lib;libmx.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(XERCES_PATH)\lib;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;$(BOOST_PATH)\$(PlatformName)\lib;$(BOOST_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_SCL_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -156,7 +156,7 @@
     <Link>
       <AdditionalOptions>/noentry %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libeng.lib;libmx.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(XERCES_PATH)\lib;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;$(BOOST_PATH)\$(PlatformName)\lib;$(BOOST_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -168,7 +168,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MATLAB_PATH)\extern\include;$(UDM_PATH)\include;..\..\include;.;$(META_PATH)\generated;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -184,7 +184,7 @@
     <Link>
       <AdditionalOptions>/noentry %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libeng.lib;libmx.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(XERCES_PATH)\lib;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;$(BOOST_PATH)\$(PlatformName)\lib;$(BOOST_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(MATLAB_PATH)\extern\lib\win$(PlatformArchitecture)\microsoft;$(VCP_PATH)\lib;$(ANTLR3_PATH)\$(PlatformName)\lib;$(ANTLR3_PATH)\lib;..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>

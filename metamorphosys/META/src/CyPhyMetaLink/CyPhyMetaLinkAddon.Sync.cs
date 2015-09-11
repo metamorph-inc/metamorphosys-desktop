@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
@@ -88,7 +33,6 @@ namespace CyPhyMetaLink
 {
     /// <summary>
     /// This file contains business logic independent functionality related to the general operation of Meta-Link.
-    /// 
     /// </summary>
     partial class CyPhyMetaLinkAddon
     {
@@ -98,6 +42,7 @@ namespace CyPhyMetaLink
             OPEN_EMPTY,                 // Open an empty Creo session
         }
 
+        // Function needed to change the icon of the console window
         [DllImport("user32.dll")]
         static extern IntPtr PostMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
 
@@ -113,25 +58,22 @@ namespace CyPhyMetaLink
                 startupFailedCallback = value;
             }
         }
-
         private FailureCallback startupFailedCallback;
 
         private MgaAddOn addon;
         private bool componentEnabled = true;
         private bool handleEvents = true;
-        GMEConsole GMEConsole { get; set; }
+        private GMEConsole GMEConsole { get; set; }
         public CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient bridgeClient = new CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient();
 
         // Data maintained for synced components
         public readonly Dictionary<string, SyncedComponentData> syncedComponents = new Dictionary<string, SyncedComponentData>();
 
-        // right now, support sycing only one ComponentAssembly
+        // right now, support syncing only one ComponentAssembly
         public string AssemblyID { get; set; }
         protected Dictionary<string, string> designIdToCadAssemblyXml = new Dictionary<string, string>();
 
         private Dictionary<string, Action<MetaLinkProtobuf.Edit>> noticeActions = new Dictionary<string, Action<Edit>>();
-
-        //Dictionary<String, Edit> componentEditMessages = new Dictionary<String, Edit>();
 
         // The last guid the executable started with
         private string LastStartedGuid;
@@ -159,7 +101,10 @@ namespace CyPhyMetaLink
             }
         }
 
+        // A proxy control to maintain a separate message queue for TCP/IO communication
         System.Windows.Forms.Control SyncControl;
+
+        // The main message queue
         ConcurrentQueue<MetaLinkProtobuf.Edit> queuedMessages = new ConcurrentQueue<Edit>();
 
         public CyPhyMetaLinkAddon()
@@ -167,7 +112,7 @@ namespace CyPhyMetaLink
             StartupFailureCallback = ExeStartupFailed;
         }
 
-        public void ConnectionClosed(Exception e)
+        private void ConnectionClosed(Exception e)
         {
             SyncControl.BeginInvoke((System.Action)delegate
             {
@@ -218,6 +163,7 @@ namespace CyPhyMetaLink
                 }
             });
         }
+
         public void EditMessageReceived(MetaLinkProtobuf.Edit message)
         {
             queuedMessages.Enqueue(message);
@@ -225,15 +171,7 @@ namespace CyPhyMetaLink
             {
                 if (addon != null)
                 {
-                    /*if ((addon.Project.ProjectStatus & 8) != 0) // in tx
-                    {
-                        GMEConsole.Warning.WriteLine("Message received during transaction, ignoring.");
-                        // In GlobalEvent, we will post a message to process the queue
-                    }
-                    else
-                    {*/
-                        ProcessQueuedEditMessages();
-                    //}
+                    ProcessQueuedEditMessages();
                 }
             });
         }
@@ -397,7 +335,7 @@ namespace CyPhyMetaLink
         }
 
         // Callback invoked if the executable startup has failed
-        public void ExeStartupFailed()
+        private void ExeStartupFailed()
         {
             // Unhighlight tree and remove item from synced components
             if (LastStartedGuid != null)
@@ -438,7 +376,7 @@ namespace CyPhyMetaLink
                 StartupDialog.Hide();
         }
 
-        public bool CloseConnection()
+        private bool CloseConnection()
         {
             bool ret = bridgeClient.CloseConnection();
             bridgeClient = new CyPhyMetaLinkBridgeClient.MetaLinkBridgeClient();
@@ -454,7 +392,6 @@ namespace CyPhyMetaLink
             }
             return ret;
         }
-
 
         public void CallCyPhy2CADWithTransaction(MgaProject project, MgaFCO toplevelAssembly, int param)
         {
@@ -661,7 +598,7 @@ namespace CyPhyMetaLink
                 string CADAssembly = File.ReadAllText(Path.Combine(cadSettings.OutputDirectory, CyPhy2CAD_CSharp.TestBenchModel.TestBenchBase.CADAssemblyFile));
                 string designId = new Guid(currentobj.GetGuidDisp()).ToString("D");
                 SendInterest(null, CadAssemblyTopic, designId);
-                SendManifestInterest();
+                SendInterest(null, ComponentManifestTopic);
                 //SendComponentManifest();
                 SendInterest(null, ConnectTopic);
                 SendInterest(null, ResyncTopic, designId);
@@ -675,13 +612,13 @@ namespace CyPhyMetaLink
             }
         }
 
-        public void HighlightInTree(ISIS.GME.Common.Interfaces.Base item, int highlight)
+        private void HighlightInTree(ISIS.GME.Common.Interfaces.Base item, int highlight)
         {
             if (TestMode) return;
             HighlightInTree(item.Impl, highlight);
         }
 
-        public void HighlightInTree(IMgaObject item, int highlight)
+        private void HighlightInTree(IMgaObject item, int highlight)
         {
             if (TestMode) return;
             if (GMEConsole.gme == null) // e.g. unit tests

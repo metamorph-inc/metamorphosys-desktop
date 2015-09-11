@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<xsd:schema xmlns:avm="avm" xmlns:cyber="cyber" xmlns:cad="cad" xmlns:systemc="systemc" xmlns:schematic="schematic" xmlns:eda="eda" xmlns:spice="spice" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:manufacturing="manufacturing" xmlns:modelica="modelica" xmlns:rf="rf" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ecore:nsPrefix="component" ecore:package="component" targetNamespace="component">
+<xsd:schema xmlns:avm="avm" xmlns:cyber="cyber" xmlns:cad="cad" xmlns:systemc="systemc" xmlns:schematic="schematic" xmlns:eda="eda" xmlns:spice="spice" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:manufacturing="manufacturing" xmlns:modelica="modelica" xmlns:rf="rf" xmlns:domainmapping="domainmapping" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ecore:nsPrefix="component" ecore:package="component" targetNamespace="component">
   <xsd:import namespace="avm" schemaLocation="avm.xsd"/>
   <xsd:import namespace="modelica" schemaLocation="avm.modelica.xsd"/>
   <xsd:import namespace="cad" schemaLocation="avm.cad.xsd"/>
@@ -10,6 +10,7 @@
   <xsd:import namespace="eda" schemaLocation="avm.schematic.eda.xsd"/>
   <xsd:import namespace="spice" schemaLocation="avm.schematic.spice.xsd"/>
   <xsd:import namespace="rf" schemaLocation="avm.rf.xsd"/>
+  <xsd:import namespace="domainmapping" schemaLocation="avm.domainmapping.xsd"/>
   <xsd:element name="Component" type="avm:Component"/>
   <xsd:element name="ModelicaModel" type="modelica:ModelicaModel"/>
   <xsd:element name="CADModel" type="cad:CADModel"/>
@@ -21,4 +22,5 @@
   <xsd:element name="SPICEModel" type="spice:SPICEModel"/>
   <xsd:element name="SchematicParameter" type="schematic:Pin"/>
   <xsd:element name="RFModel" type="rf:RFModel"/>
+  <xsd:element name="CAD2EDATransform" type="domainmapping:CAD2EDATransform"/>
 </xsd:schema>

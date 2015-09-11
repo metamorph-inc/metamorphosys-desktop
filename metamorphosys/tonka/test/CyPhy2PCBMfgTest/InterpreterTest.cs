@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,9 +15,8 @@ namespace CyPhy2PCBMfgTest
 {
     public class InterpreterFixture : IDisposable
     {
-        public static String path_Test = Path.Combine(META.VersionInfo.MetaPath,
-                                                      "..",
-                                                      "tonka",
+        public static String path_Test = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Substring("file:///".Length)),
+                                                      "..\\..\\..\\..",
                                                       "test",
                                                       "CyPhy2PCBMfgTest",
                                                       "model");
@@ -223,6 +198,30 @@ namespace CyPhy2PCBMfgTest
                 proc0.StartInfo.RedirectStandardOutput = true;
 
                 proc0.Start();
+
+                StringBuilder output = new StringBuilder();
+                proc0.ErrorDataReceived += (o, dataArgs) =>
+                {
+                    if (dataArgs.Data != null)
+                    {
+                        try
+                        {
+                            output.Append(dataArgs.Data);
+                        }
+                        catch (ObjectDisposedException) { }
+                    }
+                };
+                proc0.OutputDataReceived += (o, dataArgs) =>
+                {
+                    if (dataArgs.Data != null)
+                    {
+                        try
+                        {
+                            output.Append(dataArgs.Data);
+                        }
+                        catch (ObjectDisposedException) { }
+                    }
+                };
                 proc0.BeginOutputReadLine();
                 proc0.BeginErrorReadLine();
 
@@ -236,7 +235,7 @@ namespace CyPhy2PCBMfgTest
                     Console.WriteLine("Process exit code: {0}",
                         proc0.ExitCode);
                 }
-                Assert.Equal(0, proc0.ExitCode);    // Check that the job finished OK.
+                Assert.True(0 == proc0.ExitCode, output.ToString() + "  " + outputDirectory + "  " + File.ReadAllText(Path.Combine(outputDirectory, "testbench_manifest.json")));    // Check that the job finished OK.
             }
 
             // Check that files were created in the output path.
@@ -259,6 +258,7 @@ namespace CyPhy2PCBMfgTest
                 "schema.topsoldermask.ger",
                 "schema.topsoldermask.gpi",
                 "schema_centroids.csv",
+                "schema.XYRS",  // MOT-743
                 "assemblyBom.csv"
             };
 

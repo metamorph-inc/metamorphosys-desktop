@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -175,10 +120,10 @@ namespace ComponentExporterUnitTests
                               }
                           };
 
-            process.StartInfo.Arguments += "\"components/Imported_Components/drawbar/drawbar.component.acm\"";
+            process.StartInfo.Arguments += "\"components/Components/drawbar/drawbar.component.acm\"";
             process.StartInfo.Arguments += " InputModel.mga";
 
-            return Common.processCommon(process);
+            return Common.processCommon(process, true);
         }
 
         private int runCyPhyComponentImporterCLHull(string testName)
@@ -207,7 +152,7 @@ namespace ComponentExporterUnitTests
                               }
                           };
 
-            process.StartInfo.Arguments += testName + "\"/components/Imported_Components/hull/hull.component.acm\"";
+            process.StartInfo.Arguments += testName + "\"" + "/components/Components/hull/hull.component.acm" + "\"";
             process.StartInfo.Arguments += " " + testName + "/InputModel.mga";
 
             return Common.processCommon(process);
@@ -235,7 +180,12 @@ namespace ComponentExporterUnitTests
             process.StartInfo.Arguments += " " + inputMga;
 
             string output;
-            Assert.True(0 == Common.runProcessAndGetOutput(process, out output, err_only: true), process.StartInfo.FileName + " " + process.StartInfo.Arguments + " failed:" + output);
+            int retCode = Common.runProcessAndGetOutput(process, out output, err_only: true);
+            if (retCode != 0)
+            {
+                Debug.WriteLine(output);
+            }
+            Assert.True(0 == retCode, process.StartInfo.FileName + " " + process.StartInfo.Arguments + " failed:" + output);
         }
 
         [Fact]
@@ -311,8 +261,7 @@ namespace ComponentExporterUnitTests
             Assert.Equal(0, runCyPhyComponentExporterCL(testName));
             Assert.Equal(0, runCyPhyComponentImporterCLDrawbar(testName));
             Assert.Equal(0, runCyPhyComponentImporterCLHull(testName));
-            // META-1184
-            // Assert.Equal(0, runCyPhyMLComparator(testName));
+            runCyPhyMLComparator(testName);
         }
 
         [Fact]
@@ -448,6 +397,33 @@ namespace ComponentExporterUnitTests
             "CompMechanical",
             "CompWelded"
         };
+
+
+        [Fact]
+        public void KinematicRoundTrip()
+        {
+            const string testName = "KinematicRoundTrip";
+            unpackXmes(testName);
+            Assert.Equal(0, runCyPhyComponentExporterCL(testName));
+
+            var acmFile = @"components\Components\RevoluteJoint\RevoluteJoint.component.acm";
+            RunComponentImporter(testName, acmFile);
+
+            acmFile = @"components\Components\TranslationalJoint\TranslationalJoint.component.acm";
+            RunComponentImporter(testName, acmFile);
+
+            runCyPhyMLComparator(testName);
+        }
+
+        private static void RunComponentImporter(string testName, string acmFile)
+        {
+            Assert.Equal(0, CyPhyComponentImporterCL.CyPhyComponentImporterCL.Main(
+                new string[] { 
+                    Path.Combine(_exportModelDirectory, testName, acmFile),
+                    Path.Combine(_exportModelDirectory, testName, "InputModel.mga")
+                }));
+        }
+
     }
 
     class Program

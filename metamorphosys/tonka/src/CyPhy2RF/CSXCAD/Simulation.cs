@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -30,6 +6,7 @@ using System.Collections.Generic;
 
 using System.IO;
 using System.Numerics;
+using System.Globalization;
 
 namespace CSXCAD
 {
@@ -273,8 +250,8 @@ namespace CSXCAD
                 if (!line.StartsWith("%"))
                 {
                     string[] values = line.Split('\t');
-                    time.Add(Double.Parse(values[0]));
-                    uTdValue.Add(Double.Parse(values[1]));
+                    time.Add(Double.Parse(values[0], CultureInfo.InvariantCulture));
+                    uTdValue.Add(Double.Parse(values[1], CultureInfo.InvariantCulture));
                 }
             }
             uFile.Close();
@@ -304,8 +281,8 @@ namespace CSXCAD
                 if (!line.StartsWith("%"))
                 {
                     string[] values = line.Split('\t');
-                    time.Add(Double.Parse(values[0]));
-                    iTdValue.Add(Double.Parse(values[1]));
+                    time.Add(Double.Parse(values[0], CultureInfo.InvariantCulture));
+                    iTdValue.Add(Double.Parse(values[1], CultureInfo.InvariantCulture));
                 }
             }
             iFile.Close();

@@ -1,27 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +9,9 @@ using TonkaClasses = ISIS.GME.Dsml.CyPhyML.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using META;
+using System.Globalization;
+using CyPhy2Schematic.Layout;
+using GME.MGA;
 
 namespace CyPhy2Schematic.Schematic
 {
@@ -47,21 +26,18 @@ namespace CyPhy2Schematic.Schematic
         public static Dictionary<string, Port> Ports { get; set; }
         public string ProjectDirectory { get; set; }
         public CodeGenerator.Mode mode { get; private set; }
+        private MgaTraceability Traceability;
+        private Dictionary<string, CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs;
 
-        public CyPhyBuildVisitor(string projectDirectory, CodeGenerator.Mode mode)  // this is a singleton object and the constructor will be called once
+        public CyPhyBuildVisitor(string projectDirectory, CodeGenerator.Mode mode, MgaTraceability traceability, Dictionary<string, CyPhy2Schematic.CyPhy2SchematicInterpreter.IDs> mgaIdToDomainIDs)  // this is a singleton object and the constructor will be called once
         {
             Components = new Dictionary<string, Component>();
             ComponentInstanceGUIDs = new Dictionary<string, Component>();
             Ports = new Dictionary<string, Port>();
-            Components.Clear();
-            ComponentInstanceGUIDs.Clear();
-            Ports.Clear();
             this.ProjectDirectory = projectDirectory;
             this.mode = mode;
-        }
-
-        ~CyPhyBuildVisitor()
-        {
+            this.Traceability = traceability;
+            this.mgaIdToDomainIDs = mgaIdToDomainIDs;
         }
 
         public override void visit(TestBench obj)
@@ -100,6 +76,26 @@ namespace CyPhy2Schematic.Schematic
             var solver = testBench.Children.SolverSettingsCollection.FirstOrDefault();
             if (solver != null)
                 obj.SolverParameters.Add("SpiceAnalysis", solver.Attributes.ToolSpecificAnnotations);
+
+            Dictionary<string, string> properties = testBench.Children.PropertyCollection.ToDictionary(param => param.Name, param => param.Attributes.Value);
+            string spiceAnalysisType;
+            if (properties.TryGetValue("Spice Analysis Type", out spiceAnalysisType))
+            {
+                if (spiceAnalysisType == "Transient Analysis")
+                {
+                    string stepSize = "0.0001";
+                    properties.TryGetValue("Spice Step Size", out stepSize);
+                    string endTime = "1";
+                    properties.TryGetValue("Spice End Time", out endTime);
+                    string startTime = "0";
+                    properties.TryGetValue("Spice Start Time", out startTime);
+                    obj.SolverParameters["SpiceAnalysis"] = String.Format(".TRAN {0} {1} {2}", stepSize, endTime, startTime);
+                }
+                else
+                {
+                    throw new ApplicationException(string.Format("Unsupported Spice Analysis Type '{0}'", spiceAnalysisType));
+                }
+            }
         }
 
         public override void visit(ComponentAssembly obj)
@@ -127,7 +123,17 @@ namespace CyPhy2Schematic.Schematic
                 };
                 obj.ComponentInstances.Add(component_obj);
                 CyPhyBuildVisitor.Components.Add(component.ID, component_obj);   // Add to global component list, component type ID-s?
-                CyPhyBuildVisitor.ComponentInstanceGUIDs.Add(component.Attributes.InstanceGUID, component_obj);   // component instance guid-s?
+                var componentInstanceGUID = Layout.LayoutGenerator.GetComponentID(component);
+                //GME.CSharp.GMEConsole console = GME.CSharp.GMEConsole.CreateFromProject(component.Impl.Project);
+                //console.Info.WriteLine(componentInstanceGUID);
+                try
+                {
+                    CyPhyBuildVisitor.ComponentInstanceGUIDs.Add(componentInstanceGUID, component_obj);   // component instance guid-s?
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException(e.Message + " " + componentInstanceGUID);
+                }
             }
         }
 
@@ -165,7 +171,7 @@ namespace CyPhy2Schematic.Schematic
                 if (edaModel == null)
                 {
                     Logger.WriteInfo("Skipping Component <a href=\"mga:{0}\">{1}</a> (no EDA model)",
-                                     obj.Impl.ID, obj.Impl.Name);
+                                     Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
                     return;
                 }
                 schematicModel = edaModel;
@@ -186,7 +192,8 @@ namespace CyPhy2Schematic.Schematic
                 }
                 if (!hasResource && !isTestComponent)
                 {
-                    Logger.WriteError("Couldn't determine path of schematic file for component <a href=\"mga:{0}\">{1}</a>. It may not be linked to a Resource object.", obj.Impl.ID, obj.Impl.Name);
+                    Logger.WriteError("Couldn't determine path of schematic file for component <a href=\"mga:{0}\">{1}</a>. It may not be linked to a Resource object.",
+                        Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
                     return;
                 }
 
@@ -200,8 +207,12 @@ namespace CyPhy2Schematic.Schematic
                     failedToLoadSchematicLib = true;
                     if (!isTestComponent) // test components don't need to have schematic
                     {
+                        // Try to get the ID of the pre-Elaborated object so that the error message
+                        // will be more meaningful.
+                        String compOriginalID = null;
                         Logger.WriteError("Error Loading Schematic Library of <a href=\"mga:{0}\">{1}</a>: {2}",
-                                          obj.Impl.ID, obj.Impl.Name, e.Message);
+                                            Traceability.GetID(obj.Impl.Impl), obj.Impl.Name, e.Message);
+                        throw;
                     }
                 }
 
@@ -242,7 +253,7 @@ namespace CyPhy2Schematic.Schematic
                 if (spiceModel == null)
                 {
                     Logger.WriteInfo("Skipping Component <a href=\"mga:{0}\">{1}</a> (no SPICE model)",
-                                     obj.Impl.ID, obj.Impl.Name);
+                                     Traceability.GetID(obj.Impl.Impl), obj.Impl.Name);
                     return;
                 }
                 schematicModel = spiceModel;
@@ -251,7 +262,7 @@ namespace CyPhy2Schematic.Schematic
                 if (String.IsNullOrWhiteSpace(spiceClass))
                 {
                     Logger.WriteWarning("Component <a href=\"mga:{0}\">{1}</a> has a SPICE model, but its class is not specified",
-                                        obj.Impl.ID,
+                                        Traceability.GetID(obj.Impl.Impl),
                                         obj.Impl.Name);
                 }
 
@@ -261,11 +272,14 @@ namespace CyPhy2Schematic.Schematic
                     try
                     {
                         String spiceAbsPath;
-                        spiceModel.TryGetResourcePath(out spiceAbsPath, ComponentLibraryManager.PathConvention.REL_TO_PROJ_ROOT);
-                        spiceAbsPath = Path.Combine(this.ProjectDirectory, spiceAbsPath);
-                        using (var spiceReader = new StreamReader(spiceAbsPath))
+                        if (spiceModel.TryGetResourcePath(out spiceAbsPath, ComponentLibraryManager.PathConvention.REL_TO_PROJ_ROOT))
                         {
-                            obj.SpiceLib = spiceReader.ReadToEnd();
+                            spiceAbsPath = Path.Combine(this.ProjectDirectory, spiceAbsPath);
+                            obj.SpiceLib = File.ReadAllText(spiceAbsPath);
+                        }
+                        else
+                        {
+                            throw new ApplicationException("SPICE model has no associated Resource");
                         }
                     }
                     catch (Exception e)
@@ -273,7 +287,7 @@ namespace CyPhy2Schematic.Schematic
                         obj.SpiceLib = "";
                         if (!isTestComponent)
                             Logger.WriteError("Error Loading Spice Library of <a href=\"mga:{0}\">{1}</a>: {2}",
-                                obj.Impl.ID, obj.Impl.Name, e.Message);
+                                Traceability.GetID(obj.Impl.Impl), obj.Impl.Name, e.Message);
                     }
                 }
 
@@ -320,7 +334,7 @@ namespace CyPhy2Schematic.Schematic
                     };
                     obj.Ports.Add(port_obj);
                     CyPhyBuildVisitor.Ports.Add(port.ID, port_obj);
-                    Logger.WriteDebug("Mapping Port <a href=\"mga:{0}\">{1}</a>", port.ID, port.Name);
+                    Logger.WriteInfo("Mapping Port <a href=\"mga:{0}\">{1}</a> with ID {2}", Traceability.GetID(port.Impl), port.Name, port.ID );
                 }
             }
         }
@@ -350,6 +364,14 @@ namespace CyPhy2Schematic.Schematic
                 ca.CanvasX = (float)Math.Round(x / gridSize) * gridSize;
                 ca.CanvasY = (float)Math.Round(y / gridSize) * gridSize;
                 Tuple<float, float> location = new Tuple<float, float>(ca.CanvasX, ca.CanvasY);
+                if (nodes.ContainsKey(location))
+                {
+                    Logger.WriteWarning("Component Assembly {1}.{0} overlaps with another in model",
+                        ca.Name, ca.Parent.Name);
+                    var xOry = (new Random()).Next(0, 1);
+                    location = new Tuple<float, float>(ca.CanvasX + xOry*(gridSize/2),
+                        ca.CanvasY + (gridSize/2)*(1-xOry));
+                }
                 nodes.Add(location, ca);
 
             }
@@ -360,7 +382,16 @@ namespace CyPhy2Schematic.Schematic
                 float y = allAspect != null ? ((float)allAspect.Y) / gme2Eagle : defSize;
                 ca.CanvasX = (float)Math.Round(x / gridSize) * gridSize;
                 ca.CanvasY = (float)Math.Round(y / gridSize) * gridSize;
-                Tuple<float, float> location = new Tuple<float, float>(ca.CanvasX, ca.CanvasY);
+                Tuple<float, float> location = new Tuple<float, float>(ca.CanvasX, ca.CanvasY); 
+                if (nodes.ContainsKey(location))
+                {
+                    Logger.WriteWarning("Component {1}.{0} overlaps with another in model",
+                        ca.Name, ca.Parent.Name);
+                    var xOry = (new Random()).Next(0, 1);
+                    location = new Tuple<float, float>(ca.CanvasX + xOry * (gridSize / 2),
+                        ca.CanvasY + (gridSize / 2) * (1 - xOry));
+                }
+
                 nodes.Add(location, ca);
             }
 
@@ -441,13 +472,13 @@ namespace CyPhy2Schematic.Schematic
                 foreach (var gate in gates)
                 {
                     var symbol = compLib.symbols.symbol.Where(q => q.name.Equals(gate.symbol)).FirstOrDefault();
-                    float gx = float.Parse(gate.x);
-                    float gy = float.Parse(gate.y);
+                    float gx = float.Parse(gate.x, CultureInfo.InvariantCulture);
+                    float gy = float.Parse(gate.y, CultureInfo.InvariantCulture);
                     var pins = symbol.Items.Where(p => p is Eagle.pin).Select(p => p as Eagle.pin);
                     foreach (var pin in pins)
                     {
-                        float x = gx + float.Parse(pin.x);
-                        float y = gy + float.Parse(pin.y);
+                        float x = gx + float.Parse(pin.x, CultureInfo.InvariantCulture);
+                        float y = gy + float.Parse(pin.y, CultureInfo.InvariantCulture);
                         minx = Math.Min(x, minx);
                         miny = Math.Min(y, miny);
                         maxx = Math.Max(x, maxx);
@@ -456,10 +487,10 @@ namespace CyPhy2Schematic.Schematic
                     var wires = symbol.Items.Where(p => p is Eagle.wire).Select(p => p as Eagle.wire);
                     foreach (var w in wires)
                     {
-                        float x1 = float.Parse(w.x1);
-                        float x2 = float.Parse(w.x2);
-                        float y1 = float.Parse(w.y1);
-                        float y2 = float.Parse(w.y2);
+                        float x1 = float.Parse(w.x1, CultureInfo.InvariantCulture);
+                        float x2 = float.Parse(w.x2, CultureInfo.InvariantCulture);
+                        float y1 = float.Parse(w.y1, CultureInfo.InvariantCulture);
+                        float y2 = float.Parse(w.y2, CultureInfo.InvariantCulture);
                         minx = Math.Min(minx, Math.Min(x1, x2));
                         miny = Math.Min(miny, Math.Min(y1, y2));
                         maxx = Math.Max(maxx, Math.Min(x1, x2));
@@ -468,10 +499,10 @@ namespace CyPhy2Schematic.Schematic
                     var rectangles = symbol.Items.Where(p => p is Eagle.rectangle).Select(p => p as Eagle.rectangle);
                     foreach (var w in rectangles)
                     {
-                        float x1 = float.Parse(w.x1);
-                        float x2 = float.Parse(w.x2);
-                        float y1 = float.Parse(w.y1);
-                        float y2 = float.Parse(w.y2);
+                        float x1 = float.Parse(w.x1, CultureInfo.InvariantCulture);
+                        float x2 = float.Parse(w.x2, CultureInfo.InvariantCulture);
+                        float y1 = float.Parse(w.y1, CultureInfo.InvariantCulture);
+                        float y2 = float.Parse(w.y2, CultureInfo.InvariantCulture);
                         minx = Math.Min(minx, Math.Min(x1, x2));
                         miny = Math.Min(miny, Math.Min(y1, y2));
                         maxx = Math.Max(maxx, Math.Min(x1, x2));
@@ -480,10 +511,10 @@ namespace CyPhy2Schematic.Schematic
                     var circles = symbol.Items.Where(p => p is Eagle.circle).Select(p => p as Eagle.circle);
                     foreach (var w in circles)
                     {
-                        float x1 = float.Parse(w.x) - float.Parse(w.radius);
-                        float x2 = float.Parse(w.x) + float.Parse(w.radius);
-                        float y1 = float.Parse(w.y) - float.Parse(w.radius);
-                        float y2 = float.Parse(w.y) + float.Parse(w.radius);
+                        float x1 = float.Parse(w.x, CultureInfo.InvariantCulture) - float.Parse(w.radius, CultureInfo.InvariantCulture);
+                        float x2 = float.Parse(w.x, CultureInfo.InvariantCulture) + float.Parse(w.radius, CultureInfo.InvariantCulture);
+                        float y1 = float.Parse(w.y, CultureInfo.InvariantCulture) - float.Parse(w.radius, CultureInfo.InvariantCulture);
+                        float y2 = float.Parse(w.y, CultureInfo.InvariantCulture) + float.Parse(w.radius, CultureInfo.InvariantCulture);
                         minx = Math.Min(minx, Math.Min(x1, x2));
                         miny = Math.Min(miny, Math.Min(y1, y2));
                         maxx = Math.Max(maxx, Math.Min(x1, x2));
@@ -536,8 +567,8 @@ namespace CyPhy2Schematic.Schematic
 
         public override void visit(Port obj)
         {
-            float portX = float.Parse(obj.Impl.Attributes.EDASymbolLocationX);
-            float portY = float.Parse(obj.Impl.Attributes.EDASymbolLocationY);
+            float portX = float.Parse(obj.Impl.Attributes.EDASymbolLocationX, CultureInfo.InvariantCulture);
+            float portY = float.Parse(obj.Impl.Attributes.EDASymbolLocationY, CultureInfo.InvariantCulture);
             var compLib = (obj.Parent.SchematicLib != null) ? obj.Parent.SchematicLib.drawing.Item as Eagle.library : null;
             if (compLib != null)
             {
@@ -545,8 +576,8 @@ namespace CyPhy2Schematic.Schematic
                     SelectMany(p => p.gates.gate).
                     Where(g => g.name.Equals(obj.Impl.Attributes.EDAGate)).
                     FirstOrDefault();
-                float gateX = gate != null ? float.Parse(gate.x) : 0.0f;
-                float gateY = gate != null ? float.Parse(gate.y) : 0.0f;
+                float gateX = gate != null ? float.Parse(gate.x, CultureInfo.InvariantCulture) : 0.0f;
+                float gateY = gate != null ? float.Parse(gate.y, CultureInfo.InvariantCulture) : 0.0f;
                 portX += gateX;
                 portY += gateY;
             }
@@ -573,7 +604,6 @@ namespace CyPhy2Schematic.Schematic
         public CyPhyConnectVisitor(CodeGenerator.Mode mode)
         {
             VisitedPorts = new Dictionary<string, Port>();
-            VisitedPorts.Clear();
 
             this.mode = mode;
             switch (mode)
@@ -615,18 +645,20 @@ namespace CyPhy2Schematic.Schematic
                 foreach (var compPort in compPorts)
                 {
                     Dictionary<string, object> visited = new Dictionary<string, object>();
-                    visited.Clear();
                     if (compPort.ParentContainer is Tonka.Connector)                     // traverse connector chain, carry port name in srcConnector
                     {
+                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         Traverse(compPort.Name, obj, obj.Parent.Impl, compPort.ParentContainer as Tonka.Connector, visited);
                     }
                     else if (compPort.ParentContainer is Tonka.DesignElement)
                     {
+                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         Traverse(obj, obj.Parent.Impl, compPort as Tonka.Port, visited); // traverse port chain
                     }
                     else if (portHasCorrectParentType(compPort)
                              && CyPhyBuildVisitor.Ports.ContainsKey(compPort.ID))
                     {
+                        obj.connectedPorts[compPort.Impl.AbsPath] = compPort;
                         ConnectPorts(obj, CyPhyBuildVisitor.Ports[compPort.ID]);
                     }
                 }
@@ -635,6 +667,7 @@ namespace CyPhy2Schematic.Schematic
 
         private void Traverse(string srcConnectorName, Port srcPort_obj, Tonka.DesignElement parent, Tonka.Connector connector, Dictionary<string, object> visited)
         {
+            // XXX this is dead code; the elaborator removes Connectors
             Logger.WriteDebug("Traverse Connector: {0}, Mapped-Pin: {1}",
                               connector.Path,
                               srcConnectorName);
@@ -657,6 +690,7 @@ namespace CyPhy2Schematic.Schematic
             }
 
             // continue traversal through named port
+            // XXX FIXME p.Name.Equals(srcConnectorName) is a bug (why should it matter what the names are)
             var mappedPorts = connector.Children.SchematicModelPortCollection.Where(p => p.Name.Equals(srcConnectorName));
             foreach (var mappedPort in mappedPorts)
             {
@@ -712,6 +746,7 @@ namespace CyPhy2Schematic.Schematic
 
                 if (remote.ParentContainer is Tonka.DesignElement)  // remote is contained in a Component or ComponentAssembly
                 {
+                    srcPort_obj.connectedPorts[remote.Impl.AbsPath] = remote;
                     Traverse(srcPort_obj,
                              remote.ParentContainer as Tonka.DesignElement,
                              remote as Tonka.Port,
@@ -719,6 +754,7 @@ namespace CyPhy2Schematic.Schematic
                 }
                 else if (remote.ParentContainer is Tonka.Connector) // remote is contained in a Connector
                 {
+                    srcPort_obj.connectedPorts[remote.Impl.AbsPath] = remote;
                     Traverse(remote.Name,
                              srcPort_obj,
                              remote.ParentContainer.ParentContainer as Tonka.DesignElement,
@@ -746,7 +782,10 @@ namespace CyPhy2Schematic.Schematic
 
             // mark the dstPort visited
             if (!VisitedPorts.ContainsKey(dstPort_obj.Impl.ID))
+            {
                 VisitedPorts.Add(dstPort_obj.Impl.ID, dstPort_obj);
+                dstPort_obj.connectedPorts = srcPort_obj.connectedPorts;
+            }
             else
                 Logger.WriteDebug("Port {0} already in visited ports, don't add",
                                   dstPort_obj.Impl.Path);

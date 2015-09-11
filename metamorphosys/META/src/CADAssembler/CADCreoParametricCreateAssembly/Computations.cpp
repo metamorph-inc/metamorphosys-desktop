@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include "stdafx.h"
 #include <CADPostProcessingParameters.h>
 #include <CADAnalysisMetaData.h>
@@ -184,7 +129,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 					errorString <<
 					"Error: (Function - CreateXMLFile_ComputationsParameters), received ComputationType that is not currently supported." << std::endl <<
 					"ComputationType: " << ComputationType_string( j->computationType);
-					throw isis::application_exception(errorString.str().c_str());
+					throw isis::application_exception(errorString.str());
 				}
 
 			
@@ -461,7 +406,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 							errorString <<
 							"Function - CreateXMLFile_ComputationsParameters, received ComputationSubType that is not currently supported." << std::endl <<
 							"ComputationSubType: " << ComputationSubType_string( j.computationSubType);
-							throw isis::application_exception(errorString.str().c_str());
+							throw isis::application_exception(errorString.str());
 						}
 						break;
 					default:
@@ -469,7 +414,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 						errorString <<
 						"Function - CreateXMLFile_ComputationsParameters, received ComputationType that is not currently supported." << std::endl <<
 						"ComputationType: " << ComputationType_string( j.computationType);
-						throw isis::application_exception(errorString.str().c_str());
+						throw isis::application_exception(errorString.str());
 				} // End switch ( j.computationType)
 			
 
@@ -505,7 +450,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 							errorString <<
 							"Function - CreateXMLFile_ComputationsParameters, received computationSubType that is not currently supported." << std::endl <<
 							"ComputationSubType: " << ComputationSubType_string( j.computationSubType);
-							throw isis::application_exception(errorString.str().c_str());
+							throw isis::application_exception(errorString.str());
 					}
 				}
 				else // Simple metric
@@ -553,7 +498,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 										errorString <<
 										"Function - CreateXMLFile_ComputationsParameters, received computationDimension that is not currently supported." << std::endl <<
 										"ComputationType: " << ComputationDimension_string( j.computationDimension);
-										throw isis::application_exception(errorString.str().c_str());
+										throw isis::application_exception(errorString.str());
 							}
 							values.push_back(temp_value);
 							metricRoot.ArrayValue() = values;
@@ -564,7 +509,7 @@ void CreateXMLFile_ComputedValues_ComputedByThisProgram(
 							errorString <<
 							"Function - CreateXMLFile_ComputationsParameters, received computationDimension that is not currently supported." << std::endl <<
 							"ComputationType: " << ComputationDimension_string( j.computationDimension);
-							throw isis::application_exception(errorString.str().c_str());
+							throw isis::application_exception(errorString.str());
 					}  // END switch ( j.computationDimension )
 				} // END  if ( complexMetric ) else
 			
@@ -700,7 +645,7 @@ void CreateXMLFile_RequestedMetrics(
 			metricRoot.ConfigurationID() = i.configurationID;
 			metricRoot.TopAssemblyComponentInstanceID() = i.topAssemblyComponentInstanceID;
 			metricRoot.MetricType() = ComputationType_string(i.cADComputation.computationType);
-			metricRoot.ComponenInstancetID() = i.cADComputation.componentID;
+			metricRoot.ComponentInstanceID() = i.cADComputation.componentID;
 			metricRoot.ComponentName() = in_CADComponentData_map[i.cADComputation.componentID].name;
 			// Model Type
 			if ( in_CADComponentData_map[i.cADComputation.componentID].modelType == PRO_MDL_PART )
@@ -815,7 +760,7 @@ void CreateXMLFile_RequestedMetrics(
 				std::stringstream errorString;
 				errorString <<
 						"Function CreateXMLFile_ComputedValues_Metrics, was invoked but in_CADAssemblies does not contain any computations.  MetricsType " << in_MetricsType;
-						throw isis::application_exception(errorString.str().c_str());
+						throw isis::application_exception(errorString.str());
 			}
 
 			///////////////////////////
@@ -831,28 +776,28 @@ void CreateXMLFile_RequestedMetrics(
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_Metrics threw a udm_exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( isis::application_exception& ex )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_Metrics threw an application_exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( std::exception& ex )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_Metrics threw an exception.  " << ex.what();
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 		}
 		catch ( ... )
 		{
 			if ( dn_CFDParameters.isOpen()) dn_CFDParameters.CloseNoUpdate();
 			std::stringstream errorString;
 			errorString <<  "Function CreateXMLFile_ComputedValues_Metrics, threw an unknown excpetion";
-			throw isis::application_exception(errorString.str().c_str());
+			throw isis::application_exception(errorString.str());
 
 		}
 		

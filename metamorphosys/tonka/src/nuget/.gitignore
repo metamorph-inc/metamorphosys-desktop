@@ -25,3 +25,7 @@ jsoncpp.0.5.0-r20140114/build/native/include/
 jsoncpp.0.5.0-r20140114/build/publisher-info.txt
 jsoncpp.0.5.0-r20140114/jsoncpp.0.5.0-r20140114.nupkg
 jsoncpp.0.5.0-r20140114/jsoncpp.0.5.0-r20140114.nuspec
+boost.1.55.0.10/boost.1.55.0.10.nupkg
+boost.1.55.0.10/lib/
+boost_program_options.1.55.0.16/boost_program_options.1.55.0.16.nupkg
+boost_program_options.1.55.0.16/lib/

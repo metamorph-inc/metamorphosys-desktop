@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 ///////////////////////////////////////////////////////////////////////////
 // RawComponent.cpp, the main RAW COM component implementation file
 // This is the file (along with its header RawComponent.h)
@@ -417,16 +362,28 @@ STDMETHODIMP RawComponent::ObjectEvent(IMgaObject * obj, unsigned long eventmask
 				{	
 					if(turnedon)
 					{
-						COMTHROW(fco->put_IntAttrByName(CBstrIn("ID"), ++maxId));
+						COMTHROW(fco->put_IntAttrByName(_bstr_t(L"ID"), ++maxId));
 
-						if ( dontAssignGUIDsOnNextTransaction == false &&
-							 (wcscmp(fcoKind, L"Component") == 0 || wcscmp(fcoKind, L"ComponentRef") == 0 ) )
-						{
-							// Populate InstanceGUID field with the object's GUID
-							BSTR newGUID;
-							fco->GetGuidDisp(&newGUID);
-							COMTHROW(fco->put_StrAttrByName(CBstrIn("InstanceGUID"), newGUID ));
-						}
+                        if (dontAssignGUIDsOnNextTransaction == false)
+                        {
+                            if (wcscmp(fcoKind, L"Component") == 0 || wcscmp(fcoKind, L"ComponentRef") == 0)
+                            {
+                                // Populate InstanceGUID field with the object's GUID
+                                _bstr_t guid = fco->imp_GetGuidDisp();
+                                _bstr_t noBraces(SysAllocStringLen(static_cast<const OLECHAR*>(guid) + 1, guid.length() - 2), false);
+                                COMTHROW(fco->put_StrAttrByName(_bstr_t(L"InstanceGUID"), noBraces));
+                            }
+                            if (wcscmp(fcoKind, L"ComponentAssembly") == 0)
+                            {
+                                _bstr_t managedGuidName = L"ManagedGUID";
+                                BSTR newGUID;
+                                fco->GetGuidDisp(&newGUID);
+                                // Next line would exclude copies for assigning an ID
+                                // if (fco->StrAttrByName[managedGuidName].length() == 0)
+                                // TODO: do we want to set this?
+                                // fco->StrAttrByName[managedGuidName] = newGUID;
+                            }
+                        }
 					}
 				}
 				else if(guidIdfcoKinds.find(fcoKind) != guidIdfcoKinds.end())

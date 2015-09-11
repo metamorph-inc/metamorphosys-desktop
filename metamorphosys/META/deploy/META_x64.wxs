@@ -53,6 +53,8 @@
     </InstallUISequence>
 
     <WixVariable Id="WixUILicenseRtf" Value="..\license.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="WixUiBanner_mms.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="WixUIDialog_mms.bmp" />
 
     <!-- =========================================================== -->
     <!-- DIRECTORY STRUCTURE -->
@@ -306,12 +308,15 @@
     <Component Directory="INSTALLDIR_BIN" Win64="no">
       <File Source="..\src\ComponentLibraryManager\bin\Release\ComponentLibraryManager.dll"/>
     </Component>
+    <Component Directory="INSTALLDIR_BIN" Win64="no">
+      <File Source="..\src\UnitsManager\bin\Release\UnitsManager.dll"/>
+    </Component>
 
     <!-- =========================================================== -->
     <!-- FEATURES -->
     <!-- =========================================================== -->
     <Feature Id='Complete' Title='META Toolchain' Description='The complete package' Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
-    <ComponentGroupRef Id='tonka'/>
+      <ComponentGroupRef Id='tonka'/>
     
       <ComponentGroupRef Id='WebGME'/>
       <ComponentRef Id='CPMDecorator.dll'/>
@@ -342,12 +347,15 @@
 -->
       <ComponentRef Id='XSD2CSharp.dll' />
       <ComponentRef Id='CyPhy2ComponentModel.dll' />
+      <ComponentRef Id='UnitsManager.dll' />
       <ComponentGroupRef Id='CyPhyComponentImporter' />
       <ComponentGroupRef Id='CyPhyComponentExporter' />
       <ComponentGroupRef Id='ComponentExportImportCL' />
       <ComponentGroupRef Id='SubTreeMerge' />
       <ComponentGroupRef Id="CyPhyDesignExporter" />
       <ComponentGroupRef Id="CyPhyDesignImporter" />
+      <ComponentGroupRef Id="CyPhyTestBenchExporter" />
+      <ComponentGroupRef Id="CyPhyTestBenchImporter" />
       <ComponentGroupRef Id='dot_bin'/>
       <ComponentGroupRef Id='bin'/>
       <ComponentGroupRef Id='analysis_tools'/>
@@ -365,6 +373,7 @@
       <ComponentGroupRef Id="CyPhySignalBlocksAddOn_x64"/>
       <ComponentGroupRef Id="CyPhyPython"/>
       <ComponentGroupRef Id="python_packages"/>
+      <ComponentGroupRef Id='CADPython'/>
 	  
       <ComponentGroupRef Id='CyPhyMasterInterpreter'/>
 	  <ComponentGroupRef Id='CyPhyPrepareIFab'/>

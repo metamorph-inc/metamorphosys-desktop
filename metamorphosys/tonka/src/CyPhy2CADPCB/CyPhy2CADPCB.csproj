@@ -39,8 +39,11 @@
     <AssemblyOriginatorKeyFile>AssemblySignature.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CyPhy2CAD_CSharp">
-      <HintPath>..\..\..\META\src\CyPhy2CAD_CSharp\bin\Release\CyPhy2CAD_CSharp.dll</HintPath>
+    <Reference Include="ComponentLibraryManager">
+      <HintPath>..\..\..\META\src\ComponentLibraryManager\bin\Release\ComponentLibraryManager.dll</HintPath>
+    </Reference>
+    <Reference Include="CyPhyElaborateCS">
+      <HintPath>..\..\..\META\src\CyPhyElaborateCS\bin\Release\CyPhyElaborateCS.dll</HintPath>
     </Reference>
     <Reference Include="CyPhyGUIs">
       <HintPath>..\..\..\META\src\CyPhyGUIs\bin\Release\CyPhyGUIs.dll</HintPath>
@@ -49,9 +52,12 @@
       <HintPath>..\..\..\META\src\CyPhyMLCS\bin\Release\CyPhyML.dll</HintPath>
     </Reference>
     <Reference Include="GME.MGA.Parser, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ISIS.GME.Common, Version=1.0.4.0, Culture=neutral, PublicKeyToken=1321e6b92842fe54, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\META\3rdParty\Json.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -70,16 +76,24 @@
     <Compile Include="..\..\..\META\src\CyPhy2Modelica_v2\MgaGateway.cs">
       <Link>MgaGateway.cs</Link>
     </Compile>
+    <Compile Include="AbstractClasses\AraTemplateComponent.cs" />
+    <Compile Include="AbstractClasses\CADModel.cs" />
+    <Compile Include="AbstractClasses\Component.cs" />
+    <Compile Include="AbstractClasses\Container.cs" />
+    <Compile Include="AbstractClasses\Design.cs" />
+    <Compile Include="AbstractClasses\STEPModel.cs" />
+    <Compile Include="AbstractClasses\STLModel.cs" />
+    <Compile Include="CodeGenerator.cs" />
     <Compile Include="ComponentConfig.cs" />
     <Compile Include="CyPhy2CADPCB.cs" />
     <Compile Include="CyPhy2CADPCB_Settings.cs" />
+    <Compile Include="CyPhyParser.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Registrar.cs" />
-    <Compile Include="GMEConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <!--$ADDITIONALFILES$-->
   </ItemGroup>
@@ -87,16 +101,16 @@
     <Content Include="CyPhy2CADPCB.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Synthesize_PCB_CAD_connections.py" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblySignature.snk" />
-    <None Include="Resources\runCreateCADAssembly.bat" />
+    <None Include="bat\launch_cadjs.bat" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

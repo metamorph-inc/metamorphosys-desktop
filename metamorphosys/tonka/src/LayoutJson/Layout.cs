@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,8 +19,10 @@ namespace LayoutJson
         public int? pkg_idx { get; set; }
         public string ComponentID { get; set; }
         public string RelComponentID { get; set; }  // if the component is placed relative to another component 
-        public double width { get; set; }
-        public double height { get; set; }
+        public double width { get; set; }   // this is the core inner width - each package will occupy this much space atleast
+        public double height { get; set; }  // this is the core inner height 
+        public double? koWidth { get; set; } // outer width including the keepout regions - keepout space can overlap with interchip/edge/other package keepout space
+        public double? koHeight { get; set; } // outer height including the keepout space 
         // for assymetric components the actual origin relative to the symmetric assumption origin
         public double? originX { get; set; }  
         public double? originY { get; set; }
@@ -66,6 +44,7 @@ namespace LayoutJson
         public List<Pin> pins { get; set; }
         public List<Wire> wires { get; set; }
         public List<Via> vias { get; set; }
+        public List<Polygon> polygons { get; set; }
     }
 
     public class Pin
@@ -76,6 +55,12 @@ namespace LayoutJson
         public string package { get; set; }
     }
 
+    public class Border
+    {
+        public Wire wire { get; set; }
+        public Circle circle { get; set; }
+    }
+
     public class Wire
     {
         public double x1 { get; set; }
@@ -84,6 +69,34 @@ namespace LayoutJson
         public double y2 { get; set; }
         public double width { get; set; }
         public int layer { get; set; }
+        public double curve { get; set; }
+    }
+
+    public class Circle
+    {
+        public double x { get; set; }
+        public double y { get; set; }
+        public double radius { get; set; }
+        public double width { get; set; }
+        public int layer { get; set; }
+    }
+
+    public class Vertex
+    {
+        public double x { get; set; }
+        public double y { get; set; }
+        public double curve { get; set; }
+    }
+
+    public class Polygon
+    {
+        public double width { get; set; }
+        public int layer { get; set; }
+        public double isolate { get; set; }
+        public int rank { get; set; }
+        public string pour { get; set; }
+        public bool thermals { get; set; }
+        public List<Vertex> vertices { get; set; }
     }
 
     public class Via
@@ -99,12 +112,16 @@ namespace LayoutJson
     {
         public double boardWidth { get; set; }
         public double boardHeight { get; set; }
+        public double boardEdgeSpace { get; set; }
+        public double interChipSpace { get; set; }
         public int numLayers { get; set; }
         public string boardTemplate { get; set; }       // name of the board template file to be used
         public string designRules { get; set; }         // name of the design rules file to be used
+        public bool? omitBoundary { get; set; }         // do not generate boundary in board file (use template)
         public List<Package> packages { get; set; }
         public List<Signal> signals { get; set; }
         public List<Constraint> constraints { get; set; } // Global/Group Constraints
+        public List<Border> border { get; set; }        // outline of board template.
     }
 
 

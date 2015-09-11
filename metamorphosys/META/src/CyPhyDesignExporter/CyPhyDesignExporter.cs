@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -82,7 +27,7 @@ namespace CyPhyDesignExporter
     ProgId(ComponentConfig.progID),
     ClassInterface(ClassInterfaceType.AutoDual)]
     [ComVisible(true)]
-    public class CyPhyDesignExporterInterpreter : IMgaComponentEx, IGMEVersionInfo, ICyPhyInterpreter
+    public class CyPhyDesignExporterInterpreter : IGMEVersionInfo, IMgaComponentEx, ICyPhyInterpreter
     {
         /// <summary>
         /// Contains information about the GUI event that initiated the invocation.
@@ -141,11 +86,49 @@ namespace CyPhyDesignExporter
                 MgaGateway = new MgaGateway(mainParameters.Project);
                 parameters.Project.CreateTerritoryWithoutSink(out MgaGateway.territory);
 
+                var result = new InterpreterResult() { Success = true, RunCommand = "" };
+
                 MgaGateway.PerformInTransaction(delegate
                 {
                     MainInTransaction((InterpreterMainParameters)parameters);
+
+
+                    // TODO: this part needs to be refactored!
+                    var workflowRef = this.mainParameters
+                        .CurrentFCO
+                        .ChildObjects
+                        .OfType<MgaReference>()
+                        .FirstOrDefault(x => x.Meta.Name == "WorkflowRef");
+                    
+                    if (workflowRef != null)
+                    {
+                        string Parameters = workflowRef
+                            .Referred
+                            .ChildObjects
+                            .OfType<MgaAtom>()
+                            .FirstOrDefault(fco => fco.Meta.Name == typeof(CyPhy.Task).Name
+                                && String.Equals(CyPhyClasses.Task.Cast(fco).Attributes.COMName, this.ComponentProgID, StringComparison.InvariantCultureIgnoreCase))
+                            .StrAttrByName["Parameters"];
+
+                        Dictionary<string, string> workflowParameters = new Dictionary<string, string>();
+
+                        try
+                        {
+                            workflowParameters = (Dictionary<string, string>)Newtonsoft.Json.JsonConvert.DeserializeObject(Parameters, typeof(Dictionary<string, string>));
+                            if (workflowParameters == null)
+                            {
+                                workflowParameters = new Dictionary<string, string>();
+                            }
+                        }
+                        catch (Newtonsoft.Json.JsonReaderException)
+                        {
+                        }
+
+                        META.AnalysisTool.ApplyToolSelection(this.ComponentProgID, workflowParameters, result, this.mainParameters);
+                    }
                 });
-                return new InterpreterResult() { Success = true, RunCommand = "" };
+
+                return result;
             }
             finally
             {
@@ -160,6 +143,11 @@ namespace CyPhyDesignExporter
         }
 
         public void MainInTransaction(InterpreterMainParameters parameters)
+        {
+            MainInTransaction(parameters, false);
+        }
+
+        public void MainInTransaction(InterpreterMainParameters parameters, bool exportPackage=false)
         {
             this.mainParameters = (InterpreterMainParameters)parameters;
 
@@ -183,7 +171,14 @@ namespace CyPhyDesignExporter
                 }
                 else if (metaBaseName == typeof(CyPhyClasses.ComponentAssembly).Name)
                 {
-                    artifactName = ExportToFile(CyPhyClasses.ComponentAssembly.Cast(currentObject), currentOutputDirectory);
+                    if (exportPackage)
+                    {
+                        artifactName = ExportToPackage(CyPhyClasses.ComponentAssembly.Cast(currentObject), currentOutputDirectory);
+                    }
+                    else
+                    {
+                        artifactName = ExportToFile(CyPhyClasses.ComponentAssembly.Cast(currentObject), currentOutputDirectory);
+                    }
                 }
                 else if (IsTestBenchType(metaBaseName))
                 {
@@ -306,17 +301,34 @@ namespace CyPhyDesignExporter
                                     CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression
                                  })
             {
-                var pathCA = ca.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE);
-                if (false == (pathCA.EndsWith("//") || 
-                              pathCA.EndsWith("\\\\")))
+                Queue<CyPhy.ComponentAssembly> cas = new Queue<CyPhy.ComponentAssembly>();
+                cas.Enqueue(ca);
+                while (cas.Count != 0)
                 {
-                    pathCA += "//";
-                }
+                    var componentAssembly = cas.Dequeue();
+                    var pathCA = componentAssembly.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE);
+                    if (false == (pathCA.EndsWith("//") ||
+                                  pathCA.EndsWith("\\\\")))
+                    {
+                        pathCA += "//";
+                    }
 
-                foreach (var file in Directory.EnumerateFiles(pathCA, "*.*", SearchOption.AllDirectories))
-                {
-                    var relpath = Path.GetDirectoryName(ComponentLibraryManager.MakeRelativePath(pathCA, file));
-                    zip.AddFile(file, relpath);
+                    foreach (var file in Directory.EnumerateFiles(pathCA, "*.*", SearchOption.AllDirectories))
+                    {
+                        var relpath = Path.GetDirectoryName(ComponentLibraryManager.MakeRelativePath(pathCA, file));
+                        string dirName = componentAssembly.Attributes.ID.ToString();
+                        string managedGUID = componentAssembly.Attributes.ManagedGUID;
+                        if (string.IsNullOrEmpty(managedGUID) == false)
+                        {
+                            dirName = managedGUID;
+                        }
+                        zip.AddFile(file, dirName + "/" + relpath);
+                    }
+
+                    foreach (var subCA in componentAssembly.Children.ComponentAssemblyCollection)
+                    {
+                        cas.Enqueue(subCA);
+                    }
                 }
 
                 // Add the ADM file

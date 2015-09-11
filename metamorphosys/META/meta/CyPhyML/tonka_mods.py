@@ -34,7 +34,15 @@ mods = {
     },
 "/@1_Component/@3_Properties_Parameters/@IsProminent":
     { "BooleanDefault": False
-    }
+    },
+"/@3_Domains|kind=SheetFolder/@3_SolidModeling|kind=ParadigmSheet/@FileFormat":
+    { "MenuItems": """Creo
+AP 203
+AP 214
+Solidworks
+NX
+STL
+"""}
 }
  
 project = win32com.client.DispatchEx("Mga.MgaProject")
@@ -54,5 +62,9 @@ for kind, attrs in mods.iteritems():
             print "  " + attrname
             model.SetBoolAttrByNameDisp(attrname, attrvalue)
 
+hasResourceProxy = project.RootFolder.GetObjectByPathDisp("/@1_Component|kind=SheetFolder/@1x_Component|kind=ParadigmSheet/@Component")
+hasResourceProxy.Referred = project.RootFolder.GetObjectByPathDisp("/@1_Component|kind=SheetFolder/@1_Component|kind=ParadigmSheet/@DesignElement|kind=Model")
+hasResourceProxy.Name = "DesignElement"
+            
 project.CommitTransaction()
 project.Save("", True)

@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 namespace CyPhy2Modelica_v2
 {
     using System;
@@ -377,26 +322,89 @@ namespace CyPhy2Modelica_v2
             return result;
         }
 
+        // From StackOverflow: http://stackoverflow.com/questions/1406808/wait-for-file-to-be-freed-by-process 
+        private static bool IsFileReady(String sFilename)
+        {
+            // If the file can be opened for exclusive access it means that the file
+            // is no longer locked by another process.
+            try
+            {
+                using (FileStream inputStream = File.Open(sFilename, FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    if (inputStream.Length > 0)
+                    {
+                        inputStream.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        inputStream.Close();
+                        return false;
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         private bool CallCyberInterpreter(CyPhy.CyberModel cyberModel)
         {
             bool success = true;
 
-            string cyberModelPath = string.Empty;
+            string cyberModelPath = string.Empty; 
 
-            // checks
-            if (string.IsNullOrWhiteSpace(cyberModel.Attributes.FileRef))
+            // get the path to the cyber model file
+            // first, the right way (using resources)
+            CyPhy.UsesResource uses_conn = null;
+            CyPhy.Resource res = null;
+
+            CyPhy.Component parent_comp = cyberModel.ParentContainer as CyPhy.Component;
+
+            if (cyberModel.SrcConnections.UsesResourceCollection != null
+                && cyberModel.SrcConnections.UsesResourceCollection.Count() != 0)
             {
-                this.Logger.WriteError("[Cyber] Model filename attribute is empty: {0}", cyberModel.ToHyperLink());
-                return false;
+                uses_conn = cyberModel.SrcConnections.UsesResourceCollection.First();
+                res = uses_conn.SrcEnd as CyPhy.Resource;
+            }
+            else if (cyberModel.DstConnections.UsesResourceCollection != null
+                      && cyberModel.DstConnections.UsesResourceCollection.Count() != 0)
+            {
+                uses_conn = cyberModel.DstConnections.UsesResourceCollection.First();
+                res = uses_conn.DstEnd as CyPhy.Resource;
             }
 
-            if (Path.IsPathRooted(cyberModel.Attributes.FileRef))
+            if (res != null)
             {
-                cyberModelPath = cyberModel.Attributes.FileRef;
+                cyberModelPath = Path.Combine(parent_comp.Attributes.Path, res.Attributes.Path);
             }
             else
             {
-                cyberModelPath = Path.Combine(this.mainParameters.ProjectDirectory, cyberModel.Attributes.FileRef);
+                uses_conn = null;
+            }
+            
+            if (uses_conn == null)
+            {
+
+                // failing that, do it the wrong way by getting the fileref attribute value
+
+                // checks
+                if (string.IsNullOrWhiteSpace(cyberModel.Attributes.FileRef))
+                {
+                    this.Logger.WriteError("[Cyber] Model filename attribute is empty: {0}", cyberModel.ToHyperLink());
+                    return false;
+                }
+
+                if (Path.IsPathRooted(cyberModel.Attributes.FileRef))
+                {
+                    cyberModelPath = cyberModel.Attributes.FileRef;
+                }
+                else
+                {
+                    cyberModelPath = Path.Combine(this.mainParameters.ProjectDirectory, cyberModel.Attributes.FileRef);
+                }
             }
 
             string cyberModelMgaPath = string.Empty;
@@ -437,7 +445,7 @@ namespace CyPhy2Modelica_v2
 
             if (requiresImport)
             {
-                // FIXME: this will throw an exception if xme is referenced mga exists and it is being used.
+                // FIXME: this will throw an exception if xme-referenced mga exists and it is being used.
                 MgaUtils.ImportXME(cyberModelXmePath, cyberModelMgaPath);
             }
 
@@ -487,17 +495,69 @@ namespace CyPhy2Modelica_v2
                 IMgaComponentEx cyberCodeGenerator = Activator.CreateInstance(tCyber) as IMgaComponentEx;
 
                 cyberCodeGenerator.Initialize(cyberProject);
-                var cyberOutputDir = Path.Combine(this.mainParameters.OutputDirectory, Modelica.CodeGenerator.MainPackage);
+                string cyberOutputDir = Path.Combine(this.mainParameters.OutputDirectory, Modelica.CodeGenerator.MainPackage);
                 Directory.CreateDirectory(cyberOutputDir);
                 cyberCodeGenerator.ComponentParameter["output_dir"] = cyberOutputDir;
                 cyberCodeGenerator.ComponentParameter["automation"] = "true";
                 cyberCodeGenerator.ComponentParameter["console_messages"] = "off";
-                this.Logger.WriteInfo("Generating code for Cyber [{0}] elements...", cyberModel.Attributes.ModelType);
+                this.Logger.WriteInfo("Generating code for Cyber [{0}] elements... to directory {1}", cyberModel.Attributes.ModelType, cyberOutputDir);
                 System.Windows.Forms.Application.DoEvents();
                 MgaFCOs selectedobjs = (MgaFCOs)Activator.CreateInstance(Type.GetTypeFromProgID("Mga.MgaFCOs"));
                 cyberCodeGenerator.InvokeEx(cyberProject, currentObj, selectedobjs, 128);
                 this.Logger.WriteInfo("Cyber [{0}] code generation is done.", cyberModel.Attributes.ModelType);
                 System.Windows.Forms.Application.DoEvents();
+
+                // Copy files referred by resource objects
+                string cyber_manifest_filename = parent_comp.Name + ".cyber.json";
+                Dictionary<string, string> comp_resources = new Dictionary<string, string>();
+                foreach (CyPhy.Resource resource in parent_comp.Children.ResourceCollection)
+                {
+                    FileInfo resource_path = new FileInfo(Path.Combine(parent_comp.Attributes.Path, resource.Attributes.Path));
+                    string final_path;
+
+                    if (resource_path.DirectoryName == null || resource_path.DirectoryName == string.Empty)
+                    {
+                        final_path = "Cyber";
+                    }
+                    else
+                    {
+                        final_path = resource_path.DirectoryName.Split(Path.DirectorySeparatorChar).Last();
+                    }
+                    //DirectoryInfo resource_directory = resource_path.Directory;
+
+                    //string res_path = Path.Combine(cyberModel.Path, resource.Attributes.Path);
+                    //string[] path_parts = res_path.Split('\\');
+                    //string[] path_only = path_parts.Take(path_parts.Length - 1).ToArray();
+                    
+                    string new_path = Path.Combine( cyberOutputDir, final_path );
+                    Logger.WriteInfo("[Cyber] resource_path.DirectoryName == string.Empty, new_path is {0}", new_path);
+                    
+                    System.IO.Directory.CreateDirectory(new_path);
+                    string dest_filename = Path.Combine(new_path, resource_path.Name);
+                    Logger.WriteInfo("[Cyber] dest_filename is {0}", dest_filename);
+                    // TODO: Little bit hacky hard-coding the wait time
+                    //int counter = 0;
+                    //while ((IsFileReady(resource_path.FullName) != true)) && (counter < 10))
+                    //{
+                    //    System.Threading.Thread.Sleep(2000);
+                    //    counter++;
+                    //}
+
+                    if (IsFileReady(resource_path.FullName) == true)
+                    {
+                        Logger.WriteInfo("[Cyber] copying file {0} to file {1}", resource_path.FullName, dest_filename);
+                        System.IO.File.Copy(resource_path.FullName, dest_filename, true);
+                        comp_resources[resource.Attributes.ID] = Path.Combine(final_path, resource_path.Name );
+                    }
+                    else
+                    {
+                        Logger.WriteError("[Cyber] Cannot access file for copying: {0}", dest_filename);
+                    }
+                    
+                }
+
+                string json_resources = Newtonsoft.Json.JsonConvert.SerializeObject(comp_resources);
+                System.IO.File.WriteAllText(Path.Combine(cyberOutputDir, cyber_manifest_filename), json_resources);
             }
             catch (Exception ex)
             {
@@ -1195,7 +1255,8 @@ namespace CyPhy2Modelica_v2
                 .Referred
                 .ChildObjects
                 .OfType<MgaAtom>()
-                .FirstOrDefault()
+                .FirstOrDefault(fco => fco.Meta.Name == typeof(CyPhy.Task).Name
+                    && String.Equals(CyPhyClasses.Task.Cast(fco).Attributes.COMName, this.ComponentProgID, StringComparison.InvariantCultureIgnoreCase))
                 .StrAttrByName["Parameters"];
 
             Dictionary<string, string> workflowParameters = new Dictionary<string, string>();

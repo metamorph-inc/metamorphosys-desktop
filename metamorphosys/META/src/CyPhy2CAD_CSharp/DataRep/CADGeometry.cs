@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,32 +21,29 @@ namespace CyPhy2CAD_CSharp.DataRep
             SURFACE
         }
 
+        public class GeometryFeature
+        {
+            public string ComponentID;
+            public string DatumName;
+            public string MetricID; // Only used if this has been requested as a metric as well
+        }
+
         public string FeatureID { get; set; }
         public string PrimaryQualifier { get; set; }
         public string SecondaryQualifier { get; set; }
         public string GeometryType { get; set; }
-        private List<KeyValuePair<string, string>> GeometryFeatures;
+        public List<GeometryFeature> GeometryFeatures;
         private FeatureTypeEnum featureType;
 
         public CADGeometry()
         {
-            GeometryFeatures = new List<KeyValuePair<string, string>>();
+            GeometryFeatures = new List<GeometryFeature>();
             FeatureID = "";
             PrimaryQualifier = "";
             SecondaryQualifier = "";
             GeometryType = "";
             featureType = FeatureTypeEnum.POINT;
         }
-
-        /*
-        public FEAGeometry(string type)
-        {
-            GeometryFeatures = new List<KeyValuePair<string, string>>();
-            FeatureID = "";
-            PrimaryQualifier = "";
-            SecondaryQualifier = "";
-            GeometryType = type;
-        }*/
 
         public void SetGeometryType(string type)
         {
@@ -124,14 +66,12 @@ namespace CyPhy2CAD_CSharp.DataRep
         public void CreateGeometryFeature(string featureName,
                                           string componentID)
         {
-            KeyValuePair<string, string> pair = new KeyValuePair<string, string>(featureName,
-                                                                                 componentID);
-            GeometryFeatures.Add(pair);
+            GeometryFeatures.Add(new GeometryFeature() { ComponentID = componentID, DatumName = featureName, MetricID = componentID+":"+featureName });
         }
 
         public void CreateGeometryFeature(List<KeyValuePair<string, string>> featureList)
         {
-            GeometryFeatures.AddRange(featureList);
+            featureList.ForEach(f => GeometryFeatures.Add(new GeometryFeature() { ComponentID = f.Value, DatumName = f.Key, MetricID = f.Value+":"+f.Key }));
         }
 
         private static List<MgaFCO> FindByRole(MgaModel mgaModel,
@@ -495,8 +435,9 @@ namespace CyPhy2CAD_CSharp.DataRep
                 CAD.FeatureType feature = new CAD.FeatureType
                 {
                     _id = UtilityHelpers.MakeUdmID(),
-                    ComponentID = item.Value,
-                    Name = item.Key
+                    ComponentID = item.ComponentID,
+                    Name = item.DatumName,
+                    MetricID = item.MetricID
                 };
                 featureList.Add(feature);
             }
@@ -506,5 +447,7 @@ namespace CyPhy2CAD_CSharp.DataRep
             geometryout.Features[0] = featuresout;
             return geometryout;
         }
+
+
     }
 }

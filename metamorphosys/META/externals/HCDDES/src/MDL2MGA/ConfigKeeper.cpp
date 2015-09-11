@@ -11,8 +11,8 @@ ConfigKeeper::ConfigKeeper( void ) : _desc( "Allowed options" ), _hidden( "Hidde
 		( "help", "Produce help message" )
 #if PARADIGM != CyberComposition_PARADIGM
 		( "newfile,n", "Create new MGA/XML" )
-#endif
 		( "unique,u", "Consider all subsystems to be unique, i.e. no subsystem is an instance of any other" )
+#endif
 		( "substitute,s", boost::program_options::value< std::string >(), "Substition table spec" )
 		( "toplevel,t", "Only translate top-level Simulink blocks" )
 		( "libdir,L", boost::program_options::value<  std::vector< std::string >  >(), "Specify directory in which to search for MatLab libraries and m-files" )
@@ -47,6 +47,10 @@ bool ConfigKeeper::processCommandLineArguments( int argc, char *argv[] ) {
 		 boost::program_options::parse_environment( _env, mapEnv ),
 		 _variablesMap
 		);
+
+#if PARADIGM == CyberComposition_PARADIGM
+		_variablesMap.insert( make_pair( "unique", boost::program_options::variable_value() ) );
+#endif
 	// Catch any exceptions
 	} catch ( std::exception &e ) {
 		std::cout << e.what() << std::endl;

@@ -1,56 +1,3 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 import py_modelica_exporter as this_package
 from optparse import OptionParser
 import sys
@@ -143,35 +90,42 @@ def main():
                 json.dump(extracted_components, f_out)
 
     elif opts.tree:
-        treeToExport = opts.tree
+        tree_to_export = opts.tree
 
-        treeExporter = TreeExporter(treeToExport)
+        tree_exporter = TreeExporter(tree_to_export)
 
         if opts.json:
             #treeExporter.export_to_json(treeToExport + '.tree.json')
-            treeExporter.export_to_json('ModelicaPackages.tree.json')
+            tree_exporter.export_to_json('ModelicaPackages.tree.json')
         if opts.xml:
-            treeExporter.export_to_xml(treeToExport + '.tree.xml')
+            tree_exporter.export_to_xml(tree_to_export + '.tree.xml')
 
     elif opts.packages:
         external_packages = [p for p in opts.packages.split(';') if p]
 
-        package_exporter = PackageExporter(external_packages, load_MSL=opts.standard)
+        package_exporter = PackageExporter(external_packages, load_msl=opts.standard)
 
         if opts.json:
-            package_exporter.packageNames.sort()
-            package_exporter.exportToJson('ModelicaPackages.tree.json')
+            package_exporter.package_names.sort()
+            package_exporter.export_to_json('ModelicaPackages.tree.json')
             #package_exporter.exportToJson("_".join(package_exporter.externalPackageNames) + '.tree.json')
 
-    elif opts.config:
-        externalPackageFile = opts.config
-        logger.info('loading packages from "{0}" ... '.format(externalPackageFile))
-
-        package_exporter = PackageExporter(externalPackageFile, load_MSL=opts.standard)
+    elif opts.standard:
+        package_exporter = PackageExporter([], load_msl=opts.standard)
 
         if opts.json:
-            package_exporter.packageNames.sort()
-            package_exporter.exportToJson("_".join(package_exporter.packageNames) + '.tree.json')
+            package_exporter.package_names.sort()
+            package_exporter.export_to_json('ModelicaPackages.tree.json')
+
+    elif opts.config:
+        external_package_file = opts.config
+        logger.info('loading packages from "{0}" ... '.format(external_package_file))
+
+        package_exporter = PackageExporter(external_package_file, load_msl=opts.standard)
+
+        if opts.json:
+            package_exporter.package_names.sort()
+            package_exporter.export_to_json("_".join(package_exporter.package_names) + '.tree.json')
 
     elif opts.assemblies:
 

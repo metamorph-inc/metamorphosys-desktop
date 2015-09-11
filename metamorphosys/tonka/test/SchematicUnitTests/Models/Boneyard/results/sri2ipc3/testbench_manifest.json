@@ -1,0 +1,79 @@
+{
+  "Status": "FAILED", 
+  "CopyTestResults": false, 
+  "Parameters": [
+    {
+      "Description": "", 
+      "DisplayedName": null, 
+      "GMEID": "id-0067-00000007", 
+      "Value": "MacroFab_2_Layer.dru", 
+      "Range": "-inf..inf", 
+      "ID": "f115d0c8-6809-4fca-8d50-0fb20fccac50", 
+      "Unit": "", 
+      "Name": "designRules"
+    }, 
+    {
+      "Description": "", 
+      "DisplayedName": null, 
+      "GMEID": "id-0067-00000008", 
+      "Value": "0.2", 
+      "Range": "-inf..inf", 
+      "ID": "c5216db7-f49a-46fc-b931-bdb024fc3678", 
+      "Unit": "", 
+      "Name": "interChipSpace"
+    }, 
+    {
+      "Description": "", 
+      "DisplayedName": null, 
+      "GMEID": "id-0067-00000009", 
+      "Value": "0.5", 
+      "Range": "-inf..inf", 
+      "ID": "c4cd9f5b-62fe-465e-867b-368b55fb3c12", 
+      "Unit": "", 
+      "Name": "boardEdgeSpace"
+    }, 
+    {
+      "Description": "", 
+      "DisplayedName": null, 
+      "GMEID": "id-0067-0000020d", 
+      "Value": "14", 
+      "Range": "-inf..inf", 
+      "ID": "978c88b5-b5a5-4fba-8e91-edf4665c6bba", 
+      "Unit": "Millimeter", 
+      "Name": "boardWidth"
+    }, 
+    {
+      "Description": "", 
+      "DisplayedName": null, 
+      "GMEID": "id-0067-0000020e", 
+      "Value": "21", 
+      "Range": "-inf..inf", 
+      "ID": "a12d49ff-be6a-4250-9883-cd5f680258aa", 
+      "Unit": "Millimeter", 
+      "Name": "boardHeight"
+    }
+  ], 
+  "TierLevel": 0, 
+  "Artifacts": [], 
+  "VisualizationArtifacts": [], 
+  "DesignName": "TopLevelBuzzerAssembly_V2", 
+  "Metrics": [], 
+  "DesignID": "{2b7e036d-38f2-4e0e-8698-5c692eb5cb6b}", 
+  "Dependencies": [], 
+  "Steps": [
+    {
+      "ExecutionCompletionTimestamp": "2015-08-26T17:04:25.072000", 
+      "Status": "FAILED", 
+      "Description": null, 
+      "Parameters": [], 
+      "ExecutionStartTimestamp": "2015-08-26T17:04:23.761000", 
+      "Invocation": "placement.bat -i 0.2 -e 0.5", 
+      "PostProcess": null, 
+      "PreProcess": null, 
+      "LogFile": "log/log2015-08-26T170423.761000.log", 
+      "Type": null
+    }
+  ], 
+  "TestBench": "1_PlaceAndRoute_V2", 
+  "Created": "2015-08-26T22:04:17.7760957Z"
+}

@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -135,12 +80,17 @@ namespace CyPhyComponentExporter
             return rtn;
         }
 
-        public static String ExportToFile(CyPhy.Component c, String s_outFolder)
+        public static String ExportToDirectory(CyPhy.Component c, String s_outFolder)
+        {
+            String s_outFilePath = String.Format("{0}\\{1}.component.acm", s_outFolder, System.IO.Path.GetRandomFileName());
+            return ExportToFile(c, s_outFilePath);
+        }
+
+        public static string ExportToFile(CyPhy.Component c, String s_outFilePath)
         {
             try
             {
                 avm.Component avmComponent = CyPhy2ComponentModel.Convert.CyPhyML2AVMComponent(c);
-                String s_outFilePath = String.Format("{0}\\{1}.component.acm", s_outFolder, System.IO.Path.GetRandomFileName());
                 SerializeAvmComponent(avmComponent, s_outFilePath);
 
                 return s_outFilePath;
@@ -443,9 +393,13 @@ namespace CyPhyComponentExporter
                     ExportComponentPackage(c, OutputDir);                    
                     i_count++;
                 }
+                catch (ApplicationException ex)
+                {
+                    GMEConsole.Error.WriteLine(ex.Message);
+                }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("{0} encountered while exporting {1}: {2}", ex.GetType().Name, c.Name, ex.Message);
+                    GMEConsole.Error.WriteLine("{0} encountered while exporting {1}: {2}", ex.GetType().Name, c.Name, ex.Message);
                 }
             }
 
@@ -524,10 +478,11 @@ namespace CyPhyComponentExporter
                     if (match.Success)
                     {
                         Func<Resource, bool> sameFile = delegate (Resource x) {
-                            if (x.Path == match.Groups[1].Value + match.Groups[2].Value)
+                            if (x.Path.Equals(match.Groups[1].Value + match.Groups[2].Value, StringComparison.InvariantCultureIgnoreCase))
                                 return true;
                             Match m = cadResourceRegex.Match(x.Path);
-                            return m.Success && m.Groups[1].Value == match.Groups[1].Value && m.Groups[2].Value == match.Groups[2].Value;
+                            return m.Success && m.Groups[1].Value.Equals(match.Groups[1].Value, StringComparison.InvariantCultureIgnoreCase)
+                                && m.Groups[2].Value.Equals(match.Groups[2].Value, StringComparison.InvariantCultureIgnoreCase);
                         };
                         foreach (var resource in avmComponent.ResourceDependency.Where(sameFile))
                         {

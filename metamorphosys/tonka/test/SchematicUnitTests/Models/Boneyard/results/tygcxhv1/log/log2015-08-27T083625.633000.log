@@ -1,0 +1,519 @@
+
+HKEY_LOCAL_MACHINE\software\META
+    META_PATH    REG_SZ    C:\Program Files (x86)\META\
+
+layout-input.json
+layout.json
+-i
+Input: layout-input.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 17
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 340.56
+Total Chip Area (Chips with chipgap - all on edge): 353.43
+Total Chip Area (Chips with chipgap - all internal): 366.64
+Layout Density (least) = 0.679673
+Layout Density (most) = 0.705077
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "Astable_555_Assembly" (index = 0)".
+Found constraint attribute: Astable_555_Assembly.layer = 0
+x.isNull()
+y.isNull()
+Applying an exact constraint on package "Astable_555_Assembly" (index = 1)".
+Found constraint attribute: Astable_555_Assembly.layer = 1
+x.isNull()
+y.isNull()
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying an exact constraint on package "FID1" (index = 11)".
+Found constraint attribute: FID1.x = 0.5
+Found constraint attribute: FID1.y = 0.5
+Found constraint attribute: FID1.layer = 0
+Applying an exact constraint on package "FID2" (index = 12)".
+Found constraint attribute: FID2.x = 0.5
+Found constraint attribute: FID2.y = 18.5
+Found constraint attribute: FID2.layer = 0
+Applying an exact constraint on package "FID3" (index = 13)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 14)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 15)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 16)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	11,	FID1)
+	(2,	4.84,	12,	FID2)
+	(2,	4.84,	13,	FID3)
+	(2,	4.84,	14,	FID4)
+	(2,	4.84,	15,	FID5)
+	(2,	4.84,	16,	FID6)
+	(0,	288,	7,	BZZ)
+	(0,	41.82,	6,	SW_TOG)
+	(0,	38.44,	0,	Astable_555_Assembly)
+	(0,	38.44,	1,	Astable_555_Assembly)
+	(0,	38.16,	3,	J1_9V)
+	(0,	15.58,	9,	D1)
+	(0,	15.58,	10,	D2)
+	(0,	9,	4,	LED_G1)
+	(0,	6.48,	2,	C_BULK)
+	(0,	6.48,	8,	C_OUT)
+	(0,	2.7,	5,	R_1K)
+Placement Order
+Package [11], Name = FID1, Area = 4.84
+Package [12], Name = FID2, Area = 4.84
+Package [13], Name = FID3, Area = 4.84
+Package [14], Name = FID4, Area = 4.84
+Package [15], Name = FID5, Area = 4.84
+Package [16], Name = FID6, Area = 4.84
+Package [7], Name = BZZ, Area = 288
+Package [6], Name = SW_TOG, Area = 41.82
+Package [0], Name = Astable_555_Assembly, Area = 38.44
+Package [1], Name = Astable_555_Assembly, Area = 38.44
+Package [3], Name = J1_9V, Area = 38.16
+Package [9], Name = D1, Area = 15.58
+Package [10], Name = D2, Area = 15.58
+Package [4], Name = LED_G1, Area = 9
+Package [2], Name = C_BULK, Area = 6.48
+Package [8], Name = C_OUT, Area = 6.48
+Package [5], Name = R_1K, Area = 2.7
+Starting Search @Thu Aug 27 08:36:25 2015
+Search failed with no solution 
+Begin checking for a partial layout.
+metapath: C:\Program Files (x86)\META\
+Using python interpreter at C:\Program Files (x86)\META\bin\Python27\Scripts\Python.exe
+Using command line:
+""C:\Program Files (x86)\META\bin\Python27\Scripts\Python.exe" -E -m layout_json.partial_layout -p "layout-input.json""
+layout-input.json Path: layout-input.json
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724} to Root.
+
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.1 to {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.
+
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{ab5c831e-1542-4625-b9e0-8ec132a81350} to {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.
+
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{67ecd984-a2c6-491b-8868-54199ce8c3f1} to {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.
+
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{8e810c50-1b4a-4509-b8cb-0a629b751157} to {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.
+
+Added {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{e402ef37-e17e-4a11-89a8-f114a46edc53} to {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.
+
+Added {5b7663ac-6382-4826-8304-8261506c824a}{2bb07acc-e3f9-4d66-ba14-557f81ab6199} to Root.
+
+Added {5b7663ac-6382-4826-8304-8261506c824a}{9d81b83c-afbf-4d41-bdcd-033a05fcdcf6} to Root.
+
+Added {5b7663ac-6382-4826-8304-8261506c824a}{451e6ff4-e616-43bb-bb5c-a5f96f8e3c19} to Root.
+
+Added {5b7663ac-6382-4826-8304-8261506c824a}{db68cc49-a091-4c89-ae88-a5921661703d} to Root.
+
+Added {5b7663ac-6382-4826-8304-8261506c824a}{4dc73478-8270-42cb-a4a4-ec7e34ee0b73} to Root.
+
+Added {5217b5ea-3fec-4e55-9840-d171b6e98d58} to Root.
+
+Added {7527357c-c5f7-4916-a57b-cf97cc883661} to Root.
+
+Added {46dff497-0e3c-4f2d-8bfc-4127be273866} to Root.
+
+Added {8d5bdd37-56bf-41a4-a3d8-1353ea07c91e} to Root.
+
+Added {bf51cb2e-4809-4d32-8ce4-f7032e11b5d6} to Root.
+
+Added {21ff514d-38b8-4aa2-b495-919ab343d8f1} to Root.
+
+Added {21fcd67d-0851-4f10-81fc-c2a4468cd8d5} to Root.
+
+Added {93dde3ee-2e63-47f4-9ab3-9cc4bc72d21e} to Root.
+
+Added {30f8d37f-9d1e-4147-bb31-5364600849c1} to Root.
+
+Added {b65c7f38-fe1d-4471-a790-ea80fbe3966e} to Root.
+
+Package ID Tree:
+?: score = 0, id = Root
+    Astable_555_Assembly: score = (0, 76.88000000000001), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}
+        Astable_555_Assembly: score = (0, 38.440000000000005), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}.1
+        CT: score = (0, 6.2125), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{ab5c831e-1542-4625-b9e0-8ec132a81350}
+        LM555D: score = (0, 20.092025760000002), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{67ecd984-a2c6-491b-8868-54199ce8c3f1}
+        RA: score = (0, 2.6000000000000005), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{8e810c50-1b4a-4509-b8cb-0a629b751157}
+        RB: score = (0, 2.6000000000000005), id = {72c682e9-8cd1-4b95-8d9a-3a58d5195724}{e402ef37-e17e-4a11-89a8-f114a46edc53}
+    C_BULK: score = (0, 6.2125), id = {5b7663ac-6382-4826-8304-8261506c824a}{2bb07acc-e3f9-4d66-ba14-557f81ab6199}
+    J1_9V: score = (0, 37.26835200000001), id = {5b7663ac-6382-4826-8304-8261506c824a}{9d81b83c-afbf-4d41-bdcd-033a05fcdcf6}
+    LED_G1: score = (0, 8.92512), id = {5b7663ac-6382-4826-8304-8261506c824a}{451e6ff4-e616-43bb-bb5c-a5f96f8e3c19}
+    R_1K: score = (0, 2.6000000000000005), id = {5b7663ac-6382-4826-8304-8261506c824a}{db68cc49-a091-4c89-ae88-a5921661703d}
+    SW_TOG: score = (0, 41.00000000000001), id = {5b7663ac-6382-4826-8304-8261506c824a}{4dc73478-8270-42cb-a4a4-ec7e34ee0b73}
+    BZZ: score = (0, 288.0), id = {5217b5ea-3fec-4e55-9840-d171b6e98d58}
+    C_OUT: score = (0, 6.2125), id = {7527357c-c5f7-4916-a57b-cf97cc883661}
+    D1: score = (0, 15.441300000000002), id = {46dff497-0e3c-4f2d-8bfc-4127be273866}
+    D2: score = (0, 15.441300000000002), id = {8d5bdd37-56bf-41a4-a3d8-1353ea07c91e}
+    FID1: score = (2, 4.840000000000001), id = {bf51cb2e-4809-4d32-8ce4-f7032e11b5d6}
+    FID2: score = (2, 4.840000000000001), id = {21ff514d-38b8-4aa2-b495-919ab343d8f1}
+    FID3: score = (2, 4.840000000000001), id = {21fcd67d-0851-4f10-81fc-c2a4468cd8d5}
+    FID4: score = (2, 4.840000000000001), id = {93dde3ee-2e63-47f4-9ab3-9cc4bc72d21e}
+    FID5: score = (2, 4.840000000000001), id = {30f8d37f-9d1e-4147-bb31-5364600849c1}
+    FID6: score = (2, 4.840000000000001), id = {b65c7f38-fe1d-4471-a790-ea80fbe3966e}
+
+numberOfPartialLayouts was: 17
+partialLayoutDirectory is: '.\partialLayouts'
+The first partial layout file is: '.\partialLayouts\input-layout000.json'
+About to check: .\partialLayouts\input-layout008.json
+Input: .\partialLayouts\input-layout008.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 9
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 235.24
+Total Chip Area (Chips with chipgap - all on edge): 242.49
+Total Chip Area (Chips with chipgap - all internal): 249.92
+Layout Density (least) = 0.466327
+Layout Density (most) = 0.480615
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "Astable_555_Assembly" (index = 0)".
+Found constraint attribute: Astable_555_Assembly.layer = 0
+x.isNull()
+y.isNull()
+Applying an exact constraint on package "Astable_555_Assembly" (index = 1)".
+Found constraint attribute: Astable_555_Assembly.layer = 1
+x.isNull()
+y.isNull()
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying Constraint: Astable_555_Assembly.x = Astable_555_Assembly.x + 0
+Applying Constraint: Astable_555_Assembly.y = Astable_555_Assembly.y + 0
+Applying an exact constraint on package "FID1" (index = 3)".
+Found constraint attribute: FID1.x = 0.5
+Found constraint attribute: FID1.y = 0.5
+Found constraint attribute: FID1.layer = 0
+Applying an exact constraint on package "FID2" (index = 4)".
+Found constraint attribute: FID2.x = 0.5
+Found constraint attribute: FID2.y = 18.5
+Found constraint attribute: FID2.layer = 0
+Applying an exact constraint on package "FID3" (index = 5)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 6)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 7)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 8)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	3,	FID1)
+	(2,	4.84,	4,	FID2)
+	(2,	4.84,	5,	FID3)
+	(2,	4.84,	6,	FID4)
+	(2,	4.84,	7,	FID5)
+	(2,	4.84,	8,	FID6)
+	(0,	288,	2,	BZZ)
+	(0,	38.44,	0,	Astable_555_Assembly)
+	(0,	38.44,	1,	Astable_555_Assembly)
+Placement Order
+Package [3], Name = FID1, Area = 4.84
+Package [4], Name = FID2, Area = 4.84
+Package [5], Name = FID3, Area = 4.84
+Package [6], Name = FID4, Area = 4.84
+Package [7], Name = FID5, Area = 4.84
+Package [8], Name = FID6, Area = 4.84
+Package [2], Name = BZZ, Area = 288
+Package [0], Name = Astable_555_Assembly, Area = 38.44
+Package [1], Name = Astable_555_Assembly, Area = 38.44
+Starting Search @Thu Aug 27 08:36:26 2015
+Search failed with no solution 
+.\partialLayouts\input-layout008.json placement failed.
+About to check: .\partialLayouts\input-layout012.json
+Input: .\partialLayouts\input-layout012.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 4
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 16
+Total Chip Area (Chips with chipgap - all on edge): 17.64
+Total Chip Area (Chips with chipgap - all internal): 19.36
+Layout Density (least) = 0.0339231
+Layout Density (most) = 0.0372308
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "FID3" (index = 0)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 1)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 2)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 3)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	0,	FID3)
+	(2,	4.84,	1,	FID4)
+	(2,	4.84,	2,	FID5)
+	(2,	4.84,	3,	FID6)
+Placement Order
+Package [0], Name = FID3, Area = 4.84
+Package [1], Name = FID4, Area = 4.84
+Package [2], Name = FID5, Area = 4.84
+Package [3], Name = FID6, Area = 4.84
+Starting Search @Thu Aug 27 08:36:26 2015
+Search successful
+Package[nnn]{WWW,HHH}: X,Y,Z,R
+package[  0]{ 20, 20}:115,5,0,0
+package[  1]{ 20, 20}:5,5,1,0
+package[  2]{ 20, 20}:5,185,1,0
+package[  3]{ 20, 20}:115,5,1,0
+Total Time : 0
+.\partialLayouts\input-layout012.json was placed OK.
+About to check: .\partialLayouts\input-layout010.json
+Input: .\partialLayouts\input-layout010.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 6
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 24
+Total Chip Area (Chips with chipgap - all on edge): 26.46
+Total Chip Area (Chips with chipgap - all internal): 29.04
+Layout Density (least) = 0.0508846
+Layout Density (most) = 0.0558462
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "FID1" (index = 0)".
+Found constraint attribute: FID1.x = 0.5
+Found constraint attribute: FID1.y = 0.5
+Found constraint attribute: FID1.layer = 0
+Applying an exact constraint on package "FID2" (index = 1)".
+Found constraint attribute: FID2.x = 0.5
+Found constraint attribute: FID2.y = 18.5
+Found constraint attribute: FID2.layer = 0
+Applying an exact constraint on package "FID3" (index = 2)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 3)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 4)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 5)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	0,	FID1)
+	(2,	4.84,	1,	FID2)
+	(2,	4.84,	2,	FID3)
+	(2,	4.84,	3,	FID4)
+	(2,	4.84,	4,	FID5)
+	(2,	4.84,	5,	FID6)
+Placement Order
+Package [0], Name = FID1, Area = 4.84
+Package [1], Name = FID2, Area = 4.84
+Package [2], Name = FID3, Area = 4.84
+Package [3], Name = FID4, Area = 4.84
+Package [4], Name = FID5, Area = 4.84
+Package [5], Name = FID6, Area = 4.84
+Starting Search @Thu Aug 27 08:36:26 2015
+Search successful
+Package[nnn]{WWW,HHH}: X,Y,Z,R
+package[  0]{ 20, 20}:5,5,0,0
+package[  1]{ 20, 20}:5,185,0,0
+package[  2]{ 20, 20}:115,5,0,0
+package[  3]{ 20, 20}:5,5,1,0
+package[  4]{ 20, 20}:5,185,1,0
+package[  5]{ 20, 20}:115,5,1,0
+Total Time : 0
+.\partialLayouts\input-layout010.json was placed OK.
+About to check: .\partialLayouts\input-layout009.json
+Input: .\partialLayouts\input-layout009.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 7
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 163.24
+Total Chip Area (Chips with chipgap - all on edge): 168.07
+Total Chip Area (Chips with chipgap - all internal): 173.04
+Layout Density (least) = 0.323212
+Layout Density (most) = 0.332769
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "FID1" (index = 1)".
+Found constraint attribute: FID1.x = 0.5
+Found constraint attribute: FID1.y = 0.5
+Found constraint attribute: FID1.layer = 0
+Applying an exact constraint on package "FID2" (index = 2)".
+Found constraint attribute: FID2.x = 0.5
+Found constraint attribute: FID2.y = 18.5
+Found constraint attribute: FID2.layer = 0
+Applying an exact constraint on package "FID3" (index = 3)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 4)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 5)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 6)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	1,	FID1)
+	(2,	4.84,	2,	FID2)
+	(2,	4.84,	3,	FID3)
+	(2,	4.84,	4,	FID4)
+	(2,	4.84,	5,	FID5)
+	(2,	4.84,	6,	FID6)
+	(0,	288,	0,	BZZ)
+Placement Order
+Package [1], Name = FID1, Area = 4.84
+Package [2], Name = FID2, Area = 4.84
+Package [3], Name = FID3, Area = 4.84
+Package [4], Name = FID4, Area = 4.84
+Package [5], Name = FID5, Area = 4.84
+Package [6], Name = FID6, Area = 4.84
+Package [0], Name = BZZ, Area = 288
+Starting Search @Thu Aug 27 08:36:26 2015
+Search successful
+Package[nnn]{WWW,HHH}: X,Y,Z,R
+package[  0]{118,118}:5,27,0,0
+package[  1]{ 20, 20}:5,5,0,0
+package[  2]{ 20, 20}:5,185,0,0
+package[  3]{ 20, 20}:115,5,0,0
+package[  4]{ 20, 20}:5,5,1,0
+package[  5]{ 20, 20}:5,185,1,0
+package[  6]{ 20, 20}:115,5,1,0
+Total Time : 0
+.\partialLayouts\input-layout009.json was placed OK.
+The best partial number was 9
+bestPartialNumber is: 9
+bestPartialLayoutFile is: '.\partialLayouts\input-layout009.json'
+Input: layout-input.json
+Output: layout.json
+Inter-chip space from chipgap argument: 0.2 mm.
+Board-edge space from edgegap argument: 0.5 mm.
+Number of Chips: 7
+Board Width: 14 Board Height: 21 Layers: 2
+Effective Board Area (excluding edgegap): 520
+Total Chip Area (Chips - no chipgap): 163.24
+Total Chip Area (Chips with chipgap - all on edge): 168.07
+Total Chip Area (Chips with chipgap - all internal): 173.04
+Layout Density (least) = 0.323212
+Layout Density (most) = 0.332769
+Applying User-defined Package Constraints ...
+Applying an exact constraint on package "FID1" (index = 1)".
+Found constraint attribute: FID1.x = 0.5
+Found constraint attribute: FID1.y = 0.5
+Found constraint attribute: FID1.layer = 0
+Applying an exact constraint on package "FID2" (index = 2)".
+Found constraint attribute: FID2.x = 0.5
+Found constraint attribute: FID2.y = 18.5
+Found constraint attribute: FID2.layer = 0
+Applying an exact constraint on package "FID3" (index = 3)".
+Found constraint attribute: FID3.x = 11.5
+Found constraint attribute: FID3.y = 0.5
+Found constraint attribute: FID3.layer = 0
+Applying an exact constraint on package "FID4" (index = 4)".
+Found constraint attribute: FID4.x = 0.5
+Found constraint attribute: FID4.y = 0.5
+Found constraint attribute: FID4.layer = 1
+Applying an exact constraint on package "FID5" (index = 5)".
+Found constraint attribute: FID5.x = 0.5
+Found constraint attribute: FID5.y = 18.5
+Found constraint attribute: FID5.layer = 1
+Applying an exact constraint on package "FID6" (index = 6)".
+Found constraint attribute: FID6.x = 11.5
+Found constraint attribute: FID6.y = 0.5
+Found constraint attribute: FID6.layer = 1
+Applying User-defined Global/Group Constraints ...
+
+Sorted Rank Vector (exactFactor, area, package index, package name ):
+	(2,	4.84,	1,	FID1)
+	(2,	4.84,	2,	FID2)
+	(2,	4.84,	3,	FID3)
+	(2,	4.84,	4,	FID4)
+	(2,	4.84,	5,	FID5)
+	(2,	4.84,	6,	FID6)
+	(0,	288,	0,	BZZ)
+Placement Order
+Package [1], Name = FID1, Area = 4.84
+Package [2], Name = FID2, Area = 4.84
+Package [3], Name = FID3, Area = 4.84
+Package [4], Name = FID4, Area = 4.84
+Package [5], Name = FID5, Area = 4.84
+Package [6], Name = FID6, Area = 4.84
+Package [0], Name = BZZ, Area = 288
+Starting Search @Thu Aug 27 08:36:26 2015
+Search successful
+Package[nnn]{WWW,HHH}: X,Y,Z,R
+package[  0]{118,118}:5,27,0,0
+package[  1]{ 20, 20}:5,5,0,0
+package[  2]{ 20, 20}:5,185,0,0
+package[  3]{ 20, 20}:115,5,0,0
+package[  4]{ 20, 20}:5,5,1,0
+package[  5]{ 20, 20}:5,185,1,0
+package[  6]{ 20, 20}:115,5,1,0
+Total Time : 0
+Layout was unable to automatically place 'Astable_555_Assembly'.
+result is: '42'
+Parsed Schematic File : schema.sch
+Parsed Eagle Library schema version: 6.5.0
+description[en]
+en
+
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\App Paths\eagle.exe
+    Path    REG_SZ    C:\EAGLE-7.2.0
+
+"Creating a PNG of the board."
+"PNG created OK."

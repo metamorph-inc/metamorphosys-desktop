@@ -3,6 +3,8 @@
 
 #include <string>
 
+#define BOOST_PYTHON_STATIC_LIB 1
+#define BOOST_PYTHON_NO_LIB
 #include <Python.h>
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>

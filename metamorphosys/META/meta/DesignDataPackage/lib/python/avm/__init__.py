@@ -1,60 +1,7 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 # .\_avm.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:8c3bce54577a879cd94d42789711c9f5d444aa71
-# Generated 2014-11-18 14:25:23.919000 by PyXB version 1.2.3
+# Generated 2015-08-13 10:01:46.170000 by PyXB version 1.2.3
 # Namespace avm [xmlns:avm]
 
 import pyxb
@@ -66,7 +13,7 @@ import pyxb.utils.domutils
 import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:0613818f-6f61-11e4-85c1-542696dd94ef')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:3717d230-41cc-11e5-ac39-7429af7917c0')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -75,8 +22,8 @@ if pyxb.__version__ != _PyXBVersion:
     raise pyxb.PyXBVersionError(_PyXBVersion)
 
 # Import bindings for namespaces imported into schema
-import iFAB as _ImportedBinding__iFAB
 import pyxb.binding.datatypes
+import iFAB as _ImportedBinding__iFAB
 
 # NOTE: All namespace declarations are reserved within the binding
 Namespace = pyxb.namespace.NamespaceForURI(u'avm', create_if_missing=True)
@@ -131,7 +78,7 @@ class CalculationTypeEnum (pyxb.binding.datatypes.string, pyxb.binding.basis.enu
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'CalculationTypeEnum')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 207, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 224, 2)
     _Documentation = None
 CalculationTypeEnum._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=CalculationTypeEnum, enum_prefix=None)
 CalculationTypeEnum.Declarative = CalculationTypeEnum._CF_enumeration.addEnumeration(unicode_value=u'Declarative', tag=u'Declarative')
@@ -145,7 +92,7 @@ class DataTypeEnum (pyxb.binding.datatypes.string, pyxb.binding.basis.enumeratio
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DataTypeEnum')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 213, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 230, 2)
     _Documentation = None
 DataTypeEnum._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=DataTypeEnum, enum_prefix=None)
 DataTypeEnum.String = DataTypeEnum._CF_enumeration.addEnumeration(unicode_value=u'String', tag=u'String')
@@ -161,7 +108,7 @@ class DimensionTypeEnum (pyxb.binding.datatypes.string, pyxb.binding.basis.enume
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DimensionTypeEnum')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 221, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 238, 2)
     _Documentation = None
 DimensionTypeEnum._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=DimensionTypeEnum, enum_prefix=None)
 DimensionTypeEnum.Matrix = DimensionTypeEnum._CF_enumeration.addEnumeration(unicode_value=u'Matrix', tag=u'Matrix')
@@ -177,7 +124,7 @@ class STD_ANON (pyxb.binding.basis.STD_list):
     """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
 
     _ExpandedName = None
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 302, 6)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 319, 6)
     _Documentation = None
 
     _ItemType = pyxb.binding.datatypes.anyURI
@@ -190,7 +137,7 @@ class STD_ANON_ (pyxb.binding.basis.STD_list):
     """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
 
     _ExpandedName = None
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 380, 6)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 408, 6)
     _Documentation = None
 
     _ItemType = pyxb.binding.datatypes.anyURI
@@ -203,7 +150,7 @@ class STD_ANON_2 (pyxb.binding.basis.STD_list):
     """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
 
     _ExpandedName = None
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 394, 6)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 422, 6)
     _Documentation = None
 
     _ItemType = pyxb.binding.datatypes.anyURI
@@ -216,7 +163,7 @@ class STD_ANON_3 (pyxb.binding.basis.STD_list):
     """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
 
     _ExpandedName = None
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 400, 6)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 428, 6)
     _Documentation = None
 
     _ItemType = pyxb.binding.datatypes.anyURI
@@ -229,7 +176,7 @@ class STD_ANON_4 (pyxb.binding.basis.STD_list):
     """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
 
     _ExpandedName = None
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 419, 10)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 447, 10)
     _Documentation = None
 
     _ItemType = pyxb.binding.datatypes.anyURI
@@ -241,7 +188,7 @@ class SimpleFormulaOperation (pyxb.binding.datatypes.string, pyxb.binding.basis.
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'SimpleFormulaOperation')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 426, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 454, 2)
     _Documentation = None
 SimpleFormulaOperation._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=SimpleFormulaOperation, enum_prefix=None)
 SimpleFormulaOperation.Addition = SimpleFormulaOperation._CF_enumeration.addEnumeration(unicode_value=u'Addition', tag=u'Addition')
@@ -259,7 +206,7 @@ class DoDDistributionStatementEnum (pyxb.binding.datatypes.string, pyxb.binding.
     """An atomic simple type."""
 
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DoDDistributionStatementEnum')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 460, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 488, 2)
     _Documentation = None
 DoDDistributionStatementEnum._CF_enumeration = pyxb.binding.facets.CF_enumeration(value_datatype=DoDDistributionStatementEnum, enum_prefix=None)
 DoDDistributionStatementEnum.StatementA = DoDDistributionStatementEnum._CF_enumeration.addEnumeration(unicode_value=u'StatementA', tag=u'StatementA')
@@ -270,6 +217,19 @@ DoDDistributionStatementEnum.StatementE = DoDDistributionStatementEnum._CF_enume
 DoDDistributionStatementEnum._InitializeFacetMap(DoDDistributionStatementEnum._CF_enumeration)
 Namespace.addCategoryObject('typeBinding', u'DoDDistributionStatementEnum', DoDDistributionStatementEnum)
 
+# List simple type: [anonymous]
+# superclasses pyxb.binding.datatypes.anySimpleType
+class STD_ANON_5 (pyxb.binding.basis.STD_list):
+
+    """Simple type that is a list of pyxb.binding.datatypes.anyURI."""
+
+    _ExpandedName = None
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 580, 10)
+    _Documentation = None
+
+    _ItemType = pyxb.binding.datatypes.anyURI
+STD_ANON_5._InitializeFacetMap()
+
 # Complex type {avm}Component with content type ELEMENT_ONLY
 class Component_ (pyxb.binding.basis.complexTypeDefinition):
     """Test documentation for Component type. Yep."""
@@ -277,109 +237,116 @@ class Component_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Component')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 52, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 67, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element DomainModel uses Python identifier DomainModel
-    __DomainModel = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DomainModel'), 'DomainModel', '__avm_Component__DomainModel', True, pyxb.utils.utility.Location(u'avm.xsd', 57, 6), )
+    __DomainModel = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DomainModel'), 'DomainModel', '__avm_Component__DomainModel', True, pyxb.utils.utility.Location(u'avm.xsd', 72, 6), )
 
     
     DomainModel = property(__DomainModel.value, __DomainModel.set, None, None)
 
     
     # Element Property uses Python identifier Property
-    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Component__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 58, 6), )
+    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Component__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 73, 6), )
 
     
     Property = property(__Property.value, __Property.set, None, None)
 
     
     # Element ResourceDependency uses Python identifier ResourceDependency
-    __ResourceDependency = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), 'ResourceDependency', '__avm_Component__ResourceDependency', True, pyxb.utils.utility.Location(u'avm.xsd', 59, 6), )
+    __ResourceDependency = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), 'ResourceDependency', '__avm_Component__ResourceDependency', True, pyxb.utils.utility.Location(u'avm.xsd', 74, 6), )
 
     
     ResourceDependency = property(__ResourceDependency.value, __ResourceDependency.set, None, None)
 
     
     # Element Connector uses Python identifier Connector
-    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Component__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 60, 6), )
+    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Component__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 75, 6), )
 
     
     Connector = property(__Connector.value, __Connector.set, None, None)
 
     
     # Element DistributionRestriction uses Python identifier DistributionRestriction
-    __DistributionRestriction = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DistributionRestriction'), 'DistributionRestriction', '__avm_Component__DistributionRestriction', True, pyxb.utils.utility.Location(u'avm.xsd', 61, 6), )
+    __DistributionRestriction = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DistributionRestriction'), 'DistributionRestriction', '__avm_Component__DistributionRestriction', True, pyxb.utils.utility.Location(u'avm.xsd', 76, 6), )
 
     
     DistributionRestriction = property(__DistributionRestriction.value, __DistributionRestriction.set, None, None)
 
     
     # Element Port uses Python identifier Port
-    __Port = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Port'), 'Port', '__avm_Component__Port', True, pyxb.utils.utility.Location(u'avm.xsd', 62, 6), )
+    __Port = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Port'), 'Port', '__avm_Component__Port', True, pyxb.utils.utility.Location(u'avm.xsd', 77, 6), )
 
     
     Port = property(__Port.value, __Port.set, None, None)
 
     
     # Element Classifications uses Python identifier Classifications
-    __Classifications = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Classifications'), 'Classifications', '__avm_Component__Classifications', True, pyxb.utils.utility.Location(u'avm.xsd', 63, 6), )
+    __Classifications = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Classifications'), 'Classifications', '__avm_Component__Classifications', True, pyxb.utils.utility.Location(u'avm.xsd', 78, 6), )
 
     
     Classifications = property(__Classifications.value, __Classifications.set, None, None)
 
     
     # Element AnalysisConstruct uses Python identifier AnalysisConstruct
-    __AnalysisConstruct = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct'), 'AnalysisConstruct', '__avm_Component__AnalysisConstruct', True, pyxb.utils.utility.Location(u'avm.xsd', 64, 6), )
+    __AnalysisConstruct = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct'), 'AnalysisConstruct', '__avm_Component__AnalysisConstruct', True, pyxb.utils.utility.Location(u'avm.xsd', 79, 6), )
 
     
     AnalysisConstruct = property(__AnalysisConstruct.value, __AnalysisConstruct.set, None, None)
 
     
     # Element Supercedes uses Python identifier Supercedes
-    __Supercedes = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Supercedes'), 'Supercedes', '__avm_Component__Supercedes', True, pyxb.utils.utility.Location(u'avm.xsd', 65, 6), )
+    __Supercedes = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Supercedes'), 'Supercedes', '__avm_Component__Supercedes', True, pyxb.utils.utility.Location(u'avm.xsd', 80, 6), )
 
     
     Supercedes = property(__Supercedes.value, __Supercedes.set, None, None)
 
     
     # Element Formula uses Python identifier Formula
-    __Formula = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Formula'), 'Formula', '__avm_Component__Formula', True, pyxb.utils.utility.Location(u'avm.xsd', 66, 6), )
+    __Formula = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Formula'), 'Formula', '__avm_Component__Formula', True, pyxb.utils.utility.Location(u'avm.xsd', 81, 6), )
 
     
     Formula = property(__Formula.value, __Formula.set, None, None)
 
     
+    # Element DomainMapping uses Python identifier DomainMapping
+    __DomainMapping = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DomainMapping'), 'DomainMapping', '__avm_Component__DomainMapping', True, pyxb.utils.utility.Location(u'avm.xsd', 82, 6), )
+
+    
+    DomainMapping = property(__DomainMapping.value, __DomainMapping.set, None, None)
+
+    
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Component__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 68, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 68, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 84, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 84, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute Version uses Python identifier Version
     __Version = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Version'), 'Version', '__avm_Component__Version', pyxb.binding.datatypes.string)
-    __Version._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 69, 4)
-    __Version._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 69, 4)
+    __Version._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 85, 4)
+    __Version._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 85, 4)
     
     Version = property(__Version.value, __Version.set, None, None)
 
     
     # Attribute SchemaVersion uses Python identifier SchemaVersion
     __SchemaVersion = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'SchemaVersion'), 'SchemaVersion', '__avm_Component__SchemaVersion', pyxb.binding.datatypes.string)
-    __SchemaVersion._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 70, 4)
-    __SchemaVersion._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 70, 4)
+    __SchemaVersion._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 86, 4)
+    __SchemaVersion._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 86, 4)
     
     SchemaVersion = property(__SchemaVersion.value, __SchemaVersion.set, None, None)
 
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_Component__ID', pyxb.binding.datatypes.string)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 71, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 71, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 87, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 87, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
@@ -393,7 +360,8 @@ class Component_ (pyxb.binding.basis.complexTypeDefinition):
         __Classifications.name() : __Classifications,
         __AnalysisConstruct.name() : __AnalysisConstruct,
         __Supercedes.name() : __Supercedes,
-        __Formula.name() : __Formula
+        __Formula.name() : __Formula,
+        __DomainMapping.name() : __DomainMapping
     })
     _AttributeMap.update({
         __Name.name() : __Name,
@@ -411,57 +379,65 @@ class DomainModel_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DomainModel')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 73, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 89, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute UsesResource uses Python identifier UsesResource
     __UsesResource = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'UsesResource'), 'UsesResource', '__avm_DomainModel__UsesResource', pyxb.binding.datatypes.IDREFS)
-    __UsesResource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 74, 4)
-    __UsesResource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 74, 4)
+    __UsesResource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 90, 4)
+    __UsesResource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 90, 4)
     
     UsesResource = property(__UsesResource.value, __UsesResource.set, None, None)
 
     
     # Attribute Author uses Python identifier Author
     __Author = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Author'), 'Author', '__avm_DomainModel__Author', pyxb.binding.datatypes.string)
-    __Author._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 75, 4)
-    __Author._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 75, 4)
+    __Author._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 91, 4)
+    __Author._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 91, 4)
     
     Author = property(__Author.value, __Author.set, None, None)
 
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_DomainModel__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 76, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 76, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 92, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 92, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_DomainModel__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 77, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 77, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 93, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 93, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_DomainModel__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 78, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 78, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 94, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 94, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_DomainModel__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 79, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 79, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 95, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 95, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
+
+    
+    # Attribute ID uses Python identifier ID
+    __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_DomainModel__ID', pyxb.binding.datatypes.ID)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 96, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 96, 4)
+    
+    ID = property(__ID.value, __ID.set, None, None)
 
     _ElementMap.update({
         
@@ -472,7 +448,8 @@ class DomainModel_ (pyxb.binding.basis.complexTypeDefinition):
         __Notes.name() : __Notes,
         __XPosition.name() : __XPosition,
         __YPosition.name() : __YPosition,
-        __Name.name() : __Name
+        __Name.name() : __Name,
+        __ID.name() : __ID
     })
 Namespace.addCategoryObject('typeBinding', u'DomainModel', DomainModel_)
 
@@ -484,63 +461,63 @@ class Property_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Property')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 81, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 98, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Property__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 82, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 82, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 99, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 99, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute OnDataSheet uses Python identifier OnDataSheet
     __OnDataSheet = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'OnDataSheet'), 'OnDataSheet', '__avm_Property__OnDataSheet', pyxb.binding.datatypes.boolean)
-    __OnDataSheet._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 83, 4)
-    __OnDataSheet._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 83, 4)
+    __OnDataSheet._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 100, 4)
+    __OnDataSheet._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 100, 4)
     
     OnDataSheet = property(__OnDataSheet.value, __OnDataSheet.set, None, None)
 
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_Property__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 84, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 84, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 101, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 101, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute Definition uses Python identifier Definition
     __Definition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Definition'), 'Definition', '__avm_Property__Definition', pyxb.binding.datatypes.anyURI)
-    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 85, 4)
-    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 85, 4)
+    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 102, 4)
+    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 102, 4)
     
     Definition = property(__Definition.value, __Definition.set, None, None)
 
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_Property__ID', pyxb.binding.datatypes.ID)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 86, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 86, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 103, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 103, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Property__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 87, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 87, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 104, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 104, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Property__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 88, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 88, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 105, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 105, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -566,63 +543,63 @@ class Resource_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Resource')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 131, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 148, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Resource__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 132, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 132, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 149, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 149, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute Path uses Python identifier Path
     __Path = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Path'), 'Path', '__avm_Resource__Path', pyxb.binding.datatypes.anyURI)
-    __Path._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 133, 4)
-    __Path._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 133, 4)
+    __Path._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 150, 4)
+    __Path._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 150, 4)
     
     Path = property(__Path.value, __Path.set, None, None)
 
     
     # Attribute Hash uses Python identifier Hash
     __Hash = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Hash'), 'Hash', '__avm_Resource__Hash', pyxb.binding.datatypes.string)
-    __Hash._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 134, 4)
-    __Hash._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 134, 4)
+    __Hash._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 151, 4)
+    __Hash._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 151, 4)
     
     Hash = property(__Hash.value, __Hash.set, None, None)
 
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_Resource__ID', pyxb.binding.datatypes.ID)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 135, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 135, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 152, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 152, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_Resource__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 136, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 136, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 153, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 153, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Resource__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 137, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 137, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 154, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 154, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Resource__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 138, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 138, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 155, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 155, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -648,31 +625,31 @@ class DomainModelParameter_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DomainModelParameter')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 174, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 191, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_DomainModelParameter__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 175, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 175, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 192, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 192, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_DomainModelParameter__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 176, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 176, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 193, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 193, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_DomainModelParameter__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 177, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 177, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 194, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 194, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -694,7 +671,7 @@ class ValueExpressionType_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ValueExpressionType')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 191, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 208, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
@@ -714,15 +691,15 @@ class DistributionRestriction_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DistributionRestriction')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 228, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 245, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_DistributionRestriction__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 229, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 229, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 246, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 246, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
@@ -742,13 +719,13 @@ class DomainModelMetric_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DomainModelMetric')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 250, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 267, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element Value uses Python identifier Value
-    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_DomainModelMetric__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 252, 6), )
+    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_DomainModelMetric__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 269, 6), )
 
     
     Value = property(__Value.value, __Value.set, None, None)
@@ -756,32 +733,32 @@ class DomainModelMetric_ (pyxb.binding.basis.complexTypeDefinition):
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_DomainModelMetric__ID', pyxb.binding.datatypes.ID, required=True)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 254, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 254, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 271, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 271, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_DomainModelMetric__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 255, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 255, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 272, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 272, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_DomainModelMetric__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 256, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 256, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 273, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 273, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_DomainModelMetric__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 257, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 257, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 274, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 274, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -804,7 +781,7 @@ class AnalysisConstruct_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'AnalysisConstruct')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 298, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 315, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
@@ -824,51 +801,67 @@ class Design_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Design')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 307, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 324, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element RootContainer uses Python identifier RootContainer
-    __RootContainer = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'RootContainer'), 'RootContainer', '__avm_Design__RootContainer', False, pyxb.utils.utility.Location(u'avm.xsd', 309, 6), )
+    __RootContainer = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'RootContainer'), 'RootContainer', '__avm_Design__RootContainer', False, pyxb.utils.utility.Location(u'avm.xsd', 326, 6), )
 
     
     RootContainer = property(__RootContainer.value, __RootContainer.set, None, None)
 
     
+    # Element DomainFeature uses Python identifier DomainFeature
+    __DomainFeature = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DomainFeature'), 'DomainFeature', '__avm_Design__DomainFeature', True, pyxb.utils.utility.Location(u'avm.xsd', 327, 6), )
+
+    
+    DomainFeature = property(__DomainFeature.value, __DomainFeature.set, None, None)
+
+    
+    # Element ResourceDependency uses Python identifier ResourceDependency
+    __ResourceDependency = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), 'ResourceDependency', '__avm_Design__ResourceDependency', True, pyxb.utils.utility.Location(u'avm.xsd', 328, 6), )
+
+    
+    ResourceDependency = property(__ResourceDependency.value, __ResourceDependency.set, None, None)
+
+    
     # Attribute SchemaVersion uses Python identifier SchemaVersion
     __SchemaVersion = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'SchemaVersion'), 'SchemaVersion', '__avm_Design__SchemaVersion', pyxb.binding.datatypes.string)
-    __SchemaVersion._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 311, 4)
-    __SchemaVersion._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 311, 4)
+    __SchemaVersion._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 330, 4)
+    __SchemaVersion._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 330, 4)
     
     SchemaVersion = property(__SchemaVersion.value, __SchemaVersion.set, None, None)
 
     
     # Attribute DesignID uses Python identifier DesignID
     __DesignID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DesignID'), 'DesignID', '__avm_Design__DesignID', pyxb.binding.datatypes.string)
-    __DesignID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 312, 4)
-    __DesignID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 312, 4)
+    __DesignID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 331, 4)
+    __DesignID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 331, 4)
     
     DesignID = property(__DesignID.value, __DesignID.set, None, None)
 
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Design__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 313, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 313, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 332, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 332, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute DesignSpaceSrcID uses Python identifier DesignSpaceSrcID
     __DesignSpaceSrcID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DesignSpaceSrcID'), 'DesignSpaceSrcID', '__avm_Design__DesignSpaceSrcID', pyxb.binding.datatypes.string)
-    __DesignSpaceSrcID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 314, 4)
-    __DesignSpaceSrcID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 314, 4)
+    __DesignSpaceSrcID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 333, 4)
+    __DesignSpaceSrcID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 333, 4)
     
     DesignSpaceSrcID = property(__DesignSpaceSrcID.value, __DesignSpaceSrcID.set, None, None)
 
     _ElementMap.update({
-        __RootContainer.name() : __RootContainer
+        __RootContainer.name() : __RootContainer,
+        __DomainFeature.name() : __DomainFeature,
+        __ResourceDependency.name() : __ResourceDependency
     })
     _AttributeMap.update({
         __SchemaVersion.name() : __SchemaVersion,
@@ -886,89 +879,126 @@ class Container_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Container')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 316, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 335, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element Container uses Python identifier Container
-    __Container = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Container'), 'Container', '__avm_Container__Container', True, pyxb.utils.utility.Location(u'avm.xsd', 318, 6), )
+    __Container = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Container'), 'Container', '__avm_Container__Container', True, pyxb.utils.utility.Location(u'avm.xsd', 337, 6), )
 
     
     Container = property(__Container.value, __Container.set, None, None)
 
     
     # Element Property uses Python identifier Property
-    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Container__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 319, 6), )
+    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Container__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 338, 6), )
 
     
     Property = property(__Property.value, __Property.set, None, None)
 
     
     # Element ComponentInstance uses Python identifier ComponentInstance
-    __ComponentInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ComponentInstance'), 'ComponentInstance', '__avm_Container__ComponentInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 320, 6), )
+    __ComponentInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ComponentInstance'), 'ComponentInstance', '__avm_Container__ComponentInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 339, 6), )
 
     
     ComponentInstance = property(__ComponentInstance.value, __ComponentInstance.set, None, None)
 
     
     # Element Port uses Python identifier Port
-    __Port = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Port'), 'Port', '__avm_Container__Port', True, pyxb.utils.utility.Location(u'avm.xsd', 321, 6), )
+    __Port = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Port'), 'Port', '__avm_Container__Port', True, pyxb.utils.utility.Location(u'avm.xsd', 340, 6), )
 
     
     Port = property(__Port.value, __Port.set, None, None)
 
     
     # Element Connector uses Python identifier Connector
-    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Container__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 322, 6), )
+    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Container__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 341, 6), )
 
     
     Connector = property(__Connector.value, __Connector.set, None, None)
 
     
     # Element JoinData uses Python identifier JoinData
-    __JoinData = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'JoinData'), 'JoinData', '__avm_Container__JoinData', True, pyxb.utils.utility.Location(u'avm.xsd', 323, 6), )
+    __JoinData = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'JoinData'), 'JoinData', '__avm_Container__JoinData', True, pyxb.utils.utility.Location(u'avm.xsd', 342, 6), )
 
     
     JoinData = property(__JoinData.value, __JoinData.set, None, None)
 
     
     # Element Formula uses Python identifier Formula
-    __Formula = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Formula'), 'Formula', '__avm_Container__Formula', True, pyxb.utils.utility.Location(u'avm.xsd', 324, 6), )
+    __Formula = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Formula'), 'Formula', '__avm_Container__Formula', True, pyxb.utils.utility.Location(u'avm.xsd', 343, 6), )
 
     
     Formula = property(__Formula.value, __Formula.set, None, None)
 
     
     # Element ContainerFeature uses Python identifier ContainerFeature
-    __ContainerFeature = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ContainerFeature'), 'ContainerFeature', '__avm_Container__ContainerFeature', True, pyxb.utils.utility.Location(u'avm.xsd', 325, 6), )
+    __ContainerFeature = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ContainerFeature'), 'ContainerFeature', '__avm_Container__ContainerFeature', True, pyxb.utils.utility.Location(u'avm.xsd', 344, 6), )
 
     
     ContainerFeature = property(__ContainerFeature.value, __ContainerFeature.set, None, None)
 
     
-    # Attribute Name uses Python identifier Name
-    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Container__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 327, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 327, 4)
+    # Element ResourceDependency uses Python identifier ResourceDependency
+    __ResourceDependency = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), 'ResourceDependency', '__avm_Container__ResourceDependency', True, pyxb.utils.utility.Location(u'avm.xsd', 345, 6), )
+
     
-    Name = property(__Name.value, __Name.set, None, None)
+    ResourceDependency = property(__ResourceDependency.value, __ResourceDependency.set, None, None)
+
+    
+    # Element DomainModel uses Python identifier DomainModel
+    __DomainModel = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DomainModel'), 'DomainModel', '__avm_Container__DomainModel', True, pyxb.utils.utility.Location(u'avm.xsd', 346, 6), )
+
+    
+    DomainModel = property(__DomainModel.value, __DomainModel.set, None, None)
+
+    
+    # Element Resource uses Python identifier Resource
+    __Resource = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Resource'), 'Resource', '__avm_Container__Resource', True, pyxb.utils.utility.Location(u'avm.xsd', 347, 6), )
+
+    
+    Resource = property(__Resource.value, __Resource.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Container__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 328, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 328, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 349, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 349, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
+    # Attribute Name uses Python identifier Name
+    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Container__Name', pyxb.binding.datatypes.string)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 350, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 350, 4)
+    
+    Name = property(__Name.value, __Name.set, None, None)
+
+    
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Container__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 329, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 329, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 351, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 351, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
+
+    
+    # Attribute ID uses Python identifier ID
+    __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_Container__ID', pyxb.binding.datatypes.ID)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 352, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 352, 4)
+    
+    ID = property(__ID.value, __ID.set, None, None)
+
+    
+    # Attribute Description uses Python identifier Description
+    __Description = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Description'), 'Description', '__avm_Container__Description', pyxb.binding.datatypes.string)
+    __Description._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 353, 4)
+    __Description._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 353, 4)
+    
+    Description = property(__Description.value, __Description.set, None, None)
 
     _ElementMap.update({
         __Container.name() : __Container,
@@ -978,12 +1008,17 @@ class Container_ (pyxb.binding.basis.complexTypeDefinition):
         __Connector.name() : __Connector,
         __JoinData.name() : __JoinData,
         __Formula.name() : __Formula,
-        __ContainerFeature.name() : __ContainerFeature
+        __ContainerFeature.name() : __ContainerFeature,
+        __ResourceDependency.name() : __ResourceDependency,
+        __DomainModel.name() : __DomainModel,
+        __Resource.name() : __Resource
     })
     _AttributeMap.update({
-        __Name.name() : __Name,
         __XPosition.name() : __XPosition,
-        __YPosition.name() : __YPosition
+        __Name.name() : __Name,
+        __YPosition.name() : __YPosition,
+        __ID.name() : __ID,
+        __Description.name() : __Description
     })
 Namespace.addCategoryObject('typeBinding', u'Container', Container_)
 
@@ -995,27 +1030,27 @@ class ComponentInstance_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ComponentInstance')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 346, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 374, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element PortInstance uses Python identifier PortInstance
-    __PortInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PortInstance'), 'PortInstance', '__avm_ComponentInstance__PortInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 348, 6), )
+    __PortInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PortInstance'), 'PortInstance', '__avm_ComponentInstance__PortInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 376, 6), )
 
     
     PortInstance = property(__PortInstance.value, __PortInstance.set, None, None)
 
     
     # Element PrimitivePropertyInstance uses Python identifier PrimitivePropertyInstance
-    __PrimitivePropertyInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance'), 'PrimitivePropertyInstance', '__avm_ComponentInstance__PrimitivePropertyInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 349, 6), )
+    __PrimitivePropertyInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance'), 'PrimitivePropertyInstance', '__avm_ComponentInstance__PrimitivePropertyInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 377, 6), )
 
     
     PrimitivePropertyInstance = property(__PrimitivePropertyInstance.value, __PrimitivePropertyInstance.set, None, None)
 
     
     # Element ConnectorInstance uses Python identifier ConnectorInstance
-    __ConnectorInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ConnectorInstance'), 'ConnectorInstance', '__avm_ComponentInstance__ConnectorInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 350, 6), )
+    __ConnectorInstance = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ConnectorInstance'), 'ConnectorInstance', '__avm_ComponentInstance__ConnectorInstance', True, pyxb.utils.utility.Location(u'avm.xsd', 378, 6), )
 
     
     ConnectorInstance = property(__ConnectorInstance.value, __ConnectorInstance.set, None, None)
@@ -1023,48 +1058,48 @@ class ComponentInstance_ (pyxb.binding.basis.complexTypeDefinition):
     
     # Attribute ComponentID uses Python identifier ComponentID
     __ComponentID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ComponentID'), 'ComponentID', '__avm_ComponentInstance__ComponentID', pyxb.binding.datatypes.string)
-    __ComponentID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 352, 4)
-    __ComponentID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 352, 4)
+    __ComponentID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 380, 4)
+    __ComponentID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 380, 4)
     
     ComponentID = property(__ComponentID.value, __ComponentID.set, None, None)
 
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_ComponentInstance__ID', pyxb.binding.datatypes.ID)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 353, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 353, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 381, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 381, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_ComponentInstance__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 354, 4)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 354, 4)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 382, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 382, 4)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute DesignSpaceSrcComponentID uses Python identifier DesignSpaceSrcComponentID
     __DesignSpaceSrcComponentID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DesignSpaceSrcComponentID'), 'DesignSpaceSrcComponentID', '__avm_ComponentInstance__DesignSpaceSrcComponentID', pyxb.binding.datatypes.string)
-    __DesignSpaceSrcComponentID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 355, 4)
-    __DesignSpaceSrcComponentID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 355, 4)
+    __DesignSpaceSrcComponentID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 383, 4)
+    __DesignSpaceSrcComponentID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 383, 4)
     
     DesignSpaceSrcComponentID = property(__DesignSpaceSrcComponentID.value, __DesignSpaceSrcComponentID.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_ComponentInstance__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 356, 4)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 356, 4)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 384, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 384, 4)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_ComponentInstance__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 357, 4)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 357, 4)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 385, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 385, 4)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -1091,13 +1126,13 @@ class ComponentPrimitivePropertyInstance_ (pyxb.binding.basis.complexTypeDefinit
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ComponentPrimitivePropertyInstance')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 366, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 394, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Element Value uses Python identifier Value
-    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_ComponentPrimitivePropertyInstance__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 368, 6), )
+    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_ComponentPrimitivePropertyInstance__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 396, 6), )
 
     
     Value = property(__Value.value, __Value.set, None, None)
@@ -1105,8 +1140,8 @@ class ComponentPrimitivePropertyInstance_ (pyxb.binding.basis.complexTypeDefinit
     
     # Attribute IDinComponentModel uses Python identifier IDinComponentModel
     __IDinComponentModel = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'IDinComponentModel'), 'IDinComponentModel', '__avm_ComponentPrimitivePropertyInstance__IDinComponentModel', pyxb.binding.datatypes.string, required=True)
-    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 370, 4)
-    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 370, 4)
+    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 398, 4)
+    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 398, 4)
     
     IDinComponentModel = property(__IDinComponentModel.value, __IDinComponentModel.set, None, None)
 
@@ -1126,15 +1161,15 @@ class ValueNode_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ValueNode')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 436, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 464, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_ValueNode__ID', pyxb.binding.datatypes.ID)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 437, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 437, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 465, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 465, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
@@ -1154,23 +1189,23 @@ class Operand_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Operand')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 449, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 477, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Symbol uses Python identifier Symbol
     __Symbol = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Symbol'), 'Symbol', '__avm_Operand__Symbol', pyxb.binding.datatypes.string, required=True)
-    __Symbol._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 450, 4)
-    __Symbol._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 450, 4)
+    __Symbol._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 478, 4)
+    __Symbol._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 478, 4)
     
     Symbol = property(__Symbol.value, __Symbol.set, None, None)
 
     
     # Attribute ValueSource uses Python identifier ValueSource
     __ValueSource = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ValueSource'), 'ValueSource', '__avm_Operand__ValueSource', pyxb.binding.datatypes.anyURI, required=True)
-    __ValueSource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 451, 4)
-    __ValueSource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 451, 4)
+    __ValueSource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 479, 4)
+    __ValueSource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 479, 4)
     
     ValueSource = property(__ValueSource.value, __ValueSource.set, None, None)
 
@@ -1191,7 +1226,7 @@ class ConnectorFeature_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ConnectorFeature')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 469, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 497, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
@@ -1211,7 +1246,7 @@ class ContainerFeature_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ContainerFeature')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 470, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 498, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
@@ -1224,6 +1259,337 @@ class ContainerFeature_ (pyxb.binding.basis.complexTypeDefinition):
 Namespace.addCategoryObject('typeBinding', u'ContainerFeature', ContainerFeature_)
 
 
+# Complex type {avm}DomainMapping with content type EMPTY
+class DomainMapping_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}DomainMapping with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DomainMapping')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 499, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'DomainMapping', DomainMapping_)
+
+
+# Complex type {avm}TestBench with content type ELEMENT_ONLY
+class TestBench_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}TestBench with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'TestBench')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 500, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    
+    # Element TopLevelSystemUnderTest uses Python identifier TopLevelSystemUnderTest
+    __TopLevelSystemUnderTest = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'TopLevelSystemUnderTest'), 'TopLevelSystemUnderTest', '__avm_TestBench__TopLevelSystemUnderTest', False, pyxb.utils.utility.Location(u'avm.xsd', 502, 6), )
+
+    
+    TopLevelSystemUnderTest = property(__TopLevelSystemUnderTest.value, __TopLevelSystemUnderTest.set, None, None)
+
+    
+    # Element Parameter uses Python identifier Parameter
+    __Parameter = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Parameter'), 'Parameter', '__avm_TestBench__Parameter', True, pyxb.utils.utility.Location(u'avm.xsd', 503, 6), )
+
+    
+    Parameter = property(__Parameter.value, __Parameter.set, None, None)
+
+    
+    # Element Metric uses Python identifier Metric
+    __Metric = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Metric'), 'Metric', '__avm_TestBench__Metric', True, pyxb.utils.utility.Location(u'avm.xsd', 504, 6), )
+
+    
+    Metric = property(__Metric.value, __Metric.set, None, None)
+
+    
+    # Element TestInjectionPoint uses Python identifier TestInjectionPoint
+    __TestInjectionPoint = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'TestInjectionPoint'), 'TestInjectionPoint', '__avm_TestBench__TestInjectionPoint', True, pyxb.utils.utility.Location(u'avm.xsd', 505, 6), )
+
+    
+    TestInjectionPoint = property(__TestInjectionPoint.value, __TestInjectionPoint.set, None, None)
+
+    
+    # Element TestComponent uses Python identifier TestComponent
+    __TestComponent = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'TestComponent'), 'TestComponent', '__avm_TestBench__TestComponent', True, pyxb.utils.utility.Location(u'avm.xsd', 506, 6), )
+
+    
+    TestComponent = property(__TestComponent.value, __TestComponent.set, None, None)
+
+    
+    # Element Workflow uses Python identifier Workflow
+    __Workflow = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Workflow'), 'Workflow', '__avm_TestBench__Workflow', False, pyxb.utils.utility.Location(u'avm.xsd', 507, 6), )
+
+    
+    Workflow = property(__Workflow.value, __Workflow.set, None, None)
+
+    
+    # Element Settings uses Python identifier Settings
+    __Settings = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Settings'), 'Settings', '__avm_TestBench__Settings', True, pyxb.utils.utility.Location(u'avm.xsd', 508, 6), )
+
+    
+    Settings = property(__Settings.value, __Settings.set, None, None)
+
+    
+    # Element TestStructure uses Python identifier TestStructure
+    __TestStructure = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'TestStructure'), 'TestStructure', '__avm_TestBench__TestStructure', True, pyxb.utils.utility.Location(u'avm.xsd', 509, 6), )
+
+    
+    TestStructure = property(__TestStructure.value, __TestStructure.set, None, None)
+
+    
+    # Attribute Name uses Python identifier Name
+    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_TestBench__Name', pyxb.binding.datatypes.string, required=True)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 511, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 511, 4)
+    
+    Name = property(__Name.value, __Name.set, None, None)
+
+    _ElementMap.update({
+        __TopLevelSystemUnderTest.name() : __TopLevelSystemUnderTest,
+        __Parameter.name() : __Parameter,
+        __Metric.name() : __Metric,
+        __TestInjectionPoint.name() : __TestInjectionPoint,
+        __TestComponent.name() : __TestComponent,
+        __Workflow.name() : __Workflow,
+        __Settings.name() : __Settings,
+        __TestStructure.name() : __TestStructure
+    })
+    _AttributeMap.update({
+        __Name.name() : __Name
+    })
+Namespace.addCategoryObject('typeBinding', u'TestBench', TestBench_)
+
+
+# Complex type {avm}ContainerInstanceBase with content type EMPTY
+class ContainerInstanceBase_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}ContainerInstanceBase with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ContainerInstanceBase')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 530, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    
+    # Attribute IDinSourceModel uses Python identifier IDinSourceModel
+    __IDinSourceModel = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'IDinSourceModel'), 'IDinSourceModel', '__avm_ContainerInstanceBase__IDinSourceModel', pyxb.binding.datatypes.string, required=True)
+    __IDinSourceModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 531, 4)
+    __IDinSourceModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 531, 4)
+    
+    IDinSourceModel = property(__IDinSourceModel.value, __IDinSourceModel.set, None, None)
+
+    
+    # Attribute XPosition uses Python identifier XPosition
+    __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_ContainerInstanceBase__XPosition', pyxb.binding.datatypes.unsignedInt)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 532, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 532, 4)
+    
+    XPosition = property(__XPosition.value, __XPosition.set, None, None)
+
+    
+    # Attribute YPosition uses Python identifier YPosition
+    __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_ContainerInstanceBase__YPosition', pyxb.binding.datatypes.unsignedInt)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 533, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 533, 4)
+    
+    YPosition = property(__YPosition.value, __YPosition.set, None, None)
+
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __IDinSourceModel.name() : __IDinSourceModel,
+        __XPosition.name() : __XPosition,
+        __YPosition.name() : __YPosition
+    })
+Namespace.addCategoryObject('typeBinding', u'ContainerInstanceBase', ContainerInstanceBase_)
+
+
+# Complex type {avm}TestBenchValueBase with content type ELEMENT_ONLY
+class TestBenchValueBase_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}TestBenchValueBase with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'TestBenchValueBase')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 535, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    
+    # Element Value uses Python identifier Value
+    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_TestBenchValueBase__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 537, 6), )
+
+    
+    Value = property(__Value.value, __Value.set, None, None)
+
+    
+    # Attribute ID uses Python identifier ID
+    __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_TestBenchValueBase__ID', pyxb.binding.datatypes.string, required=True)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 539, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 539, 4)
+    
+    ID = property(__ID.value, __ID.set, None, None)
+
+    
+    # Attribute Name uses Python identifier Name
+    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_TestBenchValueBase__Name', pyxb.binding.datatypes.string, required=True)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 540, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 540, 4)
+    
+    Name = property(__Name.value, __Name.set, None, None)
+
+    
+    # Attribute Notes uses Python identifier Notes
+    __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_TestBenchValueBase__Notes', pyxb.binding.datatypes.string)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 541, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 541, 4)
+    
+    Notes = property(__Notes.value, __Notes.set, None, None)
+
+    
+    # Attribute XPosition uses Python identifier XPosition
+    __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_TestBenchValueBase__XPosition', pyxb.binding.datatypes.unsignedInt)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 542, 4)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 542, 4)
+    
+    XPosition = property(__XPosition.value, __XPosition.set, None, None)
+
+    
+    # Attribute YPosition uses Python identifier YPosition
+    __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_TestBenchValueBase__YPosition', pyxb.binding.datatypes.unsignedInt)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 543, 4)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 543, 4)
+    
+    YPosition = property(__YPosition.value, __YPosition.set, None, None)
+
+    _ElementMap.update({
+        __Value.name() : __Value
+    })
+    _AttributeMap.update({
+        __ID.name() : __ID,
+        __Name.name() : __Name,
+        __Notes.name() : __Notes,
+        __XPosition.name() : __XPosition,
+        __YPosition.name() : __YPosition
+    })
+Namespace.addCategoryObject('typeBinding', u'TestBenchValueBase', TestBenchValueBase_)
+
+
+# Complex type {avm}Workflow with content type ELEMENT_ONLY
+class Workflow_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}Workflow with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Workflow')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 550, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    
+    # Element Task uses Python identifier Task
+    __Task = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Task'), 'Task', '__avm_Workflow__Task', True, pyxb.utils.utility.Location(u'avm.xsd', 552, 6), )
+
+    
+    Task = property(__Task.value, __Task.set, None, None)
+
+    
+    # Attribute Name uses Python identifier Name
+    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Workflow__Name', pyxb.binding.datatypes.string)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 554, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 554, 4)
+    
+    Name = property(__Name.value, __Name.set, None, None)
+
+    _ElementMap.update({
+        __Task.name() : __Task
+    })
+    _AttributeMap.update({
+        __Name.name() : __Name
+    })
+Namespace.addCategoryObject('typeBinding', u'Workflow', Workflow_)
+
+
+# Complex type {avm}WorkflowTaskBase with content type EMPTY
+class WorkflowTaskBase_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}WorkflowTaskBase with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'WorkflowTaskBase')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 556, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    
+    # Attribute Name uses Python identifier Name
+    __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_WorkflowTaskBase__Name', pyxb.binding.datatypes.string)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 557, 4)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 557, 4)
+    
+    Name = property(__Name.value, __Name.set, None, None)
+
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __Name.name() : __Name
+    })
+Namespace.addCategoryObject('typeBinding', u'WorkflowTaskBase', WorkflowTaskBase_)
+
+
+# Complex type {avm}Settings with content type EMPTY
+class Settings_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}Settings with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Settings')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 575, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'Settings', Settings_)
+
+
+# Complex type {avm}DesignDomainFeature with content type EMPTY
+class DesignDomainFeature_ (pyxb.binding.basis.complexTypeDefinition):
+    """Complex type {avm}DesignDomainFeature with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = True
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DesignDomainFeature')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 587, 2)
+    _ElementMap = {}
+    _AttributeMap = {}
+    # Base type is pyxb.binding.datatypes.anyType
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'DesignDomainFeature', DesignDomainFeature_)
+
+
 # Complex type {avm}Value with content type ELEMENT_ONLY
 class Value_ (ValueNode_):
     """Complex type {avm}Value with content type ELEMENT_ONLY"""
@@ -1231,55 +1597,55 @@ class Value_ (ValueNode_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Value')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 90, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 107, 2)
     _ElementMap = ValueNode_._ElementMap.copy()
     _AttributeMap = ValueNode_._AttributeMap.copy()
     # Base type is ValueNode_
     
     # Element ValueExpression uses Python identifier ValueExpression
-    __ValueExpression = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ValueExpression'), 'ValueExpression', '__avm_Value__ValueExpression', False, pyxb.utils.utility.Location(u'avm.xsd', 94, 10), )
+    __ValueExpression = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ValueExpression'), 'ValueExpression', '__avm_Value__ValueExpression', False, pyxb.utils.utility.Location(u'avm.xsd', 111, 10), )
 
     
     ValueExpression = property(__ValueExpression.value, __ValueExpression.set, None, None)
 
     
     # Element DataSource uses Python identifier DataSource
-    __DataSource = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DataSource'), 'DataSource', '__avm_Value__DataSource', True, pyxb.utils.utility.Location(u'avm.xsd', 95, 10), )
+    __DataSource = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DataSource'), 'DataSource', '__avm_Value__DataSource', True, pyxb.utils.utility.Location(u'avm.xsd', 112, 10), )
 
     
     DataSource = property(__DataSource.value, __DataSource.set, None, None)
 
     
-    # Attribute Unit uses Python identifier Unit
-    __Unit = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Unit'), 'Unit', '__avm_Value__Unit', pyxb.binding.datatypes.string)
-    __Unit._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 97, 8)
-    __Unit._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 97, 8)
-    
-    Unit = property(__Unit.value, __Unit.set, None, None)
-
-    
-    # Attribute DataType uses Python identifier DataType
-    __DataType = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DataType'), 'DataType', '__avm_Value__DataType', DataTypeEnum)
-    __DataType._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 98, 8)
-    __DataType._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 98, 8)
-    
-    DataType = property(__DataType.value, __DataType.set, None, None)
-
-    
     # Attribute DimensionType uses Python identifier DimensionType
     __DimensionType = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DimensionType'), 'DimensionType', '__avm_Value__DimensionType', DimensionTypeEnum)
-    __DimensionType._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 99, 8)
-    __DimensionType._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 99, 8)
+    __DimensionType._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 114, 8)
+    __DimensionType._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 114, 8)
     
     DimensionType = property(__DimensionType.value, __DimensionType.set, None, None)
 
     
+    # Attribute DataType uses Python identifier DataType
+    __DataType = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DataType'), 'DataType', '__avm_Value__DataType', DataTypeEnum)
+    __DataType._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 115, 8)
+    __DataType._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 115, 8)
+    
+    DataType = property(__DataType.value, __DataType.set, None, None)
+
+    
     # Attribute Dimensions uses Python identifier Dimensions
     __Dimensions = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Dimensions'), 'Dimensions', '__avm_Value__Dimensions', pyxb.binding.datatypes.string)
-    __Dimensions._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 100, 8)
-    __Dimensions._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 100, 8)
+    __Dimensions._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 116, 8)
+    __Dimensions._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 116, 8)
     
     Dimensions = property(__Dimensions.value, __Dimensions.set, None, None)
+
+    
+    # Attribute Unit uses Python identifier Unit
+    __Unit = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Unit'), 'Unit', '__avm_Value__Unit', pyxb.binding.datatypes.string)
+    __Unit._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 117, 8)
+    __Unit._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 117, 8)
+    
+    Unit = property(__Unit.value, __Unit.set, None, None)
 
     
     # Attribute ID inherited from {avm}ValueNode
@@ -1288,10 +1654,10 @@ class Value_ (ValueNode_):
         __DataSource.name() : __DataSource
     })
     _AttributeMap.update({
-        __Unit.name() : __Unit,
-        __DataType.name() : __DataType,
         __DimensionType.name() : __DimensionType,
-        __Dimensions.name() : __Dimensions
+        __DataType.name() : __DataType,
+        __Dimensions.name() : __Dimensions,
+        __Unit.name() : __Unit
     })
 Namespace.addCategoryObject('typeBinding', u'Value', Value_)
 
@@ -1303,13 +1669,13 @@ class FixedValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'FixedValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 104, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 121, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
     
     # Element Value uses Python identifier Value
-    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_FixedValue__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 108, 10), )
+    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_FixedValue__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 125, 10), )
 
     
     Value = property(__Value.value, __Value.set, None, None)
@@ -1317,8 +1683,8 @@ class FixedValue_ (ValueExpressionType_):
     
     # Attribute Uncertainty uses Python identifier Uncertainty
     __Uncertainty = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Uncertainty'), 'Uncertainty', '__avm_FixedValue__Uncertainty', pyxb.binding.datatypes.float)
-    __Uncertainty._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 110, 8)
-    __Uncertainty._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 110, 8)
+    __Uncertainty._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 127, 8)
+    __Uncertainty._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 127, 8)
     
     Uncertainty = property(__Uncertainty.value, __Uncertainty.set, None, None)
 
@@ -1338,13 +1704,13 @@ class CalculatedValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'CalculatedValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 114, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 131, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
     
     # Element Expression uses Python identifier Expression
-    __Expression = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Expression'), 'Expression', '__avm_CalculatedValue__Expression', False, pyxb.utils.utility.Location(u'avm.xsd', 118, 10), )
+    __Expression = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Expression'), 'Expression', '__avm_CalculatedValue__Expression', False, pyxb.utils.utility.Location(u'avm.xsd', 135, 10), )
 
     
     Expression = property(__Expression.value, __Expression.set, None, None)
@@ -1352,8 +1718,8 @@ class CalculatedValue_ (ValueExpressionType_):
     
     # Attribute Type uses Python identifier Type
     __Type = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Type'), 'Type', '__avm_CalculatedValue__Type', CalculationTypeEnum, required=True)
-    __Type._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 120, 8)
-    __Type._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 120, 8)
+    __Type._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 137, 8)
+    __Type._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 137, 8)
     
     Type = property(__Type.value, __Type.set, None, None)
 
@@ -1373,15 +1739,15 @@ class DerivedValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DerivedValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 124, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 141, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
     
     # Attribute ValueSource uses Python identifier ValueSource
     __ValueSource = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ValueSource'), 'ValueSource', '__avm_DerivedValue__ValueSource', pyxb.binding.datatypes.IDREF, required=True)
-    __ValueSource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 127, 8)
-    __ValueSource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 127, 8)
+    __ValueSource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 144, 8)
+    __ValueSource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 144, 8)
     
     ValueSource = property(__ValueSource.value, __ValueSource.set, None, None)
 
@@ -1401,34 +1767,34 @@ class ParametricValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ParametricValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 179, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 196, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
     
     # Element Default uses Python identifier Default
-    __Default = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Default'), 'Default', '__avm_ParametricValue__Default', False, pyxb.utils.utility.Location(u'avm.xsd', 183, 10), )
+    __Default = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Default'), 'Default', '__avm_ParametricValue__Default', False, pyxb.utils.utility.Location(u'avm.xsd', 200, 10), )
 
     
     Default = property(__Default.value, __Default.set, None, None)
 
     
     # Element Maximum uses Python identifier Maximum
-    __Maximum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Maximum'), 'Maximum', '__avm_ParametricValue__Maximum', False, pyxb.utils.utility.Location(u'avm.xsd', 184, 10), )
+    __Maximum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Maximum'), 'Maximum', '__avm_ParametricValue__Maximum', False, pyxb.utils.utility.Location(u'avm.xsd', 201, 10), )
 
     
     Maximum = property(__Maximum.value, __Maximum.set, None, None)
 
     
     # Element Minimum uses Python identifier Minimum
-    __Minimum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Minimum'), 'Minimum', '__avm_ParametricValue__Minimum', False, pyxb.utils.utility.Location(u'avm.xsd', 185, 10), )
+    __Minimum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Minimum'), 'Minimum', '__avm_ParametricValue__Minimum', False, pyxb.utils.utility.Location(u'avm.xsd', 202, 10), )
 
     
     Minimum = property(__Minimum.value, __Minimum.set, None, None)
 
     
     # Element AssignedValue uses Python identifier AssignedValue
-    __AssignedValue = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AssignedValue'), 'AssignedValue', '__avm_ParametricValue__AssignedValue', False, pyxb.utils.utility.Location(u'avm.xsd', 186, 10), )
+    __AssignedValue = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AssignedValue'), 'AssignedValue', '__avm_ParametricValue__AssignedValue', False, pyxb.utils.utility.Location(u'avm.xsd', 203, 10), )
 
     
     AssignedValue = property(__AssignedValue.value, __AssignedValue.set, None, None)
@@ -1452,7 +1818,7 @@ class ProbabilisticValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ProbabilisticValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 192, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 209, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
@@ -1472,7 +1838,7 @@ class SecurityClassification_ (DistributionRestriction_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'SecurityClassification')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 231, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 248, 2)
     _ElementMap = DistributionRestriction_._ElementMap.copy()
     _AttributeMap = DistributionRestriction_._AttributeMap.copy()
     # Base type is DistributionRestriction_
@@ -1481,8 +1847,8 @@ class SecurityClassification_ (DistributionRestriction_):
     
     # Attribute Level uses Python identifier Level
     __Level = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Level'), 'Level', '__avm_SecurityClassification__Level', pyxb.binding.datatypes.string)
-    __Level._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 234, 8)
-    __Level._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 234, 8)
+    __Level._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 251, 8)
+    __Level._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 251, 8)
     
     Level = property(__Level.value, __Level.set, None, None)
 
@@ -1502,7 +1868,7 @@ class Proprietary_ (DistributionRestriction_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Proprietary')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 238, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 255, 2)
     _ElementMap = DistributionRestriction_._ElementMap.copy()
     _AttributeMap = DistributionRestriction_._AttributeMap.copy()
     # Base type is DistributionRestriction_
@@ -1511,8 +1877,8 @@ class Proprietary_ (DistributionRestriction_):
     
     # Attribute Organization uses Python identifier Organization
     __Organization = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Organization'), 'Organization', '__avm_Proprietary__Organization', pyxb.binding.datatypes.string, required=True)
-    __Organization._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 241, 8)
-    __Organization._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 241, 8)
+    __Organization._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 258, 8)
+    __Organization._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 258, 8)
     
     Organization = property(__Organization.value, __Organization.set, None, None)
 
@@ -1532,7 +1898,7 @@ class ITAR_ (DistributionRestriction_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ITAR')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 245, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 262, 2)
     _ElementMap = DistributionRestriction_._ElementMap.copy()
     _AttributeMap = DistributionRestriction_._AttributeMap.copy()
     # Base type is DistributionRestriction_
@@ -1554,13 +1920,13 @@ class PrimitiveProperty_ (Property_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'PrimitiveProperty')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 264, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 281, 2)
     _ElementMap = Property_._ElementMap.copy()
     _AttributeMap = Property_._AttributeMap.copy()
     # Base type is Property_
     
     # Element Value uses Python identifier Value
-    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_PrimitiveProperty__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 268, 10), )
+    __Value = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Value'), 'Value', '__avm_PrimitiveProperty__Value', False, pyxb.utils.utility.Location(u'avm.xsd', 285, 10), )
 
     
     Value = property(__Value.value, __Value.set, None, None)
@@ -1595,20 +1961,20 @@ class CompoundProperty_ (Property_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'CompoundProperty')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 273, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 290, 2)
     _ElementMap = Property_._ElementMap.copy()
     _AttributeMap = Property_._AttributeMap.copy()
     # Base type is Property_
     
     # Element CompoundProperty uses Python identifier CompoundProperty
-    __CompoundProperty = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'CompoundProperty'), 'CompoundProperty', '__avm_CompoundProperty__CompoundProperty', True, pyxb.utils.utility.Location(u'avm.xsd', 277, 10), )
+    __CompoundProperty = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'CompoundProperty'), 'CompoundProperty', '__avm_CompoundProperty__CompoundProperty', True, pyxb.utils.utility.Location(u'avm.xsd', 294, 10), )
 
     
     CompoundProperty = property(__CompoundProperty.value, __CompoundProperty.set, None, None)
 
     
     # Element PrimitiveProperty uses Python identifier PrimitiveProperty
-    __PrimitiveProperty = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty'), 'PrimitiveProperty', '__avm_CompoundProperty__PrimitiveProperty', True, pyxb.utils.utility.Location(u'avm.xsd', 278, 10), )
+    __PrimitiveProperty = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty'), 'PrimitiveProperty', '__avm_CompoundProperty__PrimitiveProperty', True, pyxb.utils.utility.Location(u'avm.xsd', 295, 10), )
 
     
     PrimitiveProperty = property(__PrimitiveProperty.value, __PrimitiveProperty.set, None, None)
@@ -1644,20 +2010,20 @@ class ParametricEnumeratedValue_ (ValueExpressionType_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ParametricEnumeratedValue')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 283, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 300, 2)
     _ElementMap = ValueExpressionType_._ElementMap.copy()
     _AttributeMap = ValueExpressionType_._AttributeMap.copy()
     # Base type is ValueExpressionType_
     
     # Element AssignedValue uses Python identifier AssignedValue
-    __AssignedValue = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AssignedValue'), 'AssignedValue', '__avm_ParametricEnumeratedValue__AssignedValue', False, pyxb.utils.utility.Location(u'avm.xsd', 287, 10), )
+    __AssignedValue = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'AssignedValue'), 'AssignedValue', '__avm_ParametricEnumeratedValue__AssignedValue', False, pyxb.utils.utility.Location(u'avm.xsd', 304, 10), )
 
     
     AssignedValue = property(__AssignedValue.value, __AssignedValue.set, None, None)
 
     
     # Element Enum uses Python identifier Enum
-    __Enum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Enum'), 'Enum', '__avm_ParametricEnumeratedValue__Enum', True, pyxb.utils.utility.Location(u'avm.xsd', 288, 10), )
+    __Enum = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Enum'), 'Enum', '__avm_ParametricEnumeratedValue__Enum', True, pyxb.utils.utility.Location(u'avm.xsd', 305, 10), )
 
     
     Enum = property(__Enum.value, __Enum.set, None, None)
@@ -1679,23 +2045,23 @@ class DataSource_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DataSource')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 299, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 316, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_DataSource__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 300, 4)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 300, 4)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 317, 4)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 317, 4)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute FromResource uses Python identifier FromResource
     __FromResource = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'FromResource'), 'FromResource', '__avm_DataSource__FromResource', STD_ANON)
-    __FromResource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 301, 4)
-    __FromResource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 301, 4)
+    __FromResource._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 318, 4)
+    __FromResource._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 318, 4)
     
     FromResource = property(__FromResource.value, __FromResource.set, None, None)
 
@@ -1716,7 +2082,7 @@ class Compound_ (Container_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Compound')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 331, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 355, 2)
     _ElementMap = Container_._ElementMap.copy()
     _AttributeMap = Container_._AttributeMap.copy()
     # Base type is Container_
@@ -1737,11 +2103,21 @@ class Compound_ (Container_):
     
     # Element ContainerFeature (ContainerFeature) inherited from {avm}Container
     
-    # Attribute Name inherited from {avm}Container
+    # Element ResourceDependency (ResourceDependency) inherited from {avm}Container
+    
+    # Element DomainModel (DomainModel) inherited from {avm}Container
+    
+    # Element Resource (Resource) inherited from {avm}Container
     
     # Attribute XPosition inherited from {avm}Container
     
+    # Attribute Name inherited from {avm}Container
+    
     # Attribute YPosition inherited from {avm}Container
+    
+    # Attribute ID inherited from {avm}Container
+    
+    # Attribute Description inherited from {avm}Container
     _ElementMap.update({
         
     })
@@ -1758,7 +2134,7 @@ class DesignSpaceContainer_ (Container_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DesignSpaceContainer')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 372, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 400, 2)
     _ElementMap = Container_._ElementMap.copy()
     _AttributeMap = Container_._AttributeMap.copy()
     # Base type is Container_
@@ -1779,11 +2155,21 @@ class DesignSpaceContainer_ (Container_):
     
     # Element ContainerFeature (ContainerFeature) inherited from {avm}Container
     
-    # Attribute Name inherited from {avm}Container
+    # Element ResourceDependency (ResourceDependency) inherited from {avm}Container
+    
+    # Element DomainModel (DomainModel) inherited from {avm}Container
+    
+    # Element Resource (Resource) inherited from {avm}Container
     
     # Attribute XPosition inherited from {avm}Container
     
+    # Attribute Name inherited from {avm}Container
+    
     # Attribute YPosition inherited from {avm}Container
+    
+    # Attribute ID inherited from {avm}Container
+    
+    # Attribute Description inherited from {avm}Container
     _ElementMap.update({
         
     })
@@ -1800,23 +2186,23 @@ class PortMapTarget_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'PortMapTarget')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 377, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 405, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_PortMapTarget__ID', pyxb.binding.datatypes.ID)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 378, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 378, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 406, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 406, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute PortMap uses Python identifier PortMap
     __PortMap = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'PortMap'), 'PortMap', '__avm_PortMapTarget__PortMap', STD_ANON_)
-    __PortMap._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 379, 4)
-    __PortMap._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 379, 4)
+    __PortMap._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 407, 4)
+    __PortMap._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 407, 4)
     
     PortMap = property(__PortMap.value, __PortMap.set, None, None)
 
@@ -1837,31 +2223,31 @@ class ConnectorCompositionTarget_ (pyxb.binding.basis.complexTypeDefinition):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ConnectorCompositionTarget')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 392, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 420, 2)
     _ElementMap = {}
     _AttributeMap = {}
     # Base type is pyxb.binding.datatypes.anyType
     
     # Attribute ConnectorComposition uses Python identifier ConnectorComposition
     __ConnectorComposition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ConnectorComposition'), 'ConnectorComposition', '__avm_ConnectorCompositionTarget__ConnectorComposition', STD_ANON_2)
-    __ConnectorComposition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 393, 4)
-    __ConnectorComposition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 393, 4)
+    __ConnectorComposition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 421, 4)
+    __ConnectorComposition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 421, 4)
     
     ConnectorComposition = property(__ConnectorComposition.value, __ConnectorComposition.set, None, None)
 
     
     # Attribute ID uses Python identifier ID
     __ID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ID'), 'ID', '__avm_ConnectorCompositionTarget__ID', pyxb.binding.datatypes.string)
-    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 398, 4)
-    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 398, 4)
+    __ID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 426, 4)
+    __ID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 426, 4)
     
     ID = property(__ID.value, __ID.set, None, None)
 
     
     # Attribute ApplyJoinData uses Python identifier ApplyJoinData
     __ApplyJoinData = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'ApplyJoinData'), 'ApplyJoinData', '__avm_ConnectorCompositionTarget__ApplyJoinData', STD_ANON_3)
-    __ApplyJoinData._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 399, 4)
-    __ApplyJoinData._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 399, 4)
+    __ApplyJoinData._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 427, 4)
+    __ApplyJoinData._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 427, 4)
     
     ApplyJoinData = property(__ApplyJoinData.value, __ApplyJoinData.set, None, None)
 
@@ -1883,31 +2269,31 @@ class Formula_ (ValueNode_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Formula')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 405, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 433, 2)
     _ElementMap = ValueNode_._ElementMap.copy()
     _AttributeMap = ValueNode_._AttributeMap.copy()
     # Base type is ValueNode_
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Formula__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 408, 8)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 408, 8)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 436, 8)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 436, 8)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Formula__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 409, 8)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 409, 8)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 437, 8)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 437, 8)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Formula__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 410, 8)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 410, 8)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 438, 8)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 438, 8)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -1931,7 +2317,7 @@ class DoDDistributionStatement_ (DistributionRestriction_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DoDDistributionStatement')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 453, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 481, 2)
     _ElementMap = DistributionRestriction_._ElementMap.copy()
     _AttributeMap = DistributionRestriction_._AttributeMap.copy()
     # Base type is DistributionRestriction_
@@ -1940,8 +2326,8 @@ class DoDDistributionStatement_ (DistributionRestriction_):
     
     # Attribute Type uses Python identifier Type
     __Type = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Type'), 'Type', '__avm_DoDDistributionStatement__Type', DoDDistributionStatementEnum, required=True)
-    __Type._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 456, 8)
-    __Type._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 456, 8)
+    __Type._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 484, 8)
+    __Type._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 484, 8)
     
     Type = property(__Type.value, __Type.set, None, None)
 
@@ -1954,6 +2340,238 @@ class DoDDistributionStatement_ (DistributionRestriction_):
 Namespace.addCategoryObject('typeBinding', u'DoDDistributionStatement', DoDDistributionStatement_)
 
 
+# Complex type {avm}TopLevelSystemUnderTest with content type EMPTY
+class TopLevelSystemUnderTest_ (ContainerInstanceBase_):
+    """Complex type {avm}TopLevelSystemUnderTest with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'TopLevelSystemUnderTest')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 513, 2)
+    _ElementMap = ContainerInstanceBase_._ElementMap.copy()
+    _AttributeMap = ContainerInstanceBase_._AttributeMap.copy()
+    # Base type is ContainerInstanceBase_
+    
+    # Attribute DesignID uses Python identifier DesignID
+    __DesignID = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'DesignID'), 'DesignID', '__avm_TopLevelSystemUnderTest__DesignID', pyxb.binding.datatypes.string, required=True)
+    __DesignID._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 516, 8)
+    __DesignID._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 516, 8)
+    
+    DesignID = property(__DesignID.value, __DesignID.set, None, None)
+
+    
+    # Attribute IDinSourceModel inherited from {avm}ContainerInstanceBase
+    
+    # Attribute XPosition inherited from {avm}ContainerInstanceBase
+    
+    # Attribute YPosition inherited from {avm}ContainerInstanceBase
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __DesignID.name() : __DesignID
+    })
+Namespace.addCategoryObject('typeBinding', u'TopLevelSystemUnderTest', TopLevelSystemUnderTest_)
+
+
+# Complex type {avm}Parameter with content type ELEMENT_ONLY
+class Parameter_ (TestBenchValueBase_):
+    """Complex type {avm}Parameter with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Parameter')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 520, 2)
+    _ElementMap = TestBenchValueBase_._ElementMap.copy()
+    _AttributeMap = TestBenchValueBase_._AttributeMap.copy()
+    # Base type is TestBenchValueBase_
+    
+    # Element Value (Value) inherited from {avm}TestBenchValueBase
+    
+    # Attribute ID inherited from {avm}TestBenchValueBase
+    
+    # Attribute Name inherited from {avm}TestBenchValueBase
+    
+    # Attribute Notes inherited from {avm}TestBenchValueBase
+    
+    # Attribute XPosition inherited from {avm}TestBenchValueBase
+    
+    # Attribute YPosition inherited from {avm}TestBenchValueBase
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'Parameter', Parameter_)
+
+
+# Complex type {avm}Metric with content type ELEMENT_ONLY
+class Metric_ (TestBenchValueBase_):
+    """Complex type {avm}Metric with content type ELEMENT_ONLY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Metric')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 525, 2)
+    _ElementMap = TestBenchValueBase_._ElementMap.copy()
+    _AttributeMap = TestBenchValueBase_._AttributeMap.copy()
+    # Base type is TestBenchValueBase_
+    
+    # Element Value (Value) inherited from {avm}TestBenchValueBase
+    
+    # Attribute ID inherited from {avm}TestBenchValueBase
+    
+    # Attribute Name inherited from {avm}TestBenchValueBase
+    
+    # Attribute Notes inherited from {avm}TestBenchValueBase
+    
+    # Attribute XPosition inherited from {avm}TestBenchValueBase
+    
+    # Attribute YPosition inherited from {avm}TestBenchValueBase
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'Metric', Metric_)
+
+
+# Complex type {avm}TestInjectionPoint with content type EMPTY
+class TestInjectionPoint_ (ContainerInstanceBase_):
+    """Complex type {avm}TestInjectionPoint with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'TestInjectionPoint')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 545, 2)
+    _ElementMap = ContainerInstanceBase_._ElementMap.copy()
+    _AttributeMap = ContainerInstanceBase_._AttributeMap.copy()
+    # Base type is ContainerInstanceBase_
+    
+    # Attribute IDinSourceModel inherited from {avm}ContainerInstanceBase
+    
+    # Attribute XPosition inherited from {avm}ContainerInstanceBase
+    
+    # Attribute YPosition inherited from {avm}ContainerInstanceBase
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        
+    })
+Namespace.addCategoryObject('typeBinding', u'TestInjectionPoint', TestInjectionPoint_)
+
+
+# Complex type {avm}InterpreterTask with content type EMPTY
+class InterpreterTask_ (WorkflowTaskBase_):
+    """Complex type {avm}InterpreterTask with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'InterpreterTask')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 559, 2)
+    _ElementMap = WorkflowTaskBase_._ElementMap.copy()
+    _AttributeMap = WorkflowTaskBase_._AttributeMap.copy()
+    # Base type is WorkflowTaskBase_
+    
+    # Attribute Name inherited from {avm}WorkflowTaskBase
+    
+    # Attribute COMName uses Python identifier COMName
+    __COMName = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'COMName'), 'COMName', '__avm_InterpreterTask__COMName', pyxb.binding.datatypes.string, required=True)
+    __COMName._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 562, 8)
+    __COMName._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 562, 8)
+    
+    COMName = property(__COMName.value, __COMName.set, None, None)
+
+    
+    # Attribute Parameters uses Python identifier Parameters
+    __Parameters = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Parameters'), 'Parameters', '__avm_InterpreterTask__Parameters', pyxb.binding.datatypes.string)
+    __Parameters._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 563, 8)
+    __Parameters._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 563, 8)
+    
+    Parameters = property(__Parameters.value, __Parameters.set, None, None)
+
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __COMName.name() : __COMName,
+        __Parameters.name() : __Parameters
+    })
+Namespace.addCategoryObject('typeBinding', u'InterpreterTask', InterpreterTask_)
+
+
+# Complex type {avm}ExecutionTask with content type EMPTY
+class ExecutionTask_ (WorkflowTaskBase_):
+    """Complex type {avm}ExecutionTask with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ExecutionTask')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 567, 2)
+    _ElementMap = WorkflowTaskBase_._ElementMap.copy()
+    _AttributeMap = WorkflowTaskBase_._AttributeMap.copy()
+    # Base type is WorkflowTaskBase_
+    
+    # Attribute Name inherited from {avm}WorkflowTaskBase
+    
+    # Attribute Description uses Python identifier Description
+    __Description = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Description'), 'Description', '__avm_ExecutionTask__Description', pyxb.binding.datatypes.string)
+    __Description._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 570, 8)
+    __Description._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 570, 8)
+    
+    Description = property(__Description.value, __Description.set, None, None)
+
+    
+    # Attribute Invocation uses Python identifier Invocation
+    __Invocation = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Invocation'), 'Invocation', '__avm_ExecutionTask__Invocation', pyxb.binding.datatypes.string, required=True)
+    __Invocation._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 571, 8)
+    __Invocation._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 571, 8)
+    
+    Invocation = property(__Invocation.value, __Invocation.set, None, None)
+
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __Description.name() : __Description,
+        __Invocation.name() : __Invocation
+    })
+Namespace.addCategoryObject('typeBinding', u'ExecutionTask', ExecutionTask_)
+
+
+# Complex type {avm}ValueFlowMux with content type EMPTY
+class ValueFlowMux_ (ValueNode_):
+    """Complex type {avm}ValueFlowMux with content type EMPTY"""
+    _TypeDefinition = None
+    _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
+    _Abstract = False
+    _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ValueFlowMux')
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 576, 2)
+    _ElementMap = ValueNode_._ElementMap.copy()
+    _AttributeMap = ValueNode_._AttributeMap.copy()
+    # Base type is ValueNode_
+    
+    # Attribute ID inherited from {avm}ValueNode
+    
+    # Attribute Source uses Python identifier Source
+    __Source = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Source'), 'Source', '__avm_ValueFlowMux__Source', STD_ANON_5)
+    __Source._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 579, 8)
+    __Source._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 579, 8)
+    
+    Source = property(__Source.value, __Source.set, None, None)
+
+    _ElementMap.update({
+        
+    })
+    _AttributeMap.update({
+        __Source.name() : __Source
+    })
+Namespace.addCategoryObject('typeBinding', u'ValueFlowMux', ValueFlowMux_)
+
+
 # Complex type {avm}Connector with content type ELEMENT_ONLY
 class Connector_ (ConnectorCompositionTarget_):
     """Complex type {avm}Connector with content type ELEMENT_ONLY"""
@@ -1961,41 +2579,41 @@ class Connector_ (ConnectorCompositionTarget_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Connector')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 140, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 157, 2)
     _ElementMap = ConnectorCompositionTarget_._ElementMap.copy()
     _AttributeMap = ConnectorCompositionTarget_._AttributeMap.copy()
     # Base type is ConnectorCompositionTarget_
     
     # Element Role uses Python identifier Role
-    __Role = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Role'), 'Role', '__avm_Connector__Role', True, pyxb.utils.utility.Location(u'avm.xsd', 144, 10), )
+    __Role = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Role'), 'Role', '__avm_Connector__Role', True, pyxb.utils.utility.Location(u'avm.xsd', 161, 10), )
 
     
     Role = property(__Role.value, __Role.set, None, None)
 
     
     # Element Property uses Python identifier Property
-    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Connector__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 145, 10), )
+    __Property = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Property'), 'Property', '__avm_Connector__Property', True, pyxb.utils.utility.Location(u'avm.xsd', 162, 10), )
 
     
     Property = property(__Property.value, __Property.set, None, None)
 
     
     # Element DefaultJoin uses Python identifier DefaultJoin
-    __DefaultJoin = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DefaultJoin'), 'DefaultJoin', '__avm_Connector__DefaultJoin', True, pyxb.utils.utility.Location(u'avm.xsd', 146, 10), )
+    __DefaultJoin = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'DefaultJoin'), 'DefaultJoin', '__avm_Connector__DefaultJoin', True, pyxb.utils.utility.Location(u'avm.xsd', 163, 10), )
 
     
     DefaultJoin = property(__DefaultJoin.value, __DefaultJoin.set, None, None)
 
     
     # Element Connector uses Python identifier Connector
-    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Connector__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 147, 10), )
+    __Connector = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Connector'), 'Connector', '__avm_Connector__Connector', True, pyxb.utils.utility.Location(u'avm.xsd', 164, 10), )
 
     
     Connector = property(__Connector.value, __Connector.set, None, None)
 
     
     # Element ConnectorFeature uses Python identifier ConnectorFeature
-    __ConnectorFeature = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ConnectorFeature'), 'ConnectorFeature', '__avm_Connector__ConnectorFeature', True, pyxb.utils.utility.Location(u'avm.xsd', 148, 10), )
+    __ConnectorFeature = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ConnectorFeature'), 'ConnectorFeature', '__avm_Connector__ConnectorFeature', True, pyxb.utils.utility.Location(u'avm.xsd', 165, 10), )
 
     
     ConnectorFeature = property(__ConnectorFeature.value, __ConnectorFeature.set, None, None)
@@ -2003,40 +2621,40 @@ class Connector_ (ConnectorCompositionTarget_):
     
     # Attribute Definition uses Python identifier Definition
     __Definition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Definition'), 'Definition', '__avm_Connector__Definition', pyxb.binding.datatypes.anyURI)
-    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 150, 8)
-    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 150, 8)
+    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 167, 8)
+    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 167, 8)
     
     Definition = property(__Definition.value, __Definition.set, None, None)
 
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Connector__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 151, 8)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 151, 8)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 168, 8)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 168, 8)
     
     Name = property(__Name.value, __Name.set, None, None)
 
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_Connector__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 152, 8)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 152, 8)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 169, 8)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 169, 8)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Connector__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 153, 8)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 153, 8)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 170, 8)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 170, 8)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Connector__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 154, 8)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 154, 8)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 171, 8)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 171, 8)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
@@ -2070,47 +2688,47 @@ class Port_ (PortMapTarget_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Port')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 158, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 175, 2)
     _ElementMap = PortMapTarget_._ElementMap.copy()
     _AttributeMap = PortMapTarget_._AttributeMap.copy()
     # Base type is PortMapTarget_
     
     # Attribute Notes uses Python identifier Notes
     __Notes = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Notes'), 'Notes', '__avm_Port__Notes', pyxb.binding.datatypes.string)
-    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 161, 8)
-    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 161, 8)
+    __Notes._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 178, 8)
+    __Notes._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 178, 8)
     
     Notes = property(__Notes.value, __Notes.set, None, None)
 
     
     # Attribute XPosition uses Python identifier XPosition
     __XPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'XPosition'), 'XPosition', '__avm_Port__XPosition', pyxb.binding.datatypes.unsignedInt)
-    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 162, 8)
-    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 162, 8)
+    __XPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 179, 8)
+    __XPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 179, 8)
     
     XPosition = property(__XPosition.value, __XPosition.set, None, None)
 
     
     # Attribute Definition uses Python identifier Definition
     __Definition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Definition'), 'Definition', '__avm_Port__Definition', pyxb.binding.datatypes.anyURI)
-    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 163, 8)
-    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 163, 8)
+    __Definition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 180, 8)
+    __Definition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 180, 8)
     
     Definition = property(__Definition.value, __Definition.set, None, None)
 
     
     # Attribute YPosition uses Python identifier YPosition
     __YPosition = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'YPosition'), 'YPosition', '__avm_Port__YPosition', pyxb.binding.datatypes.unsignedInt)
-    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 164, 8)
-    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 164, 8)
+    __YPosition._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 181, 8)
+    __YPosition._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 181, 8)
     
     YPosition = property(__YPosition.value, __YPosition.set, None, None)
 
     
     # Attribute Name uses Python identifier Name
     __Name = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Name'), 'Name', '__avm_Port__Name', pyxb.binding.datatypes.string)
-    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 165, 8)
-    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 165, 8)
+    __Name._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 182, 8)
+    __Name._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 182, 8)
     
     Name = property(__Name.value, __Name.set, None, None)
 
@@ -2138,20 +2756,20 @@ class NormalDistribution_ (ProbabilisticValue_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'NormalDistribution')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 197, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 214, 2)
     _ElementMap = ProbabilisticValue_._ElementMap.copy()
     _AttributeMap = ProbabilisticValue_._AttributeMap.copy()
     # Base type is ProbabilisticValue_
     
     # Element Mean uses Python identifier Mean
-    __Mean = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Mean'), 'Mean', '__avm_NormalDistribution__Mean', False, pyxb.utils.utility.Location(u'avm.xsd', 201, 10), )
+    __Mean = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Mean'), 'Mean', '__avm_NormalDistribution__Mean', False, pyxb.utils.utility.Location(u'avm.xsd', 218, 10), )
 
     
     Mean = property(__Mean.value, __Mean.set, None, None)
 
     
     # Element StandardDeviation uses Python identifier StandardDeviation
-    __StandardDeviation = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'StandardDeviation'), 'StandardDeviation', '__avm_NormalDistribution__StandardDeviation', False, pyxb.utils.utility.Location(u'avm.xsd', 202, 10), )
+    __StandardDeviation = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'StandardDeviation'), 'StandardDeviation', '__avm_NormalDistribution__StandardDeviation', False, pyxb.utils.utility.Location(u'avm.xsd', 219, 10), )
 
     
     StandardDeviation = property(__StandardDeviation.value, __StandardDeviation.set, None, None)
@@ -2173,7 +2791,7 @@ class UniformDistribution_ (ProbabilisticValue_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'UniformDistribution')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 259, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 276, 2)
     _ElementMap = ProbabilisticValue_._ElementMap.copy()
     _AttributeMap = ProbabilisticValue_._AttributeMap.copy()
     # Base type is ProbabilisticValue_
@@ -2193,7 +2811,7 @@ class Optional_ (DesignSpaceContainer_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Optional')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 336, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 360, 2)
     _ElementMap = DesignSpaceContainer_._ElementMap.copy()
     _AttributeMap = DesignSpaceContainer_._AttributeMap.copy()
     # Base type is DesignSpaceContainer_
@@ -2214,11 +2832,21 @@ class Optional_ (DesignSpaceContainer_):
     
     # Element ContainerFeature (ContainerFeature) inherited from {avm}Container
     
-    # Attribute Name inherited from {avm}Container
+    # Element ResourceDependency (ResourceDependency) inherited from {avm}Container
+    
+    # Element DomainModel (DomainModel) inherited from {avm}Container
+    
+    # Element Resource (Resource) inherited from {avm}Container
     
     # Attribute XPosition inherited from {avm}Container
     
+    # Attribute Name inherited from {avm}Container
+    
     # Attribute YPosition inherited from {avm}Container
+    
+    # Attribute ID inherited from {avm}Container
+    
+    # Attribute Description inherited from {avm}Container
     _ElementMap.update({
         
     })
@@ -2235,7 +2863,7 @@ class Alternative_ (DesignSpaceContainer_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'Alternative')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 341, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 365, 2)
     _ElementMap = DesignSpaceContainer_._ElementMap.copy()
     _AttributeMap = DesignSpaceContainer_._AttributeMap.copy()
     # Base type is DesignSpaceContainer_
@@ -2256,13 +2884,30 @@ class Alternative_ (DesignSpaceContainer_):
     
     # Element ContainerFeature (ContainerFeature) inherited from {avm}Container
     
-    # Attribute Name inherited from {avm}Container
+    # Element ResourceDependency (ResourceDependency) inherited from {avm}Container
+    
+    # Element DomainModel (DomainModel) inherited from {avm}Container
+    
+    # Element Resource (Resource) inherited from {avm}Container
+    
+    # Element ValueFlowMux uses Python identifier ValueFlowMux
+    __ValueFlowMux = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'ValueFlowMux'), 'ValueFlowMux', '__avm_Alternative__ValueFlowMux', True, pyxb.utils.utility.Location(u'avm.xsd', 369, 10), )
+
+    
+    ValueFlowMux = property(__ValueFlowMux.value, __ValueFlowMux.set, None, None)
+
     
     # Attribute XPosition inherited from {avm}Container
     
+    # Attribute Name inherited from {avm}Container
+    
     # Attribute YPosition inherited from {avm}Container
+    
+    # Attribute ID inherited from {avm}Container
+    
+    # Attribute Description inherited from {avm}Container
     _ElementMap.update({
-        
+        __ValueFlowMux.name() : __ValueFlowMux
     })
     _AttributeMap.update({
         
@@ -2277,15 +2922,15 @@ class ComponentPortInstance_ (PortMapTarget_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ComponentPortInstance')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 359, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 387, 2)
     _ElementMap = PortMapTarget_._ElementMap.copy()
     _AttributeMap = PortMapTarget_._AttributeMap.copy()
     # Base type is PortMapTarget_
     
     # Attribute IDinComponentModel uses Python identifier IDinComponentModel
     __IDinComponentModel = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'IDinComponentModel'), 'IDinComponentModel', '__avm_ComponentPortInstance__IDinComponentModel', pyxb.binding.datatypes.string, required=True)
-    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 362, 8)
-    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 362, 8)
+    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 390, 8)
+    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 390, 8)
     
     IDinComponentModel = property(__IDinComponentModel.value, __IDinComponentModel.set, None, None)
 
@@ -2309,15 +2954,15 @@ class ComponentConnectorInstance_ (ConnectorCompositionTarget_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ComponentConnectorInstance')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 385, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 413, 2)
     _ElementMap = ConnectorCompositionTarget_._ElementMap.copy()
     _AttributeMap = ConnectorCompositionTarget_._AttributeMap.copy()
     # Base type is ConnectorCompositionTarget_
     
     # Attribute IDinComponentModel uses Python identifier IDinComponentModel
     __IDinComponentModel = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'IDinComponentModel'), 'IDinComponentModel', '__avm_ComponentConnectorInstance__IDinComponentModel', pyxb.binding.datatypes.string, required=True)
-    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 388, 8)
-    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 388, 8)
+    __IDinComponentModel._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 416, 8)
+    __IDinComponentModel._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 416, 8)
     
     IDinComponentModel = property(__IDinComponentModel.value, __IDinComponentModel.set, None, None)
 
@@ -2343,7 +2988,7 @@ class SimpleFormula_ (Formula_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'SimpleFormula')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 414, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 442, 2)
     _ElementMap = Formula_._ElementMap.copy()
     _AttributeMap = Formula_._AttributeMap.copy()
     # Base type is Formula_
@@ -2356,16 +3001,16 @@ class SimpleFormula_ (Formula_):
     
     # Attribute Operation uses Python identifier Operation
     __Operation = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Operation'), 'Operation', '__avm_SimpleFormula__Operation', SimpleFormulaOperation)
-    __Operation._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 417, 8)
-    __Operation._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 417, 8)
+    __Operation._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 445, 8)
+    __Operation._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 445, 8)
     
     Operation = property(__Operation.value, __Operation.set, None, None)
 
     
     # Attribute Operand uses Python identifier Operand
     __Operand = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Operand'), 'Operand', '__avm_SimpleFormula__Operand', STD_ANON_4, required=True)
-    __Operand._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 418, 8)
-    __Operand._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 418, 8)
+    __Operand._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 446, 8)
+    __Operand._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 446, 8)
     
     Operand = property(__Operand.value, __Operand.set, None, None)
 
@@ -2388,13 +3033,13 @@ class ComplexFormula_ (Formula_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_ELEMENT_ONLY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'ComplexFormula')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 439, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 467, 2)
     _ElementMap = Formula_._ElementMap.copy()
     _AttributeMap = Formula_._AttributeMap.copy()
     # Base type is Formula_
     
     # Element Operand uses Python identifier Operand
-    __Operand = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Operand'), 'Operand', '__avm_ComplexFormula__Operand', True, pyxb.utils.utility.Location(u'avm.xsd', 443, 10), )
+    __Operand = pyxb.binding.content.ElementDeclaration(pyxb.namespace.ExpandedName(None, u'Operand'), 'Operand', '__avm_ComplexFormula__Operand', True, pyxb.utils.utility.Location(u'avm.xsd', 471, 10), )
 
     
     Operand = property(__Operand.value, __Operand.set, None, None)
@@ -2410,8 +3055,8 @@ class ComplexFormula_ (Formula_):
     
     # Attribute Expression uses Python identifier Expression
     __Expression = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Expression'), 'Expression', '__avm_ComplexFormula__Expression', pyxb.binding.datatypes.string, required=True)
-    __Expression._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 445, 8)
-    __Expression._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 445, 8)
+    __Expression._DeclarationLocation = pyxb.utils.utility.Location(u'avm.xsd', 473, 8)
+    __Expression._UseLocation = pyxb.utils.utility.Location(u'avm.xsd', 473, 8)
     
     Expression = property(__Expression.value, __Expression.set, None, None)
 
@@ -2431,7 +3076,7 @@ class DomainModelPort_ (Port_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = True
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'DomainModelPort')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 169, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 186, 2)
     _ElementMap = Port_._ElementMap.copy()
     _AttributeMap = Port_._AttributeMap.copy()
     # Base type is Port_
@@ -2465,7 +3110,7 @@ class AbstractPort_ (Port_):
     _ContentTypeTag = pyxb.binding.basis.complexTypeDefinition._CT_EMPTY
     _Abstract = False
     _ExpandedName = pyxb.namespace.ExpandedName(Namespace, u'AbstractPort')
-    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 293, 2)
+    _XSDLocation = pyxb.utils.utility.Location(u'avm.xsd', 310, 2)
     _ElementMap = Port_._ElementMap.copy()
     _AttributeMap = Port_._AttributeMap.copy()
     # Base type is Port_
@@ -2543,6 +3188,30 @@ Namespace.addCategoryObject('elementBinding', ConnectorFeature.name().localName(
 ContainerFeature = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'ContainerFeature'), ContainerFeature_, location=pyxb.utils.utility.Location(u'avm.xsd', 51, 2))
 Namespace.addCategoryObject('elementBinding', ContainerFeature.name().localName(), ContainerFeature)
 
+DomainMapping = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'DomainMapping'), DomainMapping_, location=pyxb.utils.utility.Location(u'avm.xsd', 52, 2))
+Namespace.addCategoryObject('elementBinding', DomainMapping.name().localName(), DomainMapping)
+
+TestBench = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'TestBench'), TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 53, 2))
+Namespace.addCategoryObject('elementBinding', TestBench.name().localName(), TestBench)
+
+ContainerInstanceBase = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'ContainerInstanceBase'), ContainerInstanceBase_, location=pyxb.utils.utility.Location(u'avm.xsd', 57, 2))
+Namespace.addCategoryObject('elementBinding', ContainerInstanceBase.name().localName(), ContainerInstanceBase)
+
+TestBenchValueBase = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'TestBenchValueBase'), TestBenchValueBase_, location=pyxb.utils.utility.Location(u'avm.xsd', 58, 2))
+Namespace.addCategoryObject('elementBinding', TestBenchValueBase.name().localName(), TestBenchValueBase)
+
+Workflow = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Workflow'), Workflow_, location=pyxb.utils.utility.Location(u'avm.xsd', 60, 2))
+Namespace.addCategoryObject('elementBinding', Workflow.name().localName(), Workflow)
+
+WorkflowTaskBase = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'WorkflowTaskBase'), WorkflowTaskBase_, location=pyxb.utils.utility.Location(u'avm.xsd', 61, 2))
+Namespace.addCategoryObject('elementBinding', WorkflowTaskBase.name().localName(), WorkflowTaskBase)
+
+Settings = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Settings'), Settings_, location=pyxb.utils.utility.Location(u'avm.xsd', 64, 2))
+Namespace.addCategoryObject('elementBinding', Settings.name().localName(), Settings)
+
+DesignDomainFeature = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'DesignDomainFeature'), DesignDomainFeature_, location=pyxb.utils.utility.Location(u'avm.xsd', 66, 2))
+Namespace.addCategoryObject('elementBinding', DesignDomainFeature.name().localName(), DesignDomainFeature)
+
 Value = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Value'), Value_, location=pyxb.utils.utility.Location(u'avm.xsd', 7, 2))
 Namespace.addCategoryObject('elementBinding', Value.name().localName(), Value)
 
@@ -2600,6 +3269,27 @@ Namespace.addCategoryObject('elementBinding', Formula.name().localName(), Formul
 DoDDistributionStatement = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'DoDDistributionStatement'), DoDDistributionStatement_, location=pyxb.utils.utility.Location(u'avm.xsd', 49, 2))
 Namespace.addCategoryObject('elementBinding', DoDDistributionStatement.name().localName(), DoDDistributionStatement)
 
+TopLevelSystemUnderTest = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'TopLevelSystemUnderTest'), TopLevelSystemUnderTest_, location=pyxb.utils.utility.Location(u'avm.xsd', 54, 2))
+Namespace.addCategoryObject('elementBinding', TopLevelSystemUnderTest.name().localName(), TopLevelSystemUnderTest)
+
+Parameter = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Parameter'), Parameter_, location=pyxb.utils.utility.Location(u'avm.xsd', 55, 2))
+Namespace.addCategoryObject('elementBinding', Parameter.name().localName(), Parameter)
+
+Metric = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Metric'), Metric_, location=pyxb.utils.utility.Location(u'avm.xsd', 56, 2))
+Namespace.addCategoryObject('elementBinding', Metric.name().localName(), Metric)
+
+TestInjectionPoint = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'TestInjectionPoint'), TestInjectionPoint_, location=pyxb.utils.utility.Location(u'avm.xsd', 59, 2))
+Namespace.addCategoryObject('elementBinding', TestInjectionPoint.name().localName(), TestInjectionPoint)
+
+InterpreterTask = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'InterpreterTask'), InterpreterTask_, location=pyxb.utils.utility.Location(u'avm.xsd', 62, 2))
+Namespace.addCategoryObject('elementBinding', InterpreterTask.name().localName(), InterpreterTask)
+
+ExecutionTask = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'ExecutionTask'), ExecutionTask_, location=pyxb.utils.utility.Location(u'avm.xsd', 63, 2))
+Namespace.addCategoryObject('elementBinding', ExecutionTask.name().localName(), ExecutionTask)
+
+ValueFlowMux = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'ValueFlowMux'), ValueFlowMux_, location=pyxb.utils.utility.Location(u'avm.xsd', 65, 2))
+Namespace.addCategoryObject('elementBinding', ValueFlowMux.name().localName(), ValueFlowMux)
+
 Connector = pyxb.binding.basis.element(pyxb.namespace.ExpandedName(Namespace, u'Connector'), Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 12, 2))
 Namespace.addCategoryObject('elementBinding', Connector.name().localName(), Connector)
 
@@ -2638,25 +3328,27 @@ Namespace.addCategoryObject('elementBinding', AbstractPort.name().localName(), A
 
 
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DomainModel'), DomainModel_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 57, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DomainModel'), DomainModel_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 72, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 58, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 73, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), Resource_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 59, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), Resource_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 74, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 60, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 75, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DistributionRestriction'), DistributionRestriction_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 61, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DistributionRestriction'), DistributionRestriction_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 76, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Port'), Port_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 62, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Port'), Port_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 77, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Classifications'), pyxb.binding.datatypes.anyURI, nillable=pyxb.binding.datatypes.boolean(1), scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 63, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Classifications'), pyxb.binding.datatypes.anyURI, nillable=pyxb.binding.datatypes.boolean(1), scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 78, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct'), AnalysisConstruct_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 64, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct'), AnalysisConstruct_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 79, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Supercedes'), pyxb.binding.datatypes.string, nillable=pyxb.binding.datatypes.boolean(1), scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 65, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Supercedes'), pyxb.binding.datatypes.string, nillable=pyxb.binding.datatypes.boolean(1), scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 80, 6)))
 
-Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Formula'), Formula_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 66, 6)))
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Formula'), Formula_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 81, 6)))
+
+Component_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DomainMapping'), DomainMapping_, scope=Component_, location=pyxb.utils.utility.Location(u'avm.xsd', 82, 6)))
 
 def _BuildAutomaton ():
     # Remove this helper function from the namespace after it is invoked
@@ -2665,77 +3357,84 @@ def _BuildAutomaton ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 57, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 72, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 58, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 73, 6))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 59, 6))
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 74, 6))
     counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 60, 6))
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 75, 6))
     counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 61, 6))
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 76, 6))
     counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 62, 6))
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 77, 6))
     counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 63, 6))
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 78, 6))
     counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 64, 6))
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 79, 6))
     counters.add(cc_7)
-    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 65, 6))
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 80, 6))
     counters.add(cc_8)
-    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 66, 6))
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 81, 6))
     counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 82, 6))
+    counters.add(cc_10)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 57, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 72, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 58, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 73, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 59, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 74, 6))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 60, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 75, 6))
     st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'DistributionRestriction')), pyxb.utils.utility.Location(u'avm.xsd', 61, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'DistributionRestriction')), pyxb.utils.utility.Location(u'avm.xsd', 76, 6))
     st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 62, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 77, 6))
     st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Classifications')), pyxb.utils.utility.Location(u'avm.xsd', 63, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Classifications')), pyxb.utils.utility.Location(u'avm.xsd', 78, 6))
     st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct')), pyxb.utils.utility.Location(u'avm.xsd', 64, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'AnalysisConstruct')), pyxb.utils.utility.Location(u'avm.xsd', 79, 6))
     st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_7)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_8, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Supercedes')), pyxb.utils.utility.Location(u'avm.xsd', 65, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Supercedes')), pyxb.utils.utility.Location(u'avm.xsd', 80, 6))
     st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_8)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_9, False))
-    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 66, 6))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 81, 6))
     st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(Component_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainMapping')), pyxb.utils.utility.Location(u'avm.xsd', 82, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
@@ -2757,6 +3456,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_0, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_1, [
@@ -2777,6 +3478,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_1, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
     st_1._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_2, [
@@ -2795,6 +3498,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_2, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
     st_2._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_3, [
@@ -2811,6 +3516,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_3, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
     st_3._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_4, [
@@ -2825,6 +3532,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_4, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_4, False) ]))
     st_4._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_5, [
@@ -2837,6 +3546,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_5, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
     st_5._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_6, [
@@ -2847,6 +3558,8 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_6, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
     st_6._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_7, [
@@ -2855,24 +3568,34 @@ def _BuildAutomaton ():
         fac.UpdateInstruction(cc_7, False) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
     st_7._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_8, [
         fac.UpdateInstruction(cc_8, True) ]))
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
     st_8._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_9, [
         fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
     st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    st_10._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
 Component_._Automaton = _BuildAutomaton()
 
 
 
 
-DomainModelMetric_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=DomainModelMetric_, location=pyxb.utils.utility.Location(u'avm.xsd', 252, 6)))
+DomainModelMetric_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=DomainModelMetric_, location=pyxb.utils.utility.Location(u'avm.xsd', 269, 6)))
 
 def _BuildAutomaton_ ():
     # Remove this helper function from the namespace after it is invoked
@@ -2881,12 +3604,12 @@ def _BuildAutomaton_ ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 252, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 269, 6))
     counters.add(cc_0)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(DomainModelMetric_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 252, 6))
+    symbol = pyxb.binding.content.ElementUse(DomainModelMetric_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 269, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
@@ -2899,7 +3622,11 @@ DomainModelMetric_._Automaton = _BuildAutomaton_()
 
 
 
-Design_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'RootContainer'), Container_, scope=Design_, location=pyxb.utils.utility.Location(u'avm.xsd', 309, 6)))
+Design_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'RootContainer'), Container_, scope=Design_, location=pyxb.utils.utility.Location(u'avm.xsd', 326, 6)))
+
+Design_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DomainFeature'), DesignDomainFeature_, scope=Design_, location=pyxb.utils.utility.Location(u'avm.xsd', 327, 6)))
+
+Design_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), Resource_, scope=Design_, location=pyxb.utils.utility.Location(u'avm.xsd', 328, 6)))
 
 def _BuildAutomaton_2 ():
     # Remove this helper function from the namespace after it is invoked
@@ -2908,39 +3635,73 @@ def _BuildAutomaton_2 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 309, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 326, 6))
     counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 327, 6))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 328, 6))
+    counters.add(cc_2)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Design_._UseForTag(pyxb.namespace.ExpandedName(None, u'RootContainer')), pyxb.utils.utility.Location(u'avm.xsd', 309, 6))
+    symbol = pyxb.binding.content.ElementUse(Design_._UseForTag(pyxb.namespace.ExpandedName(None, u'RootContainer')), pyxb.utils.utility.Location(u'avm.xsd', 326, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(Design_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainFeature')), pyxb.utils.utility.Location(u'avm.xsd', 327, 6))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_2, False))
+    symbol = pyxb.binding.content.ElementUse(Design_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 328, 6))
+    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_2)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    st_1._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_2, True) ]))
+    st_2._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
 Design_._Automaton = _BuildAutomaton_2()
 
 
 
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Container'), Container_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 318, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Container'), Container_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 337, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 319, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 338, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ComponentInstance'), ComponentInstance_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 320, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ComponentInstance'), ComponentInstance_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 339, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Port'), Port_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 321, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Port'), Port_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 340, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 322, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 341, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'JoinData'), _ImportedBinding__iFAB.assemblyDetail, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 323, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'JoinData'), _ImportedBinding__iFAB.assemblyDetail, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 342, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Formula'), Formula_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 324, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Formula'), Formula_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 343, 6)))
 
-Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ContainerFeature'), ContainerFeature_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 325, 6)))
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ContainerFeature'), ContainerFeature_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 344, 6)))
+
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ResourceDependency'), Resource_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 345, 6)))
+
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DomainModel'), DomainModel_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 346, 6)))
+
+Container_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Resource'), Resource_, scope=Container_, location=pyxb.utils.utility.Location(u'avm.xsd', 347, 6)))
 
 def _BuildAutomaton_3 ():
     # Remove this helper function from the namespace after it is invoked
@@ -2949,63 +3710,84 @@ def _BuildAutomaton_3 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
     counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
     counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     counters.add(cc_7)
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    counters.add(cc_8)
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    counters.add(cc_10)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
     st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_7)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_8, False))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_8)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_9, False))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(Container_._UseForTag(pyxb.namespace.ExpandedName(None, u'Resource')), pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
@@ -3022,6 +3804,12 @@ def _BuildAutomaton_3 ():
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_0, False) ]))
     transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
         fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
     transitions = []
@@ -3039,6 +3827,12 @@ def _BuildAutomaton_3 ():
         fac.UpdateInstruction(cc_1, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
     st_1._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_2, [
@@ -3053,6 +3847,12 @@ def _BuildAutomaton_3 ():
         fac.UpdateInstruction(cc_2, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
     st_2._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_3, [
@@ -3065,6 +3865,12 @@ def _BuildAutomaton_3 ():
         fac.UpdateInstruction(cc_3, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
     st_3._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_4, [
@@ -3075,6 +3881,12 @@ def _BuildAutomaton_3 ():
         fac.UpdateInstruction(cc_4, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_4, False) ]))
     st_4._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_5, [
@@ -3083,28 +3895,64 @@ def _BuildAutomaton_3 ():
         fac.UpdateInstruction(cc_5, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
     st_5._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_6, True) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
     st_6._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_7, True) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
     st_7._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_8, True) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    st_8._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    st_10._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
 Container_._Automaton = _BuildAutomaton_3()
 
 
 
 
-ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PortInstance'), ComponentPortInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 348, 6)))
+ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PortInstance'), ComponentPortInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 376, 6)))
 
-ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance'), ComponentPrimitivePropertyInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 349, 6)))
+ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance'), ComponentPrimitivePropertyInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 377, 6)))
 
-ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ConnectorInstance'), ComponentConnectorInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 350, 6)))
+ComponentInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ConnectorInstance'), ComponentConnectorInstance_, scope=ComponentInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 378, 6)))
 
 def _BuildAutomaton_4 ():
     # Remove this helper function from the namespace after it is invoked
@@ -3113,26 +3961,26 @@ def _BuildAutomaton_4 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 348, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 376, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 349, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 377, 6))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 350, 6))
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 378, 6))
     counters.add(cc_2)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'PortInstance')), pyxb.utils.utility.Location(u'avm.xsd', 348, 6))
+    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'PortInstance')), pyxb.utils.utility.Location(u'avm.xsd', 376, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance')), pyxb.utils.utility.Location(u'avm.xsd', 349, 6))
+    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'PrimitivePropertyInstance')), pyxb.utils.utility.Location(u'avm.xsd', 377, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'ConnectorInstance')), pyxb.utils.utility.Location(u'avm.xsd', 350, 6))
+    symbol = pyxb.binding.content.ElementUse(ComponentInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'ConnectorInstance')), pyxb.utils.utility.Location(u'avm.xsd', 378, 6))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     transitions = []
@@ -3159,7 +4007,7 @@ ComponentInstance_._Automaton = _BuildAutomaton_4()
 
 
 
-ComponentPrimitivePropertyInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=ComponentPrimitivePropertyInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 368, 6)))
+ComponentPrimitivePropertyInstance_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=ComponentPrimitivePropertyInstance_, location=pyxb.utils.utility.Location(u'avm.xsd', 396, 6)))
 
 def _BuildAutomaton_5 ():
     # Remove this helper function from the namespace after it is invoked
@@ -3168,12 +4016,12 @@ def _BuildAutomaton_5 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 368, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 396, 6))
     counters.add(cc_0)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(ComponentPrimitivePropertyInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 368, 6))
+    symbol = pyxb.binding.content.ElementUse(ComponentPrimitivePropertyInstance_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 396, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
@@ -3186,9 +4034,21 @@ ComponentPrimitivePropertyInstance_._Automaton = _BuildAutomaton_5()
 
 
 
-Value_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ValueExpression'), ValueExpressionType_, scope=Value_, location=pyxb.utils.utility.Location(u'avm.xsd', 94, 10)))
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'TopLevelSystemUnderTest'), TopLevelSystemUnderTest_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 502, 6)))
 
-Value_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DataSource'), DataSource_, scope=Value_, location=pyxb.utils.utility.Location(u'avm.xsd', 95, 10)))
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Parameter'), Parameter_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 503, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Metric'), Metric_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 504, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'TestInjectionPoint'), TestInjectionPoint_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 505, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'TestComponent'), ComponentInstance_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 506, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Workflow'), Workflow_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 507, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Settings'), Settings_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 508, 6)))
+
+TestBench_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'TestStructure'), DomainModel_, scope=TestBench_, location=pyxb.utils.utility.Location(u'avm.xsd', 509, 6)))
 
 def _BuildAutomaton_6 ():
     # Remove this helper function from the namespace after it is invoked
@@ -3197,19 +4057,232 @@ def _BuildAutomaton_6 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 94, 10))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 502, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 95, 10))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 503, 6))
     counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 504, 6))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 505, 6))
+    counters.add(cc_3)
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 506, 6))
+    counters.add(cc_4)
+    cc_5 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 507, 6))
+    counters.add(cc_5)
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 508, 6))
+    counters.add(cc_6)
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 509, 6))
+    counters.add(cc_7)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Value_._UseForTag(pyxb.namespace.ExpandedName(None, u'ValueExpression')), pyxb.utils.utility.Location(u'avm.xsd', 94, 10))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'TopLevelSystemUnderTest')), pyxb.utils.utility.Location(u'avm.xsd', 502, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Value_._UseForTag(pyxb.namespace.ExpandedName(None, u'DataSource')), pyxb.utils.utility.Location(u'avm.xsd', 95, 10))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'Parameter')), pyxb.utils.utility.Location(u'avm.xsd', 503, 6))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_2, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'Metric')), pyxb.utils.utility.Location(u'avm.xsd', 504, 6))
+    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_2)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_3, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'TestInjectionPoint')), pyxb.utils.utility.Location(u'avm.xsd', 505, 6))
+    st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_3)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_4, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'TestComponent')), pyxb.utils.utility.Location(u'avm.xsd', 506, 6))
+    st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_4)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_5, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'Workflow')), pyxb.utils.utility.Location(u'avm.xsd', 507, 6))
+    st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_5)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_6, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'Settings')), pyxb.utils.utility.Location(u'avm.xsd', 508, 6))
+    st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_6)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_7, False))
+    symbol = pyxb.binding.content.ElementUse(TestBench_._UseForTag(pyxb.namespace.ExpandedName(None, u'TestStructure')), pyxb.utils.utility.Location(u'avm.xsd', 509, 6))
+    st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_7)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    st_1._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_2, True) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    st_2._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_3, True) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    st_3._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_4, True) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    st_4._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_5, True) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    st_5._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_6, True) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    st_6._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_7, True) ]))
+    st_7._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+TestBench_._Automaton = _BuildAutomaton_6()
+
+
+
+
+TestBenchValueBase_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=TestBenchValueBase_, location=pyxb.utils.utility.Location(u'avm.xsd', 537, 6)))
+
+def _BuildAutomaton_7 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_7
+    del _BuildAutomaton_7
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
+    counters.add(cc_0)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(TestBenchValueBase_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    st_0._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+TestBenchValueBase_._Automaton = _BuildAutomaton_7()
+
+
+
+
+Workflow_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Task'), WorkflowTaskBase_, scope=Workflow_, location=pyxb.utils.utility.Location(u'avm.xsd', 552, 6)))
+
+def _BuildAutomaton_8 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_8
+    del _BuildAutomaton_8
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    states = []
+    final_update = set()
+    symbol = pyxb.binding.content.ElementUse(Workflow_._UseForTag(pyxb.namespace.ExpandedName(None, u'Task')), pyxb.utils.utility.Location(u'avm.xsd', 552, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+         ]))
+    st_0._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, False, containing_state=None)
+Workflow_._Automaton = _BuildAutomaton_8()
+
+
+
+
+Value_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ValueExpression'), ValueExpressionType_, scope=Value_, location=pyxb.utils.utility.Location(u'avm.xsd', 111, 10)))
+
+Value_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DataSource'), DataSource_, scope=Value_, location=pyxb.utils.utility.Location(u'avm.xsd', 112, 10)))
+
+def _BuildAutomaton_9 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_9
+    del _BuildAutomaton_9
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 111, 10))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 112, 10))
+    counters.add(cc_1)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Value_._UseForTag(pyxb.namespace.ExpandedName(None, u'ValueExpression')), pyxb.utils.utility.Location(u'avm.xsd', 111, 10))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(Value_._UseForTag(pyxb.namespace.ExpandedName(None, u'DataSource')), pyxb.utils.utility.Location(u'avm.xsd', 112, 10))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     transitions = []
@@ -3223,94 +4296,94 @@ def _BuildAutomaton_6 ():
         fac.UpdateInstruction(cc_1, True) ]))
     st_1._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
-Value_._Automaton = _BuildAutomaton_6()
+Value_._Automaton = _BuildAutomaton_9()
 
 
 
 
-FixedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), pyxb.binding.datatypes.string, scope=FixedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 108, 10)))
+FixedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), pyxb.binding.datatypes.string, scope=FixedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 125, 10)))
 
-def _BuildAutomaton_7 ():
+def _BuildAutomaton_10 ():
     # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_7
-    del _BuildAutomaton_7
+    global _BuildAutomaton_10
+    del _BuildAutomaton_10
     import pyxb.utils.fac as fac
 
     counters = set()
     states = []
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(FixedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 108, 10))
+    symbol = pyxb.binding.content.ElementUse(FixedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 125, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
     st_0._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-FixedValue_._Automaton = _BuildAutomaton_7()
+FixedValue_._Automaton = _BuildAutomaton_10()
 
 
 
 
-CalculatedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Expression'), pyxb.binding.datatypes.string, scope=CalculatedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 118, 10)))
+CalculatedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Expression'), pyxb.binding.datatypes.string, scope=CalculatedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 135, 10)))
 
-def _BuildAutomaton_8 ():
+def _BuildAutomaton_11 ():
     # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_8
-    del _BuildAutomaton_8
+    global _BuildAutomaton_11
+    del _BuildAutomaton_11
     import pyxb.utils.fac as fac
 
     counters = set()
     states = []
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(CalculatedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Expression')), pyxb.utils.utility.Location(u'avm.xsd', 118, 10))
+    symbol = pyxb.binding.content.ElementUse(CalculatedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Expression')), pyxb.utils.utility.Location(u'avm.xsd', 135, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
     st_0._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-CalculatedValue_._Automaton = _BuildAutomaton_8()
+CalculatedValue_._Automaton = _BuildAutomaton_11()
 
 
 
 
-ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Default'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 183, 10)))
+ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Default'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 200, 10)))
 
-ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Maximum'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 184, 10)))
+ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Maximum'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 201, 10)))
 
-ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Minimum'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 185, 10)))
+ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Minimum'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 202, 10)))
 
-ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AssignedValue'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 186, 10)))
+ParametricValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AssignedValue'), ValueExpressionType_, scope=ParametricValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 203, 10)))
 
-def _BuildAutomaton_9 ():
+def _BuildAutomaton_12 ():
     # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_9
-    del _BuildAutomaton_9
+    global _BuildAutomaton_12
+    del _BuildAutomaton_12
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 184, 10))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 201, 10))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 185, 10))
+    cc_1 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 202, 10))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 186, 10))
+    cc_2 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 203, 10))
     counters.add(cc_2)
     states = []
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Default')), pyxb.utils.utility.Location(u'avm.xsd', 183, 10))
+    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Default')), pyxb.utils.utility.Location(u'avm.xsd', 200, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Maximum')), pyxb.utils.utility.Location(u'avm.xsd', 184, 10))
+    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Maximum')), pyxb.utils.utility.Location(u'avm.xsd', 201, 10))
     st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Minimum')), pyxb.utils.utility.Location(u'avm.xsd', 185, 10))
+    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Minimum')), pyxb.utils.utility.Location(u'avm.xsd', 202, 10))
     st_2 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'AssignedValue')), pyxb.utils.utility.Location(u'avm.xsd', 186, 10))
+    symbol = pyxb.binding.content.ElementUse(ParametricValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'AssignedValue')), pyxb.utils.utility.Location(u'avm.xsd', 203, 10))
     st_3 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     transitions = []
@@ -3340,117 +4413,12 @@ def _BuildAutomaton_9 ():
         fac.UpdateInstruction(cc_2, True) ]))
     st_3._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-ParametricValue_._Automaton = _BuildAutomaton_9()
+ParametricValue_._Automaton = _BuildAutomaton_12()
 
 
 
 
-PrimitiveProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=PrimitiveProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 268, 10)))
-
-def _BuildAutomaton_10 ():
-    # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_10
-    del _BuildAutomaton_10
-    import pyxb.utils.fac as fac
-
-    counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 268, 10))
-    counters.add(cc_0)
-    states = []
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(PrimitiveProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 268, 10))
-    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_0)
-    transitions = []
-    transitions.append(fac.Transition(st_0, [
-        fac.UpdateInstruction(cc_0, True) ]))
-    st_0._set_transitionSet(transitions)
-    return fac.Automaton(states, counters, True, containing_state=None)
-PrimitiveProperty_._Automaton = _BuildAutomaton_10()
-
-
-
-
-CompoundProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'CompoundProperty'), CompoundProperty_, scope=CompoundProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 277, 10)))
-
-CompoundProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty'), PrimitiveProperty_, scope=CompoundProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 278, 10)))
-
-def _BuildAutomaton_11 ():
-    # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_11
-    del _BuildAutomaton_11
-    import pyxb.utils.fac as fac
-
-    counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 277, 10))
-    counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 278, 10))
-    counters.add(cc_1)
-    states = []
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(CompoundProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'CompoundProperty')), pyxb.utils.utility.Location(u'avm.xsd', 277, 10))
-    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_0)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(CompoundProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty')), pyxb.utils.utility.Location(u'avm.xsd', 278, 10))
-    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_1)
-    transitions = []
-    transitions.append(fac.Transition(st_0, [
-        fac.UpdateInstruction(cc_0, True) ]))
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    st_0._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_1, True) ]))
-    st_1._set_transitionSet(transitions)
-    return fac.Automaton(states, counters, True, containing_state=None)
-CompoundProperty_._Automaton = _BuildAutomaton_11()
-
-
-
-
-ParametricEnumeratedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AssignedValue'), FixedValue_, scope=ParametricEnumeratedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 287, 10)))
-
-ParametricEnumeratedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Enum'), ValueExpressionType_, scope=ParametricEnumeratedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 288, 10)))
-
-def _BuildAutomaton_12 ():
-    # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_12
-    del _BuildAutomaton_12
-    import pyxb.utils.fac as fac
-
-    counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 287, 10))
-    counters.add(cc_0)
-    states = []
-    final_update = None
-    symbol = pyxb.binding.content.ElementUse(ParametricEnumeratedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'AssignedValue')), pyxb.utils.utility.Location(u'avm.xsd', 287, 10))
-    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_0)
-    final_update = set()
-    symbol = pyxb.binding.content.ElementUse(ParametricEnumeratedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Enum')), pyxb.utils.utility.Location(u'avm.xsd', 288, 10))
-    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_1)
-    transitions = []
-    transitions.append(fac.Transition(st_0, [
-        fac.UpdateInstruction(cc_0, True) ]))
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    st_0._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_1, [
-         ]))
-    st_1._set_transitionSet(transitions)
-    return fac.Automaton(states, counters, False, containing_state=None)
-ParametricEnumeratedValue_._Automaton = _BuildAutomaton_12()
-
-
-
+PrimitiveProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Value'), Value_, scope=PrimitiveProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 285, 10)))
 
 def _BuildAutomaton_13 ():
     # Remove this helper function from the namespace after it is invoked
@@ -3459,156 +4427,27 @@ def _BuildAutomaton_13 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 285, 10))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
-    counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
-    counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
-    counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
-    counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
-    counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
-    counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
-    counters.add(cc_7)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    symbol = pyxb.binding.content.ElementUse(PrimitiveProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 285, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
-    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_1)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
-    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_2)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
-    st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_3)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
-    st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_4)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
-    st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_5)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
-    st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_6)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
-    st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_7)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_1, True) ]))
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    st_1._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_2, True) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    st_2._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_3, True) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_3, False) ]))
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_3, False) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_3, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_3, False) ]))
-    st_3._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_4, True) ]))
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_4, False) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_4, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_4, False) ]))
-    st_4._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_5, [
-        fac.UpdateInstruction(cc_5, True) ]))
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_5, False) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_5, False) ]))
-    st_5._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_6, [
-        fac.UpdateInstruction(cc_6, True) ]))
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_6, False) ]))
-    st_6._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_7, [
-        fac.UpdateInstruction(cc_7, True) ]))
-    st_7._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
-Compound_._Automaton = _BuildAutomaton_13()
+PrimitiveProperty_._Automaton = _BuildAutomaton_13()
 
 
 
+
+CompoundProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'CompoundProperty'), CompoundProperty_, scope=CompoundProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 294, 10)))
+
+CompoundProperty_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty'), PrimitiveProperty_, scope=CompoundProperty_, location=pyxb.utils.utility.Location(u'avm.xsd', 295, 10)))
 
 def _BuildAutomaton_14 ():
     # Remove this helper function from the namespace after it is invoked
@@ -3617,63 +4456,160 @@ def _BuildAutomaton_14 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 294, 10))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 295, 10))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
-    counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
-    counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
-    counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
-    counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
-    counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
-    counters.add(cc_7)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    symbol = pyxb.binding.content.ElementUse(CompoundProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'CompoundProperty')), pyxb.utils.utility.Location(u'avm.xsd', 294, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    symbol = pyxb.binding.content.ElementUse(CompoundProperty_._UseForTag(pyxb.namespace.ExpandedName(None, u'PrimitiveProperty')), pyxb.utils.utility.Location(u'avm.xsd', 295, 10))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    st_1._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+CompoundProperty_._Automaton = _BuildAutomaton_14()
+
+
+
+
+ParametricEnumeratedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'AssignedValue'), FixedValue_, scope=ParametricEnumeratedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 304, 10)))
+
+ParametricEnumeratedValue_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Enum'), ValueExpressionType_, scope=ParametricEnumeratedValue_, location=pyxb.utils.utility.Location(u'avm.xsd', 305, 10)))
+
+def _BuildAutomaton_15 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_15
+    del _BuildAutomaton_15
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 304, 10))
+    counters.add(cc_0)
+    states = []
+    final_update = None
+    symbol = pyxb.binding.content.ElementUse(ParametricEnumeratedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'AssignedValue')), pyxb.utils.utility.Location(u'avm.xsd', 304, 10))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    symbol = pyxb.binding.content.ElementUse(ParametricEnumeratedValue_._UseForTag(pyxb.namespace.ExpandedName(None, u'Enum')), pyxb.utils.utility.Location(u'avm.xsd', 305, 10))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+         ]))
+    st_1._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, False, containing_state=None)
+ParametricEnumeratedValue_._Automaton = _BuildAutomaton_15()
+
+
+
+
+def _BuildAutomaton_16 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_16
+    del _BuildAutomaton_16
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
+    counters.add(cc_3)
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
+    counters.add(cc_4)
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
+    counters.add(cc_5)
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
+    counters.add(cc_6)
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
+    counters.add(cc_7)
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    counters.add(cc_8)
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    counters.add(cc_10)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
     st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_7)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_8, False))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_8)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_9, False))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(Compound_._UseForTag(pyxb.namespace.ExpandedName(None, u'Resource')), pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
@@ -3691,6 +4627,12 @@ def _BuildAutomaton_14 ():
         fac.UpdateInstruction(cc_0, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_1, [
@@ -3707,6 +4649,12 @@ def _BuildAutomaton_14 ():
         fac.UpdateInstruction(cc_1, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
     st_1._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_2, [
@@ -3721,6 +4669,12 @@ def _BuildAutomaton_14 ():
         fac.UpdateInstruction(cc_2, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
     st_2._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_3, [
@@ -3733,6 +4687,12 @@ def _BuildAutomaton_14 ():
         fac.UpdateInstruction(cc_3, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
     st_3._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_4, [
@@ -3742,6 +4702,12 @@ def _BuildAutomaton_14 ():
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_4, False) ]))
     transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
         fac.UpdateInstruction(cc_4, False) ]))
     st_4._set_transitionSet(transitions)
     transitions = []
@@ -3751,150 +4717,55 @@ def _BuildAutomaton_14 ():
         fac.UpdateInstruction(cc_5, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
     st_5._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_6, True) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
     st_6._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_7, True) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
     st_7._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_8, True) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    st_8._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    st_10._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
-DesignSpaceContainer_._Automaton = _BuildAutomaton_14()
-
-
-
-
-Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Role'), Port_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 144, 10)))
-
-Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 145, 10)))
-
-Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DefaultJoin'), _ImportedBinding__iFAB.assemblyDetail, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 146, 10)))
-
-Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 147, 10)))
-
-Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ConnectorFeature'), ConnectorFeature_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 148, 10)))
-
-def _BuildAutomaton_15 ():
-    # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_15
-    del _BuildAutomaton_15
-    import pyxb.utils.fac as fac
-
-    counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 144, 10))
-    counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 145, 10))
-    counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 146, 10))
-    counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 147, 10))
-    counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 148, 10))
-    counters.add(cc_4)
-    states = []
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Role')), pyxb.utils.utility.Location(u'avm.xsd', 144, 10))
-    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_0)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 145, 10))
-    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_1)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'DefaultJoin')), pyxb.utils.utility.Location(u'avm.xsd', 146, 10))
-    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_2)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 147, 10))
-    st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_3)
-    final_update = set()
-    final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'ConnectorFeature')), pyxb.utils.utility.Location(u'avm.xsd', 148, 10))
-    st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_4)
-    transitions = []
-    transitions.append(fac.Transition(st_0, [
-        fac.UpdateInstruction(cc_0, True) ]))
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_0, False) ]))
-    st_0._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_1, [
-        fac.UpdateInstruction(cc_1, True) ]))
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_1, False) ]))
-    st_1._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_2, [
-        fac.UpdateInstruction(cc_2, True) ]))
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_2, False) ]))
-    st_2._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_3, [
-        fac.UpdateInstruction(cc_3, True) ]))
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_3, False) ]))
-    st_3._set_transitionSet(transitions)
-    transitions = []
-    transitions.append(fac.Transition(st_4, [
-        fac.UpdateInstruction(cc_4, True) ]))
-    st_4._set_transitionSet(transitions)
-    return fac.Automaton(states, counters, True, containing_state=None)
-Connector_._Automaton = _BuildAutomaton_15()
-
-
-
-
-NormalDistribution_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Mean'), ValueExpressionType_, scope=NormalDistribution_, location=pyxb.utils.utility.Location(u'avm.xsd', 201, 10)))
-
-NormalDistribution_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'StandardDeviation'), ValueExpressionType_, scope=NormalDistribution_, location=pyxb.utils.utility.Location(u'avm.xsd', 202, 10)))
-
-def _BuildAutomaton_16 ():
-    # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_16
-    del _BuildAutomaton_16
-    import pyxb.utils.fac as fac
-
-    counters = set()
-    states = []
-    final_update = None
-    symbol = pyxb.binding.content.ElementUse(NormalDistribution_._UseForTag(pyxb.namespace.ExpandedName(None, u'Mean')), pyxb.utils.utility.Location(u'avm.xsd', 201, 10))
-    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_0)
-    final_update = set()
-    symbol = pyxb.binding.content.ElementUse(NormalDistribution_._UseForTag(pyxb.namespace.ExpandedName(None, u'StandardDeviation')), pyxb.utils.utility.Location(u'avm.xsd', 202, 10))
-    st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
-    states.append(st_1)
-    transitions = []
-    transitions.append(fac.Transition(st_1, [
-         ]))
-    st_0._set_transitionSet(transitions)
-    transitions = []
-    st_1._set_transitionSet(transitions)
-    return fac.Automaton(states, counters, False, containing_state=None)
-NormalDistribution_._Automaton = _BuildAutomaton_16()
+Compound_._Automaton = _BuildAutomaton_16()
 
 
 
@@ -3906,63 +4777,84 @@ def _BuildAutomaton_17 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
     counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
     counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
     counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     counters.add(cc_7)
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    counters.add(cc_8)
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    counters.add(cc_10)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
     st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_7)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_8, False))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_8)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_9, False))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(DesignSpaceContainer_._UseForTag(pyxb.namespace.ExpandedName(None, u'Resource')), pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
@@ -3980,6 +4872,12 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_0, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_1, [
@@ -3996,6 +4894,12 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_1, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
     st_1._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_2, [
@@ -4010,6 +4914,12 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_2, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
     st_2._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_3, [
@@ -4022,6 +4932,12 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_3, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
     st_3._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_4, [
@@ -4032,6 +4948,12 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_4, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_4, False) ]))
     st_4._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_5, [
@@ -4040,19 +4962,55 @@ def _BuildAutomaton_17 ():
         fac.UpdateInstruction(cc_5, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
     st_5._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_6, True) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
     st_6._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_7, True) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
     st_7._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_8, True) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    st_8._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    st_10._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
-Optional_._Automaton = _BuildAutomaton_17()
+DesignSpaceContainer_._Automaton = _BuildAutomaton_17()
 
 
 
@@ -4064,63 +5022,265 @@ def _BuildAutomaton_18 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
     counters.add(cc_0)
-    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
-    counters.add(cc_1)
-    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
-    counters.add(cc_2)
-    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
-    counters.add(cc_3)
-    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
-    counters.add(cc_4)
-    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
-    counters.add(cc_5)
-    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
-    counters.add(cc_6)
-    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
-    counters.add(cc_7)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 318, 6))
+    symbol = pyxb.binding.content.ElementUse(Parameter_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    st_0._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+Parameter_._Automaton = _BuildAutomaton_18()
+
+
+
+
+def _BuildAutomaton_19 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_19
+    del _BuildAutomaton_19
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
+    counters.add(cc_0)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Metric_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 537, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    st_0._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+Metric_._Automaton = _BuildAutomaton_19()
+
+
+
+
+Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Role'), Port_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 161, 10)))
+
+Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Property'), Property_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 162, 10)))
+
+Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'DefaultJoin'), _ImportedBinding__iFAB.assemblyDetail, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 163, 10)))
+
+Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Connector'), Connector_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 164, 10)))
+
+Connector_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ConnectorFeature'), ConnectorFeature_, scope=Connector_, location=pyxb.utils.utility.Location(u'avm.xsd', 165, 10)))
+
+def _BuildAutomaton_20 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_20
+    del _BuildAutomaton_20
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 161, 10))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 162, 10))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 163, 10))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 164, 10))
+    counters.add(cc_3)
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 165, 10))
+    counters.add(cc_4)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Role')), pyxb.utils.utility.Location(u'avm.xsd', 161, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_1, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 319, 6))
+    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 162, 10))
     st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_1)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_2, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 320, 6))
+    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'DefaultJoin')), pyxb.utils.utility.Location(u'avm.xsd', 163, 10))
     st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_2)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_3, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 321, 6))
+    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 164, 10))
     st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_3)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_4, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 322, 6))
+    symbol = pyxb.binding.content.ElementUse(Connector_._UseForTag(pyxb.namespace.ExpandedName(None, u'ConnectorFeature')), pyxb.utils.utility.Location(u'avm.xsd', 165, 10))
+    st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_4)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    st_1._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_2, True) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    st_2._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_3, True) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    st_3._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_4, True) ]))
+    st_4._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+Connector_._Automaton = _BuildAutomaton_20()
+
+
+
+
+NormalDistribution_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Mean'), ValueExpressionType_, scope=NormalDistribution_, location=pyxb.utils.utility.Location(u'avm.xsd', 218, 10)))
+
+NormalDistribution_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'StandardDeviation'), ValueExpressionType_, scope=NormalDistribution_, location=pyxb.utils.utility.Location(u'avm.xsd', 219, 10)))
+
+def _BuildAutomaton_21 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_21
+    del _BuildAutomaton_21
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    states = []
+    final_update = None
+    symbol = pyxb.binding.content.ElementUse(NormalDistribution_._UseForTag(pyxb.namespace.ExpandedName(None, u'Mean')), pyxb.utils.utility.Location(u'avm.xsd', 218, 10))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    symbol = pyxb.binding.content.ElementUse(NormalDistribution_._UseForTag(pyxb.namespace.ExpandedName(None, u'StandardDeviation')), pyxb.utils.utility.Location(u'avm.xsd', 219, 10))
+    st_1 = fac.State(symbol, is_initial=False, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+         ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    st_1._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, False, containing_state=None)
+NormalDistribution_._Automaton = _BuildAutomaton_21()
+
+
+
+
+def _BuildAutomaton_22 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_22
+    del _BuildAutomaton_22
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
+    counters.add(cc_3)
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
+    counters.add(cc_4)
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
+    counters.add(cc_5)
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
+    counters.add(cc_6)
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
+    counters.add(cc_7)
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    counters.add(cc_8)
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    counters.add(cc_10)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_2, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
+    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_2)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_3, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
+    st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_3)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_4, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
     st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_4)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_5, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 323, 6))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
     st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_5)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_6, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 324, 6))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
     st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_6)
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_7, False))
-    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 325, 6))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
     st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_7)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_8, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_8)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_9, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(Optional_._UseForTag(pyxb.namespace.ExpandedName(None, u'Resource')), pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
     transitions = []
     transitions.append(fac.Transition(st_0, [
         fac.UpdateInstruction(cc_0, True) ]))
@@ -4138,6 +5298,12 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_0, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_0, False) ]))
     st_0._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_1, [
@@ -4154,6 +5320,12 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_1, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
     st_1._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_2, [
@@ -4168,6 +5340,12 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_2, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
     st_2._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_3, [
@@ -4180,6 +5358,12 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_3, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
     st_3._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_4, [
@@ -4190,6 +5374,12 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_4, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_4, False) ]))
     st_4._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_5, [
@@ -4198,35 +5388,351 @@ def _BuildAutomaton_18 ():
         fac.UpdateInstruction(cc_5, False) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
     st_5._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_6, [
         fac.UpdateInstruction(cc_6, True) ]))
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
     st_6._set_transitionSet(transitions)
     transitions = []
     transitions.append(fac.Transition(st_7, [
         fac.UpdateInstruction(cc_7, True) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
     st_7._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_8, True) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    st_8._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    st_10._set_transitionSet(transitions)
     return fac.Automaton(states, counters, True, containing_state=None)
-Alternative_._Automaton = _BuildAutomaton_18()
+Optional_._Automaton = _BuildAutomaton_22()
 
 
 
 
-ComplexFormula_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Operand'), Operand_, scope=ComplexFormula_, location=pyxb.utils.utility.Location(u'avm.xsd', 443, 10)))
+Alternative_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'ValueFlowMux'), ValueFlowMux_, scope=Alternative_, location=pyxb.utils.utility.Location(u'avm.xsd', 369, 10)))
 
-def _BuildAutomaton_19 ():
+def _BuildAutomaton_23 ():
     # Remove this helper function from the namespace after it is invoked
-    global _BuildAutomaton_19
-    del _BuildAutomaton_19
+    global _BuildAutomaton_23
+    del _BuildAutomaton_23
+    import pyxb.utils.fac as fac
+
+    counters = set()
+    cc_0 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    counters.add(cc_0)
+    cc_1 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
+    counters.add(cc_1)
+    cc_2 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
+    counters.add(cc_2)
+    cc_3 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
+    counters.add(cc_3)
+    cc_4 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
+    counters.add(cc_4)
+    cc_5 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
+    counters.add(cc_5)
+    cc_6 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
+    counters.add(cc_6)
+    cc_7 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
+    counters.add(cc_7)
+    cc_8 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    counters.add(cc_8)
+    cc_9 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    counters.add(cc_9)
+    cc_10 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    counters.add(cc_10)
+    cc_11 = fac.CounterCondition(min=0L, max=None, metadata=pyxb.utils.utility.Location(u'avm.xsd', 369, 10))
+    counters.add(cc_11)
+    states = []
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_0, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Container')), pyxb.utils.utility.Location(u'avm.xsd', 337, 6))
+    st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_0)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_1, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Property')), pyxb.utils.utility.Location(u'avm.xsd', 338, 6))
+    st_1 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_1)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_2, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ComponentInstance')), pyxb.utils.utility.Location(u'avm.xsd', 339, 6))
+    st_2 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_2)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_3, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Port')), pyxb.utils.utility.Location(u'avm.xsd', 340, 6))
+    st_3 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_3)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_4, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Connector')), pyxb.utils.utility.Location(u'avm.xsd', 341, 6))
+    st_4 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_4)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_5, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'JoinData')), pyxb.utils.utility.Location(u'avm.xsd', 342, 6))
+    st_5 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_5)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_6, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Formula')), pyxb.utils.utility.Location(u'avm.xsd', 343, 6))
+    st_6 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_6)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_7, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ContainerFeature')), pyxb.utils.utility.Location(u'avm.xsd', 344, 6))
+    st_7 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_7)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_8, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ResourceDependency')), pyxb.utils.utility.Location(u'avm.xsd', 345, 6))
+    st_8 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_8)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_9, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'DomainModel')), pyxb.utils.utility.Location(u'avm.xsd', 346, 6))
+    st_9 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_9)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_10, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'Resource')), pyxb.utils.utility.Location(u'avm.xsd', 347, 6))
+    st_10 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_10)
+    final_update = set()
+    final_update.add(fac.UpdateInstruction(cc_11, False))
+    symbol = pyxb.binding.content.ElementUse(Alternative_._UseForTag(pyxb.namespace.ExpandedName(None, u'ValueFlowMux')), pyxb.utils.utility.Location(u'avm.xsd', 369, 10))
+    st_11 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
+    states.append(st_11)
+    transitions = []
+    transitions.append(fac.Transition(st_0, [
+        fac.UpdateInstruction(cc_0, True) ]))
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_0, False) ]))
+    st_0._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_1, [
+        fac.UpdateInstruction(cc_1, True) ]))
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_1, False) ]))
+    st_1._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_2, [
+        fac.UpdateInstruction(cc_2, True) ]))
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_2, False) ]))
+    st_2._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_3, [
+        fac.UpdateInstruction(cc_3, True) ]))
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_3, False) ]))
+    st_3._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_4, [
+        fac.UpdateInstruction(cc_4, True) ]))
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_4, False) ]))
+    st_4._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_5, [
+        fac.UpdateInstruction(cc_5, True) ]))
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_5, False) ]))
+    st_5._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_6, [
+        fac.UpdateInstruction(cc_6, True) ]))
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_6, False) ]))
+    st_6._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_7, [
+        fac.UpdateInstruction(cc_7, True) ]))
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_7, False) ]))
+    st_7._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_8, [
+        fac.UpdateInstruction(cc_8, True) ]))
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_8, False) ]))
+    st_8._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_9, [
+        fac.UpdateInstruction(cc_9, True) ]))
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_9, False) ]))
+    st_9._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_10, [
+        fac.UpdateInstruction(cc_10, True) ]))
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_10, False) ]))
+    st_10._set_transitionSet(transitions)
+    transitions = []
+    transitions.append(fac.Transition(st_11, [
+        fac.UpdateInstruction(cc_11, True) ]))
+    st_11._set_transitionSet(transitions)
+    return fac.Automaton(states, counters, True, containing_state=None)
+Alternative_._Automaton = _BuildAutomaton_23()
+
+
+
+
+ComplexFormula_._AddElement(pyxb.binding.basis.element(pyxb.namespace.ExpandedName(None, u'Operand'), Operand_, scope=ComplexFormula_, location=pyxb.utils.utility.Location(u'avm.xsd', 471, 10)))
+
+def _BuildAutomaton_24 ():
+    # Remove this helper function from the namespace after it is invoked
+    global _BuildAutomaton_24
+    del _BuildAutomaton_24
     import pyxb.utils.fac as fac
 
     counters = set()
     states = []
     final_update = set()
-    symbol = pyxb.binding.content.ElementUse(ComplexFormula_._UseForTag(pyxb.namespace.ExpandedName(None, u'Operand')), pyxb.utils.utility.Location(u'avm.xsd', 443, 10))
+    symbol = pyxb.binding.content.ElementUse(ComplexFormula_._UseForTag(pyxb.namespace.ExpandedName(None, u'Operand')), pyxb.utils.utility.Location(u'avm.xsd', 471, 10))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []
@@ -4234,5 +5740,5 @@ def _BuildAutomaton_19 ():
          ]))
     st_0._set_transitionSet(transitions)
     return fac.Automaton(states, counters, False, containing_state=None)
-ComplexFormula_._Automaton = _BuildAutomaton_19()
+ComplexFormula_._Automaton = _BuildAutomaton_24()
 

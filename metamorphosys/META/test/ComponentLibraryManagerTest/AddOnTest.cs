@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -343,7 +288,7 @@ namespace ComponentLibraryManagerTest
             // Its AVMID and Path will be unique to this project, and that path will NOT exist already on disk,
             // because we expect in this case that the component was copied from another project somewhere else.
             // WHAT DO WE EXPECT THE ADD-ON TO DO?
-            // 1. Because the folder does not exist on disk, a new path and backing folder will be created.
+            // 1. Because the folder does not exist on disk, a backing folder will be created.
             // 2. AVMID will stay the same.
 
             var compName = Utils.GetCurrentMethod();
@@ -380,7 +325,7 @@ namespace ComponentLibraryManagerTest
             {
                 var c = project.GetComponentsByName(compName).FirstOrDefault();
                 Assert.True(org_AVMID == c.Attributes.AVMID, "AVMID was changed.");
-                Assert.True(org_Path != c.Attributes.Path, "Component should have been assigned a new path.");
+                // Assert.True(org_Path != c.Attributes.Path, "Component should have been assigned a new path."); we don't care if a new Path was assigned or not
                 Assert.True(Directory.Exists(c.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE)), "New component folder doesn't exist on disk.");
             });
             project.Save();
@@ -395,7 +340,7 @@ namespace ComponentLibraryManagerTest
             // because we expect in this case that the component was copied from another project somewhere else.
             // WHAT DO WE EXPECT THE ADD-ON TO DO?
             // 1. Assign a new AVMID.
-            // 2. Because the folder does not exist on disk, a new path and backing folder will be created for this guy.
+            // 2. Because the folder does not exist on disk, a backing folder will be created for this guy.
 
             var compName = Utils.GetCurrentMethod();
 
@@ -431,7 +376,7 @@ namespace ComponentLibraryManagerTest
             {
                 var c = project.GetComponentsByName(compName).FirstOrDefault();
                 Assert.True(org_AVMID != c.Attributes.AVMID, "A new AVMID should have been assigned.");
-                Assert.True(org_Path != c.Attributes.Path, "Component should have been assigned a new path.");
+                // Assert.True(org_Path != c.Attributes.Path, "Component should have been assigned a new path.");  we don't care if a new Path was assigned or not
                 Assert.True(Directory.Exists(c.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE)), "New component folder doesn't exist on disk.");
             });
             project.Save();
@@ -501,7 +446,8 @@ namespace ComponentLibraryManagerTest
             }
 
             // Did anybody not get a new path?
-            var item2Failures = results.Where(r => r.Item2 == false);
+            //   \ will not get a new path; we will test for it to exist below
+            var item2Failures = results.Where(r => r.Item1.EndsWith("\\") == false).Where(r => r.Item2 == false);
             if (item2Failures.Any())
             {
                 String message = "Components were not assigned a new path: ";

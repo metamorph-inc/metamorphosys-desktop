@@ -1,60 +1,7 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 # .\_manufacturing.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:001f63800ae37c355961a3d233bb19365b0ea8cb
-# Generated 2014-11-18 14:25:23.926000 by PyXB version 1.2.3
+# Generated 2015-08-13 10:01:46.172000 by PyXB version 1.2.3
 # Namespace manufacturing [xmlns:manufacturing]
 
 import pyxb
@@ -66,7 +13,7 @@ import pyxb.utils.domutils
 import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:0613818f-6f61-11e4-85c1-542696dd94ef')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:3717d230-41cc-11e5-ac39-7429af7917c0')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -75,8 +22,8 @@ if pyxb.__version__ != _PyXBVersion:
     raise pyxb.PyXBVersionError(_PyXBVersion)
 
 # Import bindings for namespaces imported into schema
-import avm as _ImportedBinding__avm
 import pyxb.binding.datatypes
+import avm as _ImportedBinding__avm
 
 # NOTE: All namespace declarations are reserved within the binding
 Namespace = pyxb.namespace.NamespaceForURI(u'manufacturing', create_if_missing=True)
@@ -162,6 +109,8 @@ class ManufacturingModel_ (_ImportedBinding__avm.DomainModel_):
     # Attribute YPosition inherited from {avm}DomainModel
     
     # Attribute Name inherited from {avm}DomainModel
+    
+    # Attribute ID inherited from {avm}DomainModel
     _ElementMap.update({
         __Parameter.name() : __Parameter,
         __Metric.name() : __Metric
@@ -347,12 +296,12 @@ def _BuildAutomaton_2 ():
     import pyxb.utils.fac as fac
 
     counters = set()
-    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 252, 6))
+    cc_0 = fac.CounterCondition(min=0L, max=1, metadata=pyxb.utils.utility.Location(u'avm.xsd', 269, 6))
     counters.add(cc_0)
     states = []
     final_update = set()
     final_update.add(fac.UpdateInstruction(cc_0, False))
-    symbol = pyxb.binding.content.ElementUse(Metric_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 252, 6))
+    symbol = pyxb.binding.content.ElementUse(Metric_._UseForTag(pyxb.namespace.ExpandedName(None, u'Value')), pyxb.utils.utility.Location(u'avm.xsd', 269, 6))
     st_0 = fac.State(symbol, is_initial=True, final_update=final_update, is_unordered_catenation=False)
     states.append(st_0)
     transitions = []

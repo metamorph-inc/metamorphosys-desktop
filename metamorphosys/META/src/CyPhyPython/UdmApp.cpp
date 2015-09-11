@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include "stdafx.h"
 #include "UdmApp.h"
 #include "UdmConfig.h"
@@ -191,22 +136,25 @@ static PyObject *CyPhyPython_log(PyObject *self, PyObject *args)
 	PyObject_RAII CyPhyPython = PyImport_ImportModule("CyPhyPython");
 	if (CyPhyPython)
 	{
-		PyObject_RAII logfile = PyObject_GetAttrString(CyPhyPython, "_logfile");
-		if (logfile.p && (PyUnicode_Check(arg1) || PyString_Check(arg1)))
+		if (PyObject_HasAttrString(CyPhyPython, "_logfile"))
 		{
-			PyObject_RAII write = PyObject_GetAttrString(logfile, "write");
+			PyObject_RAII logfile = PyObject_GetAttrString(CyPhyPython, "_logfile");
+			if (logfile.p && (PyUnicode_Check(arg1) || PyString_Check(arg1)))
 			{
-				PyObject_RAII write_args = Py_BuildValue("(O)", arg1);
-				PyObject_RAII ret = PyObject_CallObject(write, write_args);
-				ASSERT(ret.p);
+				PyObject_RAII write = PyObject_GetAttrString(logfile, "write");
+				{
+					PyObject_RAII write_args = Py_BuildValue("(O)", arg1);
+					PyObject_RAII ret = PyObject_CallObject(write, write_args);
+					ASSERT(ret.p);
+				}
+				{
+					PyObject_RAII newline = PyUnicode_FromString("\n");
+					PyObject_RAII write_args = Py_BuildValue("(O)", newline);
+					PyObject_RAII ret = PyObject_CallObject(write, write_args);
+					ASSERT(ret.p);
+				}
+				return return_Py_None();
 			}
-			{
-				PyObject_RAII newline = PyUnicode_FromString("\n");
-				PyObject_RAII write_args = Py_BuildValue("(O)", newline);
-				PyObject_RAII ret = PyObject_CallObject(write, write_args);
-				ASSERT(ret.p);
-			}
-			return return_Py_None();
 		}
 	}
 	if (PyUnicode_Check(arg1))
@@ -299,6 +247,14 @@ void CUdmApp::UdmMain(Udm::DataNetwork* p_backend,
 	}
 	PyObject_RAII pyRootObject = (*Object_Convert)(p_backend->GetRootObject());
 	FreeLibrary(udm_pyd);
+
+	if (meta_path.length()) {
+		newpath += separator + meta_path + "\\bin";
+		PyObject_RAII prefix = PyString_FromString((meta_path + "\\bin\\Python27").c_str());
+		PyObject* sys = PyDict_GetItemString(main_namespace, "sys");
+		PyObject_SetAttrString(sys, "prefix", prefix);
+		PyObject_SetAttrString(sys, "exec_prefix", prefix);
+	}
 	
 	PyObject* CyPhyPython = Py_InitModule("CyPhyPython", CyPhyPython_methods);
 	auto console_messages = componentParameters.find(L"console_messages");
@@ -327,39 +283,12 @@ void CUdmApp::UdmMain(Udm::DataNetwork* p_backend,
 		}
 	}
 
+	std::string module_name;
 	auto script_file_it = componentParameters.find(_bstr_t(L"script_file"));
-	if (script_file_it == componentParameters.end() || script_file_it->second.vt != VT_BSTR || SysStringLen(script_file_it->second.bstrVal) == 0)
+	if (script_file_it == componentParameters.end())
 	{
-		throw udm_exception("No script_file specified");
-	}
-	std::string module_name = _bstr_t(script_file_it->second.bstrVal);
-	if (module_name != "" && PathIsRelativeA(module_name.c_str())) {
-		std::replace(module_name.begin(), module_name.end(), '/', '\\');
-		if (module_name.rfind('\\') != std::string::npos)
-		{
-			std::string path = module_name.substr(0, module_name.rfind('\\'));
-
-			newpath = workingDir + "\\CyPhyPythonScripts\\" + path + separator + newpath;
-			newpath = workingDir + "\\" + path + separator + newpath;
-			PySys_SetPath(const_cast<char*>(newpath.c_str()));
-			module_name = module_name.substr(module_name.rfind('\\') + 1);
-		}
-		else
-		{
-			newpath = workingDir + "\\CyPhyPythonScripts" + separator + newpath;
-			newpath = workingDir + separator + newpath;
-			PySys_SetPath(const_cast<char*>(newpath.c_str()));
-		}
-
-		//newpath += separator + fullpath;
-		//PySys_SetPath(const_cast<char*>(newpath.c_str()));
-	} else {
 		std::string scriptFilename;
-		if (module_name != "") {
-			scriptFilename = module_name;
-		} else {
-			scriptFilename = openfilename("Python Scripts (*.py)\0*.py\0");
-		}
+		scriptFilename = openfilename("Python Scripts (*.py)\0*.py\0");
 		if (scriptFilename.length() == 0)
 		{
 			return;
@@ -376,6 +305,43 @@ void CUdmApp::UdmMain(Udm::DataNetwork* p_backend,
 			module_name = filepart;
 		}
 	}
+	else
+	{
+		if (script_file_it->second.vt != VT_BSTR || SysStringLen(script_file_it->second.bstrVal) == 0)
+		{
+			throw udm_exception("No script_file specified");
+		}
+		module_name = _bstr_t(script_file_it->second.bstrVal);
+		if (module_name != "" && PathIsRelativeA(module_name.c_str())) {
+			std::replace(module_name.begin(), module_name.end(), '/', '\\');
+			if (module_name.rfind('\\') != std::string::npos)
+			{
+				std::string path = module_name.substr(0, module_name.rfind('\\'));
+
+				newpath = workingDir + "\\CyPhyPythonScripts\\" + path + separator + newpath;
+				newpath = workingDir + "\\" + path + separator + newpath;
+				PySys_SetPath(const_cast<char*>(newpath.c_str()));
+				module_name = module_name.substr(module_name.rfind('\\') + 1);
+			}
+			else
+			{
+				newpath = workingDir + "\\CyPhyPythonScripts" + separator + newpath;
+				newpath = workingDir + separator + newpath;
+				PySys_SetPath(const_cast<char*>(newpath.c_str()));
+			}
+
+			//newpath += separator + fullpath;
+			//PySys_SetPath(const_cast<char*>(newpath.c_str()));
+		}
+	}
+	{
+		PyObject_RAII ret = PyRun_StringFlags("import site\n", Py_file_input, main_namespace, main_namespace, NULL);
+		if (ret == NULL && PyErr_Occurred())
+		{
+			throw python_error(GetPythonError());
+		}
+	}
+
 	if (module_name.rfind(".py") != std::string::npos)
 	{
 		module_name = module_name.substr(0, module_name.rfind(".py"));
@@ -421,16 +387,19 @@ void CUdmApp::UdmMain(Udm::DataNetwork* p_backend,
 
 		PyObject_RAII ret = PyObject_Call(invoke, empty_tuple, args);
 
-		PyObject_RAII logfile = PyObject_GetAttrString(CyPhyPython, "_logfile");
-		if (logfile.p)
+		if (PyObject_HasAttrString(CyPhyPython, "_logfile"))
 		{
-			PyObject_RAII write = PyObject_GetAttrString(logfile, "close");
-			PyObject_RAII ret = PyObject_CallObject(write, NULL);
-			ASSERT(ret.p);
-		}
-		if (ret == NULL)
-		{
-			throw python_error(GetPythonError());
+			PyObject_RAII logfile = PyObject_GetAttrString(CyPhyPython, "_logfile");
+			if (logfile.p)
+			{
+				PyObject_RAII write = PyObject_GetAttrString(logfile, "close");
+				PyObject_RAII ret = PyObject_CallObject(write, NULL);
+				ASSERT(ret.p);
+				if (ret == NULL)
+				{
+					throw python_error(GetPythonError());
+				}
+			}
 		}
 		char* params[] = { "runCommand", "labels", NULL };
 		for (char** param = params; *param; param++)

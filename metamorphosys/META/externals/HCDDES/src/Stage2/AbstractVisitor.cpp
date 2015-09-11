@@ -48,7 +48,8 @@ bool AbstractVisitor::HasTTSched( const Semantics::Executable & ea ) {
 
 	Semantics::ExecInfo ei = *(eis.begin());
 	Semantics::Schedule sch = ei.Schedule_child();
-	return ( sch.type() == Semantics::TTSchedule::meta );
+
+	return (sch != Udm::null ? (sch.type() == Semantics::TTSchedule::meta) : false);
 }
 
 std::string AbstractVisitor::GetTTSched( const Semantics::Executable &executable ) {

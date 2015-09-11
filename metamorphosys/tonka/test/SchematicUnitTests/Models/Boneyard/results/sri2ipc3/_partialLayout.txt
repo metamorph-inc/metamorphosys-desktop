@@ -1,0 +1,2 @@
+Layout was unable to automatically place 'Astable_555_Assembly'.
+The best partial layout file was '.\partialLayouts\input-layout009.json'.

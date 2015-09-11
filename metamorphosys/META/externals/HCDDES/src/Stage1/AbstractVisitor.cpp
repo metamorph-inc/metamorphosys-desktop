@@ -97,9 +97,12 @@ void AbstractVisitor::Visit_System(const ESMoL::System & sys) {
 			node.Accept(*this);
 
 			{
-				ESMoL::OS os = node.OS_child(); // this should also have been checked for existence
-				Context osContext( _contextTracker, os.name() );
-				os.Accept(*this);
+				set<ESMoL::OS> oses = node.OS_kind_children(); // this should also have been checked for existence
+				if (oses.size() > 0) {
+					ESMoL::OS os = *(oses.begin());
+					Context osContext( _contextTracker, os.name() );
+					os.Accept(*this);
+				}
 			}
 		
 

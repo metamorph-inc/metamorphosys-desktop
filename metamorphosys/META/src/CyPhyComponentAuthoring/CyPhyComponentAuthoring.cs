@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +9,9 @@ using GME.MGA;
 using GME.MGA.Core;
 using CyPhy = ISIS.GME.Dsml.CyPhyML.Interfaces;
 using CyPhyClasses = ISIS.GME.Dsml.CyPhyML.Classes;
+using META;
 using System.Drawing;
+using System.IO;
 
 namespace CyPhyComponentAuthoring
 {
@@ -131,6 +78,38 @@ namespace CyPhyComponentAuthoring
         {
             this.Logger.WriteInfo("Running Component Authoring interpreter.");
 
+
+            if (currentobj != null &&
+                currentobj.Meta.Name == typeof(CyPhy.ComponentAssembly).Name)
+            {
+                CyPhy.ComponentAssembly ca = CyPhyClasses.ComponentAssembly.Cast(currentobj);
+                string fileName = null;
+                DialogResult dr;
+                using (OpenFileDialog ofd = new OpenFileDialog())
+                {
+                    ofd.CheckFileExists = true;
+                    ofd.Multiselect = false;
+                    ofd.Filter = "SVG files (*.svg)|*.svg*|All files (*.*)|*.*";
+                    ofd.AutoUpgradeEnabled = true;
+                    dr = ofd.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        fileName = ofd.FileName;
+                    }
+                }
+                if (fileName == null)
+                {
+                    this.Logger.WriteError("No file was selected.  Add Custom Icon will not complete.");
+                    return;
+                }
+
+                string IconFileDestPath = META.ComponentLibraryManager.EnsureComponentAssemblyFolder(ca);
+                IconFileDestPath = ca.GetDirectoryPath(META.ComponentLibraryManager.PathConvention.ABSOLUTE);
+
+                System.IO.File.Copy(fileName, System.IO.Path.Combine(IconFileDestPath, "icon.svg"), true);
+                this.Logger.WriteInfo("Successfully added icon.svg to " + currentobj.Name);
+                return;
+            }
             // verify we are running in a component and that it is not an instance or library
             string return_msg;
             if (!CheckPreConditions(currentobj, out return_msg))
@@ -184,12 +163,29 @@ namespace CyPhyComponentAuthoring
             return true;
         }
 
+        Dictionary<string, Tuple<Type, MethodInfo>> dictofCATDnDMethods = new Dictionary<string, Tuple<Type, MethodInfo>>();
+        void DragNDropHandler(string filename)
+        {
+            Tuple<Type, MethodInfo> method;
+            if (dictofCATDnDMethods.TryGetValue(Path.GetExtension(filename), out method))
+            {
+                CATModule newinst = CreateCATModule(method.Item1);
+
+                method.Item2.Invoke(newinst, new object[] { filename });
+
+                GMEConsole console = GMEConsole.CreateFromProject(this.StashProject);
+                console.Info.WriteLine("Processed " + filename);
+                Marshal.ReleaseComObject(console.gme);
+            }
+        }
+
+
         public void PopulateDialogBox(bool testonly = false)
         {
             List<Tuple<CATName, Type, MethodInfo>> listofCATmethods = new List<Tuple<CATName, Type, MethodInfo>>();
 
             // create the dialog box
-            using (CyPhyComponentAuthoringToolGUI CATgut = new CyPhyComponentAuthoringToolGUI())
+            using (CyPhyComponentAuthoringToolGUI CATgut = new CyPhyComponentAuthoringToolGUI(DragNDropHandler))
             {
                 // get the current assembly
                 Assembly thisAssembly = Assembly.GetExecutingAssembly();
@@ -220,6 +216,11 @@ namespace CyPhyComponentAuthoring
                             foreach (CATName attr in meth.GetCustomAttributes(typeof(CATName), true))
                             {
                                 listofCATmethods.Add(new Tuple<CATName, Type, MethodInfo>(attr, classtype, meth));
+                            }
+
+                            foreach (CATDnD attr in meth.GetCustomAttributes(typeof(CATDnD), true))
+                            {
+                                dictofCATDnDMethods.Add(attr.Extension.ToLowerInvariant(), new Tuple<Type, MethodInfo>(classtype, meth));
                             }
                         }
                     }
@@ -296,19 +297,11 @@ namespace CyPhyComponentAuthoring
             }
             else
             {
-                // create a new CATModule class instance 
-                CATModule newinst = Activator.CreateInstance(classtype) as CATModule;
+                CATModule newinst = CreateCATModule(classtype);
                 if (newinst == null)
                 {
-                    // problem
-                    this.Logger.WriteFailed("Unable to create a new CATModule class instance. CreateInstance call failed.");
                     return;
                 }
-
-                // set the current component for use by the new class instance
-                newinst.SetCurrentComp(StashCurrentComponent);
-                newinst.CurrentProj = StashProject;
-                newinst.CurrentObj = StashCurrentObj;
 
                 // create a delegate for the dialog button to call to invoke the method
                 handler = Delegate.CreateDelegate(ev.EventHandlerType, newinst, meth);
@@ -343,6 +336,24 @@ namespace CyPhyComponentAuthoring
             CATgut.tableLayoutPanel0.Controls.Add(new_mini_table, 1, ++CATgut.tableLayoutPanel0.RowCount);
         }
 
+        private CATModule CreateCATModule(Type classtype)
+        {
+            // create a new CATModule class instance 
+            CATModule newinst = Activator.CreateInstance(classtype) as CATModule;
+            if (newinst == null)
+            {
+                // problem
+                this.Logger.WriteFailed("Unable to create a new CATModule class instance. CreateInstance call failed.");
+                return null;
+            }
+
+            // set the current component for use by the new class instance
+            newinst.SetCurrentComp(StashCurrentComponent);
+            newinst.CurrentObj = StashCurrentObj;
+
+            return newinst;
+        }
+
         // Classes which contain one or more CAT methods should apply this attribute with the bool set to true
         [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
         public class IsCATModule : System.Attribute
@@ -366,6 +377,12 @@ namespace CyPhyComponentAuthoring
             public string NameVal;
             public string DescriptionVal;
             public Role RoleVal;
+        }
+
+        [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+        public class CATDnD : System.Attribute
+        {
+            public string Extension;
         }
 
         #region IMgaComponentEx Members

@@ -1,0 +1,164 @@
+2015-08-26T17:04:14 - [Info] - Master Interpreter 2.0
+2015-08-26T17:04:14 - [Debug] - === HEADER ===================================================
+Date/Time:       8/26/2015 5:04:14 PM
+Windows Version: Microsoft Windows NT 6.2.9200.0
+x64 bit OS:      True
+GME version:     15.5.8.2424
+META version:    14.12.2426
+META install:    C:\Program Files (x86)\META\
+CyPhyML version: 14.12-t5
+CyPhyML GUID:    {7B95B856-ECA2-4163-821D-4848558635B1}
+Python Dll:      UNKNOWN
+Python Exe:      UNKNOWN
+Python27 VE exe: C:\Program Files (x86)\META\bin\Python27\Scripts\python.exe
+PROE ISIS Ext. : C:\Program Files\META\Proe ISIS Extensions\bin\CADCreoParametricCreateAssembly.exe
+PROE ISIS ver. : CADCreoParametricCreateAssembly 1.4.58.0
+Username:        adam
+Currently opened paradigm information
+  MetaName    : CyPhyML
+  MetaVersion : 14.12-t5
+
+2015-08-26T17:04:14 - [Info] - Processing 1_PlaceAndRoute_V2 [TestBench] model
+2015-08-26T17:04:14 - [Debug] - Interactive mode: True
+2015-08-26T17:04:14 - [Debug] - Entering TryCheckContext checker
+2015-08-26T17:04:14 - [Debug] - Getting context checker for TestBench
+2015-08-26T17:04:14 - [Debug] - Got context checker TestBenchChecker for context TestBench
+2015-08-26T17:04:14 - [Debug] - Checking context
+2015-08-26T17:04:14 - [Debug] - Context is checked
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No component in TestBench.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No component references in TestBench.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No test injection points.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not a library object.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not a subtype or instance.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not an instance.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is writable.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0065-0000026f">TopLevelBuzzerAssembly_V2</a></i> 'TopLevelBuzzerAssembly_V2' [TopLevelSystemUnderTest] refers to a valid object [ComponentAssembly] and the ComponentAssembly is in a folder.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0067-0000020f">TopLevelBuzzerAssembly_V2</a></i> TopLevelSystemUnderTest object is not a null reference.
+2015-08-26T17:04:14 - [Success] -  <i><a href="mga:id-0067-0000020f">TopLevelBuzzerAssembly_V2</a></i> TopLevelSystemUnderTest refers to ComponentAssembly.
+2015-08-26T17:04:16 - [Debug] - MasterExe command: CyPhyMasterExe.exe "MGA=Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\Boneyard.mga" "/@TestBenches_MacroFab_2_Layer/@1_PlaceAndRoute_V2" "/@ComponentAssemblies/@TopLevelBuzzerAssembly_V2"
+2015-08-26T17:04:16 - [Debug] - Start main method for master interpreter.
+2015-08-26T17:04:16 - [Debug] - Start copying dashboard sync.
+2015-08-26T17:04:17 - [Debug] - Generate project manifest.
+2015-08-26T17:04:17 - [Debug] - Project manifest was generated Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\manifest.project.json
+2015-08-26T17:04:17 - [Debug] - Project directory: Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard
+2015-08-26T17:04:17 - [Debug] - Configuration TopLevelBuzzerAssembly_V2 [ComponentAssembly] was resolved to:  TopLevelBuzzerAssembly_V2 [ComponentAssembly]
+2015-08-26T17:04:17 - [Info] - Number of configurations to execute: 1
+2015-08-26T17:04:17 - [Debug] - Wait for dashboard copy to finish
+2015-08-26T17:04:17 - [Debug] - Dashboard copy finished
+2015-08-26T17:04:17 - [Debug] - Processing 1 out of 1 [0 success(es) and 0 failure(s)]
+2015-08-26T17:04:17 - [Debug] - Configuration /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-26T17:04:17 - [Debug] - Starting analysis model processor
+2015-08-26T17:04:17 - [Debug] - Preparing analysis model processor
+2015-08-26T17:04:17 - [Debug] - Turning off addons for perfomance reasons: ConstraintManager, CyPhyAddOn, CyPhyDecoratorAddon, CyPhyMdaoAddOn, CyPhySignalBlocksAddOn
+2015-08-26T17:04:17 - [Debug] - Getting analysis model processor instance for TestBench type
+2015-08-26T17:04:17 - [Debug] - Got TestBenchTypeProcessor for TestBench /@TestBenches_MacroFab_2_Layer|kind=Testing|relpos=0/@1_PlaceAndRoute_V2|kind=TestBench|relpos=0
+2015-08-26T17:04:17 - [Debug] - ComponentAssembly was specified as configuration. Start expanding it. /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-26T17:04:17 - [Debug] - Expand finished for /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-26T17:04:17 - [Debug] - [SKIP] Calling design space exporter, since the test bench is defined over a design and not a design space.
+2015-08-26T17:04:17 - [Debug] - Calling design exporter
+2015-08-26T17:04:17 - [Warning] - Design exporter failed.
+2015-08-26T17:04:17 - [Debug] - Saving test bench definition
+2015-08-26T17:04:17 - [Debug] - Saving test bench definition succeeded.
+2015-08-26T17:04:17 - [Debug] - Saving test bench manifest
+2015-08-26T17:04:17 - [Debug] - Saving test bench manifest succeeded.
+2015-08-26T17:04:17 - [Debug] - Serializing Project manifest file with updates.
+2015-08-26T17:04:17 - [Debug] - Project manifest was successfully saved.
+2015-08-26T17:04:17 - [Debug] - Execution is interactive, showing interpreter configuration forms.
+2015-08-26T17:04:17 - [Debug] - Running interpreters. Keeping temp models: False
+2015-08-26T17:04:19 - [Debug] - Interpreters finished.
+2015-08-26T17:04:19 - [Debug] - Job manager instance is null. Initializing one.
+2015-08-26T17:04:19 - [Debug] - Job manager dispatch is ready to receive jobs
+2015-08-26T17:04:19 - [Debug] - Posting to the job manager
+2015-08-26T17:04:23 - [Info] - Job posted to the job manager: 1_PlaceAndRoute_V2
+2015-08-26T17:04:23 - [Debug] - Removing temporary models.
+2015-08-26T17:04:23 - [Debug] - Temporary models are removed.
+2015-08-26T17:04:23 - [Debug] - Turning addons back on: ConstraintManager, CyPhyAddOn, CyPhyDecoratorAddon, CyPhyMdaoAddOn, CyPhySignalBlocksAddOn
+2015-08-26T17:04:23 - [Debug] - Analysis model processor is done
+2015-08-26T17:04:23 - [Debug] - Generate dashboard script files
+2015-08-26T17:04:23 - [Debug] - Dashboard script files generated
+2015-08-26T17:04:23 - [Info] -  Summary 
+2015-08-26T17:04:23 - [Success] -  <a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a> <a href="mga:id-0065-0000026f">TopLevelBuzzerAssembly_V2</a>  
+2015-08-26T17:04:23 - [Info] - Log file was generated here: <a href="file:///Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\log" target="_blank">Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\log\CyPhyMasterInterpreter.3820.log</a>
+2015-08-26T17:04:23 - [Info] - Master Interpreter 2.0 finished
+2015-08-27T08:36:19 - [Info] - Master Interpreter 2.0
+2015-08-27T08:36:19 - [Debug] - === HEADER ===================================================
+Date/Time:       8/27/2015 8:36:19 AM
+Windows Version: Microsoft Windows NT 6.2.9200.0
+x64 bit OS:      True
+GME version:     15.5.8.2424
+META version:    14.12.2426
+META install:    C:\Program Files (x86)\META\
+CyPhyML version: 14.12-t5
+CyPhyML GUID:    {7B95B856-ECA2-4163-821D-4848558635B1}
+Python Dll:      UNKNOWN
+Python Exe:      UNKNOWN
+Python27 VE exe: C:\Program Files (x86)\META\bin\Python27\Scripts\python.exe
+PROE ISIS Ext. : C:\Program Files\META\Proe ISIS Extensions\bin\CADCreoParametricCreateAssembly.exe
+PROE ISIS ver. : CADCreoParametricCreateAssembly 1.4.58.0
+Username:        adam
+Currently opened paradigm information
+  MetaName    : CyPhyML
+  MetaVersion : 14.12-t5
+
+2015-08-27T08:36:19 - [Info] - Processing 1_PlaceAndRoute_V2 [TestBench] model
+2015-08-27T08:36:19 - [Debug] - Interactive mode: True
+2015-08-27T08:36:19 - [Debug] - Entering TryCheckContext checker
+2015-08-27T08:36:19 - [Debug] - Getting context checker for TestBench
+2015-08-27T08:36:19 - [Debug] - Got context checker TestBenchChecker for context TestBench
+2015-08-27T08:36:19 - [Debug] - Checking context
+2015-08-27T08:36:19 - [Debug] - Context is checked
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No component in TestBench.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No component references in TestBench.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> No test injection points.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not a library object.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not a subtype or instance.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is not an instance.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a></i> TestBench is writable.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0065-0000026f">TopLevelBuzzerAssembly_V2</a></i> 'TopLevelBuzzerAssembly_V2' [TopLevelSystemUnderTest] refers to a valid object [ComponentAssembly] and the ComponentAssembly is in a folder.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0067-0000020f">TopLevelBuzzerAssembly_V2</a></i> TopLevelSystemUnderTest object is not a null reference.
+2015-08-27T08:36:19 - [Success] -  <i><a href="mga:id-0067-0000020f">TopLevelBuzzerAssembly_V2</a></i> TopLevelSystemUnderTest refers to ComponentAssembly.
+2015-08-27T08:36:21 - [Debug] - MasterExe command: CyPhyMasterExe.exe "MGA=Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\Boneyard.mga" "/@TestBenches_MacroFab_2_Layer/@1_PlaceAndRoute_V2" "/@ComponentAssemblies/@TopLevelBuzzerAssembly_V2"
+2015-08-27T08:36:21 - [Debug] - Start main method for master interpreter.
+2015-08-27T08:36:21 - [Debug] - Start copying dashboard sync.
+2015-08-27T08:36:21 - [Debug] - Generate project manifest.
+2015-08-27T08:36:21 - [Debug] - Project manifest was generated Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\manifest.project.json
+2015-08-27T08:36:21 - [Debug] - Project directory: Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard
+2015-08-27T08:36:21 - [Debug] - Configuration TopLevelBuzzerAssembly_V2 [ComponentAssembly] was resolved to:  TopLevelBuzzerAssembly_V2 [ComponentAssembly]
+2015-08-27T08:36:21 - [Info] - Number of configurations to execute: 1
+2015-08-27T08:36:21 - [Debug] - Wait for dashboard copy to finish
+2015-08-27T08:36:21 - [Debug] - Dashboard copy finished
+2015-08-27T08:36:21 - [Debug] - Processing 1 out of 1 [0 success(es) and 0 failure(s)]
+2015-08-27T08:36:21 - [Debug] - Configuration /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-27T08:36:21 - [Debug] - Starting analysis model processor
+2015-08-27T08:36:21 - [Debug] - Preparing analysis model processor
+2015-08-27T08:36:21 - [Debug] - Turning off addons for perfomance reasons: ConstraintManager, CyPhyAddOn, CyPhyDecoratorAddon, CyPhyMdaoAddOn, CyPhySignalBlocksAddOn
+2015-08-27T08:36:21 - [Debug] - Getting analysis model processor instance for TestBench type
+2015-08-27T08:36:21 - [Debug] - Got TestBenchTypeProcessor for TestBench /@TestBenches_MacroFab_2_Layer|kind=Testing|relpos=0/@1_PlaceAndRoute_V2|kind=TestBench|relpos=0
+2015-08-27T08:36:21 - [Debug] - ComponentAssembly was specified as configuration. Start expanding it. /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-27T08:36:21 - [Debug] - Expand finished for /@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@TopLevelBuzzerAssembly_V2|kind=ComponentAssembly|relpos=0
+2015-08-27T08:36:21 - [Debug] - [SKIP] Calling design space exporter, since the test bench is defined over a design and not a design space.
+2015-08-27T08:36:21 - [Debug] - Calling design exporter
+2015-08-27T08:36:21 - [Warning] - Design exporter failed.
+2015-08-27T08:36:21 - [Debug] - Saving test bench definition
+2015-08-27T08:36:21 - [Debug] - Saving test bench definition succeeded.
+2015-08-27T08:36:21 - [Debug] - Saving test bench manifest
+2015-08-27T08:36:21 - [Debug] - Saving test bench manifest succeeded.
+2015-08-27T08:36:21 - [Debug] - Serializing Project manifest file with updates.
+2015-08-27T08:36:21 - [Debug] - Project manifest was successfully saved.
+2015-08-27T08:36:21 - [Debug] - Execution is interactive, showing interpreter configuration forms.
+2015-08-27T08:36:21 - [Debug] - Running interpreters. Keeping temp models: False
+2015-08-27T08:36:22 - [Debug] - Interpreters finished.
+2015-08-27T08:36:22 - [Debug] - Job manager instance is null. Initializing one.
+2015-08-27T08:36:22 - [Debug] - Job manager dispatch is ready to receive jobs
+2015-08-27T08:36:22 - [Debug] - Posting to the job manager
+2015-08-27T08:36:25 - [Info] - Job posted to the job manager: 1_PlaceAndRoute_V2
+2015-08-27T08:36:25 - [Debug] - Removing temporary models.
+2015-08-27T08:36:25 - [Debug] - Temporary models are removed.
+2015-08-27T08:36:25 - [Debug] - Turning addons back on: ConstraintManager, CyPhyAddOn, CyPhyDecoratorAddon, CyPhyMdaoAddOn, CyPhySignalBlocksAddOn
+2015-08-27T08:36:25 - [Debug] - Analysis model processor is done
+2015-08-27T08:36:25 - [Debug] - Generate dashboard script files
+2015-08-27T08:36:25 - [Debug] - Dashboard script files generated
+2015-08-27T08:36:25 - [Info] -  Summary 
+2015-08-27T08:36:25 - [Success] -  <a href="mga:id-0065-00000004">1_PlaceAndRoute_V2</a> <a href="mga:id-0065-0000026f">TopLevelBuzzerAssembly_V2</a>  
+2015-08-27T08:36:25 - [Info] - Log file was generated here: <a href="file:///Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\log" target="_blank">Z:\repo\tonka\tonka\test\SchematicUnitTests\Models\Boneyard\log\CyPhyMasterInterpreter.3820.log</a>
+2015-08-27T08:36:25 - [Info] - Master Interpreter 2.0 finished

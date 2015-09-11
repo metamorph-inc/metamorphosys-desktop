@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -109,33 +54,48 @@ namespace DesignImporterTests
 
     public abstract class PortsRoundTripBase<T> where T : DesignImporterTestFixtureBase
     {
-        protected void RunRoundTrip(string asmName)
+        protected void RunRoundTrip(string asmName, Action<ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly> caTest=null)
         {
             File.Delete(Path.Combine(fixture.AdmPath, asmName + ".adm"));
+            File.Delete(Path.Combine(fixture.AdmPath, asmName + ".adp"));
             RunDesignExporter(asmName);
-            CopyMgaAndRunDesignImporter(asmName);
+            var importedFilePath = CopyMgaAndRunDesignImporter(asmName, caTest);
             ComponentExporterUnitTests.Tests.runCyPhyMLComparator(proj.ProjectConnStr.Substring("MGA=".Length),
-                (proj.ProjectConnStr + asmName + ".mga").Substring("MGA=".Length), Environment.CurrentDirectory);
+                importedFilePath, Environment.CurrentDirectory);
         }
 
-        protected void CopyMgaAndRunDesignImporter(string asmName)
+        protected string CopyMgaAndRunDesignImporter(string asmName, Action<ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly> caTest)
         {
+            string testrunDir = Path.Combine(Path.GetDirectoryName(proj.ProjectConnStr.Substring("MGA=".Length)), "testrun");
+            try
+            {
+                Directory.Delete(testrunDir, true);
+            }
+            catch (DirectoryNotFoundException)
+            {
+            }
+            Directory.CreateDirectory(testrunDir);
+            string importMgaPath = Path.Combine(testrunDir, Path.GetFileNameWithoutExtension(proj.ProjectConnStr.Substring("MGA=".Length)) + asmName + ".mga");
             //proj.Save(proj.ProjectConnStr + asmName + ".mga", true);
-            File.Copy(proj.ProjectConnStr.Substring("MGA=".Length), (proj.ProjectConnStr + asmName + ".mga").Substring("MGA=".Length), true);
+            File.Copy(proj.ProjectConnStr.Substring("MGA=".Length), importMgaPath, true);
 
             MgaProject proj2 = (MgaProject)Activator.CreateInstance(Type.GetTypeFromProgID("Mga.MgaProject"));
-            proj2.OpenEx(proj.ProjectConnStr + asmName + ".mga", "CyPhyML", null);
+            proj2.OpenEx("MGA=" + importMgaPath, "CyPhyML", null);
             proj2.BeginTransactionInNewTerr();
             try
             {
-                MgaFCO componentAssembly = (MgaFCO)proj2.RootFolder.GetObjectByPathDisp("/@ComponentAssemblies/@" + asmName);
+                MgaFCO componentAssembly = (MgaFCO)proj2.RootFolder.GetObjectByPathDisp("/@" + FolderName + "/@" + asmName);
                 Assert.NotNull(componentAssembly);
                 componentAssembly.DestroyObject();
                 var importer = new CyPhyDesignImporter.AVMDesignImporter(null, proj2);
                 avm.Design design;
-                using (StreamReader streamReader = new StreamReader(Path.Combine(fixture.AdmPath, asmName + ".adm")))
-                    design = CyPhyDesignImporter.CyPhyDesignImporterInterpreter.DeserializeAvmDesignXml(streamReader);
-                var ret = (ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly)importer.ImportDesign(design, CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_CAS);
+                var adpPath = Path.Combine(fixture.AdmPath, asmName + ("ComponentAssemblies" == FolderName ? ".adp" : ".adm"));
+                var ret = importer.ImportFile(adpPath,
+                    "ComponentAssemblies" == FolderName ? CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_CAS : CyPhyDesignImporter.AVMDesignImporter.DesignImportMode.CREATE_DS);
+                if (caTest != null)
+                {
+                    caTest((ISIS.GME.Dsml.CyPhyML.Interfaces.ComponentAssembly)ret);
+                }
             }
             finally
             {
@@ -146,15 +106,21 @@ namespace DesignImporterTests
                 }
                 proj2.Close(true);
             }
+            return importMgaPath;
         }
 
-        protected MgaFCO RunDesignExporter(string asmName)
+        public MgaFCO RunDesignExporter(string asmName)
         {
             MgaFCO componentAssembly;
             proj.BeginTransactionInNewTerr();
+            string fileExtension = ".adp";
             try
             {
-                componentAssembly = (MgaFCO)proj.RootFolder.GetObjectByPathDisp("/@ComponentAssemblies/@" + asmName);
+                componentAssembly = (MgaFCO)proj.RootFolder.GetObjectByPathDisp("/@" + FolderName + "/@" + asmName);
+                if (componentAssembly.Meta.Name == "DesignContainer")
+                {
+                    fileExtension = ".adm";
+                }
                 Assert.NotNull(componentAssembly);
                 var designExporter = new CyPhyDesignExporter.CyPhyDesignExporterInterpreter();
                 designExporter.Initialize(proj);
@@ -163,10 +129,10 @@ namespace DesignImporterTests
                 {
                     CurrentFCO = componentAssembly,
                     Project = proj,
-                    OutputDirectory = fixture.AdmPath
+                    OutputDirectory = AdmPath
                 };
 
-                designExporter.MainInTransaction(parameters);
+                designExporter.MainInTransaction(parameters, true);
 
             }
             finally
@@ -174,15 +140,17 @@ namespace DesignImporterTests
                 proj.AbortTransaction();
             }
 
-            Assert.True(File.Exists(Path.Combine(fixture.AdmPath, asmName + ".adm")));
+            Assert.True(File.Exists(Path.Combine(fixture.AdmPath, asmName + fileExtension)));
             return componentAssembly;
         }
 
         MgaProject proj { get { return fixture.proj; } }
-        T fixture;
+        protected T fixture;
         public void SetFixture(T data)
         {
             fixture = data;
         }
+        public virtual string FolderName { get { return "ComponentAssemblies"; } }
+        public virtual string AdmPath { get { return fixture.AdmPath; } }
     }
 }

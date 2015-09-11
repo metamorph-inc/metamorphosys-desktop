@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EagleDevicePicker));
             this.select = new System.Windows.Forms.Button();
             this.lbDevices = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
@@ -57,7 +58,9 @@
             this.ClientSize = new System.Drawing.Size(336, 407);
             this.Controls.Add(this.lbDevices);
             this.Controls.Add(this.select);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "EagleDevicePicker";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Eagle Device Picker";
             this.ResumeLayout(false);
 

@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <Component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e67e0ce7-127f-4506-965c-1cd2c9213560" Name="EDA_Mappings" Version="" xmlns="avm">
-  <DomainModel xmlns:q1="eda" xsi:type="q1:EDAModel" Author="author" Notes="notes" XPosition="343" YPosition="147" Name="EDAModel" Device="device" Package="package" Library="library" DeviceSet="deviceset" xmlns="">
-    <Pin ID="id-9cf98ae9-f8b5-49a7-a460-04eeac2f6f6f" PortMap="id-c44d5315-33f0-49e9-8cc6-7a8583cb71d4 id-600e9bbf-d726-4e15-be42-9d91db7ec496" Name="Pin2" Notes="instancenotes" Definition="definition" EDAGate="gate" EDASymbolLocationX="symbollocationx" EDASymbolLocationY="symbollocationy" EDASymbolRotation="symbolrotation" SPICEPortNumber="0" />
-    <Pin ID="id-aebeae8e-fe73-4556-b75d-3ad1233b8fbe" PortMap="id-e96c7a2c-76c2-47c0-b5f7-deac9e60a8a2 id-a155c492-fe3b-495f-a35d-571a7c72ca44" Name="Pin1" Notes="instancenotes" Definition="definition" EDAGate="gate" EDASymbolLocationX="symbollocationx" EDASymbolLocationY="symbollocationy" EDASymbolRotation="symbolrotation" SPICEPortNumber="0" />
+  <DomainModel xmlns:q1="eda" xsi:type="q1:EDAModel" Author="author" Notes="notes" XPosition="343" YPosition="147" Name="EDAModel" ID="id-2e358a5c-7807-4223-8338-32d6642fd83d" Package="package" Device="device" Library="library" DeviceSet="deviceset" xmlns="">
+    <Pin ID="id-9cf98ae9-f8b5-49a7-a460-04eeac2f6f6f" PortMap="id-600e9bbf-d726-4e15-be42-9d91db7ec496 id-c44d5315-33f0-49e9-8cc6-7a8583cb71d4" Notes="instancenotes" Definition="definition" Name="Pin2" EDAGate="gate" EDASymbolLocationX="symbollocationx" EDASymbolLocationY="symbollocationy" EDASymbolRotation="symbolrotation" SPICEPortNumber="0" />
+    <Pin ID="id-aebeae8e-fe73-4556-b75d-3ad1233b8fbe" PortMap="id-e96c7a2c-76c2-47c0-b5f7-deac9e60a8a2 id-a155c492-fe3b-495f-a35d-571a7c72ca44" Notes="instancenotes" Definition="definition" Name="Pin1" EDAGate="gate" EDASymbolLocationX="symbollocationx" EDASymbolLocationY="symbollocationy" EDASymbolRotation="symbolrotation" SPICEPortNumber="0" />
     <Parameter Locator="Parameter1">
       <Value ID="id-2fb59d73-ca48-4e35-ab7d-ff01b8637492" Unit="A">
         <ValueExpression xmlns:q2="avm" xsi:type="q2:DerivedValue" ValueSource="id-713fd5ea-5d86-4295-b53f-8df2097b66c0" />

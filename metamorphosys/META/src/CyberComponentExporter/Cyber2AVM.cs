@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -118,39 +63,78 @@ namespace Cyber2AVM
 
             avmProperty.Value = new avm.Value();
             avmProperty.Value.ID = idString;
-            
-            
-            // Three cases for getting the data type and/or value of the parameter object
-            //  TODO: JEP The Simulink case is extremely messy - assume that the value is a real-type scalar for now, and we'll take care of it later
-            avmProperty.Value.DimensionType = DimensionTypeEnum.Scalar;
-            avmProperty.Value.DataType = DataTypeEnum.Real;
-            avm.ParametricValue avmParametricValue = new avm.ParametricValue();
-            
-            //avm.FixedValue maxVal = new avm.FixedValue();
-            //maxVal.Value = "1.0e10";
-    
-            //avmParametricValue.Maximum = maxVal;
-            //avm.FixedValue minVal = new avm.FixedValue();
-            //minVal.Value = "-1.0e10";
-            //avmParametricValue.Minimum = minVal;
-            //avm.FixedValue avmFixedValue = new avm.FixedValue();
-            //avmFixedValue.Value = "0";
-            /* Cyber.ParameterBase pbase = cyberModelParamterRef.Referred as Cyber.ParameterBase;
-            if (pbase.Kind == "VFL_Parameter")
+
+            string val_str = "";
+            string min_str = "";
+            string max_str = "";
+
+            Cyber.ParameterBase pbase = cyberModelParameterRef.Referred as Cyber.ParameterBase;
+            if (pbase == null)
+            {
+                val_str = cyberModelParameterRef.Attributes.Value;
+            }
+            else if (pbase.Kind == "VFL_Parameter")
             {
                 Simulink.SF_Parameter sfparam = pbase as Simulink.SF_Parameter;
+                val_str = sfparam.Attributes.Value;
 
             }
             else if (pbase.Kind == "Data")
             {
-
+                Simulink.Data data = pbase as Simulink.Data;
+                val_str = data.Attributes.InitialValue;
+                min_str = data.Attributes.Min;
+                max_str = data.Attributes.Max;
             }
             else if (pbase.Kind == "SFData")
             {
+                Simulink.SFData sfdata = pbase as Simulink.SFData;
+                val_str = sfdata.Attributes.InitialValue;
+                min_str = sfdata.Attributes.Min;
+                max_str = sfdata.Attributes.Max;
+            }
 
-            } */
+            avmProperty.Value.DimensionType = DimensionTypeEnum.Scalar;
+            avmProperty.Value.DataType = DataTypeEnum.Real;
+            avm.ParametricValue avmParametricValue = new avm.ParametricValue();
+
+            // Try to get data out of each of the strings (cast to a scalar double)
+            if (val_str != null && val_str.Length > 0)
+            {
+                Double value = 0.0;
+
+                if (Double.TryParse(val_str, out value) == true)
+                {
+                    avm.FixedValue assignedVal = new avm.FixedValue();
+                    assignedVal.Value = val_str;
+                    avmParametricValue.AssignedValue = assignedVal;
+                }
+            }
+
+            if (min_str != null && min_str.Length > 0)
+            {
+                Double min_val = 0.0;
+                if (Double.TryParse(min_str, out min_val) == true)
+                {
+                    avm.FixedValue minVal = new avm.FixedValue();
+                    minVal.Value = min_str;
+                    avmParametricValue.Minimum = minVal;
+
+                }
+            }
+
+            if (max_str != null && max_str.Length > 0)
+            {
+                Double max_val = 0.0;
+                if (Double.TryParse(max_str, out max_val) == true)
+                {
+                    avm.FixedValue maxVal = new avm.FixedValue();
+                    maxVal.Value = max_str;
+                    avmParametricValue.Maximum = maxVal;
+                }
+            }
+
             avmProperty.Value.ValueExpression = avmParametricValue;
-            
 
             // Add avm param to the given List
             avmCyberModelParameterList.Add(avmCyberParameter);
@@ -233,6 +217,24 @@ namespace Cyber2AVM
             res2.ID = "cyberxml.path";
 
             _avmComponent.ResourceDependency.Add(res2);
+
+            if (cyberModel != null && cyberModel.Impl is IMgaFCO
+                && (cyberModel.Impl as IMgaFCO).Meta.Name == "SimulinkWrapper")
+            {
+                string simulink_file =  (cyberModel.Impl as IMgaFCO).StrAttrByName["ModelFilename"];
+                string[] sl_path_parts = simulink_file.Split('\\');
+                string sl_filename_part = sl_path_parts[sl_path_parts.Length - 1];
+
+                System.IO.File.Copy(simulink_file, System.IO.Path.Combine("Cyber", sl_filename_part), true);
+
+                avm.Resource res3 = new avm.Resource();
+                res3.Path = "Cyber\\" + sl_filename_part;
+                res3.Name = "SimulinkModel";
+                res3.ID = "simulink.path";
+
+                _avmComponent.ResourceDependency.Add(res3);
+            }
+
 
             // Set Type
             GMEConsole.Out.WriteLine(cyberModel.GetType().Name);

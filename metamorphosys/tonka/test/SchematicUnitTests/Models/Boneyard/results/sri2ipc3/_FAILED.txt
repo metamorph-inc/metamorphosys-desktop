@@ -1,0 +1,4 @@
+"['Z:\\repo\\tonka\\tonka\\test\\SchematicUnitTests\\Models\\Boneyard\\results\\sri2ipc3\\placement.bat', '-i', '0.2', '-e', '0.5']" failed:
+Command '['Z:\\repo\\tonka\\tonka\\test\\SchematicUnitTests\\Models\\Boneyard\\results\\sri2ipc3\\placement.bat', '-i', '0.2', '-e', '0.5']' returned non-zero exit status 1
+
+See log: log/log2015-08-26T170423.761000.log

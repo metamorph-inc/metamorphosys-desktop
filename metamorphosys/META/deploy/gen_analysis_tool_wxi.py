@@ -1,56 +1,3 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 import sys
 import os
 import json
@@ -135,7 +82,7 @@ def generate_wxi(src, output_filename=None, id=None, diskId=None):
 
 
 def main(analysis_tools_dir, diskId=None):
-    directories = [os.path.join(analysis_tools_dir, name) for name in os.listdir(analysis_tools_dir) if os.path.isdir(os.path.join(analysis_tools_dir, name)) and not name == '.svn']
+    directories = [os.path.join(analysis_tools_dir, name) for name in os.listdir(analysis_tools_dir) if os.path.isdir(os.path.join(analysis_tools_dir, name)) and not name and name not in ('.svn', 'images')]
     tools = []
     for tool_dir in directories:
         (name, tool_id) = generate_wxi(tool_dir, diskId=diskId)
@@ -153,6 +100,12 @@ def main(analysis_tools_dir, diskId=None):
         tool_component_node = ElementTree.SubElement(componentGroup, 'ComponentGroupRef', {'Id': tool['id']})
         tool_dir_node = ElementTree.SubElement(directoryRef, 'Directory', {'Id': tool['id'], 'Name': tool['name']})
 
+    for file_ in ('Readme.md', 'add_registry_entries.py'):
+        file_component = ElementTree.SubElement(componentGroup, 'Component', {'Directory': 'analysis_tools', 'Id': 'analysis_tools_' + file_})
+        file_file = ElementTree.SubElement(file_component, 'File', {'Source': '..\\analysis_tools\\' + file_})
+        if file_ ==  'add_registry_entries.py':
+            file_registrykey = ElementTree.SubElement(file_component, 'RegistryKey', {'Key': r'Software\META\AnalysisTools', 'Root': 'HKLM', 'ForceDeleteOnUninstall': 'yes'})
+    
     ElementTree.ElementTree(tree).write("analysis_tools.wxi", xml_declaration=True)
 
     pretty_print_xml("analysis_tools.wxi")

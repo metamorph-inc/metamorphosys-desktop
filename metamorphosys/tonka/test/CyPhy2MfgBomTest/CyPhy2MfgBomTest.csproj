@@ -44,25 +44,28 @@
       <HintPath>..\..\..\META\src\CyPhyMLCS\bin\Release\CyPhyML.dll</HintPath>
     </Reference>
     <Reference Include="GME, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Core, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Meta, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.MGA.Parser, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="GME.Util, Version=1.0.1.0, Culture=neutral, PublicKeyToken=f240a760fe751c2e, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="ISIS.GME.Common, Version=1.0.4.0, Culture=neutral, PublicKeyToken=1321e6b92842fe54, processorArchitecture=MSIL">
       <HintPath>..\..\..\META\src\CyPhyMLCS\ISIS.GME.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MfgBom, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b29c8868c453943d, processorArchitecture=MSIL">
+      <HintPath>..\..\src\MfgBom\bin\Release\MfgBom.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\META\3rdParty\Json.NET\Newtonsoft.Json.dll</HintPath>
@@ -97,10 +100,6 @@
     <ProjectReference Include="..\..\src\CyPhy2MfgBom\CyPhy2MfgBom.csproj">
       <Project>{F3ECFD88-59E5-4398-B56C-72B6CBF59DB2}</Project>
       <Name>CyPhy2MfgBom</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\MfgBom\MfgBom.csproj">
-      <Project>{03C1C834-8DC1-4629-8CD9-5C082978A816}</Project>
-      <Name>MfgBom</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

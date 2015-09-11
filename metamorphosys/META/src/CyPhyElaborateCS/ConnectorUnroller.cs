@@ -35,6 +35,7 @@ namespace CyPhyElaborateCS
             {
                 this.Logger = new GMELogger(proj, "ConnectorUnroller");
                 myLogger = true;
+                this.Logger.LoggingLevel = SmartLogger.MessageType_enum.Warning;
             }
             else
             {
@@ -149,6 +150,10 @@ namespace CyPhyElaborateCS
             {
                 foreach (MgaFCO port in connector.ChildObjects)
                 {
+                    if (port.ArcheType != null)
+                    {
+                        break;
+                    }
                     if (IsSupported(port))
                     {
                         port.DestroyObject();
@@ -658,7 +663,16 @@ namespace CyPhyElaborateCS
             }
 
             var newPortFCO = parent.CopyFCODisp(oldPort, role);
-            //newPortFCO.SetAttributeByNameDisp("ID", null);
+
+            String lastGood = oldPort.ID;
+            String iter = null;
+            while (Traceability.TryGetMappedObject(lastGood, out iter)
+                   && lastGood != iter)
+            {
+                lastGood = iter;
+            }
+            Traceability.AddItem(newPortFCO.ID, lastGood);
+
             return newPortFCO;
         }
     }

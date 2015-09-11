@@ -1,69 +1,16 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 // Test.cpp : Defines the entry point for the console application.
 //
 
 #include <stdio.h>
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <direct.h>
 #include <vector>
 #include <io.h>     // For access().
 #include <sys/types.h>  // For stat().
 #include <sys/stat.h>   // For stat().
-
+#include <Windows.h>
 #include "../CADCommonFunctions/Nastran.h"
 #include "DeckConverter.h"
 
@@ -81,7 +28,7 @@ bool DirectoryExists( const char* absolutePath ){
 
 int main(int argc, char* argv[])
 {
-	if (argc < 4)
+	if (argc < 2)
 	{
 		std::cout << "-i <Nastran Input Deck File>   -o <Output Directory>" << std::endl;
 		return 0;
@@ -110,17 +57,42 @@ int main(int argc, char* argv[])
 		if (pos == std::string::npos)
 			std::cout << "Incorrect File Name: " << nasFile << std::endl;
 		else
-		{
+		{	
 			if (!DirectoryExists(abaqusFile.c_str()))
-				std::cout << "Error: Must specify an output directory!" << std::endl;
-
+			{
+				char* a_cwd = _getcwd(NULL, 0);
+				std::string s_cwd(a_cwd);
+				free(a_cwd);
+				std::cout << "Directory specified does not exist relative to working directory." << std::endl;
+				std::cout << "Placing INP file in working directory (" << s_cwd << ")" << std::endl;
+			}
 			isis_CADCommon::NastranDeck nasDeck;
 			nasDeck.ReadNastranDeck(nasFile);
-			//isis::CalculixConverter converter;
+			
+			isis::CalculixConverter converter;
 			//converter.ConvertNastranDeck(commonDS, abaqusFile);
 
-			isis::ElmerConverter converter;
+			//isis::ElmerConverter converter;
 			converter.ConvertNastranDeck(nasDeck, abaqusFile);
+
+			// Create csv file mapping PSolids to associated elements for use in post-processing.
+			std::ofstream psolid_element_map;
+			psolid_element_map.open("PSolid_Element_Map.csv");
+			for (std::map<int, isis_CADCommon::PSolid>::const_iterator pi = nasDeck.getPsolidData().begin(); pi != nasDeck.getPsolidData().end(); pi++)
+			{
+				std::vector<int> psolid;
+				std::vector<int> elements;
+				psolid.push_back(pi->first);
+				nasDeck.FindElementsFromPSolids(psolid, elements);
+				psolid_element_map << psolid[0] << ", ";
+				for (int e=0; e != elements.size(); e++)
+				{
+					psolid_element_map << elements[e] << ", ";
+				}
+				psolid_element_map << '\n';
+			}
+			psolid_element_map.close();
+			
 		}
 	}
 	catch(isis::application_exception& e)

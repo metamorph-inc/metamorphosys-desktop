@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +7,7 @@ using System.Xml.Linq;
 
 using Xunit;
 using CSXCAD;
+using System.Globalization;
 
 namespace CyPhy2RFTest
 {
@@ -346,11 +323,11 @@ namespace CyPhy2RFTest
 
             Assert.Equal(refFdtd.Attribute("f_max").Value, dutFdtd.Attribute("f_max").Value);
             Assert.Equal(
-                Double.Parse(refFdtd.Attribute("endCriteria").Value),
-                Double.Parse(dutFdtd.Attribute("endCriteria").Value));
+                Double.Parse(refFdtd.Attribute("endCriteria").Value, CultureInfo.InvariantCulture),
+                Double.Parse(dutFdtd.Attribute("endCriteria").Value, CultureInfo.InvariantCulture));
             Assert.Equal(
-                Double.Parse(refFdtd.Attribute("NumberOfTimesteps").Value),
-                Double.Parse(dutFdtd.Attribute("NumberOfTimesteps").Value));
+                Double.Parse(refFdtd.Attribute("NumberOfTimesteps").Value, CultureInfo.InvariantCulture),
+                Double.Parse(dutFdtd.Attribute("NumberOfTimesteps").Value, CultureInfo.InvariantCulture));
             Assert.Equal(
                 (from ra in refFdtd.Element("BoundaryCond").Attributes() select ra.Value).ToList(),
                 (from da in dutFdtd.Element("BoundaryCond").Attributes() select da.Value).ToList());
@@ -368,16 +345,16 @@ namespace CyPhy2RFTest
             XElement dutGrid = dutDoc.Element("ContinuousStructure").Element("RectilinearGrid");
 
             Assert.Equal(
-                Double.Parse(refGrid.Attribute("DeltaUnit").Value),
-                Double.Parse(dutGrid.Attribute("DeltaUnit").Value));
+                Double.Parse(refGrid.Attribute("DeltaUnit").Value, CultureInfo.InvariantCulture),
+                Double.Parse(dutGrid.Attribute("DeltaUnit").Value, CultureInfo.InvariantCulture));
             Assert.Equal(
-                Double.Parse(refGrid.Attribute("CoordSystem").Value),
-                Double.Parse(dutGrid.Attribute("CoordSystem").Value));
+                Double.Parse(refGrid.Attribute("CoordSystem").Value, CultureInfo.InvariantCulture),
+                Double.Parse(dutGrid.Attribute("CoordSystem").Value, CultureInfo.InvariantCulture));
 
             foreach (var gridName in new string[] { "XLines", "YLines", "ZLines" })
             {
-                double[] refLines = (from l in refGrid.Element(gridName).Value.ToString().Split(',') select Double.Parse(l)).ToArray();
-                double[] dutLines = (from l in dutGrid.Element(gridName).Value.ToString().Split(',') select Double.Parse(l)).ToArray();
+                double[] refLines = (from l in refGrid.Element(gridName).Value.ToString().Split(',') select Double.Parse(l, CultureInfo.InvariantCulture)).ToArray();
+                double[] dutLines = (from l in dutGrid.Element(gridName).Value.ToString().Split(',') select Double.Parse(l, CultureInfo.InvariantCulture)).ToArray();
 
                 for (int i = 0; i < refLines.Length; i++)
                 {

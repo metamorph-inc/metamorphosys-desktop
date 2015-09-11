@@ -67,6 +67,7 @@
     <Compile Include="AvmXmlSerializer.cs" />
     <Compile Include="generated\avm.cad.designer.cs" />
     <Compile Include="generated\avm.designer.cs" />
+    <Compile Include="generated\avm.domainmapping.designer.cs" />
     <Compile Include="generated\avm.manufacturing.designer.cs" />
     <Compile Include="generated\avm.modelica.designer.cs" />
     <Compile Include="generated\avm.cyber.designer.cs" />
@@ -79,6 +80,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\schema\avm.domainmapping.xsd">
+      <Link>avm.domainmapping.xsd</Link>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="..\..\..\schema\avm.schematic.eda.xsd">
       <Link>avm.schematic.eda.xsd</Link>
       <SubType>Designer</SubType>

@@ -49,9 +49,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine">
-      <HintPath>..\..\3rdParty\libcmdline\src\libcmdline\bin\Release\CommandLine.dll</HintPath>
-    </Reference>
     <Reference Include="CyPhyGUIs, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a2bc4de2a6ddf666, processorArchitecture=MSIL">
       <HintPath>..\..\..\META\src\CyPhyGUIs\bin\Release\CyPhyGUIs.dll</HintPath>
     </Reference>
@@ -111,6 +108,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\3rdParty\libcmdline\src\libcmdline\CommandLine.csproj">
+      <Project>{5DEA2811-2FFA-4959-830B-CAD3ACACABEB}</Project>
+      <Name>CommandLine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CyPhy2RF\CSXCAD\CSXCADLib.csproj">
       <Project>{F8FDFE2F-C2AF-490C-8FA9-039487D90E56}</Project>
       <Name>CSXCADLib</Name>

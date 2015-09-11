@@ -1,25 +1,3 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 #!/usr/bin/env python
 """ Run an Eagle-CAD centroids.ulp file. """
 #
@@ -152,6 +130,11 @@ def main_run_ulp():
     if not os.path.exists(my_eagle_path):
         error('The file "{0}" does not exist.  Please specify the "eaglecon.exe" path using the -e parameter.'.format(
             my_eagle_path))
+    if not os.path.exists(my_ulp_path):
+        # Check if the ULP file is specified relative to the module directory, for MOT-743.
+        module_ulp_path = os.path.join(module_directory, my_ulp_path).replace("\\", "/")
+        if os.path.exists(module_ulp_path):
+            my_ulp_path = module_ulp_path
     if (not g_errorCount):
         # Copy the ULP to the board directory
         shutil.copy(my_ulp_path, os.path.dirname(my_board))

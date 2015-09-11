@@ -38,6 +38,9 @@
     <Reference Include="AvmDdp">
       <HintPath>..\..\..\META\src\AvmDdp\bin\Release\AvmDdp.dll</HintPath>
     </Reference>
+    <Reference Include="MfgBom, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b29c8868c453943d, processorArchitecture=MSIL">
+      <HintPath>..\MfgBom\bin\Release\MfgBom.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,12 +52,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MfgBom\MfgBom.csproj">
-      <Project>{03C1C834-8DC1-4629-8CD9-5C082978A816}</Project>
-      <Name>MfgBom</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

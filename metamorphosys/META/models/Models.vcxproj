@@ -49,11 +49,19 @@
     <xme2mga>
       <AdditionalDependencies>$(META_PATH)\generated\CyPhyML\models\CyPhyML.xmp</AdditionalDependencies>
     </xme2mga>
+    <PostBuildEvent>
+      <Command>cd ..\meta
+..\bin\Python27\scripts\Python.exe create_empty_mga.py</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <xme2mga>
       <AdditionalDependencies>$(META_PATH)\generated\CyPhyML\models\CyPhyML.xmp</AdditionalDependencies>
     </xme2mga>
+    <PostBuildEvent>
+      <Command>cd ..\meta
+..\bin\Python27\scripts\Python.exe create_empty_mga.py</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <xme2mga Include="..\meta\CyPhyMLQudt.xme" />
@@ -71,6 +79,9 @@
   <ItemGroup>
     <ProjectReference Include="..\src\CyPhyMLRegister\CyPhyMLRegister.vcxproj">
       <Project>{d004018a-8dfe-4397-8db0-295efcfa05ce}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\src\CyPhySignalBlocksAddOn\CyPhySignalBlocksAddOn.csproj">
+      <Project>{fd77b394-97ab-4775-92a8-d98f967089d6}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

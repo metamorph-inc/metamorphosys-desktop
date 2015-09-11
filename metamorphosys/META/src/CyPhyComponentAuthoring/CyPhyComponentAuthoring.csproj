@@ -42,6 +42,9 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MfgBom">
+      <HintPath>..\..\..\tonka\src\MfgBom\bin\Release\MfgBom.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\3rdParty\Json.NET\Newtonsoft.Json.dll</HintPath>
@@ -100,6 +103,7 @@
       <DependentUpon>CyPhyComponentAuthoringToolGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Modules\ModelicaImport.cs" />
+    <Compile Include="Modules\OctoPartDataImport.cs" />
     <Compile Include="Modules\OpenComponentFolder.cs" />
     <Compile Include="Modules\SPICEModelImport.cs" />
     <Compile Include="Modules\RenameCADFile.cs" />
@@ -164,6 +168,10 @@
     <ProjectReference Include="..\DesignConsistencyChecker\DesignConsistencyChecker.csproj">
       <Project>{93FCCA2C-34B2-4855-A8DE-0A5A7F3FDECF}</Project>
       <Name>DesignConsistencyChecker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitsManager\UnitsManager.csproj">
+      <Project>{76B49481-D515-437E-9DD6-34B28968EEDB}</Project>
+      <Name>UnitsManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

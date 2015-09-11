@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -468,7 +413,8 @@ namespace CyPhyML2AVM {
             return avmPrimitiveProperty;
         }
 
-        public void createAVMParameter( CyPhyML.Parameter cyPhyMLParameter ) {
+        public avm.PrimitiveProperty createAVMParameter(CyPhyML.Parameter cyPhyMLParameter)
+        {
             avm.PrimitiveProperty avmPrimitiveProperty = convertParameter(cyPhyMLParameter, ensureIDAttribute(cyPhyMLParameter));
 
             var incomingVF = cyPhyMLParameter.SrcConnections.ValueFlowCollection.Where(c => c.IsRefportConnection() == false).FirstOrDefault();
@@ -482,7 +428,7 @@ namespace CyPhyML2AVM {
             }
 
             _cyPhyMLAVMObjectMap.Add(cyPhyMLParameter, avmPrimitiveProperty);
-            _avmComponent.Property.Add(avmPrimitiveProperty);
+            return avmPrimitiveProperty;
         }
 
         public void createAVMPort(List<avm.Port> avmPortList, CyPhyML.DomainModelPort cyPhyMLDomainModelPort, List<avm.ConnectorFeature> connectorFeatures = null) {
@@ -668,15 +614,178 @@ namespace CyPhyML2AVM {
             {
                 createAVMProperty(cyPhyMLProperty, avmConnector);
             }
-            /*
             foreach (CyPhyML.Parameter cyPhyMLParameter in cyPhyMLConnector.Children.ParameterCollection)
             {
-                createAVMParameter(cyPhyMLParameter);
-            }*/
+                var avmPrimitiveProperty = createAVMParameter(cyPhyMLParameter);
+                avmConnector.Property.Add(avmPrimitiveProperty);
+            }
             foreach (CyPhyML.JoinData jd in cyPhyMLConnector.Children.JoinDataCollection)
             {
                 var ad = JoinDataTransform.TransformJoinData(jd);
                 avmConnector.DefaultJoin.Add(ad);
+            }
+
+            foreach (CyPhyML.KinematicRevoluteJoint rj in cyPhyMLConnector.Children.KinematicRevoluteJointCollection)
+            {
+                createKinematicRotationalJoint(avmConnector, rj);
+            }
+            foreach (CyPhyML.KinematicTranslationalJoint tj in cyPhyMLConnector.Children.KinematicTranslationalJointCollection)
+            {
+                CreateKinematicTraslationalJoint(avmConnector, tj);
+            }
+        }
+
+        private void CreateKinematicTraslationalJoint(avm.Connector avmConnector, CyPhyML.KinematicTranslationalJoint tj)
+        {
+            var avmTj = new avm.cad.TranslationalJointSpec();
+            avmConnector.ConnectorFeature.Add(avmTj);
+            _cyPhyMLAVMObjectMap.Add(tj, avmTj);
+            foreach (var limit in tj.DstConnections.KinematicTranslationallLimitCollection)
+            {
+                var parameter = limit.DstEnds.Parameter;
+                object avmParameter;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(parameter, out avmParameter))
+                {
+                    avm.Value sourceValue = null;
+                    if (avmParameter is avm.TestBenchValueBase)
+                    {
+                        sourceValue = ((avm.TestBenchValueBase)avmParameter).Value;
+                    }
+                    else if (avmParameter is avm.PrimitiveProperty)
+                    {
+                        sourceValue = ((avm.PrimitiveProperty)avmParameter).Value;
+                    }
+
+                    if (sourceValue != null)
+                    {
+                        avm.Value v2 = new Value()
+                        {
+                            ID = "id-" + Guid.NewGuid().ToString("D"),
+                            ValueExpression = new DerivedValue()
+                            {
+                                ValueSource = sourceValue.ID
+                            }
+                        };
+                        switch (limit.Attributes.LimitType)
+                        {
+                            case CyPhyMLClasses.KinematicTranslationallLimit.AttributesClass.LimitType_enum.Default:
+                                avmTj.DefaultTranslation = v2;
+                                break;
+                            case CyPhyMLClasses.KinematicTranslationallLimit.AttributesClass.LimitType_enum.Min:
+                                avmTj.MinimumTranslation = v2;
+                                break;
+                            case CyPhyMLClasses.KinematicTranslationallLimit.AttributesClass.LimitType_enum.Max:
+                                avmTj.MaximumTranslation = v2;
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    // TODO: parameter is missing from map
+                }
+            }
+            foreach (var cf in tj.DstConnections.KinematicJointDefinitionCollection)
+            {
+                CyPhyML.CADDatum datum = (CyPhyML.CADDatum)cf.DstEnd;
+                object avmDatum;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(datum, out avmDatum))
+                {
+                    if (datum is CyPhyML.Axis)
+                    {
+                        avmTj.AlignmentAxis = ((avm.cad.Axis)avmDatum).ID;
+                    }
+                    else if (datum is CyPhyML.Surface)
+                    {
+                        avmTj.AlignmentPlane = ((avm.cad.Plane)avmDatum).ID;
+                    }
+                } // TODO: else: datum is missing from map
+            }
+            var limitReference = tj.DstConnections.KinematicTranslationalLimitReferenceCollection.FirstOrDefault();
+            if (limitReference != null)
+            {
+                object avmDatum;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(limitReference.DstEnds.Surface, out avmDatum))
+                {
+                    avmTj.TranslationLimitReference = ((avm.cad.Datum)avmDatum).ID;
+                }
+            }
+        }
+
+        private void createKinematicRotationalJoint(avm.Connector avmConnector, CyPhyML.KinematicRevoluteJoint rj)
+        {
+            var avmRj = new avm.cad.RevoluteJointSpec();
+            avmConnector.ConnectorFeature.Add(avmRj);
+            _cyPhyMLAVMObjectMap.Add(rj, avmRj);
+            foreach (var limit in rj.SrcConnections.KinematicRotationalLimitCollection)
+            {
+                var parameter = limit.SrcEnds.Parameter;
+                object avmParameter;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(parameter, out avmParameter))
+                {
+                    avm.Value sourceValue = null;
+                    if (avmParameter is avm.TestBenchValueBase)
+                    {
+                        sourceValue = ((avm.TestBenchValueBase)avmParameter).Value;
+                    }
+                    else if (avmParameter is avm.PrimitiveProperty)
+                    {
+                        sourceValue = ((avm.PrimitiveProperty)avmParameter).Value;
+                    }
+
+                    if (sourceValue != null)
+                    {
+                        avm.Value v2 = new Value()
+                        {
+                            ID = "id-" + Guid.NewGuid().ToString("D"),
+                            ValueExpression = new DerivedValue()
+                            {
+                                ValueSource = sourceValue.ID
+                            }
+                        };
+                        switch (limit.Attributes.LimitType)
+                        {
+                            case CyPhyMLClasses.KinematicRotationalLimit.AttributesClass.LimitType_enum.Default:
+                                avmRj.DefaultRotation = v2;
+                                break;
+                            case CyPhyMLClasses.KinematicRotationalLimit.AttributesClass.LimitType_enum.Min:
+                                avmRj.MinimumRotation = v2;
+                                break;
+                            case CyPhyMLClasses.KinematicRotationalLimit.AttributesClass.LimitType_enum.Max:
+                                avmRj.MaximumRotation = v2;
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    // TODO: parameter is missing from map
+                }
+            }
+            foreach (var cf in rj.DstConnections.KinematicJointDefinitionCollection)
+            {
+                CyPhyML.CADDatum datum = (CyPhyML.CADDatum)cf.DstEnd;
+                object avmDatum;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(datum, out avmDatum))
+                {
+                    if (datum is CyPhyML.Axis)
+                    {
+                        avmRj.AlignmentAxis = ((avm.cad.Axis)avmDatum).ID;
+                    }
+                    else if (datum is CyPhyML.Surface)
+                    {
+                        avmRj.AlignmentPlane = ((avm.cad.Plane)avmDatum).ID;
+                    }
+                } // TODO: else: datum is missing from map
+            }
+            var limitReference = rj.DstConnections.KinematicRotationalLimitReferenceCollection.FirstOrDefault();
+            if (limitReference != null)
+            {
+                object avmDatum;
+                if (_cyPhyMLAVMObjectMap.TryGetValue(limitReference.DstEnds.Surface, out avmDatum))
+                {
+                    avmRj.RotationLimitReference = ((avm.cad.Datum)avmDatum).ID;
+                }
             }
         }
 
@@ -915,7 +1024,8 @@ namespace CyPhyML2AVM {
                 Library = cyPhyMLEdaModel.Attributes.Library,
                 Notes = cyPhyMLEdaModel.Attributes.Notes,
                 Package = cyPhyMLEdaModel.Attributes.Package,
-                HasMultiLayerFootprint = cyPhyMLEdaModel.Attributes.HasMultiLayerFootprint
+                HasMultiLayerFootprint = cyPhyMLEdaModel.Attributes.HasMultiLayerFootprint,
+                ID = "id-" + cyPhyMLEdaModel.Guid.ToString("D")
             };
             _avmComponent.DomainModel.Add(avmEdaModel);
             _cyPhyMLAVMObjectMap.Add(cyPhyMLEdaModel, avmEdaModel);
@@ -970,6 +1080,27 @@ namespace CyPhyML2AVM {
 
                 avmParameter.Value.ID = ensureIDAttribute(cyPhyMLParameter);
             }
+        }
+
+        private void createAvmCad2EdaTransform(CyPhyML.CAD2EDATransform cyPhyMLCad2EdaTransform)
+        {
+            var avmCad2EdaTransform = new avm.domainmapping.CAD2EDATransform()
+            {
+                CADModel = (_cyPhyMLAVMObjectMap[cyPhyMLCad2EdaTransform.SrcEnds.CADModel] as avm.cad.CADModel).ID,
+                EDAModel = (_cyPhyMLAVMObjectMap[cyPhyMLCad2EdaTransform.DstEnds.EDAModel] as avm.schematic.eda.EDAModel).ID,
+                RotationX = (decimal)cyPhyMLCad2EdaTransform.Attributes.RotationX,
+                RotationY = (decimal)cyPhyMLCad2EdaTransform.Attributes.RotationY,
+                RotationZ = (decimal)cyPhyMLCad2EdaTransform.Attributes.RotationZ,
+                ScaleX = (decimal)cyPhyMLCad2EdaTransform.Attributes.ScaleX,
+                ScaleY = (decimal)cyPhyMLCad2EdaTransform.Attributes.ScaleY,
+                ScaleZ = (decimal)cyPhyMLCad2EdaTransform.Attributes.ScaleZ,
+                TranslationX = (decimal)cyPhyMLCad2EdaTransform.Attributes.TranslationX,
+                TranslationY = (decimal)cyPhyMLCad2EdaTransform.Attributes.TranslationY,
+                TranslationZ = (decimal)cyPhyMLCad2EdaTransform.Attributes.TranslationZ
+            };
+            _cyPhyMLAVMObjectMap.Add(cyPhyMLCad2EdaTransform, avmCad2EdaTransform);
+
+            _avmComponent.DomainMapping.Add(avmCad2EdaTransform);
         }
 
         private void createAvmSpiceModel(CyPhyML.SPICEModel cyPhyMLSpiceModel)
@@ -1276,15 +1407,36 @@ namespace CyPhyML2AVM {
             }
         }
 
+        private Dictionary<CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum, avm.cad.FileFormat> d_CADFileFormatMap
+            = new Dictionary<CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum, avm.cad.FileFormat>()
+            {
+                {CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum.AP_203, avm.cad.FileFormat.AP_203},
+                {CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum.AP_214, avm.cad.FileFormat.AP_214},
+                {CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum.Creo, avm.cad.FileFormat.Creo},
+                {CyPhyMLClasses.CADModel.AttributesClass.FileFormat_enum.STL, avm.cad.FileFormat.STL}
+            };
+
         private void createAVMCADModel(CyPhyML.CADModel cyPhyMLCADModel) {
 
             avm.cad.CADModel avmCADModel = new avm.cad.CADModel()
             {
                 Name = cyPhyMLCADModel.Name,
                 Author = cyPhyMLCADModel.Attributes.Author,
-                Notes = cyPhyMLCADModel.Attributes.Notes
+                Notes = cyPhyMLCADModel.Attributes.Notes,
+                ID = "id-" + cyPhyMLCADModel.Guid.ToString("D")
             };
 
+            if (d_CADFileFormatMap.ContainsKey(cyPhyMLCADModel.Attributes.FileFormat))
+            {
+                avmCADModel.FormatSpecified = true;
+                avmCADModel.Format = d_CADFileFormatMap[cyPhyMLCADModel.Attributes.FileFormat];
+            }
+            else
+            {
+                // Not supported
+                avmCADModel.FormatSpecified = false;
+            }
+            
             _avmComponent.DomainModel.Add(avmCADModel);
             SetLayoutData(avmCADModel, cyPhyMLCADModel.Impl);
             _cyPhyMLAVMObjectMap.Add(cyPhyMLCADModel, avmCADModel);
@@ -1522,7 +1674,7 @@ namespace CyPhyML2AVM {
             }
 
             foreach( CyPhyML.Parameter cyPhyMLParameter in cyPhyMLComponent.Children.ParameterCollection ) {
-                createAVMParameter( cyPhyMLParameter );
+                _avmComponent.Property.Add(createAVMParameter(cyPhyMLParameter));
             }
 
             foreach (CyPhyML.DomainModelPort cyPhyMLDomainModelPort in cyPhyMLComponent.Children.DomainModelPortCollection) {
@@ -1568,6 +1720,11 @@ namespace CyPhyML2AVM {
             {
                 _cyPhyMLDomainModelSet.Add(cyPhyMLEdaModel);
                 createAvmEdaModel(cyPhyMLEdaModel);
+            }
+
+            foreach (CyPhyML.CAD2EDATransform cyPhyMLCAD2EDATransform in cyPhyMLComponent.Children.CAD2EDATransformCollection)
+            {
+                createAvmCad2EdaTransform(cyPhyMLCAD2EDATransform);
             }
 
             foreach (CyPhyML.SPICEModel cyPhyMLSpiceModel in cyPhyMLComponent.Children.SPICEModelCollection)

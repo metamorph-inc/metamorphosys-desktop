@@ -49,5 +49,6 @@
     <None Include="..\..\templates\sched_viz.tpl">
       <Filter>Template Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

@@ -1,56 +1,3 @@
-# Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-# =======================
-# This version of the META tools is a fork of an original version produced
-# by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-# Their license statement:
-
-# Copyright (C) 2011-2014 Vanderbilt University
-
-# Developed with the sponsorship of the Defense Advanced Research Projects
-# Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-# as defined in DFARS 252.227-7013.
-
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this data, including any software or models in source or binary
-# form, as well as any drawings, specifications, and documentation
-# (collectively "the Data"), to deal in the Data without restriction,
-# including without limitation the rights to use, copy, modify, merge,
-# publish, distribute, sublicense, and/or sell copies of the Data, and to
-# permit persons to whom the Data is furnished to do so, subject to the
-# following conditions:
-
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Data.
-
-# THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-# THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
 #!python -u
 
 import sys
@@ -143,14 +90,17 @@ def build_msi():
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\meta_nrmm\meta_nrmm",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica\py_modelica",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica_exporter\py_modelica_exporter",)
+    gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\cad_library\cad_library",)
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\DesignDataPackage\lib\python", "DesignDataPackage_python.wxi", "DesignDataPackage_python")
     gen_dir_wxi.main(r"CAD_Installs\Proe ISIS Extensions", "Proe_ISIS_Extensions_x64.wxi", "Proe_ISIS_Extensions_x64", diskId='4') # do not call gen_dir_from_vc, it would exclude CADCreoCreateAssembly.exe
     gen_dir_wxi.gen_dir_from_vc(r"..\WebGME",)
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\CyPhyML\icons",)
     gen_dir_wxi.gen_dir_from_vc(r"..\models\MassSpringDamper",)
+    gen_dir_wxi.gen_dir_from_vc(r"..\models\Validation",)
     gen_dir_wxi.gen_dir_from_vc(r"..\bin", diskId='3')
     gen_dir_wxi.gen_dir_from_vc(r"..\ModelicaWrapperTemplates",)
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\chipfit_display",)
+    gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\layout_json",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\TestBenchExecutor",)
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\SpiceVisualizer")
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\spice_viewer")
@@ -160,12 +110,13 @@ def build_msi():
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\runEagleUlp")
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\runDrc")
     gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\Android")
+    gen_dir_wxi.gen_dir_from_vc(r"..\..\tonka\src\CADVisualizer")
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\PCC\PCC",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\isis_meta\isis_meta",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\meta_nrmm\meta_nrmm",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica\py_modelica",)
     gen_dir_wxi.gen_dir_from_vc(r"..\src\Python27Packages\py_modelica_exporter\py_modelica_exporter",)
-    gen_dir_wxi.gen_dir_from_vc(r"..\src\CADAssembler\Python", "CADPython")
+    gen_dir_wxi.gen_dir_from_vc(r"..\src\CADAssembler\Python", id="CADPython")
     gen_dir_wxi.gen_dir_from_vc(r"..\meta\DesignDataPackage\lib\python", "DesignDataPackage_python.wxi", "DesignDataPackage_python")
 
     def get_svnversion():
@@ -179,7 +130,7 @@ def build_msi():
         #    raise subprocess.CalledProcessError(p.returncode, 'svnversion')
         #return out
     svnversion = get_svnversion()
-	
+    
     print "SVN version: " + str(get_svnversion())
     sourcedir = adjacent_file('')
 
@@ -263,7 +214,7 @@ def build_msi():
     defines.append(('VERSIONSTRCYPHYML', cyphy_versions[1]))
     
     
-    version = '14.10.'
+    version = '14.12.'
     if 'M' in svnversion:
         ### METAMORPH HACK: SVN calls are bad. This is just checking for local modifications.
         #if 'JENKINS_URL' in os.environ:
@@ -304,7 +255,7 @@ def build_msi():
         import datetime
         starttime = datetime.datetime.now()
         system(['light', '-sw1055', '-sice:ICE82', '-sice:ICE57', '-sice:ICE60', '-sice:ICE69', '-ext', 'WixNetFxExtension', '-ext', 'WixUIExtension', '-ext', 'WixUtilExtension',
-            '-cc', os.path.join(this_dir, 'cab_cache'), '-reusecab',
+            # '-cc', os.path.join(this_dir, 'cab_cache'), '-reusecab', # we were getting errors during installation relating to corrupted cab files => disable cab cache
             '-o', os.path.splitext(source_wxs)[0] + ".msi"] + [ get_wixobj(file) for file in sources ])
         print "elapsed time: %d seconds" % (datetime.datetime.now() - starttime).seconds
     else:

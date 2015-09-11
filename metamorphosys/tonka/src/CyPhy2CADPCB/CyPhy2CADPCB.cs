@@ -1,27 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +10,7 @@ using GME.MGA;
 using GME.MGA.Core;
 using CyPhyGUIs;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 using CyPhy = ISIS.GME.Dsml.CyPhyML.Interfaces;
 using CyPhyClasses = ISIS.GME.Dsml.CyPhyML.Classes;
@@ -77,6 +54,61 @@ namespace CyPhy2CADPCB
             {
                 Logger = new GMELogger(project, this.ComponentName);
             }
+
+            MgaGateway = new MgaGateway(project);
+            project.CreateTerritoryWithoutSink(out MgaGateway.territory);
+        }
+
+        private CyPhy2CADPCB_Settings InitializeSettingsFromWorkflow(CyPhy2CADPCB_Settings settings)
+        {
+            // Seed with settings from workflow.
+            String str_WorkflowParameters = "";
+            try
+            {
+                MgaGateway.PerformInTransaction(delegate
+                {
+                    var testBench = CyPhyClasses.TestBench.Cast(this.mainParameters.CurrentFCO);
+                    var workflowRef = testBench.Children.WorkflowRefCollection.FirstOrDefault();
+                    var workflow = workflowRef.Referred.Workflow;
+                    var taskCollection = workflow.Children.TaskCollection;
+                    var myTask = taskCollection.FirstOrDefault(t => t.Attributes.COMName == this.ComponentProgID);
+                    str_WorkflowParameters = myTask.Attributes.Parameters;
+                },
+                transactiontype_enum.TRANSACTION_NON_NESTED,
+                abort: true
+                );
+
+                Dictionary<string, string> dict_WorkflowParameters = (Dictionary<string, string>)
+                    Newtonsoft.Json.JsonConvert.DeserializeObject(str_WorkflowParameters, typeof(Dictionary<string, string>));
+                
+                if (dict_WorkflowParameters != null)
+                {
+                    settings = new CyPhy2CADPCB_Settings();
+                    foreach (var property in settings.GetType().GetProperties()
+                                                               .Where(p => p.GetCustomAttributes(typeof(WorkflowConfigItemAttribute), false).Any())
+                                                               .Where(p => dict_WorkflowParameters.ContainsKey(p.Name)))
+                    {
+                        if (dict_WorkflowParameters[property.Name] == null)
+                        {
+                            property.SetValue(settings, dict_WorkflowParameters[property.Name], null);
+                        }
+                        else
+                        {
+                            property.SetValue(settings, dict_WorkflowParameters[property.Name].ToLower(), null);
+                        }
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                Logger.WriteInfo("Could not find workflow object for CyPhy2CADPCB interpreter.");
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                Logger.WriteWarning("Workflow Parameter has invalid Json String: {0}", str_WorkflowParameters);
+            }
+
+            return settings;
         }
 
         /// <summary>
@@ -167,104 +199,379 @@ namespace CyPhy2CADPCB
         {
             CyPhy2CADPCB_Settings settings = (previousConfig as CyPhy2CADPCB_Settings);
 
-            if (String.IsNullOrWhiteSpace(settings.LayoutFilePath))
+            if (settings.runLayout == "false" || String.IsNullOrWhiteSpace(settings.runLayout))
             {
-                // string outd = preconfig.ProjectDirectory;
-
-                // Prompt the user for what layout JSON file they want to use.
-                // Open file dialog box
-                DialogResult dr;
-                using (OpenFileDialog ofd = new OpenFileDialog())
+                if (String.IsNullOrWhiteSpace(settings.layoutFilePath) && (settings.useSavedLayout == "false" || String.IsNullOrWhiteSpace(settings.useSavedLayout)))
                 {
-                    ofd.CheckFileExists = true;
-                    ofd.DefaultExt = "*.json";
-                    ofd.Multiselect = false;
-                    ofd.Filter = "JSON file (*.json)|*.json";
-                    dr = ofd.ShowDialog();
-                    if (dr == DialogResult.OK)
+                    // Prompt the user for what layout JSON file they want to use.
+                    DialogResult dr;
+                    using (OpenFileDialog ofd = new OpenFileDialog())
                     {
-                        settings.SavedLayoutFilePath = ofd.FileName;
+                        ofd.CheckFileExists = true;
+                        ofd.DefaultExt = "*.json";
+                        ofd.Multiselect = false;
+                        ofd.Filter = "JSON file (*.json)|*.json";
+                        dr = ofd.ShowDialog();
+                        if (dr == DialogResult.OK)
+                        {
+                            settings.layoutFilePath = ofd.FileName;
+                        }
+                        else
+                        {
+                            // User cancelled
+                            return null;
+                        }
                     }
-                    else
+
+                    if (String.IsNullOrWhiteSpace(settings.visualizerType))
                     {
-                        Logger.WriteError("No file was selected. CAD PCB generation will not complete.", CyPhyGUIs.SmartLogger.MessageType_enum.Error);
+                        settings.visualizerType = "STEP";
+                    }
+                }
+            }
+
+            return settings;
+        }
+
+        /// <summary>
+        /// No GUI and interactive elements are allowed within this function.
+        /// </summary>
+        /// <param name="parameters">Main parameters for this run and GUI configuration.</param>
+        /// <returns>Result of the run, which contains a success flag.</returns>
+        public IInterpreterResult Main(IInterpreterMainParameters parameters)
+        {
+            if (Logger == null)
+                Logger = new GMELogger(parameters.Project, ComponentName);
+
+            this.runtime.Clear();
+            this.mainParameters = parameters;
+            var configSuccess = this.mainParameters != null;
+            this.UpdateSuccess("Configuration", configSuccess);
+            this.result.Labels = "Visualizer";
+
+            try
+            {
+                MgaGateway.PerformInTransaction(delegate
+                {
+                    this.WorkInMainTransaction();
+                },
+                transactiontype_enum.TRANSACTION_NON_NESTED,
+                abort: true
+                );
+
+                if (this.result.Success)
+                {
+                    Logger.WriteInfo("Generated files are here: <a href=\"file:///{0}\" target=\"_blank\">{0}</a>", this.mainParameters.OutputDirectory);
+                    Logger.WriteInfo("CyPhy2CADPCB Interpreter has finished. [SUCCESS: {0}, Labels: {1}]", this.result.Success, this.result.Labels);
+                }
+                else
+                {
+                    Logger.WriteError("CyPhy2CADPCB Interpreter failed! See error messages above.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError("Exception: {0}<br> {1}", ex.Message, ex.StackTrace);
+            }
+            finally
+            {
+                if (MgaGateway != null &&
+                    MgaGateway.territory != null)
+                {
+                    MgaGateway.territory.Destroy();
+                }
+                DisposeLogger();
+                MgaGateway = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            META.Logger.RemoveFileListener(this.ComponentName);
+
+            var SchematicSettings = this.mainParameters.config as CyPhy2CADPCB_Settings;
+
+            return this.result;
+        }
+
+        public void DisposeLogger()
+        {
+            if (Logger != null)
+                Logger.Dispose();
+            Logger = null;
+        }
+        
+        /// <summary>
+        /// This function does the job.
+        /// </summary>
+        private void WorkInMainTransaction()
+        {
+            var config = (this.mainParameters.config as CyPhy2CADPCB_Settings);
+            this.result.Success = true;
+
+            // Call Elaborator
+            var elaboratorSuccess = this.CallElaborator(this.mainParameters.Project,
+                                                        this.mainParameters.CurrentFCO,
+                                                        this.mainParameters.SelectedFCOs,
+                                                        this.mainParameters.StartModeParam);
+            this.UpdateSuccess("Elaborator", elaboratorSuccess);
+
+            bool successGeneration = true;
+            try
+            {
+                var testbench = ISIS.GME.Dsml.CyPhyML.Classes.TestBench.Cast(this.mainParameters.CurrentFCO);
+                if (testbench == null)
+                {
+                    Logger.WriteError("Invalid context of invocation <{0}>, invoke the interpreter from a Testbench model",
+                        this.mainParameters.CurrentFCO.Name);
+                    return;
+                }
+
+                var ca = testbench.Children.ComponentAssemblyCollection.FirstOrDefault();
+                if (ca == null)
+                {
+                    Logger.WriteFailed("No valid component assembly in testbench {0}", testbench.Name);
+                    return;
+                }
+
+                config =    RetrieveWorkflowSettings(config, ca);
+                if (config == null)
+                {
+                    this.result.Success = false;
+                    return;
+                }
+
+                if (config.runLayout == "true")
+                {
+                    config.layoutFilePath = Path.Combine(this.mainParameters.OutputDirectory, config.layoutFile);
+                }
+                else
+                {
+                    // For runLayout == True, JSON won't exist until after this interpreter executes,
+                    //      but if something causes it to not be created, the schematic test bench will
+                    //      return an error.
+                    if (!File.Exists(config.layoutFilePath))
+                    {
+                        Logger.WriteError("Unable to find PCB layout file at: {0}", config.layoutFilePath);
+                        this.result.Success = false;
+                        return;
+                    }
+                }
+                
+                // At this point, no matter the GME settings, the layoutFilePath should be specified.
+                if (String.IsNullOrWhiteSpace(config.layoutFilePath))
+                {
+                    Logger.WriteError("Something has gone wrong in setting the PCB layout file path.");
+                    this.result.Success = false;
+                    return;
+                }
+
+                // File exists, so now copy to results directory.
+                string outputLayoutPath = Path.Combine(this.mainParameters.OutputDirectory, config.layoutFile);
+                if (config.layoutFilePath != outputLayoutPath)  // Will be equal in case of runLayout == True.
+                {
+                    if (File.Exists(outputLayoutPath))
+                    {
+                        File.Delete(outputLayoutPath);
+                    }
+                    File.Copy(config.layoutFilePath, outputLayoutPath);
+                    if (!File.Exists(outputLayoutPath))
+                    {
+                        Logger.WriteError("PCB layout file was not copied from {0} to {1}.",
+                                          config.layoutFilePath, outputLayoutPath);
+                        this.result.Success = false;
+                        return;
+                    }
+                }
+                
+                ///// Interpreter Logic here //////////////
+                CyPhyParser parser = new CyPhyParser(Logger);
+                var design = parser.ParseCyPhyDesign(ca);
+                design.tb_parameters = new List<CyPhy.Parameter>(); 
+                foreach (var tbparam in testbench.Children.ParameterCollection)
+                {
+                    design.tb_parameters.Add(tbparam);
+                }
+                CyPhy2CADPCB.CodeGenerator cg = new CyPhy2CADPCB.CodeGenerator();
+                
+                string ctString = cg.ProduceCTString(design, config.visualizerType.ToLower());
+                if (String.IsNullOrWhiteSpace(ctString))
+                {
+                    Logger.WriteError("No EDAModels were found in component assembly. At least one component containing an EDAModel is required.");
+                    this.result.Success = false;
+                    return;
+                }
+                GenerateJson(ctString, "CT.json");
+
+                // Ara template JSON file.
+                string replaceFlag = "";
+                string araTemplateString = "";
+                int araTemplates = design.AllComponents.OfType<AbstractClasses.AraTemplateComponent>().Count();
+                if (araTemplates > 1)
+                {
+                    Logger.WriteError("More than one Ara template module present in assembly.");
+                    this.result.Success = false;
+                    return;
+                }
+                else if (araTemplates == 1)
+                {
+                    replaceFlag = " -r";
+                    araTemplateString = cg.ProduceAraTemplateJson(design);
+                    if (String.IsNullOrWhiteSpace(araTemplateString))
+                    {
+                        Logger.WriteError("Something went wrong trying to generate the Ara Template String.");
+                        this.result.Success = false;
+                        return;
+                    }
+                    GenerateJson(araTemplateString, "AraTemplateParts.json");
+                }
+                
+
+
+                // Check if interference analysis should be executed post-assembly.
+                string interference_flag = "";
+                int interference = testbench.Children.ParameterCollection.Where(p => p.Name == "INTERFERENCE_CHECK").Count();
+                if (interference == 1)
+                    interference_flag = " -i";
+
+                // -a -> Run Assembler
+                // -r -> Swap out stock components for specified parts.
+                // -c -> Run Converter (STEP files only)
+                // -v -> Run Visualizer
+                string convertflag = "";
+                if (config.visualizerType.ToLower() == "step" || config.visualizerType.ToLower() == "stp")
+                {
+                    convertflag = " -c";
+                    // Create launch.js batch file
+                    string launch_bat = Path.Combine(this.mainParameters.OutputDirectory, "launch_cadjs.bat");
+                    File.WriteAllText(launch_bat, CyPhy2CADPCB.Properties.Resources.launch_cadjs);
+                }
+                else
+                {
+                    if (config.launchVisualizer == "true")
+                    {
+                        Logger.WriteWarning("launchVisualizer set to True, but a non-supported visualizer format was chosen (" +
+                                            config.visualizerType + "). A non-STEP formatted assembly file will be created, but " +
+                                            "it must viewed launched in an independent program.");
+                    }
+                }
+                if (config.launchVisualizer == "true")
+                {
+                    this.result.RunCommand = string.Format("python.exe -E -m CADVisualizer " + 
+                                                            ca.Name + " " + config.visualizerType.ToLower() +  
+                                                            " -a" + replaceFlag + interference_flag + convertflag + " -v");
+                }
+                else
+                {
+                    this.result.RunCommand = string.Format("python.exe -E -m CADVisualizer " + 
+                                                            ca.Name + " " + config.visualizerType.ToLower() + 
+                                                            " -a" + replaceFlag + interference_flag + convertflag);
+                }
+
+                ///// End Interpreter Logic //////////////////////
+                
+                Logger.WriteDebug("Produced Design model: {0}", design.Name);
+
+                successGeneration = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError(ex.ToString());
+                successGeneration = false;
+            }
+            this.UpdateSuccess("Code Generation", successGeneration);
+        }
+
+        public void GenerateJson( string ct, string filename )
+        {
+            string componentFile = Path.Combine(this.mainParameters.OutputDirectory, filename);
+            StreamWriter writer = new StreamWriter(componentFile);
+            writer.Write(ct);
+            writer.Close();
+        }
+
+        public CyPhy2CADPCB_Settings RetrieveWorkflowSettings(CyPhy2CADPCB_Settings settings, CyPhy.ComponentAssembly ca)
+        {
+            var validvisualizers = new List<String> {"step", "stp", "stl", "mix"};
+            if (String.IsNullOrWhiteSpace(settings.visualizerType))
+            {
+                Logger.WriteWarning("VisualizerType workflow parameter is not set. Defaulting to STEP models.");
+                settings.visualizerType = "STEP";
+            }
+            if (!validvisualizers.Any(s => settings.visualizerType.ToLower().Contains(s)))
+            {
+                Logger.WriteError("CyPhy2CADPCB Visualizer Format Type not set to valid format. " +
+                                  "The visualizer currently only supports STEP & STL files.");
+                this.result.Success = false;
+                return null;
+            }
+            if (settings.runLayout == "false" || String.IsNullOrWhiteSpace(settings.runLayout))
+            {
+                if (!String.IsNullOrWhiteSpace(settings.layoutFilePath) && settings.useSavedLayout == "true")
+                {
+                    Logger.WriteError("Conflicting interpreter settings: useSavedLayout is set to True, but " +
+                                      "layoutFilePath is also specified.");
+                    this.result.Success = false;
+                    return null;
+                }
+                else if (String.IsNullOrWhiteSpace(settings.layoutFilePath) && settings.useSavedLayout == "true")
+                {
+                    string caDesignPath = ca.GetDirectoryPath(ComponentLibraryManager.PathConvention.ABSOLUTE,
+                                                              this.mainParameters.ProjectDirectory);
+                    string layoutPath = Path.Combine(this.mainParameters.ProjectDirectory, 
+                                                     ca.Attributes.Path, settings.layoutFile);
+                    if (!File.Exists(layoutPath))
+                    {
+                        Logger.WriteError("Interpreter setting useSavedLayout is set to True, but no {0} " +
+                                          "file was found in component assembly directory {1}.",
+                                          settings.layoutFile, ca.Attributes.Path);
+                        this.result.Success = false;
                         return null;
                     }
+                    settings.layoutFilePath = layoutPath;
+                }
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(settings.layoutFilePath) || settings.useSavedLayout == "true")
+                {
+                    Logger.WriteError("Conflicting interpreter settings: runLayout is set to True, but " +
+                                      "either useSavedLayout == True or layoutFilePath is specified.");
+                    this.result.Success = false;
+                    return null;
                 }
             }
             return settings;
         }
 
-        public IInterpreterResult Main(IInterpreterMainParameters parameters)
+        private bool CallElaborator(
+            MgaProject project,
+            MgaFCO currentobj,
+            MgaFCOs selectedobjs,
+            int param,
+            bool expand = true)
         {
-            if (parameters.config == null)
-            {
-                throw new ArgumentNullException("Parameter 'parameters' cannot be null.");
-            }
-            if (false == (parameters.config is CyPhy2CADPCB_Settings))
-            {
-                throw new ArgumentException("Parameter 'parameters' is not of type CyPhy2CADPCB_Settings.");
-            }
-
-            this.mainParameters = parameters;
-            
+            bool result = false;
             try
             {
-                // Call into CyPhy2CAD.
-                // - Pass same context variables.
-                // - Call the Main function so that no GUI is needed.
-                // - Catch the "runcommand" that they pass out.
-
-                CyPhy2CAD_CSharp.CyPhy2CAD_CSharpInterpreter cyphy2cad = new CyPhy2CAD_CSharp.CyPhy2CAD_CSharpInterpreter()
-                {
-                    InteractiveMode = true,   // JS: will be false in the future
-                };
-                cyphy2cad.Initialize(parameters.Project);
-
-                String auxDir = Path.Combine(parameters.ProjectDirectory,
-                                             "CAD");
-
-                var cyphy2cad_parameters = new InterpreterMainParameters()
-                {
-                    config = new CyPhy2CAD_CSharp.CyPhy2CADSettings()
-                    {
-                        OutputDirectory = parameters.OutputDirectory,
-                        AuxiliaryDirectory = auxDir
-                    },
-                    CurrentFCO = parameters.CurrentFCO,
-                    OutputDirectory = parameters.OutputDirectory,
-                    Project = parameters.Project,
-                    ProjectDirectory = parameters.ProjectDirectory,
-                    SelectedFCOs = parameters.SelectedFCOs                    
-                };
-
-                this.Logger.WriteInfo("CyPhy2CADPCB cadauxdir [{0}]", auxDir);
-
-                this.Logger.WriteDebug("Running CyPhy2CAD.Main(...)");
-                var cyphy2cad_result = cyphy2cad.Main(cyphy2cad_parameters);
-                this.Logger.WriteDebug("Completed CyPhy2CAD.Main(...)");
-
-                this.Logger.WriteInfo("CyPhy2CADPCB Layout.json path: [{0}]", (this.mainParameters.config as CyPhy2CADPCB_Settings).GetLayoutPath);
-                GenerateScriptFiles(parameters.OutputDirectory);
-                GenerateRunBatFile(parameters.OutputDirectory);
-
-                this.result.RunCommand = "runAddComponentToPcbConstraints.bat";  //cyPhy2CAD_RunCommand
-                this.result.Success = true;
-
-                this.Logger.WriteInfo("CyPhy2CADPCB finished successfully.");
+                this.Logger.WriteDebug("Elaborating model...");
+                var elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
+                elaborator.Initialize(project);
+                int verbosity = 128;
+                result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);
+                this.Logger.WriteDebug("Elaboration is done.");
             }
             catch (Exception ex)
             {
-                this.result.Success = false;
-                this.Logger.WriteError("CyPhy2CADPCB has failed! ", ex.ToString());
+                this.Logger.WriteError("Exception occurred in Elaborator : {0}", ex.ToString());
+                result = false;
             }
-            finally
-            {
-                this.Logger.WriteInfo("Generated files are here: <a href=\"file:///{0}\" target=\"_blank\">{0}</a>", parameters.OutputDirectory);
-            }
-            return this.result;
+
+            return result;
         }
 
+        /*
         private void GenerateRunBatFile(String OutDir)
         {
             this.Logger.WriteInfo("GenerateRunBatFile()  Generating: [{0}]...", Path.Combine(OutDir, "runAddComponentToPcbConstraints.bat"));
@@ -278,7 +585,8 @@ namespace CyPhy2CADPCB
             file.Write(pcb_bat_toOutput);
             file.Close();
         }
-
+        */
+        /*
         public void GenerateScriptFiles(String OutDir)
         {
             this.Logger.WriteInfo("GenerateScriptFiles()  Generating: [{0}]...", Path.Combine(OutDir, "Synthesize_PCB_CAD_connections.py"));
@@ -289,6 +597,7 @@ namespace CyPhy2CADPCB
                 writer.Write(Encoding.UTF8.GetString(pcb_python));
             }
         }
+        */
 
         /// <summary>
         /// ProgId of the configuration class of this interpreter.
@@ -310,40 +619,106 @@ namespace CyPhy2CADPCB
 
         public void InvokeEx(MgaProject project, MgaFCO currentobj, MgaFCOs selectedobjs, int param)
         {
-            if (!enabled)
+            if (this.enabled == false)
             {
                 return;
             }
 
             try
             {
-                if (Logger == null)
+                // Need to call this interpreter in the same way as the MasterInterpreter will call it.
+                // initialize main parameters
+                var parameters = new InterpreterMainParameters()
                 {
-                    Logger = new GMELogger(project, this.ComponentName);
-                }
-                MgaGateway = new MgaGateway(project);
-                project.CreateTerritoryWithoutSink(out MgaGateway.territory);
+                    Project = project,
+                    CurrentFCO = currentobj,
+                    SelectedFCOs = selectedobjs,
+                    StartModeParam = param
+                };
 
+                this.mainParameters = parameters;
+                parameters.ProjectDirectory = project.GetRootDirectoryPath();
+
+                // set up the output directory
                 MgaGateway.PerformInTransaction(delegate
                 {
-                    Main(project, currentobj, selectedobjs, Convert(param));
+                    string outputDirName = project.Name;
+                    if (currentobj != null)
+                    {
+                        outputDirName = currentobj.Name;
+                    }
+
+                    var outputDirAbsPath = Path.GetFullPath(Path.Combine(
+                                                            parameters.ProjectDirectory,
+                                                            "results",
+                                                            outputDirName));
+
+                    parameters.OutputDirectory = outputDirAbsPath;
+
+                    if (Directory.Exists(outputDirAbsPath))
+                    {
+                        Logger.WriteWarning("Output directory {0} already exists. Unexpected behavior may result.", outputDirAbsPath);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(outputDirAbsPath);
+                    }
+
                 });
+
+                PreConfigArgs preConfigArgs = new PreConfigArgs()
+                {
+                    ProjectDirectory = parameters.ProjectDirectory,
+                    Project = parameters.Project
+                };
+
+                // call the preconfiguration with no parameters and get preconfig
+                var preConfig = this.PreConfig(preConfigArgs);
+
+                // get previous GUI config
+                var settings_ = META.ComComponent.DeserializeConfiguration(parameters.ProjectDirectory,
+                                                                           typeof(CyPhy2CADPCB_Settings),
+                                                                           this.ComponentProgID);
+                CyPhy2CADPCB_Settings settings = (settings_ != null) ? settings_ as CyPhy2CADPCB_Settings : new CyPhy2CADPCB_Settings();
+                
+                // Set configuration based on Workflow Parameters. This will override all [WorkflowConfigItem] members.
+                settings = InitializeSettingsFromWorkflow(settings);
+
+                // get interpreter config through GUI
+                var config = this.DoGUIConfiguration(preConfig, settings);
+                if (config == null)
+                {
+                    Logger.WriteWarning("Operation canceled by the user.");
+                    return;
+                }
+
+                // if config is valid save it and update it on the file system
+                META.ComComponent.SerializeConfiguration(parameters.ProjectDirectory, config, this.ComponentProgID);
+
+                // assign the new configuration to mainParameters
+                parameters.config = config;
+
+                // call the main (ICyPhyComponent) function
+                this.Main(parameters);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteError("Interpretation failed {0}<br>{1}", ex.Message, ex.StackTrace);
             }
             finally
             {
-                if (MgaGateway.territory != null)
+                if (MgaGateway != null &&
+                    MgaGateway.territory != null)
                 {
                     MgaGateway.territory.Destroy();
                 }
+                DisposeLogger();
                 MgaGateway = null;
                 project = null;
                 currentobj = null;
                 selectedobjs = null;
-                if (Logger != null)
-                {
-                    Logger.Dispose();
-                }
-                Logger = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }

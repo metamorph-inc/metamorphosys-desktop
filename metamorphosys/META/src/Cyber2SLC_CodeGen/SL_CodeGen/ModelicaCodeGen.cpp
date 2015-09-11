@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include "ModelicaCodeGen.h"
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp> 
@@ -865,13 +810,41 @@ void MoCodeGen::genModelica()
 	modict.SetValue( "SAMPLE_PERIOD_NAME", sample_period_name );
 
 	std::string output;
-	std::string moFileName = _slName +".mo";
-	ctemplate::StringToTemplateCache("motpl", Modelica_Template::get_mo_tpl(), ctemplate::DO_NOT_STRIP);
-    ctemplate::ExpandTemplate("motpl", ctemplate::DO_NOT_STRIP, &modict, &output);
-	ofstream moFile(moFileName.c_str() );
-	moFile << output;
-	moFile.close();
+	std::string moFileName; // = _slName +".mo";
+	//ctemplate::StringToTemplateCache("motpl", Modelica_Template::get_mo_tpl(), ctemplate::DO_NOT_STRIP);
+	//ctemplate::ExpandTemplate("motpl", ctemplate::DO_NOT_STRIP, &modict, &output);
+	//ofstream moFile(moFileName.c_str() );
+	//moFile << output;
+	//moFile.close();
+	//printLog("\t\t"+moFileName);
+
+	output.clear();
+	moFileName = _slName + "_wrapper.mo";
+	ctemplate::StringToTemplateCache("mowtpl", Modelica_Template::get_mo_wrapper_tpl(), ctemplate::DO_NOT_STRIP);
+    ctemplate::ExpandTemplate("mowtpl", ctemplate::DO_NOT_STRIP, &modict, &output);
+	ofstream moWrapperFile(moFileName.c_str() );
+	moWrapperFile << output;
+	moWrapperFile.close();
 	printLog("\t\t"+moFileName);
+
+	output.clear();
+	moFileName = _slName + "_wrapper_main.mo";
+	ctemplate::StringToTemplateCache("mowmtpl", Modelica_Template::get_mo_wrapper_main_tpl(), ctemplate::DO_NOT_STRIP);
+    ctemplate::ExpandTemplate("mowmtpl", ctemplate::DO_NOT_STRIP, &modict, &output);
+	ofstream moWrapperMainFile(moFileName.c_str() );
+	moWrapperMainFile << output;
+	moWrapperMainFile.close();
+	printLog("\t\t"+moFileName);
+
+	output.clear();
+	moFileName = _slName + "_type.mo";
+	ctemplate::StringToTemplateCache("mottpl", Modelica_Template::get_mo_type_tpl(), ctemplate::DO_NOT_STRIP);
+    ctemplate::ExpandTemplate("mottpl", ctemplate::DO_NOT_STRIP, &modict, &output);
+	ofstream moTypeFile(moFileName.c_str() );
+	moTypeFile << output;
+	moTypeFile.close();
+	printLog("\t\t"+moFileName);
+
 }
 
 //CyPhyML::BusPort MoCodeGen::getBusPort(const CyPhyML::SignalFlowBusPortInterface &busportInterface)

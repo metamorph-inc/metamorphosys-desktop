@@ -243,6 +243,7 @@
     <None Include="Python\MatrixHelper.py">
       <Filter>Python Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Cheetah Include="Cheetah\Abs.tmpl">

@@ -6,6 +6,7 @@ import errno
 import json
 import datetime
 import contextlib
+import shlex
 
 
 class NoStepsException(Exception):
@@ -206,8 +207,13 @@ class TestBenchExecutor:
                 invocation = step["Invocation"]
                 if invocation.lower().startswith("python.exe "):
                     invocation = "\"" + sys.executable + "\" " + step["Invocation"][len("python.exe "):]
+                invocation = shlex.split(invocation)
+                if os.path.splitext(invocation[0])[1].lower() in ('.cmd', '.bat'):
+                    # special-case, since cmd.exe doesn't directly support UNC paths (e.g. shared folders). Scripts should also include "pushd %~dp0"
+                    invocation[0] = os.path.join(os.getcwd(), os.path.dirname(self._path_manifest), invocation[0])
+                log.flush()
                 subprocess.check_call(invocation, stdin=null_file, stdout=log, stderr=subprocess.STDOUT,
-                                      shell=True, close_fds=False,
+                                      shell=False, close_fds=False,
                                       cwd=os.path.join(os.getcwd(), os.path.dirname(self._path_manifest)))
             step = self._update_step(step, {"ExecutionCompletionTimestamp": self._time})
             step = self._update_step(step, {"Status": "OK"})

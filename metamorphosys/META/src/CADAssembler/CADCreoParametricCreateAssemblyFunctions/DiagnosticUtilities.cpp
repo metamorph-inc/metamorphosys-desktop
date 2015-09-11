@@ -1,58 +1,3 @@
-/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
 #include <DiagnosticUtilities.h>
 #include <CommonStructures.h>
 #include <StringToEnumConversions.h>
@@ -516,6 +461,19 @@ void stream_AnalysisInputData( const CADAnalyses &in_CADAnalyses, ostream &out_S
 			{
 				out_Stream << std::endl << "         Ball (First Point: Center, Second Point: Defines Radius) ";
 			}
+
+			// ConvectionBoundary
+			if ( j->convectionBoundaryDefined )
+			{
+				out_Stream << std::endl << "         ConvectionBoundary:";
+				out_Stream << std::endl << "            ConvectionCoefficient:      " << j->convectionBoundary.convectionCoefficient;
+				out_Stream << std::endl << "            ConvectionCoefficient unit: " << j->convectionBoundary.unit;
+				//if ( j->convectionBoundary.ambientTemperatureDefined )
+				//	out_Stream << std::endl << "            AmbientTemperature: " << j->convectionBoundary.ambientTemperature;
+				//else
+				//	out_Stream << std::endl << "            AmbientTemperature: " << "Not defined";
+			}
+
 		}	
 
 		////////////////////////////////////////////
@@ -554,6 +512,47 @@ void stream_AnalysisInputData( const CADAnalyses &in_CADAnalyses, ostream &out_S
 				out_Stream << std::endl << "            Acceleration: Units:  "  << CADUnitsAcceleration_string(j->acceleration.units) << 
 					", Directions x y z " << j->acceleration.direction.x << "  " << j->acceleration.direction.y << "  " << j->acceleration.direction.z;
 			}
+
+			// GridPointInitialTemperature
+			if ( j->gridPointInitialTemperatureDefined)
+			{
+				out_Stream << std::endl << "         GridPointInitialTemperature: ";
+				out_Stream << std::endl << "            Value:  "  << j->gridPointInitialTemperature.value;
+				out_Stream << std::endl << "            Unit:   "  << j->gridPointInitialTemperature.unit;
+			}
+
+			// GridPointInitialTemperature
+			if ( j->gridPointTemperatureDefined)
+			{
+				out_Stream << std::endl << "         GridPointTemperature: ";
+				out_Stream << std::endl << "            Value:  "  << j->gridPointTemperature.value;
+				out_Stream << std::endl << "            Unit:  "  <<  j->gridPointTemperature.unit;
+			}
+
+			// HeatFlux
+			if ( j->heatFluxDefined)
+			{
+				out_Stream << std::endl << "         HeatFlux: ";
+				out_Stream << std::endl << "            Value:  "  << j->heatFlux.value;
+				out_Stream << std::endl << "            Unit:   "  << j->heatFlux.unit;
+			}
+
+			// HeatGeneration
+			if ( j->heatGenerationDefined)
+			{
+				out_Stream << std::endl << "         HeatGeneration: ";
+				out_Stream << std::endl << "            Value:  "  << j->heatGeneration.value;
+				out_Stream << std::endl << "            Unit:   "  << j->heatGeneration.unit;
+			}
+
+			// AmbientTemperature
+			if (j->ambientTemperatureDefined)
+			{
+				out_Stream << std::endl << "         AmbientTemperature: ";
+				out_Stream << std::endl << "            Value:  "  << j->ambientTemperature.value;
+				out_Stream << std::endl << "            Unit:   "  << j->ambientTemperature.unit;
+			}
+
 		} // End for ( std::list<AnalysisLoad>::const_iterator
 
 		////////////////////////////////////////////

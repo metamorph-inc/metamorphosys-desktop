@@ -41,6 +41,9 @@ namespace CyPhyComponentAuthoring.Modules
             }
         }
 
+        [CyPhyComponentAuthoringInterpreter.CATDnD(Extension = ".md")]
+        [CyPhyComponentAuthoringInterpreter.CATDnD(Extension = ".mdown")]
+        [CyPhyComponentAuthoringInterpreter.CATDnD(Extension = ".pdf")]
         public void AddDocument(string DocFileSourcePath = null)
         {
             this.Logger = new CyPhyGUIs.GMELogger(CurrentProj, this.GetType().Name);

@@ -1,0 +1,995 @@
+<?xml version="1.0"?>
+<eagle xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="6.5.0" xmlns="eagle">
+  <compatibility />
+  <drawing>
+    <settings>
+      <setting alwaysvectorfont="no" />
+      <setting />
+    </settings>
+    <grid distance="0.1" unitdist="mm" unit="mm" altdistance="0.1" altunitdist="mm" altunit="mm" />
+    <layers>
+      <layer number="1" name="Top" color="4" fill="1" />
+      <layer number="2" name="Route2" color="1" fill="3" visible="no" />
+      <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no" />
+      <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no" />
+      <layer number="5" name="Route5" color="4" fill="4" visible="no" active="no" />
+      <layer number="6" name="Route6" color="1" fill="8" visible="no" active="no" />
+      <layer number="7" name="Route7" color="4" fill="8" visible="no" active="no" />
+      <layer number="8" name="Route8" color="1" fill="2" visible="no" active="no" />
+      <layer number="9" name="Route9" color="4" fill="2" visible="no" active="no" />
+      <layer number="10" name="Route10" color="1" fill="7" visible="no" active="no" />
+      <layer number="11" name="Route11" color="4" fill="7" visible="no" active="no" />
+      <layer number="12" name="Route12" color="1" fill="5" visible="no" active="no" />
+      <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no" />
+      <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no" />
+      <layer number="15" name="Route15" color="4" fill="6" visible="no" />
+      <layer number="16" name="Bottom" color="1" fill="1" />
+      <layer number="17" name="Pads" color="2" fill="1" />
+      <layer number="18" name="Vias" color="2" fill="1" />
+      <layer number="19" name="Unrouted" color="6" fill="1" />
+      <layer number="20" name="Dimension" color="15" fill="1" />
+      <layer number="21" name="tPlace" color="7" fill="1" />
+      <layer number="22" name="bPlace" color="7" fill="1" />
+      <layer number="23" name="tOrigins" color="15" fill="1" />
+      <layer number="24" name="bOrigins" color="15" fill="1" />
+      <layer number="25" name="tNames" color="7" fill="1" visible="no" />
+      <layer number="26" name="bNames" color="7" fill="1" visible="no" />
+      <layer number="27" name="tValues" color="7" fill="1" visible="no" />
+      <layer number="28" name="bValues" color="7" fill="1" visible="no" />
+      <layer number="29" name="tStop" color="7" fill="3" visible="no" />
+      <layer number="30" name="bStop" color="7" fill="6" visible="no" />
+      <layer number="31" name="tCream" color="7" fill="4" visible="no" />
+      <layer number="32" name="bCream" color="7" fill="5" visible="no" />
+      <layer number="33" name="tFinish" color="6" fill="3" visible="no" />
+      <layer number="34" name="bFinish" color="6" fill="6" visible="no" />
+      <layer number="35" name="tGlue" color="7" fill="4" visible="no" />
+      <layer number="36" name="bGlue" color="7" fill="5" visible="no" />
+      <layer number="37" name="tTest" color="7" fill="1" visible="no" />
+      <layer number="38" name="bTest" color="7" fill="1" visible="no" />
+      <layer number="39" name="tKeepout" color="4" fill="11" />
+      <layer number="40" name="bKeepout" color="1" fill="11" />
+      <layer number="41" name="tRestrict" color="4" fill="10" />
+      <layer number="42" name="bRestrict" color="1" fill="10" />
+      <layer number="43" name="vRestrict" color="2" fill="10" />
+      <layer number="44" name="Drills" color="7" fill="1" visible="no" />
+      <layer number="45" name="Holes" color="7" fill="1" visible="no" />
+      <layer number="46" name="Milling" color="3" fill="1" visible="no" />
+      <layer number="47" name="Measures" color="7" fill="1" visible="no" />
+      <layer number="48" name="Document" color="7" fill="1" visible="no" />
+      <layer number="49" name="Reference" color="7" fill="1" visible="no" />
+      <layer number="51" name="tDocu" color="7" fill="1" />
+      <layer number="52" name="bDocu" color="7" fill="1" />
+      <layer number="91" name="Nets" color="2" fill="1" visible="no" active="no" />
+      <layer number="92" name="Busses" color="1" fill="1" visible="no" active="no" />
+      <layer number="93" name="Pins" color="2" fill="1" visible="no" active="no" />
+      <layer number="94" name="Symbols" color="4" fill="1" visible="no" active="no" />
+      <layer number="95" name="Names" color="7" fill="1" visible="no" active="no" />
+      <layer number="96" name="Values" color="7" fill="1" visible="no" active="no" />
+      <layer number="97" name="Info" color="7" fill="1" visible="no" active="no" />
+      <layer number="98" name="Guide" color="6" fill="1" visible="no" active="no" />
+      <layer number="80" name="tBoundingBox" color="12" fill="1" visible="no" />
+      <layer number="81" name="bBoundingBox" color="14" fill="1" visible="no" />
+    </layers>
+    <board>
+      <description />
+      <plain>
+        <wire x1="0" y1="0" x2="14" y2="0" width="0" layer="20" />
+        <wire x1="0" y1="21" x2="14" y2="21" width="0" layer="20" />
+        <wire x1="0" y1="0" x2="0" y2="21" width="0" layer="20" />
+        <wire x1="14" y1="0" x2="14" y2="21" width="0" layer="20" />
+        <wire x1="-8.675" y1="4.125" x2="-5.325" y2="4.125" width="0.1" layer="80" />
+        <wire x1="-5.325" y1="4.125" x2="-5.325" y2="5.675" width="0.1" layer="80" />
+        <wire x1="-8.675" y1="5.675" x2="-5.325" y2="5.675" width="0.1" layer="80" />
+        <wire x1="-8.675" y1="4.125" x2="-8.675" y2="5.675" width="0.1" layer="80" />
+        <wire x1="-9.8887" y1="0.3988" x2="-4.5113" y2="0.3988" width="0.1" layer="80" />
+        <wire x1="-4.5113" y1="0.3988" x2="-4.5113" y2="3.8012" width="0.1" layer="80" />
+        <wire x1="-9.8887" y1="3.8012" x2="-4.5113" y2="3.8012" width="0.1" layer="80" />
+        <wire x1="-9.8887" y1="0.3988" x2="-9.8887" y2="3.8012" width="0.1" layer="80" />
+        <wire x1="-3.7" y1="0.3" x2="-2.9" y2="0.3" width="0.1" layer="81" />
+        <wire x1="-2.9" y1="0.3" x2="-2.9" y2="2.7" width="0.1" layer="81" />
+        <wire x1="-3.7" y1="2.7" x2="-2.9" y2="2.7" width="0.1" layer="81" />
+        <wire x1="-3.7" y1="0.3" x2="-3.7" y2="2.7" width="0.1" layer="81" />
+        <wire x1="-3.7" y1="3.1" x2="-2.9" y2="3.1" width="0.1" layer="81" />
+        <wire x1="-2.9" y1="3.1" x2="-2.9" y2="5.5" width="0.1" layer="81" />
+        <wire x1="-3.7" y1="5.5" x2="-2.9" y2="5.5" width="0.1" layer="81" />
+        <wire x1="-3.7" y1="3.1" x2="-3.7" y2="5.5" width="0.1" layer="81" />
+        <wire x1="-14.65" y1="11.6" x2="-11.3" y2="11.6" width="0.1" layer="80" />
+        <wire x1="-11.3" y1="11.6" x2="-11.3" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-14.65" y1="13.15" x2="-11.3" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-14.65" y1="11.6" x2="-14.65" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-10.3" y1="11.6" x2="-6.9708" y2="11.6" width="0.1" layer="80" />
+        <wire x1="-6.9708" y1="11.6" x2="-6.9708" y2="16.68" width="0.1" layer="80" />
+        <wire x1="-10.3" y1="16.68" x2="-6.9708" y2="16.68" width="0.1" layer="80" />
+        <wire x1="-10.3" y1="11.6" x2="-10.3" y2="16.68" width="0.1" layer="80" />
+        <wire x1="-9.273" y1="7" x2="-5.873" y2="7" width="0.1" layer="80" />
+        <wire x1="-5.873" y1="7" x2="-5.873" y2="9.2792" width="0.1" layer="80" />
+        <wire x1="-9.273" y1="9.2792" x2="-5.873" y2="9.2792" width="0.1" layer="80" />
+        <wire x1="-9.273" y1="7" x2="-9.273" y2="9.2792" width="0.1" layer="80" />
+        <wire x1="-5.9708" y1="11.6" x2="-3.5708" y2="11.6" width="0.1" layer="80" />
+        <wire x1="-3.5708" y1="11.6" x2="-3.5708" y2="12.4" width="0.1" layer="80" />
+        <wire x1="-5.9708" y1="12.4" x2="-3.5708" y2="12.4" width="0.1" layer="80" />
+        <wire x1="-5.9708" y1="11.6" x2="-5.9708" y2="12.4" width="0.1" layer="80" />
+        <wire x1="-19" y1="0" x2="-11" y2="0" width="0.1" layer="80" />
+        <wire x1="-11" y1="0" x2="-11" y2="4.8" width="0.1" layer="80" />
+        <wire x1="-19" y1="4.8" x2="-11" y2="4.8" width="0.1" layer="80" />
+        <wire x1="-19" y1="0" x2="-19" y2="4.8" width="0.1" layer="80" />
+        <wire x1="0.5" y1="2.7" x2="12.3" y2="2.7" width="0.1" layer="80" />
+        <wire x1="12.3" y1="2.7" x2="12.3" y2="14.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="14.5" x2="12.3" y2="14.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="2.7" x2="0.5" y2="14.5" width="0.1" layer="80" />
+        <wire x1="-19" y1="11.6" x2="-15.65" y2="11.6" width="0.1" layer="80" />
+        <wire x1="-15.65" y1="11.6" x2="-15.65" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-19" y1="13.15" x2="-15.65" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-19" y1="11.6" x2="-19" y2="13.15" width="0.1" layer="80" />
+        <wire x1="-14.1365" y1="7" x2="-10.273" y2="7" width="0.1" layer="80" />
+        <wire x1="-10.273" y1="7" x2="-10.273" y2="10.6" width="0.1" layer="80" />
+        <wire x1="-14.1365" y1="10.6" x2="-10.273" y2="10.6" width="0.1" layer="80" />
+        <wire x1="-14.1365" y1="7" x2="-14.1365" y2="10.6" width="0.1" layer="80" />
+        <wire x1="-19" y1="7" x2="-15.1365" y2="7" width="0.1" layer="80" />
+        <wire x1="-15.1365" y1="7" x2="-15.1365" y2="10.6" width="0.1" layer="80" />
+        <wire x1="-19" y1="10.6" x2="-15.1365" y2="10.6" width="0.1" layer="80" />
+        <wire x1="-19" y1="7" x2="-19" y2="10.6" width="0.1" layer="80" />
+        <wire x1="0.5" y1="0.5" x2="2.5" y2="0.5" width="0.1" layer="80" />
+        <wire x1="2.5" y1="0.5" x2="2.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="2.5" x2="2.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="0.5" x2="0.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="18.5" x2="2.5" y2="18.5" width="0.1" layer="80" />
+        <wire x1="2.5" y1="18.5" x2="2.5" y2="20.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="20.5" x2="2.5" y2="20.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="18.5" x2="0.5" y2="20.5" width="0.1" layer="80" />
+        <wire x1="11.5" y1="0.5" x2="13.5" y2="0.5" width="0.1" layer="80" />
+        <wire x1="13.5" y1="0.5" x2="13.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="11.5" y1="2.5" x2="13.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="11.5" y1="0.5" x2="11.5" y2="2.5" width="0.1" layer="80" />
+        <wire x1="0.5" y1="0.5" x2="2.5" y2="0.5" width="0.1" layer="81" />
+        <wire x1="2.5" y1="0.5" x2="2.5" y2="2.5" width="0.1" layer="81" />
+        <wire x1="0.5" y1="2.5" x2="2.5" y2="2.5" width="0.1" layer="81" />
+        <wire x1="0.5" y1="0.5" x2="0.5" y2="2.5" width="0.1" layer="81" />
+        <wire x1="0.5" y1="18.5" x2="2.5" y2="18.5" width="0.1" layer="81" />
+        <wire x1="2.5" y1="18.5" x2="2.5" y2="20.5" width="0.1" layer="81" />
+        <wire x1="0.5" y1="20.5" x2="2.5" y2="20.5" width="0.1" layer="81" />
+        <wire x1="0.5" y1="18.5" x2="0.5" y2="20.5" width="0.1" layer="81" />
+        <wire x1="11.5" y1="0.5" x2="13.5" y2="0.5" width="0.1" layer="81" />
+        <wire x1="13.5" y1="0.5" x2="13.5" y2="2.5" width="0.1" layer="81" />
+        <wire x1="11.5" y1="2.5" x2="13.5" y2="2.5" width="0.1" layer="81" />
+        <wire x1="11.5" y1="0.5" x2="11.5" y2="2.5" width="0.1" layer="81" />
+      </plain>
+      <libraries>
+        <library name="mlcc">
+          <description />
+          <packages>
+            <package name="C_0805">
+              <description>&lt;B&gt; 0805&lt;/B&gt; (2012 Metric) MLCC Capacitor &lt;P&gt;</description>
+              <wire x1="-1" y1="0.625" x2="1" y2="0.625" width="0.0762" layer="51" />
+              <wire x1="1" y1="0.625" x2="1" y2="-0.625" width="0.0762" layer="51" />
+              <wire x1="1" y1="-0.625" x2="-1" y2="-0.625" width="0.0762" layer="51" />
+              <wire x1="-1" y1="-0.625" x2="-1" y2="0.625" width="0.0762" layer="51" />
+              <wire x1="-0.1016" y1="0.7112" x2="0.1016" y2="0.7112" width="0.1524" layer="21" />
+              <wire x1="-0.1016" y1="-0.7112" x2="0.1016" y2="-0.7112" width="0.1524" layer="21" />
+              <smd name="1" x="-1" y="0" dx="1.35" dy="1.55" layer="1" />
+              <smd name="2" x="1" y="0" dx="1.35" dy="1.55" layer="1" />
+              <text x="-1.8" y="1" size="1.016" layer="25" font="vector" ratio="15">&gt;NAME</text>
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="CAP_NP">
+              <description>&lt;B&gt;Capacitor&lt;/B&gt; -- non-polarized</description>
+              <wire x1="-1.905" y1="-3.175" x2="0" y2="-3.175" width="0.6096" layer="94" />
+              <wire x1="0" y1="-3.175" x2="1.905" y2="-3.175" width="0.6096" layer="94" />
+              <wire x1="-1.905" y1="-4.445" x2="0" y2="-4.445" width="0.6096" layer="94" />
+              <wire x1="0" y1="-4.445" x2="1.905" y2="-4.445" width="0.6096" layer="94" />
+              <wire x1="0" y1="-2.54" x2="0" y2="-3.175" width="0.254" layer="94" />
+              <wire x1="0" y1="-5.08" x2="0" y2="-4.445" width="0.254" layer="94" />
+              <pin name="P$1" x="0" y="0" visible="off" length="short" direction="pas" rot="R270" />
+              <pin name="P$2" x="0" y="-7.62" visible="off" length="short" direction="pas" rot="R90" />
+              <text x="-2.54" y="-7.62" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+              <text x="-5.08" y="-7.62" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+              <text x="0.508" y="-2.286" size="1.778" layer="95">1</text>
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset prefix="C" name="C_0805">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="CAP_NP" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="C_0805">
+                  <connects>
+                    <connect gate="G$1" pin="P$1" pad="1" />
+                    <connect gate="G$1" pin="P$2" pad="2" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="ecad">
+          <description />
+          <packages>
+            <package name="S-PDSO-G8">
+              <description />
+              <smd name="P$1" x="-2.05" y="0.975" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$2" x="-2.05" y="0.325" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$3" x="-2.05" y="-0.325" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$4" x="-2.05" y="-0.975" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$5" x="2.05" y="0.975" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$6" x="2.05" y="0.325" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$7" x="2.05" y="-0.325" dx="0.4" dy="1" layer="1" rot="R270" />
+              <smd name="P$8" x="2.05" y="-0.975" dx="0.4" dy="1" layer="1" rot="R270" />
+              <circle x="-2.675" y="1.7" radius="0.15239999999999998" width="0" layer="21" />
+              <text x="-3.3" y="1.97" size="1.016" layer="25" font="vector" ratio="15">&gt;NAME</text>
+              <wire x1="1.35" y1="1.55" x2="-1.35" y2="1.55" width="0.15239999999999998" layer="21" />
+              <wire x1="1.35" y1="-1.55" x2="-1.35" y2="-1.55" width="0.15239999999999998" layer="21" />
+            </package>
+            <package name="0603-LED-KINGBRIGHT">
+              <description />
+              <smd name="1" x="-0.825" y="0" dx="0.8" dy="0.8" layer="1" />
+              <smd name="2" x="0.825" y="0" dx="0.8" dy="0.8" layer="1" />
+              <wire x1="-1.7" y1="-0.85" x2="-1.7" y2="0.85" width="0.1542" layer="21" />
+              <wire x1="-1.7" y1="0.85" x2="1.7" y2="0.85" width="0.1542" layer="21" />
+              <wire x1="1.7" y1="0.85" x2="1.7" y2="-0.85" width="0.1542" layer="21" />
+              <wire x1="1.7" y1="-0.85" x2="-1.7" y2="-0.85" width="0.1542" layer="21" />
+              <polygon layer="21" width="0.127">
+                <vertex x="-1.7" y="-0.425" />
+                <vertex x="-1.275" y="-0.85" />
+                <vertex x="-1.7" y="-0.85" />
+              </polygon>
+              <circle x="-1.275" y="-1.275" radius="0.1542" width="0" layer="21" />
+              <text x="-2.55" y="1.275" size="1.016" layer="25" font="vector" ratio="15">&gt;NAME</text>
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="LM555D">
+              <description />
+              <pin name="GND" x="-22.86" y="7.62" length="middle" direction="pas" />
+              <pin name="TRIGGER" x="-22.86" y="2.54" length="middle" direction="pas" />
+              <pin name="OUTPUT" x="-22.86" y="-2.54" length="middle" direction="pas" />
+              <pin name="RESET" x="-22.86" y="-7.62" length="middle" direction="pas" />
+              <pin name="VCC" x="22.86" y="7.62" length="middle" direction="pas" rot="R180" />
+              <pin name="DISCHARGE" x="22.86" y="2.54" length="middle" direction="pas" rot="R180" />
+              <pin name="THRESHOLD" x="22.86" y="-2.54" length="middle" direction="pas" rot="R180" />
+              <pin name="CONTROL_VOLTAGE" x="22.86" y="-7.62" length="middle" direction="pas" rot="R180" />
+              <wire x1="-17.78" y1="10.16" x2="-17.78" y2="-10.16" width="0.254" layer="94" />
+              <wire x1="-17.78" y1="-10.16" x2="17.78" y2="-10.16" width="0.254" layer="94" />
+              <wire x1="17.78" y1="-10.16" x2="17.78" y2="10.16" width="0.254" layer="94" />
+              <wire x1="17.78" y1="10.16" x2="-17.78" y2="10.16" width="0.254" layer="94" />
+              <text x="-17.78" y="15.24" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-17.78" y="12.7" size="1.778" layer="96">&gt;VALUE</text>
+            </symbol>
+            <symbol name="LED_WITH_PIN1_CATHODE">
+              <description>&lt;B&gt;LED with pin 1 cathode&lt;/B&gt;&lt;P&gt;
+Designed for the Osram LB Q39G-L2N2-35-1
+blue led, in an 0603 package.&lt;P&gt;
+Digikey 475-2816-1-ND</description>
+              <wire x1="-1.27" y1="2.54" x2="1.27" y2="2.54" width="0.254" layer="94" />
+              <wire x1="1.778" y1="5.08" x2="2.54" y2="5.842" width="0.254" layer="94" />
+              <wire x1="2.54" y1="5.842" x2="2.54" y2="5.334" width="0.254" layer="94" />
+              <wire x1="2.54" y1="5.334" x2="3.048" y2="5.842" width="0.254" layer="94" />
+              <wire x1="1.524" y1="3.81" x2="2.286" y2="4.572" width="0.254" layer="94" />
+              <wire x1="2.286" y1="4.572" x2="2.286" y2="4.064" width="0.254" layer="94" />
+              <wire x1="2.286" y1="4.064" x2="2.794" y2="4.572" width="0.254" layer="94" />
+              <pin name="C" x="0" y="0" visible="off" length="short" direction="pas" rot="R90" />
+              <pin name="A" x="0" y="7.62" visible="off" length="short" direction="pas" rot="R270" />
+              <text x="-5.08" y="0" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+              <text x="-2.54" y="0" size="1.778" layer="95" rot="R90">&gt;VALUE</text>
+              <polygon layer="94" width="0.254">
+                <vertex x="0" y="2.54" />
+                <vertex x="-1.27" y="5.08" />
+                <vertex x="1.27" y="5.08" />
+              </polygon>
+              <polygon layer="94" width="0.254">
+                <vertex x="3.556" y="6.35" />
+                <vertex x="3.048" y="6.096" />
+                <vertex x="3.302" y="5.842" />
+              </polygon>
+              <polygon layer="94" width="0.254">
+                <vertex x="3.302" y="5.08" />
+                <vertex x="2.794" y="4.826" />
+                <vertex x="3.048" y="4.572" />
+              </polygon>
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset name="LM555CMM/NOPB">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="LM555D" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="S-PDSO-G8">
+                  <connects>
+                    <connect gate="G$1" pin="CONTROL_VOLTAGE" pad="P$5" />
+                    <connect gate="G$1" pin="DISCHARGE" pad="P$7" />
+                    <connect gate="G$1" pin="GND" pad="P$1" />
+                    <connect gate="G$1" pin="OUTPUT" pad="P$3" />
+                    <connect gate="G$1" pin="RESET" pad="P$4" />
+                    <connect gate="G$1" pin="THRESHOLD" pad="P$6" />
+                    <connect gate="G$1" pin="TRIGGER" pad="P$2" />
+                    <connect gate="G$1" pin="VCC" pad="P$8" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+            <deviceset name="LED-0603-KINGBRIGHT">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="LED_WITH_PIN1_CATHODE" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="0603-LED-KINGBRIGHT">
+                  <connects>
+                    <connect gate="G$1" pin="A" pad="2" />
+                    <connect gate="G$1" pin="C" pad="1" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="resistor">
+          <description />
+          <packages>
+            <package name="R_0603">
+              <description>&lt;B&gt;
+0603
+&lt;/B&gt; SMT inch-code chip resistor package&lt;P&gt;
+Derived from dimensions and tolerances
+in the &lt;B&gt; &lt;A HREF="http://www.samsungsem.com/global/support/library/product-catalog/__icsFiles/afieldfile/2015/01/12/CHIP_RESISTOR_150112_1.pdf"&gt;Samsung Thick Film Chip Resistor Catalog&lt;/A&gt;&lt;/B&gt;
+dated December 2014,
+for 
+general-purpose chip resistor
+reflow soldering.</description>
+              <wire x1="-0.1" y1="0.3" x2="0.1" y2="0.3" width="0.1524" layer="21" />
+              <wire x1="-0.1" y1="-0.3" x2="0.1" y2="-0.3" width="0.1524" layer="21" />
+              <smd name="P$1" x="-0.8" y="0" dx="0.8" dy="0.8" layer="1" />
+              <smd name="P$2" x="0.8" y="0" dx="0.8" dy="0.8" layer="1" />
+              <text x="-1.3" y="0.8" size="1.016" layer="25" font="vector" ratio="15">&gt;NAME</text>
+              <wire x1="-0.8" y1="0.4" x2="0.8" y2="0.4" width="0.0762" layer="51" />
+              <wire x1="0.8" y1="0.4" x2="0.8" y2="-0.4" width="0.0762" layer="51" />
+              <wire x1="0.8" y1="-0.4" x2="-0.8" y2="-0.4" width="0.0762" layer="51" />
+              <wire x1="-0.8" y1="-0.4" x2="-0.8" y2="0.4" width="0.0762" layer="51" />
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="R">
+              <description>&lt;B&gt;Resistor&lt;/B&gt;</description>
+              <wire x1="-2.54" y1="0" x2="-2.159" y2="1.016" width="0.2032" layer="94" />
+              <wire x1="-2.159" y1="1.016" x2="-1.524" y2="-1.016" width="0.2032" layer="94" />
+              <wire x1="-1.524" y1="-1.016" x2="-0.889" y2="1.016" width="0.2032" layer="94" />
+              <wire x1="-0.889" y1="1.016" x2="-0.254" y2="-1.016" width="0.2032" layer="94" />
+              <wire x1="-0.254" y1="-1.016" x2="0.381" y2="1.016" width="0.2032" layer="94" />
+              <wire x1="0.381" y1="1.016" x2="1.016" y2="-1.016" width="0.2032" layer="94" />
+              <wire x1="1.016" y1="-1.016" x2="1.651" y2="1.016" width="0.2032" layer="94" />
+              <wire x1="1.651" y1="1.016" x2="2.286" y2="-1.016" width="0.2032" layer="94" />
+              <wire x1="2.286" y1="-1.016" x2="2.54" y2="0" width="0.2032" layer="94" />
+              <pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" />
+              <pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180" />
+              <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset prefix="R" name="RESISTOR_0603">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="R" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="R_0603">
+                  <connects>
+                    <connect gate="G$1" pin="1" pad="P$1" />
+                    <connect gate="G$1" pin="2" pad="P$2" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="General_Will">
+          <description />
+          <packages>
+            <package name="1X2VIA">
+              <description />
+              <pad name="P$1" x="0" y="0" drill="0.8" />
+              <pad name="P$2" x="0" y="2.54" drill="0.8" />
+              <wire x1="-0.635" y1="3.81" x2="-1.27" y2="3.175" width="0.127" layer="21" />
+              <wire x1="-1.27" y1="3.175" x2="-1.27" y2="1.905" width="0.127" layer="21" />
+              <wire x1="-1.27" y1="1.905" x2="-0.635" y2="1.27" width="0.127" layer="21" />
+              <wire x1="-0.635" y1="1.27" x2="-1.27" y2="0.635" width="0.127" layer="21" />
+              <wire x1="-1.27" y1="0.635" x2="-1.27" y2="-0.635" width="0.127" layer="21" />
+              <wire x1="-1.27" y1="-0.635" x2="-0.635" y2="-1.27" width="0.127" layer="21" />
+              <wire x1="-0.635" y1="-1.27" x2="0.635" y2="-1.27" width="0.127" layer="21" />
+              <wire x1="0.635" y1="-1.27" x2="1.27" y2="-0.635" width="0.127" layer="21" />
+              <wire x1="1.27" y1="-0.635" x2="1.27" y2="0.635" width="0.127" layer="21" />
+              <wire x1="1.27" y1="0.635" x2="0.635" y2="1.27" width="0.127" layer="21" />
+              <wire x1="0.635" y1="1.27" x2="1.27" y2="1.905" width="0.127" layer="21" />
+              <wire x1="1.27" y1="1.905" x2="1.27" y2="3.175" width="0.127" layer="21" />
+              <wire x1="1.27" y1="3.175" x2="0.635" y2="3.81" width="0.127" layer="21" />
+              <wire x1="0.635" y1="3.81" x2="-0.635" y2="3.81" width="0.127" layer="21" />
+              <circle x="-1.905" y="0" radius="0.1542" width="0" layer="21" />
+              <text x="-3.175" y="4.445" size="1.27" layer="25">&gt;NAME</text>
+              <text x="-3.175" y="-0.635" size="1.27" layer="25">+</text>
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="BATTERY_CONNECT">
+              <description />
+              <pin name="POS" x="-2.54" y="5.08" length="short" rot="R270" />
+              <pin name="NEG" x="2.54" y="5.08" length="short" rot="R270" />
+              <wire x1="-7.62" y1="2.54" x2="-7.62" y2="-7.62" width="0.254" layer="94" />
+              <wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.254" layer="94" />
+              <wire x1="7.62" y1="-7.62" x2="7.62" y2="2.54" width="0.254" layer="94" />
+              <wire x1="7.62" y1="2.54" x2="-7.62" y2="2.54" width="0.254" layer="94" />
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset name="BS6I">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="BATTERY_CONNECT" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="1X2VIA">
+                  <connects>
+                    <connect gate="G$1" pin="NEG" pad="P$2" />
+                    <connect gate="G$1" pin="POS" pad="P$1" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="TL3342F160QG-697586">
+          <description />
+          <packages>
+            <package name="TL3342F160QG">
+              <description />
+              <text x="-3" y="3" size="1.27" layer="25">&gt;Name</text>
+              <text x="-3" y="-4" size="1.27" layer="27">&gt;VALUE</text>
+              <smd name="3" x="-3.1" y="1.85" dx="1.8" dy="1.1" layer="1" />
+              <smd name="4" x="3.1" y="1.85" dx="1.8" dy="1.1" layer="1" />
+              <smd name="1" x="-3.1" y="-1.85" dx="1.8" dy="1.1" layer="1" />
+              <smd name="2" x="3.1" y="-1.85" dx="1.8" dy="1.1" layer="1" />
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="TL3342F160QG">
+              <description />
+              <circle x="-12.7" y="5.08" radius="2.54" width="0.254" layer="94" />
+              <circle x="12.7" y="5.08" radius="2.54" width="0.254" layer="94" />
+              <circle x="0" y="-5.08" radius="2.54" width="0.254" layer="94" />
+              <circle x="0" y="-12.7" radius="2.54" width="0.254" layer="94" />
+              <wire x1="-12.7" y1="2.54" x2="-12.7" y2="0" width="0.254" layer="94" />
+              <wire x1="-12.7" y1="0" x2="12.7" y2="0" width="0.254" layer="94" />
+              <wire x1="12.7" y1="0" x2="12.7" y2="2.54" width="0.254" layer="94" />
+              <circle x="-12.7" y="-22.86" radius="2.54" width="0.254" layer="94" />
+              <circle x="12.7" y="-22.86" radius="2.54" width="0.254" layer="94" />
+              <wire x1="-12.7" y1="-20.32" x2="-12.7" y2="-17.78" width="0.254" layer="94" />
+              <wire x1="-12.7" y1="-17.78" x2="12.7" y2="-17.78" width="0.254" layer="94" />
+              <wire x1="12.7" y1="-17.78" x2="12.7" y2="-20.32" width="0.254" layer="94" />
+              <wire x1="5.08" y1="-2.54" x2="5.08" y2="-8.89" width="0.254" layer="94" />
+              <wire x1="5.08" y1="-8.89" x2="5.08" y2="-15.24" width="0.254" layer="94" />
+              <wire x1="5.08" y1="-8.89" x2="13.97" y2="-8.89" width="0.254" layer="94" />
+              <text x="-17.78" y="-35.56" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-17.78" y="-38.1" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="3" x="-12.7" y="10.16" length="middle" direction="pas" rot="R270" />
+              <pin name="4" x="12.7" y="10.16" length="middle" direction="pas" rot="R270" />
+              <pin name="1" x="-12.7" y="-27.94" length="middle" direction="pas" rot="R90" />
+              <pin name="2" x="12.7" y="-27.94" length="middle" direction="pas" rot="R90" />
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset prefix="S" name="TL3342F160QG">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="TL3342F160QG" x="0" y="7.62" />
+              </gates>
+              <devices>
+                <device package="TL3342F160QG">
+                  <connects>
+                    <connect gate="G$1" pin="1" pad="1" />
+                    <connect gate="G$1" pin="2" pad="2" />
+                    <connect gate="G$1" pin="3" pad="3" />
+                    <connect gate="G$1" pin="4" pad="4" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="SparkFun-Electromechanical">
+          <description />
+          <packages>
+            <package name="BUZZER-12MM-KIT">
+              <description />
+              <circle x="0" y="0" radius="5.9" width="0.2032" layer="21" />
+              <circle x="0" y="0" radius="1.27" width="0.2032" layer="51" />
+              <pad name="-" x="-3.25" y="0" drill="0.9" diameter="1.8796" stop="no" />
+              <pad name="+" x="3.25" y="0" drill="0.9" diameter="1.8796" stop="no" />
+              <text x="-2.54" y="2.54" size="1.016" layer="25" font="vector" ratio="15">&gt;NAME</text>
+              <text x="2.667" y="1.143" size="1.016" layer="51" font="vector" ratio="15">+</text>
+              <polygon layer="30" width="0.127">
+                <vertex x="3.2537" y="-0.9525" curve="-90" />
+                <vertex x="2.2988" y="-0.0228" curve="-90.011749" />
+                <vertex x="3.2512" y="0.9526" curve="-90" />
+                <vertex x="4.2012" y="-0.0254" curve="-90.024193" />
+              </polygon>
+              <polygon layer="29" width="0.127">
+                <vertex x="3.2512" y="-0.4445" curve="-90.012891" />
+                <vertex x="2.8067" y="-0.0203" curve="-90" />
+                <vertex x="3.2512" y="0.447" curve="-90" />
+                <vertex x="3.6931" y="-0.0101" curve="-90.012967" />
+              </polygon>
+              <polygon layer="30" width="0.127">
+                <vertex x="-3.2487" y="-0.9525" curve="-90" />
+                <vertex x="-4.2036" y="-0.0228" curve="-90.011749" />
+                <vertex x="-3.2512" y="0.9526" curve="-90" />
+                <vertex x="-2.3012" y="-0.0254" curve="-90.024193" />
+              </polygon>
+              <polygon layer="29" width="0.127">
+                <vertex x="-3.2512" y="-0.4445" curve="-90.012891" />
+                <vertex x="-3.6957" y="-0.0203" curve="-90" />
+                <vertex x="-3.2512" y="0.447" curve="-90" />
+                <vertex x="-2.8093" y="-0.0101" curve="-90.012967" />
+              </polygon>
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="BUZZER">
+              <description />
+              <wire x1="-1.27" y1="1.905" x2="0" y2="1.905" width="0.1524" layer="94" />
+              <wire x1="0" y1="1.905" x2="0" y2="2.54" width="0.1524" layer="94" />
+              <wire x1="0" y1="1.905" x2="0" y2="1.27" width="0.1524" layer="94" />
+              <wire x1="0.635" y1="3.175" x2="0.635" y2="0.635" width="0.1524" layer="94" />
+              <wire x1="0.635" y1="0.635" x2="1.905" y2="0.635" width="0.1524" layer="94" />
+              <wire x1="1.905" y1="0.635" x2="1.905" y2="3.175" width="0.1524" layer="94" />
+              <wire x1="1.905" y1="3.175" x2="0.635" y2="3.175" width="0.1524" layer="94" />
+              <wire x1="2.54" y1="2.54" x2="2.54" y2="1.905" width="0.1524" layer="94" />
+              <wire x1="2.54" y1="1.905" x2="3.81" y2="1.905" width="0.1524" layer="94" />
+              <wire x1="2.54" y1="1.905" x2="2.54" y2="1.27" width="0.1524" layer="94" />
+              <wire x1="5.08" y1="0" x2="5.08" y2="3.81" width="0.254" layer="94" />
+              <wire x1="5.08" y1="3.81" x2="5.715" y2="3.81" width="0.254" layer="94" />
+              <wire x1="5.715" y1="3.81" x2="5.715" y2="4.445" width="0.254" layer="94" />
+              <wire x1="5.715" y1="4.445" x2="-3.175" y2="4.445" width="0.254" layer="94" />
+              <wire x1="-3.175" y1="4.445" x2="-3.175" y2="3.81" width="0.254" layer="94" />
+              <wire x1="-3.175" y1="3.81" x2="-2.54" y2="3.81" width="0.254" layer="94" />
+              <wire x1="-2.54" y1="3.81" x2="-2.54" y2="0" width="0.254" layer="94" />
+              <wire x1="-2.54" y1="3.81" x2="5.08" y2="3.81" width="0.254" layer="94" />
+              <wire x1="-2.54" y1="0" x2="5.08" y2="0" width="0.254" layer="94" />
+              <text x="-2.54" y="5.08" size="1.778" layer="95">&gt;NAME</text>
+              <text x="6.35" y="0" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="2" x="2.54" y="-2.54" visible="off" length="short" direction="pas" rot="R90" />
+              <pin name="1" x="0" y="-2.54" visible="off" length="short" direction="pas" rot="R90" />
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset prefix="SG" name="BUZZER">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="BUZZER" x="0" y="0" />
+              </gates>
+              <devices>
+                <device package="BUZZER-12MM-KIT" name="PTH-KIT">
+                  <connects>
+                    <connect gate="G$1" pin="1" pad="+" />
+                    <connect gate="G$1" pin="2" pad="-" />
+                  </connects>
+                  <technologies>
+                    <technology name="">
+                      <attribute name="PROD_ID" value="COMP-08253" />
+                    </technology>
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="magic_man">
+          <description />
+          <packages>
+            <package name="BAT54">
+              <description />
+              <smd name="2" x="0.95" y="-1" dx="0.8" dy="0.9" layer="1" rot="R180" />
+              <smd name="1" x="-0.95" y="-1" dx="0.8" dy="0.9" layer="1" rot="R180" />
+              <smd name="3" x="0" y="1" dx="0.8" dy="0.9" layer="1" rot="R180" />
+              <wire x1="1.7" y1="-1.8" x2="1.7" y2="1.8" width="0.127" layer="21" />
+              <wire x1="1.7" y1="1.8" x2="-1.7" y2="1.8" width="0.127" layer="21" />
+              <wire x1="-1.7" y1="1.8" x2="-1.7" y2="-1.8" width="0.127" layer="21" />
+              <wire x1="-1.7" y1="-1.8" x2="1.7" y2="-1.8" width="0.127" layer="21" />
+              <text x="-2" y="2.07" size="1" layer="21" font="vector" ratio="12">&gt;NAME</text>
+              <circle x="-2.1" y="-1.3" radius="0.0635" width="0.16" layer="21" />
+            </package>
+          </packages>
+          <symbols>
+            <symbol name="LED_WITH_PIN1_CATHODE">
+              <description>&lt;B&gt;LED with pin 1 cathode&lt;/B&gt;&lt;P&gt;
+Designed for the Osram LB Q39G-L2N2-35-1
+blue led, in an 0603 package.&lt;P&gt;
+Digikey 475-2816-1-ND</description>
+              <wire x1="-1.27" y1="2.54" x2="1.27" y2="2.54" width="0.254" layer="94" />
+              <wire x1="1.778" y1="5.08" x2="2.54" y2="5.842" width="0.254" layer="94" />
+              <wire x1="2.54" y1="5.842" x2="2.54" y2="5.334" width="0.254" layer="94" />
+              <wire x1="2.54" y1="5.334" x2="3.048" y2="5.842" width="0.254" layer="94" />
+              <wire x1="1.524" y1="3.81" x2="2.286" y2="4.572" width="0.254" layer="94" />
+              <wire x1="2.286" y1="4.572" x2="2.286" y2="4.064" width="0.254" layer="94" />
+              <wire x1="2.286" y1="4.064" x2="2.794" y2="4.572" width="0.254" layer="94" />
+              <pin name="C" x="0" y="0" visible="off" length="short" direction="pas" rot="R90" />
+              <pin name="A" x="0" y="7.62" visible="off" length="short" direction="pas" rot="R270" />
+              <text x="-2.032" y="1.778" size="1.778" layer="95" rot="MR180">C</text>
+              <text x="-2.032" y="7.62" size="1.778" layer="95" rot="MR180">A</text>
+              <text x="-5.08" y="0" size="1.778" layer="95" rot="R90">&gt;NAME</text>
+              <text x="-2.54" y="0" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+              <polygon layer="94" width="0.254">
+                <vertex x="0" y="2.54" />
+                <vertex x="-1.27" y="5.08" />
+                <vertex x="1.27" y="5.08" />
+              </polygon>
+              <polygon layer="94" width="0.254">
+                <vertex x="3.556" y="6.35" />
+                <vertex x="3.048" y="6.096" />
+                <vertex x="3.302" y="5.842" />
+              </polygon>
+              <polygon layer="94" width="0.254">
+                <vertex x="3.302" y="5.08" />
+                <vertex x="2.794" y="4.826" />
+                <vertex x="3.048" y="4.572" />
+              </polygon>
+            </symbol>
+          </symbols>
+          <devicesets>
+            <deviceset prefix="D" name="BAT54">
+              <description />
+              <gates>
+                <gate name="G$1" symbol="LED_WITH_PIN1_CATHODE" x="0" y="-5.08" />
+              </gates>
+              <devices>
+                <device package="BAT54">
+                  <connects>
+                    <connect gate="G$1" pin="A" pad="1" />
+                    <connect gate="G$1" pin="C" pad="3" />
+                  </connects>
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+        <library name="adafruit">
+          <description />
+          <packages>
+            <package name="FIDUCIAL_1MM">
+              <description />
+              <smd name="1" x="0" y="0" dx="1" dy="1" layer="1" roundness="100" stop="no" cream="no" />
+              <polygon layer="29" width="0.127">
+                <vertex x="-1" y="0" curve="90" />
+                <vertex x="0" y="-1" curve="90" />
+                <vertex x="1" y="0" curve="90" />
+                <vertex x="0" y="1" curve="90" />
+              </polygon>
+              <polygon layer="41" width="0.127">
+                <vertex x="-1" y="0" curve="90" />
+                <vertex x="0" y="-1" curve="90" />
+                <vertex x="1" y="0" curve="90" />
+                <vertex x="0" y="1" curve="90" />
+              </polygon>
+              <polygon layer="39" width="0.127">
+                <vertex x="-1" y="0" curve="90" />
+                <vertex x="0" y="-1" curve="90" />
+                <vertex x="1" y="0" curve="90" />
+                <vertex x="0" y="1" curve="90" />
+              </polygon>
+            </package>
+          </packages>
+          <symbols />
+          <devicesets>
+            <deviceset name="FIDUCIAL">
+              <description />
+              <gates />
+              <devices>
+                <device package="FIDUCIAL_1MM" name="1MM">
+                  <connects />
+                  <technologies>
+                    <technology name="" />
+                  </technologies>
+                </device>
+              </devices>
+            </deviceset>
+          </devicesets>
+        </library>
+      </libraries>
+      <attributes />
+      <variantdefs />
+      <classes>
+        <class number="0" name="default" />
+      </classes>
+      <designrules name="MacroFab_2_Layer">
+        <description>\n&lt;b&gt;MacroFab 2-layer EAGLE Design Rules&lt;/b&gt;\n&lt;p&gt;\n6 mil traces and spaces.&lt;br&gt;\n12 mil minimum drill; no micro-drill.&lt;br&gt;\n6 mil annular rings.&lt;br&gt;\ntented vias.&lt;br&gt;\n10 mil clearance between pads and signal polygons.&lt;br&gt;\n</description>
+        <param name="layerSetup" value="(1*16)" />
+        <param name="mtCopper" value="0.035mm 0.0175mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.0175mm 0.035mm" />
+        <param name="mtIsolate" value="0.2mm 1.1mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm" />
+        <param name="mdWireWire" value="6mil" />
+        <param name="mdWirePad" value="6mil" />
+        <param name="mdWireVia" value="6mil" />
+        <param name="mdPadPad" value="6mil" />
+        <param name="mdPadVia" value="6mil" />
+        <param name="mdViaVia" value="6mil" />
+        <param name="mdSmdPad" value="0mil" />
+        <param name="mdSmdVia" value="0mil" />
+        <param name="mdSmdSmd" value="0mil" />
+        <param name="mdViaViaSameLayer" value="8mil" />
+        <param name="mnLayersViaInSmd" value="2" />
+        <param name="mdCopperDimension" value="10mil" />
+        <param name="mdDrill" value="10mil" />
+        <param name="mdSmdStop" value="0mil" />
+        <param name="msWidth" value="6mil" />
+        <param name="msDrill" value="12mil" />
+        <param name="msMicroVia" value="12mil" />
+        <param name="msBlindViaRatio" value="0.500000" />
+        <param name="rvPadTop" value="0.250000" />
+        <param name="rvPadInner" value="0.250000" />
+        <param name="rvPadBottom" value="0.250000" />
+        <param name="rvViaOuter" value="0.250000" />
+        <param name="rvViaInner" value="0.250000" />
+        <param name="rvMicroViaOuter" value="0.250000" />
+        <param name="rvMicroViaInner" value="0.250000" />
+        <param name="rlMinPadTop" value="6mil" />
+        <param name="rlMaxPadTop" value="20mil" />
+        <param name="rlMinPadInner" value="6mil" />
+        <param name="rlMaxPadInner" value="20mil" />
+        <param name="rlMinPadBottom" value="6mil" />
+        <param name="rlMaxPadBottom" value="20mil" />
+        <param name="rlMinViaOuter" value="6mil" />
+        <param name="rlMaxViaOuter" value="20mil" />
+        <param name="rlMinViaInner" value="6mil" />
+        <param name="rlMaxViaInner" value="20mil" />
+        <param name="rlMinMicroViaOuter" value="4mil" />
+        <param name="rlMaxMicroViaOuter" value="20mil" />
+        <param name="rlMinMicroViaInner" value="4mil" />
+        <param name="rlMaxMicroViaInner" value="20mil" />
+        <param name="psTop" value="-1" />
+        <param name="psBottom" value="-1" />
+        <param name="psFirst" value="0" />
+        <param name="psElongationLong" value="100" />
+        <param name="psElongationOffset" value="100" />
+        <param name="mvStopFrame" value="1.000000" />
+        <param name="mvCreamFrame" value="0.000000" />
+        <param name="mlMinStopFrame" value="2mil" />
+        <param name="mlMaxStopFrame" value="2mil" />
+        <param name="mlMinCreamFrame" value="0mil" />
+        <param name="mlMaxCreamFrame" value="0mil" />
+        <param name="mlViaStopLimit" value="25mil" />
+        <param name="srRoundness" value="0.000000" />
+        <param name="srMinRoundness" value="0mil" />
+        <param name="srMaxRoundness" value="0mil" />
+        <param name="slThermalIsolate" value="10mil" />
+        <param name="slThermalsForVias" value="0" />
+        <param name="dpMaxLengthDifference" value="10mm" />
+        <param name="dpGapFactor" value="2.500000" />
+        <param name="checkGrid" value="0" />
+        <param name="checkAngle" value="0" />
+        <param name="checkFont" value="1" />
+        <param name="checkRestrict" value="0" />
+        <param name="useDiameter" value="13" />
+        <param name="maxErrors" value="50" />
+      </designrules>
+      <autorouter>
+        <pass name="Default">
+          <param name="RoutingGrid" value="0.05mm" />
+          <param name="tpViaShape" value="round" />
+          <param name="PrefDir.1" value="-" />
+          <param name="PrefDir.2" value="0" />
+          <param name="PrefDir.3" value="0" />
+          <param name="PrefDir.4" value="0" />
+          <param name="PrefDir.5" value="0" />
+          <param name="PrefDir.6" value="0" />
+          <param name="PrefDir.7" value="0" />
+          <param name="PrefDir.8" value="0" />
+          <param name="PrefDir.9" value="0" />
+          <param name="PrefDir.10" value="0" />
+          <param name="PrefDir.11" value="0" />
+          <param name="PrefDir.12" value="0" />
+          <param name="PrefDir.13" value="0" />
+          <param name="PrefDir.14" value="0" />
+          <param name="PrefDir.15" value="0" />
+          <param name="PrefDir.16" value="|" />
+          <param name="cfVia" value="12" />
+          <param name="cfNonPref" value="5" />
+          <param name="cfChangeDir" value="2" />
+          <param name="cfOrthStep" value="2" />
+          <param name="cfDiagStep" value="3" />
+          <param name="cfExtdStep" value="0" />
+          <param name="cfBonusStep" value="1" />
+          <param name="cfMalusStep" value="1" />
+          <param name="cfPadImpact" value="4" />
+          <param name="cfSmdImpact" value="4" />
+          <param name="cfBusImpact" value="0" />
+          <param name="cfHugging" value="3" />
+          <param name="cfAvoid" value="4" />
+          <param name="cfPolygon" value="10" />
+          <param name="cfBase.1" value="0" />
+          <param name="cfBase.2" value="1" />
+          <param name="cfBase.3" value="1" />
+          <param name="cfBase.4" value="1" />
+          <param name="cfBase.5" value="1" />
+          <param name="cfBase.6" value="1" />
+          <param name="cfBase.7" value="1" />
+          <param name="cfBase.8" value="1" />
+          <param name="cfBase.9" value="1" />
+          <param name="cfBase.10" value="1" />
+          <param name="cfBase.11" value="1" />
+          <param name="cfBase.12" value="1" />
+          <param name="cfBase.13" value="1" />
+          <param name="cfBase.14" value="1" />
+          <param name="cfBase.15" value="1" />
+          <param name="cfBase.16" value="0" />
+          <param name="mnVias" value="20" />
+          <param name="mnSegments" value="9999" />
+          <param name="mnExtdSteps" value="9999" />
+          <param name="mnRipupLevel" value="10" />
+          <param name="mnRipupSteps" value="100" />
+          <param name="mnRipupTotal" value="100" />
+        </pass>
+        <pass refer="Default" name="Follow-me" />
+        <pass refer="Default" name="Busses">
+          <param name="cfNonPref" value="4" />
+          <param name="cfBusImpact" value="4" />
+          <param name="cfHugging" value="0" />
+          <param name="mnVias" value="0" />
+        </pass>
+        <pass refer="Default" name="Route" />
+        <pass refer="Default" name="Optimize1">
+          <param name="cfVia" value="99" />
+          <param name="cfExtdStep" value="10" />
+          <param name="cfHugging" value="1" />
+          <param name="mnExtdSteps" value="1" />
+          <param name="mnRipupLevel" value="0" />
+        </pass>
+        <pass refer="Optimize1" name="Optimize2">
+          <param name="cfNonPref" value="0" />
+          <param name="cfChangeDir" value="6" />
+          <param name="cfExtdStep" value="0" />
+          <param name="cfBonusStep" value="2" />
+          <param name="cfMalusStep" value="2" />
+          <param name="cfPadImpact" value="2" />
+          <param name="cfSmdImpact" value="2" />
+          <param name="cfHugging" value="0" />
+        </pass>
+        <pass refer="Optimize2" name="Optimize3">
+          <param name="cfChangeDir" value="8" />
+          <param name="cfPadImpact" value="0" />
+          <param name="cfSmdImpact" value="0" />
+        </pass>
+        <pass refer="Optimize3" name="Optimize4">
+          <param name="cfChangeDir" value="25" />
+        </pass>
+      </autorouter>
+      <elements>
+        <element y="4.9" rot="R180" x="-7" library="mlcc" name="CT" value="CL21B473KBC5PNC" package="C_0805" />
+        <element y="2" x="-7" library="ecad" name="LM555D" value="LM555CMM/NOPB" package="S-PDSO-G8" />
+        <element y="1.5" rot="MR90" x="-3.3" library="resistor" name="RA" value="ERJ-3EKF2322V" package="R_0603" />
+        <element y="4.3" rot="MR90" x="-3.3" library="resistor" name="RB" value="ERJ-3EKF2322V" package="R_0603" />
+        <element y="12.375" x="-12.975" library="mlcc" name="C_BULK" value="08053D106KAT2A" package="C_0805" />
+        <element y="12.9" x="-8.3" library="General_Will" name="J1_9V" value="BS6I" package="1X2VIA" />
+        <element y="8.4396" x="-7.573" library="ecad" name="LED_G1" value="APT1608SGC" package="0603-LED-KINGBRIGHT" />
+        <element y="12" x="-4.7708" library="resistor" name="R_1K" value="RNCP0603FTD1K00" package="R_0603" />
+        <element y="2.4" x="-15" library="TL3342F160QG-697586" name="SW_TOG" value="TL3342F160QG" package="TL3342F160QG" />
+        <element y="8.6" x="6.4" library="SparkFun-Electromechanical" name="BZZ" value="CEM-1203(42)" package="BUZZER-12MM-KIT">
+          <attribute name="PROD_ID" value="COMP-08253" layer="27" display="off" />
+        </element>
+        <element y="12.3" x="-17.4" library="mlcc" name="C_OUT" value="08053D106KAT2A" package="C_0805" />
+        <element y="8.8" x="-11.9048" library="magic_man" name="D1" value="BAT54" package="BAT54" />
+        <element y="8.8" x="-16.8" library="magic_man" name="D2" value="BAT54" package="BAT54" />
+        <element y="1.5" x="1.5" library="adafruit" name="FID1" value="" package="FIDUCIAL_1MM" />
+        <element y="19.5" x="1.5" library="adafruit" name="FID2" value="" package="FIDUCIAL_1MM" />
+        <element y="1.5" x="12.5" library="adafruit" name="FID3" value="" package="FIDUCIAL_1MM" />
+        <element y="1.5" rot="MR0" x="1.5" library="adafruit" name="FID4" value="" package="FIDUCIAL_1MM" />
+        <element y="19.5" rot="MR0" x="1.5" library="adafruit" name="FID5" value="" package="FIDUCIAL_1MM" />
+        <element y="1.5" rot="MR0" x="12.5" library="adafruit" name="FID6" value="" package="FIDUCIAL_1MM" />
+      </elements>
+      <signals>
+        <signal name="N$0">
+          <contactref element="CT" pad="2" />
+          <contactref element="D2" pad="1" />
+          <contactref element="J1_9V" pad="P$2" />
+          <contactref element="LED_G1" pad="1" />
+          <contactref element="C_BULK" pad="2" />
+          <contactref element="LM555D" pad="P$1" />
+          <wire x1="-8.984" y1="4.564" x2="-8.984" y2="3.048" width="0.254" layer="1" />
+          <wire x1="-8.222" y1="4.826" x2="-8.4" y2="4.8" width="0.254" layer="1" />
+          <wire x1="-8.4" y1="4.8" x2="-8.8" y2="4.8" width="0.254" layer="1" />
+          <wire x1="-8.8" y1="4.8" x2="-8.984" y2="4.564" width="0.254" layer="1" />
+          <wire x1="-8.984" y1="3.048" x2="-9.05" y2="2.975" width="0.254" layer="1" />
+          <wire x1="-8.222" y1="4.826" x2="-8" y2="4.9" width="0.254" layer="1" />
+        </signal>
+        <signal name="N$1">
+          <contactref element="CT" pad="1" />
+          <contactref element="LM555D" pad="P$2" />
+          <contactref element="LM555D" pad="P$6" />
+          <contactref element="RB" pad="P$2" />
+          <wire x1="-5.936" y1="5.08" x2="-3.396" y2="5.08" width="0.254" layer="1" />
+          <wire x1="-3.396" y1="5.08" x2="-3.3" y2="5.1" width="0.254" layer="1" />
+          <wire x1="-5.936" y1="5.08" x2="-6" y2="4.9" width="0.254" layer="1" />
+          <wire x1="-5.174" y1="2.286" x2="-5.936" y2="2.286" width="0.254" layer="1" />
+          <wire x1="-5.936" y1="2.286" x2="-8.984" y2="2.286" width="0.254" layer="1" />
+          <wire x1="-8.984" y1="2.286" x2="-9.05" y2="2.325" width="0.254" layer="1" />
+          <wire x1="-5.174" y1="2.286" x2="-4.95" y2="2.325" width="0.254" layer="1" />
+          <wire x1="-5.936" y1="2.286" x2="-5.936" y2="4.826" width="0.254" layer="1" />
+          <wire x1="-5.936" y1="4.826" x2="-6" y2="4.9" width="0.254" layer="1" />
+        </signal>
+        <signal name="N$2">
+          <contactref element="LM555D" pad="P$7" />
+          <contactref element="RA" pad="P$2" />
+          <contactref element="RB" pad="P$1" />
+          <wire x1="-3.296" y1="3.302" x2="-3.296" y2="2.54" width="0.254" layer="1" />
+          <wire x1="-3.296" y1="2.54" x2="-3.3" y2="2.3" width="0.254" layer="1" />
+          <wire x1="-3.296" y1="3.302" x2="-3.3" y2="3.5" width="0.254" layer="1" />
+          <wire x1="-4.95" y1="1.675" x2="-4.325" y2="1.675" width="0.254" layer="1" />
+          <wire x1="-4.325" y1="1.675" x2="-3.9" y2="2.1" width="0.254" layer="1" />
+          <wire x1="-3.9" y1="2.1" x2="-3.5" y2="2.1" width="0.254" layer="1" />
+          <wire x1="-3.5" y1="2.1" x2="-3.3" y2="2.3" width="0.254" layer="1" />
+        </signal>
+        <signal name="N$3">
+          <contactref element="LM555D" pad="P$3" />
+          <contactref element="D1" pad="1" />
+          <contactref element="C_OUT" pad="1" />
+          <contactref element="D2" pad="3" />
+        </signal>
+        <signal name="N$4">
+          <contactref element="LM555D" pad="P$8" />
+          <contactref element="BZZ" pad="+" />
+          <contactref element="D1" pad="3" />
+          <contactref element="SW_TOG" pad="4" />
+          <contactref element="R_1K" pad="P$1" />
+          <contactref element="C_BULK" pad="1" />
+          <contactref element="SW_TOG" pad="3" />
+          <contactref element="RA" pad="P$1" />
+          <contactref element="LM555D" pad="P$4" />
+          <wire x1="-3.866" y1="0.762" x2="-3.396" y2="0.762" width="0.254" layer="1" />
+          <wire x1="-4.92" y1="1.016" x2="-4.2" y2="1" width="0.254" layer="1" />
+          <wire x1="-4.2" y1="1" x2="-3.866" y2="0.762" width="0.254" layer="1" />
+          <wire x1="-3.396" y1="0.762" x2="-3.3" y2="0.7" width="0.254" layer="1" />
+          <wire x1="-4.92" y1="1.016" x2="-4.95" y2="1.025" width="0.254" layer="1" />
+          <wire x1="-5.174" y1="1.016" x2="-8.984" y2="1.016" width="0.254" layer="1" />
+          <wire x1="-8.984" y1="1.016" x2="-9.05" y2="1.025" width="0.254" layer="1" />
+          <wire x1="-5.174" y1="1.016" x2="-4.95" y2="1.025" width="0.254" layer="1" />
+        </signal>
+        <signal name="N$5">
+          <contactref element="J1_9V" pad="P$1" />
+          <contactref element="SW_TOG" pad="1" />
+          <contactref element="SW_TOG" pad="2" />
+        </signal>
+        <signal name="N$6">
+          <contactref element="LED_G1" pad="2" />
+          <contactref element="R_1K" pad="P$2" />
+        </signal>
+        <signal name="N$7">
+          <contactref element="BZZ" pad="-" />
+          <contactref element="C_OUT" pad="2" />
+        </signal>
+      </signals>
+      <errors />
+    </board>
+  </drawing>
+  <compatibility />
+</eagle>

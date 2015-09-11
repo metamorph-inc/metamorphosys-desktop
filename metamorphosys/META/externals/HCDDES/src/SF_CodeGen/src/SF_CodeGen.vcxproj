@@ -97,7 +97,7 @@
       <AdditionalOptions>/Zm1400  %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated\ESMoL;./;..\..\..\include;$(ANTLR_PATH)\include;$(BOOST_PATH);$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated\ESMoL;./;..\..\..\include;$(ANTLR_PATH)\include;$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -118,7 +118,7 @@
     <Link>
       <AdditionalDependencies>GReATUtilsVC10.lib;RTTGeneratorVC10.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(BOOST_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ProgramDatabaseFile>.\Release/SF_CodeGen.pdb</ProgramDatabaseFile>
@@ -139,7 +139,7 @@
       <AdditionalOptions>/Zm1400  %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated;./;..\..\..\include;$(ANTLR_PATH)\include;$(BOOST_PATH);$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated;./;..\..\..\include;$(ANTLR_PATH)\include;$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -160,7 +160,7 @@
     <Link>
       <AdditionalDependencies>GReATUtilsVC10.lib;RTTGeneratorVC10.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(BOOST_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ProgramDatabaseFile>.\Release/SF_CodeGen.pdb</ProgramDatabaseFile>
@@ -179,7 +179,7 @@
     <ClCompile>
       <AdditionalOptions>/Zm200  %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated\ESMoL;./;..\..\..\include;$(ANTLR_PATH)\include;$(BOOST_PATH);$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated\ESMoL;./;..\..\..\include;$(ANTLR_PATH)\include;$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;PRINT_INFO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -198,7 +198,7 @@
     <Link>
       <AdditionalDependencies>GReATUtilsVC10D.lib;RTTGeneratorVC10D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(BOOST_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -217,7 +217,7 @@
     <ClCompile>
       <AdditionalOptions>/Zm200  %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated;./;..\..\..\include;$(ANTLR_PATH)\include;$(BOOST_PATH);$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\generated\SF_CodeGen\generated;./;..\..\..\include;$(ANTLR_PATH)\include;$(GREAT_PATH)/include;$(TEMP)\GReAT;$(UDM_PATH)/include;$(XERCES_PATH)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;PRINT_INFO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -236,7 +236,7 @@
     <Link>
       <AdditionalDependencies>GReATUtilsVC10D.lib;RTTGeneratorVC10D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$(UDM_PATH)\3rdParty\zlib;$(XERCES_PATH)\lib;$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;$(BOOST_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(UDM_PATH)\lib;$$(ANTLR_PATH)\lib;$(ANTLR3_PATH)\lib;$(VCP_PATH)\lib;$(GREAT_PATH)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -449,6 +449,11 @@ cd "%(RootDir)%(Directory)"\..\..\generated
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="$(SolutionDir)\nuget\antlrC.3.1.3\build\native\antlrC.targets" Condition="Exists('$(SolutionDir)\nuget\antlrC.3.1.3\build\native\antlrC.targets')" />
     <Import Project="$(SolutionDir)\nuget\antlrC-vc100.3.1.3\build\native\antlrC-vc100.targets" Condition="Exists('$(SolutionDir)\nuget\antlrC-vc100.3.1.3\build\native\antlrC-vc100.targets')" />
+    <Import Project="..\..\..\nuget\boost.1.55.0.16\build\native\boost.targets" Condition="Exists('..\..\..\nuget\boost.1.55.0.16\build\native\boost.targets')" />
+    <Import Project="..\..\..\nuget\boost_regex-vc100.1.55.0.15\build\native\boost_regex-vc100.targets" Condition="Exists('..\..\..\nuget\boost_regex-vc100.1.55.0.15\build\native\boost_regex-vc100.targets')" />
+    <Import Project="..\..\..\nuget\boost_program_options-vc100.1.55.0.15\build\native\boost_program_options-vc100.targets" Condition="Exists('..\..\..\nuget\boost_program_options-vc100.1.55.0.15\build\native\boost_program_options-vc100.targets')" />
+    <Import Project="..\..\..\nuget\boost_filesystem-vc100.1.55.0.15\build\native\boost_filesystem-vc100.targets" Condition="Exists('..\..\..\nuget\boost_filesystem-vc100.1.55.0.15\build\native\boost_filesystem-vc100.targets')" />
+    <Import Project="..\..\..\nuget\boost_system-vc100.1.55.0.15\build\native\boost_system-vc100.targets" Condition="Exists('..\..\..\nuget\boost_system-vc100.1.55.0.15\build\native\boost_system-vc100.targets')" />
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>

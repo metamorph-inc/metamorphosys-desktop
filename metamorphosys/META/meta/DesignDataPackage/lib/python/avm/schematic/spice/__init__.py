@@ -1,7 +1,7 @@
 # .\_spice.py
 # -*- coding: utf-8 -*-
 # PyXB bindings for NM:7c05204dcfaf173d8b1e2cdd5fc900e3eadc4351
-# Generated 2014-11-18 14:25:23.923000 by PyXB version 1.2.3
+# Generated 2015-08-13 10:01:46.171000 by PyXB version 1.2.3
 # Namespace spice [xmlns:spice]
 
 import pyxb
@@ -13,7 +13,7 @@ import pyxb.utils.domutils
 import sys
 
 # Unique identifier for bindings created at the same time
-_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:0613818f-6f61-11e4-85c1-542696dd94ef')
+_GenerationUID = pyxb.utils.utility.UniqueIdentifier('urn:uuid:3717d230-41cc-11e5-ac39-7429af7917c0')
 
 # Version of PyXB used to generate the bindings
 _PyXBVersion = '1.2.3'
@@ -22,9 +22,9 @@ if pyxb.__version__ != _PyXBVersion:
     raise pyxb.PyXBVersionError(_PyXBVersion)
 
 # Import bindings for namespaces imported into schema
+import pyxb.binding.datatypes
 import avm.schematic as _ImportedBinding__schematic
 import avm as _ImportedBinding__avm
-import pyxb.binding.datatypes
 
 # NOTE: All namespace declarations are reserved within the binding
 Namespace = pyxb.namespace.NamespaceForURI(u'spice', create_if_missing=True)
@@ -146,6 +146,8 @@ class SPICEModel_ (_ImportedBinding__schematic.SchematicModel_):
     # Attribute YPosition inherited from {avm}DomainModel
     
     # Attribute Name inherited from {avm}DomainModel
+    
+    # Attribute ID inherited from {avm}DomainModel
     
     # Attribute Class uses Python identifier Class
     __Class = pyxb.binding.content.AttributeUse(pyxb.namespace.ExpandedName(None, u'Class'), 'Class', '__spice_SPICEModel__Class', pyxb.binding.datatypes.string, required=True)

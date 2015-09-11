@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using GME.MGA;
+﻿using GME.MGA;
 using META;
 using System;
 using System.Collections.Generic;
@@ -75,7 +51,7 @@ namespace CyPhyComponentAuthoring.Modules
         ]
         public void ImportEagleModel_Delegate(object sender, EventArgs e)
         {
-            ImportEagleModel(this.GetCurrentComp());
+            ImportEagleModel(this.GetCurrentComp(), ((System.Windows.Forms.Control)sender).FindForm());
         }
 
         private void LogMessage(String message, CyPhyGUIs.GMELogger.MessageType_enum type)
@@ -107,7 +83,36 @@ namespace CyPhyComponentAuthoring.Modules
             }
         }
 
-        public void ImportEagleModel(CyPhy.Component component)
+        [CyPhyComponentAuthoringInterpreter.CATDnD(Extension = ".lbr")]
+        [CyPhyComponentAuthoringInterpreter.CATDnD(Extension = ".sch")]
+        public void ImportDroppedFile(string filename)
+        {
+            var deviceList = GetDevicesInEagleModel(filename);
+
+            string device;
+            if (deviceList.Count == 1)
+            {
+                device = deviceList.First();
+            }
+            else
+            {
+                var dp = new CyPhyComponentAuthoring.GUIs.EagleDevicePicker(deviceList);
+                dp.ShowDialog();
+
+                if (String.IsNullOrWhiteSpace(dp.selectedDevice))
+                {
+                    LogMessage("Eagle device selection was cancelled.", CyPhyGUIs.SmartLogger.MessageType_enum.Error);
+                    disposeLogger();
+                    return;
+                }
+                device = dp.selectedDevice;
+            }
+
+            ImportSelectedEagleDevice(device, filename);
+        }
+
+
+        public void ImportEagleModel(CyPhy.Component component, IWin32Window owner=null)
         {
             String eagleFilePath = "";
 
@@ -119,7 +124,7 @@ namespace CyPhyComponentAuthoring.Modules
                 ofd.DefaultExt = "test.mdl";
                 ofd.Multiselect = false;
                 ofd.Filter = "SCH and LBR files (*.sch, *.lbr)|*.sch;*.lbr|All files (*.*)|*.*";
-                dr = ofd.ShowDialog();
+                dr = ofd.ShowDialog(owner);
                 if (dr == DialogResult.OK)
                 {
                     eagleFilePath = ofd.FileName;
@@ -144,7 +149,20 @@ namespace CyPhyComponentAuthoring.Modules
                 return;
             }
 
-            var selected = dp.selectedDevice;
+            ImportSelectedEagleDevice(dp.selectedDevice, eagleFilePath);
+        }
+
+        /// <summary>
+        /// Gets Eagle component information from an Eagle library
+        /// </summary>
+        /// <param name="selected">Formatted device name within the Eagle library, such as \\LM139_COMPARATOR\\</param>
+        /// <param name="eagleFilePath">Path to the Eagle library (.lbr) file containing the device</param>
+        public void ImportSelectedEagleDevice(string selected, string eagleFilePath, CyPhy.Component comp = null)
+        {
+            if (comp == null) {
+                comp = GetCurrentComp();
+            }
+            //var selected = dp.selectedDevice;
             var splitSelected = selected.Split('\\');
             var libraryName = splitSelected[0];
             var deviceSetName = splitSelected[1];
@@ -153,7 +171,6 @@ namespace CyPhyComponentAuthoring.Modules
 
             var edaModel = ConvertEagleDeviceToAvmEdaModel(deviceXML);
 
-            var comp = GetCurrentComp();
             var cyphyEdaModel = BuildCyPhyEDAModel(edaModel, comp);                  
 
 
@@ -319,6 +336,25 @@ namespace CyPhyComponentAuthoring.Modules
             return rtn;
         }
 
+        public static string CreateXpathLiteral(string attributeValue)
+        {
+            if (!attributeValue.Contains("\""))
+            {
+                // if we don't have any quotes, then wrap string in quotes...
+                return string.Format("\"{0}\"", attributeValue);
+            }
+            else if (!attributeValue.Contains("'"))
+            {
+                // if we have some quotes, but no apostrophes, then wrap in apostrophes...
+                return string.Format("'{0}'", attributeValue);
+            }
+            else
+            {
+                // must use concat so the literal in the XPath will find a match...
+                return string.Format("concat(\"{0}\")", attributeValue.Replace("\"", "\",'\"',\""));
+            }
+        }
+
         /// <summary>
         /// Given an EAGLE doc path, device set name, and device name,
         /// loads the EAGLE document and returns an XmlNode element corresponding
@@ -335,11 +371,11 @@ namespace CyPhyComponentAuthoring.Modules
             var query = String.Format("//*[local-name()='device' {0} and ancestor::*[local-name()='deviceset' and @name = '{1}'] and ancestor::*[local-name()='library' {2}] ]",
                                        String.IsNullOrEmpty(deviceName) 
                                             ? "and (not(@name) or @name='')"
-                                            : String.Format("and @name='{0}'", deviceName),
+                                            : String.Format("and @name={0}", CreateXpathLiteral(deviceName)),
                                        deviceSetName,
                                        String.IsNullOrEmpty(libraryName)
                                             ? "and (not(@name) or @name='')"
-                                            : String.Format("and @name='{0}'", libraryName));
+                                            : String.Format("and @name={0}", CreateXpathLiteral(libraryName)));
             var matches = doc.SelectNodes(query);
 
             if (matches.Count == 0)
@@ -525,6 +561,8 @@ namespace CyPhyComponentAuthoring.Modules
                 gatesUsed.Add(conn.Attributes["gate"].Value);
             }
 
+            var alreadyUsedSymbolNames = new List<string>();    // MOT-549
+
             // Iterate over the distinct gates used
             foreach (var connGateName in gatesUsed.Distinct())
             {
@@ -533,8 +571,14 @@ namespace CyPhyComponentAuthoring.Modules
                 resgates.AppendChild(CloneElementToNewDoc((XmlElement)gate, outDoc));
 
                 var symName = gate.Attributes["symbol"].Value;
-                var sym = symbols_Dict[symName];
-                ressyms.AppendChild(CloneElementToNewDoc((XmlElement)sym, outDoc));
+                
+                // Only add symbols if their name hasn't already been added.  MOT-549
+                if (!alreadyUsedSymbolNames.Contains(symName))
+                {
+                    var sym = symbols_Dict[symName];
+                    ressyms.AppendChild(CloneElementToNewDoc((XmlElement)sym, outDoc));
+                    alreadyUsedSymbolNames.Add(symName);
+                }
             }
 
             return outDoc;

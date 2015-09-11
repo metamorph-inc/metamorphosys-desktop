@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +19,8 @@ namespace MfgBom.Bom
         /// The Octopart MPN of this part.
         /// </summary>
         public String octopart_mpn;
+        public bool valid_mpn;
+        public bool too_broad_mpn;
 
         /// <summary>
         /// The number of instances of this part within the design.
@@ -103,6 +81,63 @@ namespace MfgBom.Bom
         {
             get { return manufacturerPartNumber; }
             private set { manufacturerPartNumber = value; }
+        }
+
+        /// <summary>
+        /// JSON data containing all technical specifications related to Octopart component.
+        /// Returns the JSON string to be parsed by other functions as the specs provided
+        /// will change depending on the component being queried.
+        /// </summary>
+        private String technicalSpecifications;
+
+        public String TechnicalSpecifications
+        {
+            get { return technicalSpecifications; }
+            private set { technicalSpecifications = value; }
+        }
+
+        /// <summary>
+        /// CyPhy classification of a component based on OctoPart's category hierarchy.
+        /// </summary>
+        private String classification;
+
+        public String Classification
+        {
+            get { return classification; }
+            private set { classification = value; }
+        }
+
+        /// <summary>
+        /// Category unique identifier of a component on OctoPart.
+        /// </summary>
+        private String categoryuid;
+
+        public String CategoryUID
+        {
+            get { return categoryuid; }
+            private set { categoryuid = value; }
+        }
+
+        /// <summary>
+        /// URL to icon of a component on OctoPart.
+        /// </summary>
+        private String icon;
+
+        public String Icon
+        {
+            get { return icon; }
+            private set { icon = value; }
+        }
+
+        /// <summary>
+        /// URL to datasheet of a component on OctoPart.
+        /// </summary>
+        private String datasheet;
+
+        public String Datasheet
+        {
+            get { return datasheet; }
+            private set { datasheet = value; }
         }
 
         /// <summary>

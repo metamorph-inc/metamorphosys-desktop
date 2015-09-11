@@ -85,7 +85,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -116,7 +116,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -132,7 +132,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(BOOST_PATH);$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(UDM_PATH)\include;$(PYTHON_HOME)\include;$(META_PATH)\src\Cyber2SLC_CodeGen\SL_CodeGen;..\..\..\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;UDM_DYNAMIC_LINKING;USE_CyberComposition;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

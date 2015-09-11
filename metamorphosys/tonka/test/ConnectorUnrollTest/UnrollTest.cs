@@ -1,28 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,37 +13,58 @@ namespace ConnectorUnrollTest
     public class UnrollTestFixture : IDisposable
     {
         public string mgaPath;
-        public string xmePath = Path.Combine(META.VersionInfo.MetaPath,
-                                             "..",
-                                             "tonka",
-                                             "test",
+        public string xmePath = Path.Combine(Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath),
+                                            "..\\..\\..",
                                              "ConnectorUnrollTest",
                                              "Model",
                                              "ConnectorUnrollTest.xme");
 
         public UnrollTestFixture()
         {
-            String mgaConnectionString;
-            GME.MGA.MgaUtils.ImportXMEForTest(xmePath, out mgaConnectionString);
-            mgaPath = mgaConnectionString.Substring("MGA=".Length);
+            try
+            {
+                String mgaConnectionString;
+                GME.MGA.MgaUtils.ImportXMEForTest(xmePath, out mgaConnectionString);
+                mgaPath = mgaConnectionString.Substring("MGA=".Length);
 
-            Assert.True(File.Exists(Path.GetFullPath(mgaPath)),
-                        String.Format("{0} not found. Model import may have failed.", mgaPath));
+                Assert.True(File.Exists(Path.GetFullPath(mgaPath)),
+                            String.Format("{0} not found. Model import may have failed.", mgaPath));
 
-            proj = new MgaProject();
-            bool ro_mode;
-            proj.Open("MGA=" + Path.GetFullPath(mgaPath), out ro_mode);
-            proj.EnableAutoAddOns(true);
+                _proj = new MgaProject();
+                bool ro_mode;
+                proj.Open("MGA=" + Path.GetFullPath(mgaPath), out ro_mode);
+                proj.EnableAutoAddOns(true);
+            }
+            catch (Exception e)
+            {
+                importException = e;
+            }
         }
 
         public void Dispose()
         {
-            proj.Save();
-            proj.Close();
-            proj = null;
+            if (_proj != null)
+            {
+                _proj.Save();
+                _proj.Close();
+                _proj = null;
+            }
         }
 
-        public MgaProject proj { get; private set; }
+        private MgaProject _proj;
+        public MgaProject proj
+        {
+            get
+            {
+                if (importException != null)
+                {
+                    throw new Exception("Xme import failed", importException);
+                }
+                return _proj;
+            }
+        }
+
+        private Exception importException;
     }
 
     internal static class Utils
@@ -1022,6 +1019,119 @@ namespace ConnectorUnrollTest
             });
         }
 
+        [Fact]
+        public void AsmUsesConnInstFromLib()
+        {
+            String path = "/@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@AsmUsesConnInstFromLib|kind=ComponentAssembly|relpos=0";
+            CyPhy.ComponentAssembly asm = null;
+
+            proj.PerformInTransaction(delegate
+            {
+                var asmObj = proj.get_ObjectByPath(path);
+                asm = ISIS.GME.Dsml.CyPhyML.Classes.ComponentAssembly.Cast(asmObj);
+
+                Unroll(asm);
+            });
+
+            /* What do we want to test?
+             * Then check that the connector is gone.
+             * Check that three ports are in its place.
+             * Finally, check that all attributes from the constituent ports survived.
+             */
+            proj.PerformInTransaction(delegate
+            {
+                Assert.Equal(3, asm.Children.DomainModelPortCollection.Count());
+                Assert.Equal(0, asm.Children.ConnectorCollection.Count());
+                                
+                var mc = asm.Children.ModelicaConnectorCollection.First();
+                Assert.Equal("definition", mc.Attributes.Definition);
+                Assert.Equal("definitionnotes", mc.Attributes.DefinitionNotes);
+                Assert.Equal("instancenotes", mc.Attributes.InstanceNotes);
+                Assert.Equal("class", mc.Attributes.Class);
+                Assert.Equal("locator", mc.Attributes.Locator);
+                var mcParam = mc.Children.ModelicaParameterCollection.First();
+                Assert.Equal("defaultvalue", mcParam.Attributes.DefaultValue);
+                Assert.Equal("value", mcParam.Attributes.Value);
+
+                var pin = asm.Children.SchematicModelPortCollection.First();
+                Assert.Equal("definition", pin.Attributes.Definition);
+                Assert.Equal("definitionnotes", pin.Attributes.DefinitionNotes);
+                Assert.Equal("instancenotes", pin.Attributes.InstanceNotes);
+                Assert.Equal("edagate", pin.Attributes.EDAGate);
+                Assert.Equal("edasymbolrotation", pin.Attributes.EDASymbolRotation);
+                Assert.Equal("edasymbollocationx", pin.Attributes.EDASymbolLocationX);
+                Assert.Equal("edasymbollocationy", pin.Attributes.EDASymbolLocationY);
+                Assert.Equal(1, pin.Attributes.SPICEPortNumber);
+
+                var scPort = asm.Children.SystemCPortCollection.First();
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.DataType_enum.sc_int, scPort.Attributes.DataType);
+                Assert.Equal("definition", scPort.Attributes.Definition);
+                Assert.Equal(2, scPort.Attributes.DataTypeDimension);
+                Assert.Equal("definitionnotes", scPort.Attributes.DefinitionNotes);
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.Directionality_enum.@in, scPort.Attributes.Directionality);
+                Assert.Equal("instancenotes", scPort.Attributes.InstanceNotes);
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.Function_enum.reset_async, scPort.Attributes.Function);
+            });
+        }
+
+        [Fact]
+        public void CompHasConnInstFromLib()
+        {
+            String path = "/@ComponentAssemblies|kind=ComponentAssemblies|relpos=0/@CompHasConnInstFromLib|kind=ComponentAssembly|relpos=0";
+            CyPhy.ComponentAssembly asm = null;
+            CyPhy.Component comp = null;
+
+            proj.PerformInTransaction(delegate
+            {
+                var asmObj = proj.get_ObjectByPath(path);
+                asm = ISIS.GME.Dsml.CyPhyML.Classes.ComponentAssembly.Cast(asmObj);
+
+                Unroll(asm);
+
+                comp = asm.Children.ComponentCollection.First();
+            });
+
+            /* What do we want to test?
+             * Then check that the connector is gone.
+             * Check that three ports are in its place.
+             * Finally, check that all attributes from the constituent ports survived.
+             */
+            proj.PerformInTransaction(delegate
+            {
+                Assert.Equal(3, comp.Children.DomainModelPortCollection.Count());
+                Assert.Equal(0, comp.Children.ConnectorCollection.Count());
+
+                var mc = comp.Children.ModelicaConnectorCollection.First();
+                Assert.Equal("definition", mc.Attributes.Definition);
+                Assert.Equal("definitionnotes", mc.Attributes.DefinitionNotes);
+                Assert.Equal("instancenotes", mc.Attributes.InstanceNotes);
+                Assert.Equal("class", mc.Attributes.Class);
+                Assert.Equal("locator", mc.Attributes.Locator);
+                var mcParam = mc.Children.ModelicaParameterCollection.First();
+                Assert.Equal("defaultvalue", mcParam.Attributes.DefaultValue);
+                Assert.Equal("value", mcParam.Attributes.Value);
+
+                var pin = comp.Children.SchematicModelPortCollection.First();
+                Assert.Equal("definition", pin.Attributes.Definition);
+                Assert.Equal("definitionnotes", pin.Attributes.DefinitionNotes);
+                Assert.Equal("instancenotes", pin.Attributes.InstanceNotes);
+                Assert.Equal("edagate", pin.Attributes.EDAGate);
+                Assert.Equal("edasymbolrotation", pin.Attributes.EDASymbolRotation);
+                Assert.Equal("edasymbollocationx", pin.Attributes.EDASymbolLocationX);
+                Assert.Equal("edasymbollocationy", pin.Attributes.EDASymbolLocationY);
+                Assert.Equal(1, pin.Attributes.SPICEPortNumber);
+
+                var scPort = comp.Children.SystemCPortCollection.First();
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.DataType_enum.sc_int, scPort.Attributes.DataType);
+                Assert.Equal("definition", scPort.Attributes.Definition);
+                Assert.Equal(2, scPort.Attributes.DataTypeDimension);
+                Assert.Equal("definitionnotes", scPort.Attributes.DefinitionNotes);
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.Directionality_enum.@in, scPort.Attributes.Directionality);
+                Assert.Equal("instancenotes", scPort.Attributes.InstanceNotes);
+                Assert.Equal(ISIS.GME.Dsml.CyPhyML.Classes.SystemCPort.AttributesClass.Function_enum.reset_async, scPort.Attributes.Function);
+            });
+        }
+
         private void Unroll(CyPhy.Component comp, bool cleanup = true)
         {
             using (var unroller = new CyPhyElaborateCS.Unroller(comp.Impl.Project))
@@ -1119,6 +1229,49 @@ namespace ConnectorUnrollTest
             return true;
         }
 
+        private Dictionary<string, string> GetIDs(MgaModel rootModel)
+        {
+            Dictionary<string, string> ret = new Dictionary<string, string>();
+            Queue<IMgaFCO> fcos = new Queue<IMgaFCO>();
+            var filter = rootModel.Project.CreateFilter();
+
+            Action<IMgaModel> enqueueModelAndDescendants = (model) =>
+            {
+                fcos.Enqueue(model);
+                foreach (MgaFCO fco in ((MgaModel)model).GetDescendantFCOs(filter))
+                {
+                    fcos.Enqueue(fco);
+                }
+            };
+            enqueueModelAndDescendants(rootModel);
+
+            while (fcos.Count > 0)
+            {
+                IMgaFCO fco = fcos.Dequeue();
+                if (ret.ContainsKey(fco.ID) == false)
+                {
+                    ret.Add(fco.ID, fco.AbsPath);
+                    if (fco is IMgaReference)
+                    {
+                        var referred = ((IMgaReference)fco).Referred;
+                        if (referred != null)
+                        {
+                            if (referred is MgaModel)
+                            {
+                                enqueueModelAndDescendants((MgaModel)referred);
+                            }
+                            else
+                            {
+                                fcos.Enqueue(referred);
+                            }
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+
         private bool CallElaborator(
             MgaProject project,
             MgaFCO currentobj,
@@ -1126,21 +1279,58 @@ namespace ConnectorUnrollTest
             int param,
             bool expand = true)
         {
-            bool result = false;
+            Dictionary<string, string> originalIDs;
+            CyPhyElaborateCS.CyPhyElaborateCSInterpreter elaborator;
+            bool result;
             try
             {
                 //this.Logger.WriteDebug("Elaborating model...");
-                var elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
+                elaborator = new CyPhyElaborateCS.CyPhyElaborateCSInterpreter();
                 elaborator.Initialize(project);
                 int verbosity = 128;
-                result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);                
+                originalIDs = GetIDs((MgaModel)currentobj);
+                result = elaborator.RunInTransaction(project, currentobj, selectedobjs, verbosity);
+
             }
             catch (Exception)
             {
-                result = false;
+                return false;
+            }
+
+            var filter = project.CreateFilter();
+            foreach (MgaFCO fco in ((MgaModel)currentobj).GetDescendantFCOs(filter))
+            {
+                if (fco is IMgaConnection)
+                {
+                    continue;
+                }
+                if (fco.ParentModel != null && fco.ParentModel.Meta.Name == "ModelicaConnector")
+                {
+                    continue; // FIXME: maybe this is a bug
+                }
+                string original = null;
+                if (originalIDs.ContainsKey(fco.ID) == false)
+                {
+                    Assert.True(elaborator.Traceability.TryGetMappedObject(fco.ID, out original), "Unmapped fco " + fco.ID + " " + fco.AbsPath);
+                    Assert.True(originalIDs.ContainsKey(original), "Mapped FCO in traceability " + fco.AbsPath + " is mapped to unknown ID " + original);
+                }
             }
 
             return result;
         }
     }
+    class Program
+    {
+        [STAThread]
+        static int Main(string[] args)
+        {
+            int ret = Xunit.ConsoleClient.Program.Main(new string[] {
+                System.Reflection.Assembly.GetExecutingAssembly().CodeBase.Substring("file:///".Length),
+                //"/noshadow",
+            });
+            Console.In.ReadLine();
+            return ret;
+        }
+    }
+
 }

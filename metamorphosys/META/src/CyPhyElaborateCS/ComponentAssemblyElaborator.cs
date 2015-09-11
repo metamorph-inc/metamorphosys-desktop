@@ -1,59 +1,4 @@
-﻿/*
-Copyright (C) 2013-2015 MetaMorph Software, Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-
-=======================
-This version of the META tools is a fork of an original version produced
-by Vanderbilt University's Institute for Software Integrated Systems (ISIS).
-Their license statement:
-
-Copyright (C) 2011-2014 Vanderbilt University
-
-Developed with the sponsorship of the Defense Advanced Research Projects
-Agency (DARPA) and delivered to the U.S. Government with Unlimited Rights
-as defined in DFARS 252.227-7013.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this data, including any software or models in source or binary
-form, as well as any drawings, specifications, and documentation
-(collectively "the Data"), to deal in the Data without restriction,
-including without limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of the Data, and to
-permit persons to whom the Data is furnished to do so, subject to the
-following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Data.
-
-THE DATA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS, SPONSORS, DEVELOPERS, CONTRIBUTORS, OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE DATA OR THE USE OR OTHER DEALINGS IN THE DATA.  
-*/
-
-namespace CyPhyElaborateCS
+﻿namespace CyPhyElaborateCS
 {
     using System;
     using System.Collections.Generic;
@@ -84,6 +29,7 @@ namespace CyPhyElaborateCS
 
             // initialize collections
             this.Traceability = new Dictionary<string, string>();
+            this.ComponentGUIDs = new HashSet<string>();
             this.InnerElaborators = new List<ComponentAssemblyElaborator>();
             this.ComponentAssemblyReferences = new Queue<MgaFCO>();
         }
@@ -134,6 +80,7 @@ namespace CyPhyElaborateCS
         /// </summary>
         public override void Elaborate()
         {
+            SortedDictionary<string, MgaModel> parentsWithDupComponentGuids = new SortedDictionary<string, MgaModel>();
             MgaFilter filter = this.Subject.Project.CreateFilter();
 
             var allObjects = this.Subject.GetDescendantFCOs(filter);
@@ -153,7 +100,20 @@ namespace CyPhyElaborateCS
                     this.Traceability.Add(obj.ID, obj.ID);
                 }
 
-                if (obj is MgaReference)
+                if (obj is MgaModel)
+                {
+                    var model = obj as MgaModel;
+                    if (model.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
+                    {
+                        var managedGuid = model.StrAttrByName["ManagedGUID"];
+                        if (string.IsNullOrEmpty(managedGuid) == false)
+                        {
+                            // copiedObj.StrAttrByName["ManagedGUID"] = managedGuid;
+                            // model.RegistryValue[RegistryNameInstanceGuidChain] = model.RegistryValue[RegistryNameInstanceGuidChain] + managedGuid;
+                        }
+                    }
+                }
+                else if (obj is MgaReference)
                 {
                     var reference = obj as MgaReference;
                     if (reference.Referred == null)
@@ -174,7 +134,24 @@ namespace CyPhyElaborateCS
                         GME.MGA.Meta.objtype_enum type;
                         reference.GetParent(out parent, out type);
 
-                        var copied = this.SwitchReferenceToModel(parent as MgaModel, reference, true);
+                        var instanceGuid = reference.GetStrAttrByNameDisp("InstanceGUID");
+                        if (string.IsNullOrWhiteSpace(instanceGuid))
+                        {
+                            instanceGuid = new Guid(reference.GetGuidDisp()).ToString("D");
+                            reference.SetStrAttrByNameDisp("InstanceGUID", instanceGuid);
+                        }
+                        if (parent is MgaModel)
+                        {
+                            instanceGuid = ((MgaModel)parent).RegistryValue[RegistryNameInstanceGuidChain] + instanceGuid;
+                            bool dupComponentGuid = !this.ComponentGUIDs.Add(instanceGuid);
+                            if (dupComponentGuid)
+                            {
+                                LogDebug("Duplicate ID " + instanceGuid, reference);
+                                parentsWithDupComponentGuids[parent.AbsPath] = parent as MgaModel;
+                            }
+                        }
+
+                        var copied = this.SwitchReferenceToModel(parent as MgaModel, reference, createInstance: true);
 
                         // delete reference
                         reference.DestroyObject();
@@ -214,6 +191,7 @@ namespace CyPhyElaborateCS
 
                         // use only one map
                         innerElaborator.Traceability = this.Traceability;
+                        innerElaborator.ComponentGUIDs = this.ComponentGUIDs;
 
                         // hold only one queue
                         foreach (var item in this.ComponentAssemblyReferences)
@@ -227,6 +205,37 @@ namespace CyPhyElaborateCS
 
                         // delete reference
                         reference.DestroyObject();
+                    }
+                }
+            }
+
+            // FIXME: it is possible for a parentWithDupComponentGuid to contain child CAs that need to be deduped also
+            string lastPath = null;
+            foreach (var ent in parentsWithDupComponentGuids)
+            {
+                if (lastPath != null)
+                {
+                    if (ent.Key.StartsWith(lastPath))
+                    {
+                        continue;
+                    }
+                }
+                lastPath = ent.Key;
+                var model = ent.Value;
+                allObjects = model.GetDescendantFCOs(filter);
+
+                var parentGuid = model.ParentModel != null ? model.ParentModel.RegistryValue[RegistryNameInstanceGuidChain] : null;
+                // parent model should contain the concatenated InstanceGUID
+                string guidConcat = (parentGuid ?? "") + new Guid(model.GetGuidDisp()).ToString("D");
+                foreach (MgaFCO obj in allObjects)
+                {
+                    if (obj.MetaBase.MetaRef == this.Factory.ComponentMeta)
+                    {
+                        obj.SetStrAttrByNameDisp("InstanceGUID", guidConcat + obj.GetStrAttrByNameDisp("InstanceGUID"));
+                    }
+                    if (obj.MetaBase.MetaRef == this.Factory.ComponentAssemblyMeta)
+                    {
+                        obj.RegistryValue[RegistryNameInstanceGuidChain] = guidConcat;
                     }
                 }
             }

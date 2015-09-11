@@ -15,6 +15,6 @@ IF %QUERY_ERRORLEVEL% == 1 (
     exit /b %QUERY_ERRORLEVEL%
 )
 
-"%META_PATH%\bin\Python27\Scripts\python.exe" -m spice_viewer > log\viewer.log
+"%META_PATH%\bin\Python27\Scripts\python.exe" -E -m spice_viewer > log\viewer.log
 
 popd

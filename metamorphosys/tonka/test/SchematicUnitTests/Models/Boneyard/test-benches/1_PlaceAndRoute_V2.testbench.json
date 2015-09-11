@@ -1,0 +1,38 @@
+{
+  "$id": "1",
+  "Name": "1_PlaceAndRoute_V2",
+  "Metrics": [],
+  "Parameters": [
+    {
+      "$id": "2",
+      "Name": "boardHeight",
+      "Unit": "Millimeter",
+      "Value": "21"
+    },
+    {
+      "$id": "3",
+      "Name": "boardWidth",
+      "Unit": "Millimeter",
+      "Value": "14"
+    },
+    {
+      "$id": "4",
+      "Name": "interChipSpace",
+      "Unit": "",
+      "Value": "0.2"
+    },
+    {
+      "$id": "5",
+      "Name": "boardEdgeSpace",
+      "Unit": "",
+      "Value": "0.5"
+    },
+    {
+      "$id": "6",
+      "Name": "designRules",
+      "Unit": "",
+      "Value": "MacroFab_2_Layer.dru"
+    }
+  ],
+  "Requirements": []
+}
